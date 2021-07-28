@@ -1005,6 +1005,15 @@
     <ClInclude Include="src\handlers\bugfix_handlers\mmMultiCRHandler.h">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\fxShardManagerBugfixHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\asMeshCardInfoHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -1377,6 +1386,15 @@
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\bugfix_handlers\mmMultiCRHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\fxShardManagerBugfixHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\asMeshCardInfoHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
   </ItemGroup>

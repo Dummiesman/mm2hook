@@ -2,12 +2,13 @@
 #include "common.h"
 #include "patch.h"
 #include "mm2.h"
-#include "..\modules\effects.h"
 
 // Individual handlers
 #include "bugfix_handlers/aiPoliceForceHandler.h"
 #include "bugfix_handlers/aiVehicleAmbientHandler.h"
+#include "bugfix_handlers/asMeshCardInfoHandler.h"
 #include "bugfix_handlers/audManagerHandler.h"
+#include "bugfix_handlers/fxShardManagerBugfixHandler.h"
 #include "bugfix_handlers/gfxImageHandler.h"
 #include "bugfix_handlers/lvlSkyHandler.h"
 #include "bugfix_handlers/mmBillInstanceHandler.h"
@@ -20,6 +21,7 @@
 #include "bugfix_handlers/mmViewMgrBugfixHandler.h"
 #include "bugfix_handlers/mpConsistencyHandler.h"
 #include "bugfix_handlers/modShaderHandler.h"
+#include "bugfix_handlers/vehCarAudioContainerBugfixHandler.h"
 #include "bugfix_handlers/vehTrailerHandler.h"
 #include "bugfix_handlers/vehSemiCarAudioBugfixHandler.h"
 
@@ -56,14 +58,6 @@ public:
     void Reset();
 
     static void Install();
-};
-
-class vehCarAudioContainerBugfixHandler : handler_t {
-public:
-    void StartSiren();
-    void StopSiren();
-
-    static void Install(void);
 };
 
 class vehCarDamageHandler {
@@ -107,11 +101,6 @@ public:
     static void Install();
 };
 
-class asMeshCardInfoHandler {
-public:
-    static void Install();
-};
-
 class aiVehicleInstanceHandler {
 public:
     void Reset();
@@ -139,10 +128,5 @@ public:
 class mmPlayerBugfixHandler {
 public:
     void Ctor();
-    static void Install();
-};
-
-class fxShardManagerBugfixHandler {
-public:
     static void Install();
 };

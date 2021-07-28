@@ -123,7 +123,9 @@
   <ItemGroup>
     <ClInclude Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiVehicleAmbientHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\asMeshCardInfoHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\audManagerHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\fxShardManagerBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\gfxImageHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\lvlSkyHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmBillInstanceHandler.h" />
@@ -136,6 +138,7 @@
     <ClInclude Include="src\handlers\bugfix_handlers\mmViewMgrBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\modShaderHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mpConsistencyHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehTrailerHandler.h" />
     <ClInclude Include="src\hook.h" />
@@ -374,7 +377,9 @@
   <ItemGroup>
     <ClCompile Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiVehicleAmbientHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\asMeshCardInfoHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\audManagerHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\fxShardManagerBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\gfxImageHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\lvlSkyHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmBillInstanceHandler.cpp" />
@@ -387,6 +392,7 @@
     <ClCompile Include="src\handlers\bugfix_handlers\mmViewMgrBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\modShaderHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mpConsistencyHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehTrailerHandler.cpp" />
     <ClCompile Include="src\hook.cpp" />

@@ -424,43 +424,6 @@ void vehCarAudioHandler::Install() {
     );
 }
 
-/*
-    vehCarAudioContainerBugfixHandler
-*/
-
-void vehCarAudioContainerBugfixHandler::StartSiren() {
-    auto policeAudio = get<vehCarAudioContainer>()->GetPoliceCarAudioPtr();
-
-    if (policeAudio != nullptr) {
-        // vehPoliceCarAudio::StartSiren
-        hook::Thunk<0x4D4B20>::ThisCall<void>(policeAudio, 0);
-    }
-}
-
-void vehCarAudioContainerBugfixHandler::StopSiren() {
-    auto policeAudio = get<vehCarAudioContainer>()->GetPoliceCarAudioPtr();
-
-    if (policeAudio != nullptr) {
-        // vehPoliceCarAudio::StopSiren
-        hook::Thunk<0x4D4C20>::ThisCall<void>(policeAudio);
-    }
-}
-
-void vehCarAudioContainerBugfixHandler::Install() {
-    InstallCallback("vehCarAudioContainer::StartSiren", "Fixes a crash caused by activating sirens on a vehicle with missing audio." ,
-        &StartSiren, {
-            cb::call(0x4145FB), // mmGame::UpdateHorn
-            cb::call(0x43D533), // mmNetObject::PositionUpdate
-        }
-    );
-
-    InstallCallback("vehCarAudioContainer::StopSiren", "Fixes a crash caused by deactivating sirens on a vehicle with missing audio." ,
-        &StopSiren, {
-            cb::call(0x41460C), // mmGame::UpdateHorn
-            cb::call(0x43D562), // mmNetObject::PositionUpdate
-        }
-    );
-}
 
 /*
     vehCarDamage
@@ -746,19 +709,6 @@ void vehPoliceCarAudioBugfixHandler::Install() {
 }
 
 /*
-    asMeshCardInfoHandler
-*/
-
-void asMeshCardInfoHandler::Install()
-{
-    InstallCallback("asMeshCardInfo::Draw", "Scales particles correctly based on current cull mode.",
-        &asMeshCardInfo::Draw, {
-            cb::jmp(0x461770),
-        }
-    );
-}
-
-/*
     aiVehicleInstanceHandler
 */
 
@@ -913,18 +863,6 @@ void mmPlayerBugfixHandler::Install()
             cb::call(0x423A2E),
             cb::call(0x427739),
             cb::call(0x428469),
-        }
-    );
-}
-
-/*
-    fxShardManagerBugfixHandler
-*/
-void fxShardManagerBugfixHandler::Install()
-{
-    InstallCallback("fxShardManager::Drraw", "Fix crashes with cars with low material count.",
-        &fxShardManager::Draw, {
-            cb::jmp(0x4602D0)
         }
     );
 }
