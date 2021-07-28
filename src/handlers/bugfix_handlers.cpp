@@ -689,27 +689,6 @@ void BugfixPatchHandler::Install() {
 }
 
 /*
-    mmMultiCRHandler
-*/
-
-bool mmMultiCRHandler::LoadMusic(char* a1, char* a2) {
-    return hook::Thunk<0x433F40>::Call<bool>(this, "singlerace", a2);
-}
-
-void mmMultiCRHandler::Install() {
-    InstallCallback("mmMultiCR::Init", "Fixes results screen crash due to incorrect music.",
-        &LoadMusic, {
-            cb::call(0x4239CB),
-        }
-    );
-
-    //changes VTable for music data from roam to race
-    InstallPatch({ 0x10, 0x06, 0x5B}, {
-        0x423715 + 6,
-    });
-}
-
-/*
     pedAnimationInstanceHandler
 */
 
@@ -905,36 +884,6 @@ void aiRouteRacerHandler::Install() {
             cb::call(0x536B4D), // aiMap::Reset
         }
     );
-}
-
-/*
-    mmViewMgrBugfixHandler
-*/
-
-void mmViewMgrBugfixHandler::SetViewSetting(int a1)
-{
-    mmGameManager *mgr = mmGameManager::Instance;
-    auto player = mgr->getGame()->getPlayer();
-    auto basename = player->getCar()->getCarDamage()->GetName();
-
-    //check if dashboard model is missing
-    string_buf<80> buffer("%s_dash", basename);
-    if (!datAssetManager::Exists("geometry", buffer, "pkg"))
-        return;
-
-    //call original
-    hook::Thunk<0x431D10>::Call<void>(this, a1);
-}
-
-void mmViewMgrBugfixHandler::Install()
-{
-    if (cfgMissingDashboardFix.Get()) {
-        InstallCallback("mmViewMgr::SetViewSetting", "Disables the dashboard view camera if a dashboard model is missing.",
-            &SetViewSetting, {
-                cb::call(0x41489A),
-            }
-        );
-    }
 }
 
 /*

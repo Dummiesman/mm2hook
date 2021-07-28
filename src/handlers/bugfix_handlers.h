@@ -14,14 +14,14 @@
 #include "bugfix_handlers/mmCDPlayerHandler.h"
 #include "bugfix_handlers/mmHudMapHandler.h"
 #include "bugfix_handlers/mmInterfaceHandler.h"
+#include "bugfix_handlers/mmMultiCRHandler.h"
 #include "bugfix_handlers/mmPopupHandler.h"
 #include "bugfix_handlers/mmSpeedIndicatorHandler.h"
+#include "bugfix_handlers/mmViewMgrBugfixHandler.h"
 #include "bugfix_handlers/mpConsistencyHandler.h"
 #include "bugfix_handlers/modShaderHandler.h"
 #include "bugfix_handlers/vehTrailerHandler.h"
 #include "bugfix_handlers/vehSemiCarAudioBugfixHandler.h"
-
-static ConfigValue<bool> cfgMissingDashboardFix     ("MissingDashboardFix",       true);
 
 class aiPedestrianHandler
 {
@@ -93,12 +93,6 @@ public:
     static void Install();
 };
 
-class mmMultiCRHandler {
-public:
-    bool LoadMusic(char* a1, char* a2);
-    static void Install();
-};
-
 class pedAnimationInstanceHandler {
 public:
     void aiMapUpdate();
@@ -139,12 +133,6 @@ public:
 class mmMirrorHandler {
 public:
     void Cull();
-    static void Install();
-};
-
-class mmViewMgrBugfixHandler {
-public:
-    void SetViewSetting(int a1);
     static void Install();
 };
 
