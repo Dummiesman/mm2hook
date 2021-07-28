@@ -34,12 +34,16 @@ namespace MM2
             return std::make_tuple(color.r, color.g, color.b, color.a);
         }
 
-        short getFogNearClip(int index) {
+        inline short getFogNearClip(int index) {
             return (index < 0 || index > 16) ? 0 : this->FogNearClip[index];
         }
 
-        short getFogFarClip(int index) {
+        inline short getFogFarClip(int index) {
             return (index < 0 || index > 16) ? 0 : this->FogFarClip[index];
+        }
+
+        inline float getRotation() {
+            return this->CurrentRotation;
         }
 
         void setFogNearClip(int index, short clip) {
@@ -63,6 +67,11 @@ namespace MM2
             myColor->r = r;
             myColor->g = g;
             myColor->b = b;
+        }
+
+        void setRotation(float rotation)
+        {
+            this->CurrentRotation = rotation;
         }
     public:
 

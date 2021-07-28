@@ -94,27 +94,6 @@ void aiPedestrianHandler::Install() {
 }
 
 /*
-    aiPoliceForceHandler
-*/
-
-void aiPoliceForceHandler::Reset(void) {
-    // reset number of cops pursuing player
-    // fixes incorrect music bug
-    vehPoliceCarAudio::iNumCopsPursuingPlayer = 0;
-
-    $::aiPoliceForce::Reset(this);
-}
-
-void aiPoliceForceHandler::Install() {
-    InstallCallback("aiPoliceForce::Reset", "Resets the number of cops pursuing the player upon reset.",
-        &Reset, {
-            cb::call(0x536AAE),
-            cb::call(0x550ECA),
-        }
-    );
-}
-
-/*
     aiPoliceOfficerHandler
 */
 
@@ -372,25 +351,6 @@ void aiPoliceOfficerHandler::Install() {
 }
 
 /*
-    gfxImageHandler
-*/
-
-void gfxImageHandler::Scale(int width, int height) {
-    width = *window_iWidth;
-    height = *window_iHeight;
-
-    reinterpret_cast<gfxImage*>(this)->Scale(width, height);
-}
-
-void gfxImageHandler::Install() {
-    InstallCallback("gfxImage::Scale", "Fixes loading screen image scaling",
-        &Scale, {
-            cb::call(0x401C75),
-        }
-    );
-}
-
-/*
     vehCarAudioHandler
 */
 static ConfigValue<float> cfgAirborneTimerThresh("AirborneTimerThreshold", 1.1);
@@ -549,25 +509,6 @@ void vehCarDamageHandler::Install() {
             0x5B2C30,
         }
     );
-}
-
-/*
-    mmBillInstanceHandler
-*/
-
-void mmBillInstanceHandler::Scale(float x, float y, float z) {
-    hook::Thunk<0x4BE560>::Call<void>(this, x, y, -z);
-}
-
-void mmBillInstanceHandler::Install() {
-    InstallCallback("mmBillInstance::Draw", "Fix inverted checkpoints",
-        &Scale, {
-            cb::call(0x43F952), // mmBillInstance::Draw
-        }
-    );
-
-    Installf("Installing fix for vertical billboarding of CnR checkpoints...");
-    mem::nop(0x43F8FD, (6 * 3)); // 6 fld/fstp instructions (size: 3)
 }
 
 /*
@@ -761,54 +702,6 @@ void mmMirrorHandler::Install() {
 }
 
 /*
-    mmInterfaceHandler
-*/
-
-hook::Type<char[80]> currentPlayerVehicle (0x6B1B28);
-
-void mmInterfaceHandler::PlayerResolveCars() {
-    //call original
-    hook::Thunk<0x40FE20>::Call<void>(this);
-
-    //null out currentPlayerVehicle if this vehicle is missing
-    //the code after PlayerResolveCars in PlayerSetState will then reset to vpbug
-    if (!datAssetManager::Exists("tune", currentPlayerVehicle, "info")) {
-        currentPlayerVehicle[0] = NULL;
-    }
-}
-
-void mmInterfaceHandler::Install() {
-    InstallCallback("mmInterface::PlayerSetState", "Fixes game crashes in the vehicle select menu when the selected vehicle is missing.",
-        &PlayerResolveCars, {
-            cb::call(0x040E256),
-        }
-    );
-}
-
-/*
-    lvlSkyHandler
-*/
-
-void lvlSkyHandler::ResetRot() {
-    float* skyRot = (float*)(0x628728 + 0x18); //cityLevel::sm_Sky + 0x18
-    *skyRot = 0.0f;
-}
-
-void lvlSkyHandler::Install() {
-    //Overwrite SetMIPMapEnv call since it does nothing
-    //and the game will crash without a .sky file when atetmpting to call it
-    InstallPatch({ 0xEB, 0x0F }, {
-        0x465226,
-    });
-
-    InstallCallback("mmGame::Reset", "Fixes sky rotation on city reset.",
-        &ResetRot, {
-            cb::jmp(0x413DE3),
-        }
-    );
-}
-
-/*
     BugfixPatchHandler
 */
 
@@ -831,101 +724,6 @@ void BugfixPatchHandler::Install() {
 }
 
 /*
-    mmHudMapHandler
-*/
-
-bool mmHudMapHandler::CanActivateMap() {
-    return *getPtr<byte>(this, 0x3D) != 1;   
-}
-
-void mmHudMapHandler::Activate() {
-    if (!CanActivateMap())
-        return;
-
-    //forward to mmHudMap::Activate
-    hook::Thunk<0x42EEE0>::Call<void>(this);
-}
-
-void mmHudMapHandler::SetMapMode(int mode) {
-    if (!CanActivateMap())
-        return;
-
-    //forward to mmHudMap::SetMapMode
-    hook::Thunk<0x42EF30>::Call<void>(this, mode);
-}
-
-void mmHudMapHandler::Install() {
-    InstallCallback("mmHudMap::Activate", "Fixes crashes when attempting to activate a nonexistant hudmap.",
-        &Activate, {
-            cb::call(0x42A306), // mmPopup::DisablePU
-        }
-    );
-    InstallCallback("mmHudMap::SetMapMode", "Fixes crashes when attempting to activate a nonexistant hudmap.",
-        &SetMapMode, {
-            cb::call(0x42EE98), // mmHudMap::Reset
-            cb::call(0x43204E), // mmViewMgr::SetViewSetting
-        }
-    );
-}
-
-/*
-    mmPopupHandler
-*/
-
-static ConfigValue<bool> cfgChatMusicFix("ChatMusicFix", true);
-
-// fix cd player persisting through popups
-bool wasCdPlayerEnabled = false;
-
-void mmPopupHandler::HudEnable() {
-    auto cdPlayer = mmGameManager::Instance.get()->getGame()->getPlayer()->getHUD()->getCdPlayer();
-
-    // if cd player is inactive, and it was active before
-    // reactivate it
-    if(wasCdPlayerEnabled && !cdPlayer->isActive())
-      cdPlayer->Toggle();
-
-    hook::Thunk<0x42D910>::Call<void>(this); // mmHUD::Enable
-}
-
-void mmPopupHandler::HudDisable(int a1) {
-    auto cdPlayer = mmGameManager::Instance.get()->getGame()->getPlayer()->getHUD()->getCdPlayer();
-    wasCdPlayerEnabled = cdPlayer->isActive();
-
-    // hide the cd player if shown
-    if (wasCdPlayerEnabled)
-        cdPlayer->Toggle();
-
-    hook::Thunk<0x42D970>::Call<void>(this, a1); // mmHUD::Disable
-}
-
-void mmPopupHandler::Install() {
-    // Fixes chat music presisting after the chat box is closed
-    if (cfgChatMusicFix) {
-        InstallPatch({ 0x01 }, {
-            0x42B558+1,
-            0x42B537+1,
-        });
-    }
-
-    // CD player fixes
-    InstallCallback("mmPopup::DisablePU", "Shows the CD player on popup disable",
-        &HudEnable, {
-            cb::call(0x42A2F5),
-        }
-    );
-
-    InstallCallback("mmPopup::ShowResults", "Hides the CD player when popups are showing",
-        &HudDisable, {
-            cb::call(0x42A65F),
-            cb::call(0x42A722),
-            cb::call(0x42A7EB),
-            cb::call(0x42A3BF),
-        }
-    );
-}
-
-/*
     mmMultiCRHandler
 */
 
@@ -944,178 +742,6 @@ void mmMultiCRHandler::Install() {
     InstallPatch({ 0x10, 0x06, 0x5B}, {
         0x423715 + 6,
     });
-}
-
-/*
-    audManagerHandler
-*/
-
-// reimplemented using similar logic found in MM1
-// AudManager is aware of a Mixer, but it's never initialized
-class MixerCTL {
-private:
-    float unk_04;
-    float unk_08;
-    float unk_0C;
-
-    float unk_10;
-    float unk_14;
-    float unk_18;
-
-    HWND window;
-
-    int unk_20;
-    int unk_24; // = 1?
-
-    uint32_t mixer_id;
-
-    float wave_balance;
-    float cd_balance; // initialized but not used
-public:
-    explicit MixerCTL() {
-        // override the vtable
-        *reinterpret_cast<int *>(this) = 0x5B4E70;
-
-        unk_04 = 1.0f;
-        unk_08 = 1.0f;
-        unk_0C = 1.0f;
-
-        unk_10 = 1.0f;
-        unk_14 = 1.0f;
-        unk_18 = 1.0f;
-
-        window = GetActiveWindow();
-
-        unk_24 = 1;
-
-        wave_balance = 0.0f;
-        cd_balance = 0.0f;
-    }
-
-    ULONG Init(void) {
-        return hook::Thunk<0x51C1F0>::Call<ulong>(this);
-    }
-
-    virtual ~MixerCTL() FORWARD_THUNK;
-};
-
-ASSERT_SIZEOF(MixerCTL, 0x34);
-
-static MixerCTL * CreateMixerCTL() {
-    auto result = new MixerCTL();
-
-    // initialize the mixer
-    result->Init();
-
-    return result;
-}
-
-static ConfigValue<int> cfgAudioMaxSounds("AudioMaxSounds", 800);
-
-void audManagerHandler::Init(int maxSounds, int a2, int a3, char *a4, short a5, short a6) {
-    maxSounds = cfgAudioMaxSounds;
-
-    LogFile::Printf(1, "[audManagerHandler::Init]: %d max sounds", maxSounds);
-
-#ifdef USE_MIXER_STUFF
-    // mixer already initialized?
-    if (*getPtr<void *>(this, 0x34) == nullptr) {
-        LogFile::Printf(1, "[audManagerHandler::Init]: Creating mixer...");
-
-        auto mixer = CreateMixerCTL();
-
-        setPtr<MixerCTL *>(this, 0x34, mixer);
-    }
-#endif
-
-    hook::Thunk<0x519350>::Call<void>(this, maxSounds, a2, a3, a4, a5, a6);
-}
-
-void audManagerHandler::AssignCDVolume(float value) {
-    // update mixer volume first
-    SetMixerCDVolume(value);
-
-    // to prevent CD volume acting as a "master volume" slider...
-    // I have no idea why this is needed :/
-    SetMixerWaveVolume(MMSTATE->SoundFXVolume);
-    
-    // AudManager::AssignCDVolume
-    hook::Thunk<0x519A30>::Call<void>(this, value);
-}
-
-void audManagerHandler::SetupCDAudio(float balance) {
-    SetMixerCDVolume(MMSTATE->MusicVolume);
-    SetMixerWaveVolume(MMSTATE->SoundFXVolume);
-
-    // AudManager::AssignCDBalance
-    hook::Thunk<0x519880>::Call<void>(this, balance);
-}
-
-void audManagerHandler::SetMixerCDVolume(float value) {
-    auto mixer = *getPtr<void *>(this, 0x34);
-
-    if (mixer != nullptr) {
-        LogFile::Printf(1, "[audManagerHandler::SetMixerVolume]: Setting mixer CD volume to %.2f", value);
-
-        // MixerCTL::AssignCDVolume
-        hook::Thunk<0x51C330>::Call<void>((MixerCTL *)mixer, value);
-    }
-}
-
-void audManagerHandler::SetMixerWaveVolume(float value) {
-    auto mixer = *getPtr<void *>(this, 0x34);
-
-    if (mixer != nullptr) {
-        LogFile::Printf(1, "[audManagerHandler::SetMixerVolume]: Setting mixer sound volume to %.2f", value);
-
-        // MixerCTL::AssignWaveVolume
-        hook::Thunk<0x51C310>::Call<void>((MixerCTL *)mixer, value);
-    }
-}
-
-bool audManagerHandler::MinInstall() {
-    return !datAssetManager::Exists("aud\\aud11\\al2", "AL2Pre01", "11k.wav");
-}
-
-void audManagerHandler::Install() {
-    int audHeapSize = HookConfig::GetProperty("AudioHeapSize", 32);
-
-    LogFile::Printf(1, "Audio heap size: %dMB", audHeapSize);
-
-    mem::write(0x51938D + 1, (int)(audHeapSize * 1000000));
-
-    InstallCallback("AudManager::Init", "Allows the mixer control to be initialized along with the audio manager.",
-        &Init, {
-            cb::call(0x401F1B),
-        }
-    );
-
-#ifdef USE_MIXER_STUFF
-    InstallCallback("AudManager::AssignCDVolume", "Properly sets mixer volume when changing CD volume.",
-        &AssignCDVolume, {
-            cb::call(0x401F81), // InitAudioManager
-            cb::call(0x50C932), // PUAudioOptions::SetCDVolume
-        }
-    );
-
-    InstallCallback("AudManager::AssignWaveVolume", "Properly sets mixer volume when changing sound volume.",
-        &AssignCDVolume, {
-            cb::call(0x401F71), // InitAudioManager
-            cb::call(0x50C8FC), // PUAudioOptions::SetWaveVolume
-        }
-    );
-
-    InstallCallback(&SetupCDAudio, "Allows the mixer volume to be updated when loading player config.", {
-            cb::call(0x525DC6), // mmPlayerConfig::SetAudio
-        }
-    );
-#endif
-
-    InstallCallback("mmRaceSpeech::LoadCityInfo", "Non registry dependent minimum install check.",
-        &MinInstall, {
-            cb::call(0x51AA2C),
-        }
-    );
 }
 
 /*
@@ -1178,66 +804,6 @@ void mmCDPlayerHandler::Install() {
     InstallPatch({ 0x18 }, {
         0x42CEC7,
     });
-}
-
-/*
-    aiVehicleInstanceHandler
-*/
-
-void aiVehicleAmbientHandler::Install() {
-    // fixes traffic vehicles using a different color
-    // than their respective breakables
-    InstallPatch({ 0x90, 0x90, 0x90, 0x90, 0x90 }, {
-        0x5513E2,
-    });
-    
-}
-
-/*
-    mpConsistencyHandler
-*/
-
-// Makes multiplayer AIMAP behavior match singleplayer
-void mpConsistencyHandler::Install() {
-    // removes mmGame.EnableAIMAP check
-    InstallPatch({ 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }, {
-        0x412ACB,
-    });
-
-    // removes mmMultiRoam second AIMAP
-    InstallPatch({ 0xEB }, {
-        0x427661,
-    });
-
-    // removes mmMultiBlitz second AIMAP
-    InstallPatch({ 0xEB }, {
-        0x420084,
-    });
-
-    // removes mmMultiRace second AIMAP
-    InstallPatch({ 0xEB }, {
-        0x4283A8,
-    });
-
-    // removes mmMultiCircuit second AIMAP
-    InstallPatch({ 0xEB }, {
-        0x421CE4,
-    });
-
-    // removes mmMultiCR second AIMAP
-    InstallPatch({ 0xEB }, {
-        0x4238BE,
-    });
-}
-
-/*
-    vehTrailerHandler
-*/
-
-void vehTrailerHandler::Install()
-{
-    Installf("Removes default.dgTrailerJoint check preventing trailers from loading properly.");
-    mem::nop(0x4D7DCC, 19); // nop out default.dgTrailerJoint load attempt
 }
 
 /*
@@ -1393,61 +959,6 @@ void aiRouteRacerHandler::Install() {
 }
 
 /*
-    modShaderHandler
-*/
-
-static ConfigValue<bool> cfgMm1StyleRefl("MM1StyleReflections", false);
-
-float lastFogStart;
-float lastFogEnd;
-
-void modShaderHandler::BeginEnvMap(gfxTexture * a1, const Matrix34 * a2)
-{
-    // Set fog distance so it's not blended with reflections
-    lastFogStart = (&RSTATE->Data)->FogStart;
-    lastFogEnd = (&RSTATE->Data)->FogEnd;
-    (&RSTATE->Data)->FogStart = 9999;
-    (&RSTATE->Data)->FogEnd = 10000;
-        
-    hook::StaticThunk<0x4A41B0>::Call<void>(a1, a2); //call original
-}
-
-void modShaderHandler::EndEnvMap()
-{
-    // Restore last fog settings
-    (&RSTATE->Data)->FogStart = lastFogStart;
-    (&RSTATE->Data)->FogEnd = lastFogEnd;
-
-    hook::StaticThunk<0x4A4420>::Call<void>(); //call original
-}
-
-void modShaderHandler::Install()
-{
-    InstallCallback("modShader::BeginEnvMap", "Turns off fog while drawing reflections.",
-        &BeginEnvMap, {
-            cb::call(0x4CE1F5),
-            cb::call(0x5341DD),
-            cb::call(0x552252),
-        }
-    );
-
-    InstallCallback("modShader::EndEnvMap", "Turns off fog while drawing reflections.",
-        &EndEnvMap, {
-            cb::call(0x4CE228),
-            cb::call(0x534202),
-            cb::call(0x55226B),
-        }
-    );
-
-    if (cfgMm1StyleRefl.Get()) {
-        // changes the way reflections are rendered, similar to MM1
-        InstallPatch({ 0x03 }, {
-            (0x4A4243 + 0x03),
-        });
-    }
-}
-
-/*
     mmViewMgrBugfixHandler
 */
 
@@ -1507,58 +1018,6 @@ void mmPlayerBugfixHandler::Install()
         }
     );
 }
-
-/* 
-    phBoundBugfixHandler
-*/
-void phBoundBugfixHandler::CalculateSphereFromBoundingBox()
-{
-    //ptrs
-    float*  centerXPtr = getPtr<float>(this, 0x28);
-    float*  centerYPtr = getPtr<float>(this, 0x2C);
-    float*  centerZPtr = getPtr<float>(this, 0x30);
-    float*  bboxMinXPtr = getPtr<float>(this, 0x0C);
-    float*  bboxMinYPtr = getPtr<float>(this, 0x10);
-    float*  bboxMinZPtr = getPtr<float>(this, 0x14);
-    float*  bboxMaxXPtr = getPtr<float>(this, 0x18);
-    float*  bboxMaxYPtr = getPtr<float>(this, 0x1C);
-    float*  bboxMaxZPtr = getPtr<float>(this, 0x20);
-
-    //set center
-    *centerXPtr = (*bboxMaxXPtr - *bboxMinXPtr) * 0.5f + *bboxMinXPtr;
-    *centerYPtr = (*bboxMaxYPtr - *bboxMinYPtr) * 0.5f + *bboxMinYPtr;
-    *centerZPtr = (*bboxMaxZPtr - *bboxMinZPtr) * 0.5f + *bboxMinZPtr;
-
-    //set offset flag
-    if (*centerXPtr != 0.0f || *centerYPtr != 0.0f || *centerZPtr != 0.0f) {
-        BOOL* offsetFlagPtr = getPtr<BOOL>(this, 0x24);
-        *offsetFlagPtr = TRUE;
-    }
-
-    //calculate sphere
-    float sizeX = fmaxf(fabsf(*centerXPtr - *bboxMaxXPtr), fabsf(*centerXPtr - *bboxMinXPtr));
-    float sizeY = fmaxf(fabsf(*centerYPtr - *bboxMaxYPtr), fabsf(*centerYPtr - *bboxMinYPtr));
-    float sizeZ = fmaxf(fabsf(*centerZPtr - *bboxMaxZPtr), fabsf(*centerZPtr - *bboxMinZPtr));
-
-    //set original size multiplied by the value needed to *fully enclose* the bound in the worst case situations
-    float* boundingSpherePtr = getPtr<float>(this, 0x34);
-    *boundingSpherePtr = sqrtf(sizeZ * sizeZ + sizeY * sizeY + sizeX * sizeX) * 1.412f;
-}
-
-void phBoundBugfixHandler::Install()
-{
-    if (cfgBoundSphereCalculation) {
-        InstallCallback("phBound::CalculateSphereFromBoundingBox", "Fix bound sphere calculations causing bad collisions.",
-            &CalculateSphereFromBoundingBox, {
-                cb::call(0x480CCC),
-                cb::call(0x4842BA),
-                cb::call(0x486C31),
-                cb::call(0x48712C),
-            }
-        );
-    }
-}
-
 
 /*
     fxShardManagerBugfixHandler

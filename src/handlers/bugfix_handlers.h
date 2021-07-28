@@ -4,28 +4,27 @@
 #include "mm2.h"
 #include "..\modules\effects.h"
 
+// Individual handlers
+#include "bugfix_handlers/aiPoliceForceHandler.h"
+#include "bugfix_handlers/aiVehicleAmbientHandler.h"
+#include "bugfix_handlers/audManagerHandler.h"
+#include "bugfix_handlers/gfxImageHandler.h"
+#include "bugfix_handlers/lvlSkyHandler.h"
+#include "bugfix_handlers/mmBillInstanceHandler.h"
+#include "bugfix_handlers/mmHudMapHandler.h"
+#include "bugfix_handlers/mmInterfaceHandler.h"
+#include "bugfix_handlers/mmPopupHandler.h"
+#include "bugfix_handlers/mpConsistencyHandler.h"
+#include "bugfix_handlers/modShaderHandler.h"
+#include "bugfix_handlers/vehTrailerHandler.h"
+
 static ConfigValue<bool> cfgAirbrakeFix             ("AirbrakeFix",               true);
 static ConfigValue<bool> cfgMissingDashboardFix     ("MissingDashboardFix",       true);
-
-class gfxImageHandler
-{
-public:
-    void Scale(int width, int height);
-
-    static void Install();
-};
 
 class aiPedestrianHandler
 {
 public:
     void Update();
-
-    static void Install();
-};
-
-class aiPoliceForceHandler {
-public:
-    void Reset();
 
     static void Install();
 };
@@ -71,13 +70,6 @@ public:
     static void Install();
 };
 
-class mmBillInstanceHandler
-{
-public:
-    void Scale(float x, float y, float z);
-    static void Install();
-};
-
 class mmGearIndicatorHandler
 {
 public:
@@ -100,56 +92,14 @@ public:
     static void Install();
 };
 
-class mmInterfaceHandler {
-public:
-    void PlayerResolveCars();
-    static void Install();
-};
-
-class lvlSkyHandler {
-public:
-    void ResetRot();
-    static void Install();
-};
-
 class BugfixPatchHandler {
 public:
-    static void Install();
-};
-
-class mmHudMapHandler {
-public:
-    bool CanActivateMap();
-    void Activate();
-    void SetMapMode(int mode);
-    static void Install();
-};
-
-class mmPopupHandler {
-public:
-    void HudEnable();
-    void HudDisable(int a1);
     static void Install();
 };
 
 class mmMultiCRHandler {
 public:
     bool LoadMusic(char* a1, char* a2);
-    static void Install();
-};
-
-class audManagerHandler {
-public:
-    void Init(int, int, int, char *, short, short);
-    
-    void AssignCDVolume(float value);
-    void SetupCDAudio(float);
-
-    void SetMixerCDVolume(float value);
-    void SetMixerWaveVolume(float value);
-
-    bool MinInstall();
-
     static void Install();
 };
 
@@ -163,21 +113,6 @@ public:
 };
 
 class mmCDPlayerHandler {
-public:
-    static void Install();
-};
-
-class aiVehicleAmbientHandler {
-public:
-    static void Install();
-};
-
-class mpConsistencyHandler {
-public:
-    static void Install();
-};
-
-class vehTrailerHandler {
 public:
     static void Install();
 };
@@ -216,13 +151,6 @@ class aiRouteRacerHandler {
 public:
     void Update();
     void Reset();
-    static void Install();
-};
-
-class modShaderHandler {
-public:
-    static void EndEnvMap();
-    static void BeginEnvMap(MM2::gfxTexture* a1, const MM2::Matrix34* a2);
     static void Install();
 };
 

@@ -105,6 +105,15 @@
     <Filter Include="Source Files\implot">
       <UniqueIdentifier>{ff1c3a0d-223e-4913-9c4e-e4adaaa4d0d4}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\handlers\bugfix_handlers">
+      <UniqueIdentifier>{1d1aac83-e929-452d-af39-e44ba74cea88}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\handlers\feature_handlers">
+      <UniqueIdentifier>{99305f13-f779-4d2e-ace8-076236dee7f5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\handlers\debug_handlers">
+      <UniqueIdentifier>{82986dc7-e7ce-459f-b4e9-9f6a438b13af}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -945,6 +954,42 @@
     <ClInclude Include="src\implot\implot.h">
       <Filter>Source Files\implot</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\mmInterfaceHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\audManagerHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\gfxImageHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\mmBillInstanceHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\mmPopupHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\lvlSkyHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\modShaderHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\vehTrailerHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\mpConsistencyHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\aiVehicleAmbientHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\mmHudMapHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -1267,6 +1312,42 @@
     </ClCompile>
     <ClCompile Include="src\implot\implot.cpp">
       <Filter>Source Files\implot</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\mmInterfaceHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\audManagerHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\gfxImageHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\mmBillInstanceHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\mmPopupHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\lvlSkyHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\modShaderHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\vehTrailerHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\mpConsistencyHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\aiVehicleAmbientHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\mmHudMapHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
