@@ -990,6 +990,15 @@
     <ClInclude Include="src\handlers\bugfix_handlers\mmHudMapHandler.h">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\mmSpeedIndicatorHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\mmCDPlayerHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -1347,6 +1356,15 @@
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\bugfix_handlers\mmHudMapHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\mmSpeedIndicatorHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\mmCDPlayerHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
   </ItemGroup>

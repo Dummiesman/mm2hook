@@ -11,12 +11,15 @@
 #include "bugfix_handlers/gfxImageHandler.h"
 #include "bugfix_handlers/lvlSkyHandler.h"
 #include "bugfix_handlers/mmBillInstanceHandler.h"
+#include "bugfix_handlers/mmCDPlayerHandler.h"
 #include "bugfix_handlers/mmHudMapHandler.h"
 #include "bugfix_handlers/mmInterfaceHandler.h"
 #include "bugfix_handlers/mmPopupHandler.h"
+#include "bugfix_handlers/mmSpeedIndicatorHandler.h"
 #include "bugfix_handlers/mpConsistencyHandler.h"
 #include "bugfix_handlers/modShaderHandler.h"
 #include "bugfix_handlers/vehTrailerHandler.h"
+#include "bugfix_handlers/vehSemiCarAudioBugfixHandler.h"
 
 static ConfigValue<bool> cfgAirbrakeFix             ("AirbrakeFix",               true);
 static ConfigValue<bool> cfgMissingDashboardFix     ("MissingDashboardFix",       true);
@@ -77,12 +80,6 @@ public:
     static void Install();
 };
 
-class mmSpeedIndicatorHandler
-{
-public:
-    static void Install();
-};
-
 class cityLevelBugfixHandler
 {
 public:
@@ -112,22 +109,8 @@ public:
     static void Install();
 };
 
-class mmCDPlayerHandler {
-public:
-    static void Install();
-};
-
 class vehPoliceCarAudioBugfixHandler {
 public:
-    static void Install();
-};
-
-class vehSemiCarAudioBugfixHandler {
-public:
-    void SetNon3DParams();
-    void UpdateAirBlow();
-    void UpdateReverse();
-    void Init(MM2::vehCarSim* carsim, MM2::vehCarDamage* cardamage, char* basename, bool a5, bool a6, bool a7);
     static void Install();
 };
 
