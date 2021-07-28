@@ -130,8 +130,10 @@
     <ClInclude Include="src\handlers\bugfix_handlers\mmCDPlayerHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmHudMapHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmInterfaceHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\mmMultiCRHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmPopupHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmSpeedIndicatorHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\mmViewMgrBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\modShaderHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mpConsistencyHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.h" />
@@ -379,8 +381,10 @@
     <ClCompile Include="src\handlers\bugfix_handlers\mmCDPlayerHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmHudMapHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmInterfaceHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\mmMultiCRHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmPopupHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmSpeedIndicatorHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\mmViewMgrBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\modShaderHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mpConsistencyHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.cpp" />

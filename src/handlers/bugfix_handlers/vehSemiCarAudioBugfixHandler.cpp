@@ -2,6 +2,8 @@
 
 using namespace MM2;
 
+static ConfigValue<bool> cfgAirbrakeFix("AirbrakeFix", true);
+
 /*
     vehSemiCarAudioBugfixHandler
 */

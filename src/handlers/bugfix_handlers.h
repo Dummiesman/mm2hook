@@ -21,7 +21,6 @@
 #include "bugfix_handlers/vehTrailerHandler.h"
 #include "bugfix_handlers/vehSemiCarAudioBugfixHandler.h"
 
-static ConfigValue<bool> cfgAirbrakeFix             ("AirbrakeFix",               true);
 static ConfigValue<bool> cfgMissingDashboardFix     ("MissingDashboardFix",       true);
 
 class aiPedestrianHandler
