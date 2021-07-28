@@ -4,7 +4,6 @@
 #include "mm2.h"
 #include "..\modules\effects.h"
 
-static ConfigValue<bool> cfgBoundSphereCalculation  ("BoundSphereCalculationFix", true);
 static ConfigValue<bool> cfgAirbrakeFix             ("AirbrakeFix",               true);
 static ConfigValue<bool> cfgMissingDashboardFix     ("MissingDashboardFix",       true);
 
@@ -242,12 +241,6 @@ public:
 class mmPlayerBugfixHandler {
 public:
     void Ctor();
-    static void Install();
-};
-
-class phBoundBugfixHandler {
-public:
-    void CalculateSphereFromBoundingBox();
     static void Install();
 };
 

@@ -49,7 +49,6 @@ static init_handler g_bugfix_handlers[] = {
 
     CreateHandler<pedAnimationInstanceHandler>("pedAnimationInstance"),
     CreateHandler<fxShardManagerBugfixHandler>("fxShardManager")
-    //CreateHandler<phBoundBugfixHandler>("phBound"),
 };
 
 /*
