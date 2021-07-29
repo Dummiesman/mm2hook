@@ -152,6 +152,8 @@
     <ClInclude Include="src\handlers\feature_handlers\asCullManagerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\BridgeFerryHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\cityLevelHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\cityTimeWeatherLightingHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\datCallbackExtensionHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gizFerryHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.h" />

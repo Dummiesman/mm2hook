@@ -1080,6 +1080,12 @@
     <ClInclude Include="src\handlers\feature_handlers\aiVehicleInstanceFeatureHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\cityLevelHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\cityTimeWeatherLightingHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">

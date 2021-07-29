@@ -22,29 +22,11 @@
 #include "feature_handlers/vehCarAudioContainerHandler.h"
 #include "feature_handlers/vehPoliceCarAudioHandler.h"
 #include "feature_handlers/vehTrailerInstanceFeatureHandler.h"
+#include "feature_handlers/cityLevelHandler.h"
+#include "feature_handlers/cityTimeWeatherLightingHandler.h"
 #include "feature_handlers/aiVehicleInstanceFeatureHandler.h"
 #include "feature_handlers/aiPoliceOfficerFeatureHandler.h"
 
-
-class cityLevelHandler {
-public:
-    void DrawRooms(const MM2::gfxViewport* viewport, unsigned int p2, LPVOID roomRecs, int numRooms);
-    void PostUpdate();
-    void SetObjectDetail(int lod);
-
-    static void Install();
-};
-
-class cityTimeWeatherLightingHandler {
-public:
-    static void Reset();
-
-    static void LoadCityTimeWeatherLighting();
-
-    void FileIO(MM2::datParser &parser);
-
-    static void Install();
-};
 
 class gfxPipelineHandler {
 public:
