@@ -9,11 +9,18 @@
 
 // Individual handlers
 #include "feature_handlers/Aud3DObjectManagerHandler.h"
+#include "feature_handlers/BridgeFerryHandler.h"
 #include "feature_handlers/datCallbackExtensionHandler.h"
 #include "feature_handlers/gizFerryHandler.h"
+#include "feature_handlers/gizParkedCarMgrHandler.h"
 #include "feature_handlers/memSafeHeapHandler.h"
+#include "feature_handlers/mmCityListHandler.h"
+#include "feature_handlers/mmDashViewHandler.h"
 #include "feature_handlers/mmGameMusicDataHandler.h"
+#include "feature_handlers/vehBreakableMgrHandler.h"
 #include "feature_handlers/vehCarAudioContainerHandler.h"
+#include "feature_handlers/vehPoliceCarAudioHandler.h"
+#include "feature_handlers/vehTrailerInstanceFeatureHandler.h"
 
 class asCullManagerHandler {
 public:
@@ -65,19 +72,6 @@ public:
     static void Install();
 };
 
-class vehPoliceCarAudioHandler {
-public:
-    void InitSirenAudio(MM2::vehCarSim *a1, MM2::vehCarDamage *a2, LPCSTR basename, LPCSTR sirenCsvFile, bool a5);
-    void Reset();
-    static void Install();
-};
-
-class gizParkedCarMgrHandler {
-public:
-    static void EnumeratePath(LPCSTR a1, const MM2::Matrix34* a2, bool a3);
-    static void Install();
-};
-
 class sdlPage16Handler {
 public:
     static LPVOID blockPtr;
@@ -119,14 +113,6 @@ public:
     static void Install();
 };
 
-class BridgeFerryHandler {
-public:
-    void Cull(int lod);
-    void Draw(int lod);
-
-    static void Install();
-};
-
 class mmHudMapFeatureHandler {
 public:
     void DrawColoredTri(unsigned int color, const MM2::Matrix34 *a2);
@@ -154,16 +140,6 @@ class mmIconsHandler {
 public:
     void RegisterOpponents(OppIconInfo *icons, int count, void *a3);
     void RegisterOpponents_Blitz(OppIconInfo *icons, int count, void *a3);
-
-    static void Install();
-};
-
-class mmDashViewHandler {
-public:
-    static float TachMinLimit;
-
-    void UpdateCS();
-    void FileIO(MM2::datParser* parser);
 
     static void Install();
 };
@@ -202,12 +178,6 @@ public:
     void PlayExplosion();
     void BustPerp();
     void BustOpp();
-    static void Install();
-};
-
-class mmCityListHandler {
-public:
-    void Load(char* cinfoName);
     static void Install();
 };
 
@@ -274,11 +244,6 @@ public:
     static void Install(void);
 };
 
-class vehBreakableMgrHandler {
-public:
-    static void Install();
-};
-
 class vehCarModelFeatureHandler {
 public:
     void Draw(int a1);
@@ -323,18 +288,6 @@ public:
 
 class vehTrailerFeatureHandler {
 public:
-    static void Install();
-};
-
-class vehTrailerInstanceFeatureHandler {
-public:
-    void Draw(int a1);
-    void DrawTwhl4(int a1, int a2, MM2::Matrix34* a3, MM2::modShader* a4);
-    void DrawTwhl5(int a1, int a2, MM2::Matrix34* a3, MM2::modShader* a4);
-    void DrawGlow();
-    void DrawPart(int a1, int a2, MM2::Matrix34* a3, MM2::modShader* a4);
-    void DrawPartReflections(MM2::modStatic* a1, MM2::Matrix34* a2, MM2::modShader* a3);
-    void AddGeomHook(const char* pkgName, const char* name, int flags);
     static void Install();
 };
 

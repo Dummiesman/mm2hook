@@ -1050,6 +1050,27 @@
     <ClInclude Include="src\handlers\feature_handlers\memSafeHeapHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\BridgeFerryHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehPoliceCarAudioHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmDashViewHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmCityListHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehBreakableMgrHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -1467,6 +1488,27 @@
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\memSafeHeapHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\BridgeFerryHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehPoliceCarAudioHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmDashViewHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmCityListHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehBreakableMgrHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
   </ItemGroup>
