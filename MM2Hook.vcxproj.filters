@@ -1032,46 +1032,139 @@
     <ClInclude Include="src\handlers\bugfix_handlers\aiPedestrianHandler.h">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\datCallbackExtensionHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\dgBangerInstanceHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\Dialog_NewPlayerHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\mmGameMusicDataHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\fxTexelDamageHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\vehCarAudioContainerHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\gfxPipelineHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\gizFerryHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\ltLensFlareHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\memSafeHeapHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\lvlHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\BridgeFerryHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\mmArrowHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\vehPoliceCarAudioHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\mmDirSndHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\mmExternalViewHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\mmDashViewHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\mmGameHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmHudMapFeatureHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmIconsHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmPlayerHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmSingleBlitzHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmSingleCircuitHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmSingleRaceHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmSingleRoamHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmSingleStuntHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\pedestrianInstanceHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\PUMainHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\sdlPage16Handler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\StreamHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\TextureVariantHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehCarHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehCarModelFeatureHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehCarSimHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehSirenHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehTrailerFeatureHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehWheelHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vglHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\asCullManagerHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehCableCarInstanceHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehBreakableMgrHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
     <ClInclude Include="src\handlers\feature_handlers\mmCityListHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\vehBreakableMgrHandler.h">
-    <ClInclude Include="src\handlers\feature_handlers\asCullManagerHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\mmDashViewHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\vehPoliceCarAudioHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\BridgeFerryHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\memSafeHeapHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\gizFerryHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\vehCarAudioContainerHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmGameMusicDataHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\datCallbackExtensionHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
     <ClInclude Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.h">
@@ -1084,6 +1177,9 @@
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
     <ClInclude Include="src\handlers\feature_handlers\cityTimeWeatherLightingHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\Wanted_Common.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
   </ItemGroup>
@@ -1487,43 +1583,154 @@
     <ClCompile Include="src\handlers\bugfix_handlers\aiPedestrianHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\datCallbackExtensionHandler.cpp">
+    <ClCompile Include="src\handlers\feature_handlers\Dialog_NewPlayerHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.cpp">
+    <ClCompile Include="src\handlers\feature_handlers\fxTexelDamageHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\mmGameMusicDataHandler.cpp">
+    <ClCompile Include="src\handlers\feature_handlers\gfxPipelineHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\vehCarAudioContainerHandler.cpp">
+    <ClCompile Include="src\handlers\feature_handlers\ltLensFlareHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\gizFerryHandler.cpp">
+    <ClCompile Include="src\handlers\feature_handlers\lvlHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\memSafeHeapHandler.cpp">
+    <ClCompile Include="src\handlers\feature_handlers\mmDirSndHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\BridgeFerryHandler.cpp">
+    <ClCompile Include="src\handlers\feature_handlers\mmExternalViewHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\vehPoliceCarAudioHandler.cpp">
+    <ClCompile Include="src\handlers\feature_handlers\mmGameHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.cpp">
+    <ClCompile Include="src\handlers\feature_handlers\mmHudMapFeatureHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\mmDashViewHandler.cpp">
+    <ClCompile Include="src\handlers\feature_handlers\mmIconsHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\mmCityListHandler.cpp">
+    <ClCompile Include="src\handlers\feature_handlers\mmPlayerHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmSingleBlitzHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmSingleCircuitHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmSingleRaceHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmSingleRoamHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmSingleStuntHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\pedestrianInstanceHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\PUMainHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\sdlPage16Handler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\StreamHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\TextureVariantHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehCarHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehCarModelFeatureHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehCarSimHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehSirenHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehTrailerFeatureHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehWheelHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vglHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehCableCarInstanceHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\asCullManagerHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\vehBreakableMgrHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.cpp">
+    <ClCompile Include="src\handlers\feature_handlers\mmCityListHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmDashViewHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehPoliceCarAudioHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\BridgeFerryHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmGameMusicDataHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\memSafeHeapHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\gizFerryHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\vehCarAudioContainerHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\datCallbackExtensionHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmArrowHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\aiVehicleInstanceFeatureHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\cityLevelHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\cityTimeWeatherLightingHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\dgBangerInstanceHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\Wanted_Common.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
   </ItemGroup>
