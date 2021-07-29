@@ -425,8 +425,13 @@
     <ClCompile Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehTrailerHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\aiVehicleInstanceFeatureHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\asCullManagerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\BridgeFerryHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\cityLevelHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\cityTimeWeatherLightingHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\datCallbackExtensionHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gizFerryHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.cpp" />
