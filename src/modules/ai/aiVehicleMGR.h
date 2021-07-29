@@ -9,12 +9,23 @@ namespace MM2
 
     // External declarations
     extern class asNode;
+    extern class ltLight;
 
     // Class definitions
+    class aiVehicleActive
+    {
+        byte buffer[0xAFC];
+    };
 
     class aiVehicleManager : public asNode {
     private:
-        byte _buffer[0x177A4 - sizeof(asNode)];
+        aiVehicleData vehicleDatas[32];
+        int numVehicleDatas;
+        aiVehicleActive* activeActives[32];
+        aiVehicleActive aiVehicleActives[32];
+        __int16 attachedCount;
+        __int16 gap;
+        ltLight* sharedLight;
     public:
         static hook::Type<aiVehicleManager *> Instance;
         static hook::Type<int> SignalClock;
@@ -44,7 +55,7 @@ namespace MM2
 
         //helpers
         int getDataCount() {
-            return *getPtr<int>(this, 0x1798);
+            return this->numVehicleDatas;
         }
 
         aiVehicleData * getData(int num) {
@@ -54,8 +65,7 @@ namespace MM2
                 num = max - 1;
 
             //return data
-            auto dataArray =  getPtr<aiVehicleData>(this, 0x18);
-            return &dataArray[num];
+            return &this->vehicleDatas[num];
         }
 
         //lua
