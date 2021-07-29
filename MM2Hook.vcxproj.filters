@@ -1066,9 +1066,18 @@
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
     <ClInclude Include="src\handlers\feature_handlers\vehBreakableMgrHandler.h">
+    <ClInclude Include="src\handlers\feature_handlers\asCullManagerHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
     <ClInclude Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\aiVehicleInstanceFeatureHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
   </ItemGroup>

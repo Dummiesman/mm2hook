@@ -147,6 +147,9 @@
     <ClInclude Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehTrailerHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\aiVehicleInstanceFeatureHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\asCullManagerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\BridgeFerryHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\datCallbackExtensionHandler.h" />

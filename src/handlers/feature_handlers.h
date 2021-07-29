@@ -8,6 +8,7 @@
 #include "..\events\dispatcher.h"
 
 // Individual handlers
+#include "feature_handlers/asCullManagerHandler.h"
 #include "feature_handlers/Aud3DObjectManagerHandler.h"
 #include "feature_handlers/BridgeFerryHandler.h"
 #include "feature_handlers/datCallbackExtensionHandler.h"
@@ -21,13 +22,9 @@
 #include "feature_handlers/vehCarAudioContainerHandler.h"
 #include "feature_handlers/vehPoliceCarAudioHandler.h"
 #include "feature_handlers/vehTrailerInstanceFeatureHandler.h"
+#include "feature_handlers/aiVehicleInstanceFeatureHandler.h"
+#include "feature_handlers/aiPoliceOfficerFeatureHandler.h"
 
-class asCullManagerHandler {
-public:
-    void Init(int maxCullables, int maxCullables2D);
-
-    static void Install();
-};
 
 class cityLevelHandler {
 public:
@@ -277,14 +274,6 @@ public:
     static void Install();
 };
 
-class aiVehicleInstanceFeatureHandler {
-public:
-    void Draw(int a1);
-    void DrawGlow();
-    void ModStaticDraw(MM2::modShader* a1);
-    void AddGeomHook(const char* pkgName, const char* name, int flags);
-    static void Install();
-};
 
 class vehTrailerFeatureHandler {
 public:
@@ -329,11 +318,6 @@ public:
     static void Install();
 };
 
-class aiPoliceOfficerFeatureHandler {
-public:
-    void DetectPerpetrator();
-    static void Install();
-};
 
 class mmExternalViewHandler {
 public:
