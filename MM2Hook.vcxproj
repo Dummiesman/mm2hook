@@ -123,6 +123,7 @@
   <ItemGroup>
     <ClInclude Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiVehicleAmbientHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\aiVehicleInstanceHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\asMeshCardInfoHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\audManagerHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\fxShardManagerBugfixHandler.h" />
@@ -378,6 +379,7 @@
   <ItemGroup>
     <ClCompile Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiVehicleAmbientHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\aiVehicleInstanceHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\asMeshCardInfoHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\audManagerHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\fxShardManagerBugfixHandler.cpp" />

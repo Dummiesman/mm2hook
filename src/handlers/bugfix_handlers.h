@@ -6,6 +6,7 @@
 // Individual handlers
 #include "bugfix_handlers/aiPoliceForceHandler.h"
 #include "bugfix_handlers/aiVehicleAmbientHandler.h"
+#include "bugfix_handlers/aiVehicleInstanceHandler.h"
 #include "bugfix_handlers/asMeshCardInfoHandler.h"
 #include "bugfix_handlers/audManagerHandler.h"
 #include "bugfix_handlers/fxShardManagerBugfixHandler.h"
@@ -99,12 +100,6 @@ public:
 
 class vehPoliceCarAudioBugfixHandler {
 public:
-    static void Install();
-};
-
-class aiVehicleInstanceHandler {
-public:
-    void Reset();
     static void Install();
 };
 
