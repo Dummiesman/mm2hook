@@ -147,6 +147,12 @@
     <ClInclude Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehTrailerHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\datCallbackExtensionHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\gizFerryHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\memSafeHeapHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\mmGameMusicDataHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\vehCarAudioContainerHandler.h" />
     <ClInclude Include="src\hook.h" />
     <ClInclude Include="src\handlers\debug_handlers.h" />
     <ClInclude Include="src\handlers\lua_drawable.h" />
@@ -407,6 +413,12 @@
     <ClCompile Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehTrailerHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\datCallbackExtensionHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\gizFerryHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\memSafeHeapHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\mmGameMusicDataHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\vehCarAudioContainerHandler.cpp" />
     <ClCompile Include="src\hook.cpp" />
     <ClCompile Include="src\handlers\debug_handlers.cpp" />
     <ClCompile Include="src\handlers\lua_drawable.cpp" />

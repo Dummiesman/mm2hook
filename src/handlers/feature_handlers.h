@@ -7,6 +7,14 @@
 
 #include "..\events\dispatcher.h"
 
+// Individual handlers
+#include "feature_handlers/Aud3DObjectManagerHandler.h"
+#include "feature_handlers/datCallbackExtensionHandler.h"
+#include "feature_handlers/gizFerryHandler.h"
+#include "feature_handlers/memSafeHeapHandler.h"
+#include "feature_handlers/mmGameMusicDataHandler.h"
+#include "feature_handlers/vehCarAudioContainerHandler.h"
+
 class asCullManagerHandler {
 public:
     void Init(int maxCullables, int maxCullables2D);
@@ -57,27 +65,6 @@ public:
     static void Install();
 };
 
-class Aud3DObjectManagerHandler {
-public:
-    void InitAmbObjContainer(LPCSTR name);
-
-    static void Install();
-};
-
-class mmGameMusicDataHandler {
-public:
-    bool LoadAmbientSFX(LPCSTR name);
-
-    static void Install();
-};
-
-class vehCarAudioContainerHandler {
-public:
-    static void SetSirenCSVName(LPCSTR name);
-
-    static void Install();
-};
-
 class vehPoliceCarAudioHandler {
 public:
     void InitSirenAudio(MM2::vehCarSim *a1, MM2::vehCarDamage *a2, LPCSTR basename, LPCSTR sirenCsvFile, bool a5);
@@ -85,21 +72,9 @@ public:
     static void Install();
 };
 
-class gizFerryHandler {
-public:
-    void SetSpeed(float value);
-
-    static void Install();
-};
-
 class gizParkedCarMgrHandler {
 public:
     static void EnumeratePath(LPCSTR a1, const MM2::Matrix34* a2, bool a3);
-    static void Install();
-};
-
-class datCallbackExtensionHandler {
-public:
     static void Install();
 };
 
@@ -124,13 +99,6 @@ public:
     static void SetAIRoad(const MM2::lvlSDL * lvlSDL, int road, bool p3);
     static int GetAIRoom(int room);
     static void InvalidCommand(int cmd, void *attrPtr, void *roadPtr);
-    static void Install();
-};
-
-class memSafeHeapHandler {
-public:
-    void Init(void *memAllocator, unsigned int heapSize, bool p3, bool p4, bool checkAlloc);
-
     static void Install();
 };
 

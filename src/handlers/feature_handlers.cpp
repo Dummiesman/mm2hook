@@ -1246,89 +1246,6 @@ void vglHandler::Install() {
     }
 }
 
-/*
-    Aud3DObjectManager
-*/
-
-void Aud3DObjectManagerHandler::InitAmbObjContainer(LPCSTR name) {
-    string_buf<80> buffer("%sambientcontainer", MMSTATE->CityName);
-
-    //don't continue if it doesn't exist
-    if (!datAssetManager::Exists("aud\\ambient", buffer, "csv"))
-        return;
-
-    LPCSTR szAmbientSFX = buffer;
-    LogFile::Format("AmbientContainer: %s\n", szAmbientSFX);
-
-    //call original
-    hook::Thunk<0x50F650>::Call<void>(this, szAmbientSFX);
-}
-
-void Aud3DObjectManagerHandler::Install() {
-    InstallPatch("Allows for custom positional ambient effects in addon cities.", { 0x90, 0x90 }, {
-        0x404059,
-        });
-
-    InstallCallback("mmPlayer::Init", "Allows for custom positional ambient effects in addon cities.",
-        &InitAmbObjContainer, {
-            cb::call(0x404082),
-        }
-    );
-}
-
-/*
-    mmGameMusicDataHandler
-*/
-
-char defaultCityAmbienceFile[64] = "londonambience";
-
-bool mmGameMusicDataHandler::LoadAmbientSFX(LPCSTR name) {
-    string_buf<80> buffer("%sambience", MMSTATE->CityName);
-
-    LPCSTR szAmbientSFX = (datAssetManager::Exists("aud\\dmusic\\csv_files", buffer, "csv")) ? buffer : defaultCityAmbienceFile;
-
-    LogFile::Format("AmbientSFX: %s\n", szAmbientSFX);
-
-    return reinterpret_cast<mmGameMusicData *>(this)->LoadAmbientSFX(szAmbientSFX);
-}
-
-void mmGameMusicDataHandler::Install() {
-    HookConfig::GetProperty("DefaultCityAmbienceFile", defaultCityAmbienceFile, sizeof(defaultCityAmbienceFile));
-
-    InstallCallback("mmGameMusicData::LoadAmbientSFX", "Allows for custom ambient effects in addon cities.",
-        &LoadAmbientSFX, {
-            cb::call(0x433F93),
-        }
-    );
-}
-
-
-/*
-    vehCarAudioContainerHandler
-*/
-
-char defaultCitySirenFile[64] = "sfpolicesiren";
-
-void vehCarAudioContainerHandler::SetSirenCSVName(LPCSTR name) {
-    string_buf<80> buffer("%spolicesiren", MMSTATE->CityName);
-
-    LPCSTR szSirenName = (datAssetManager::Exists("aud\\cardata\\player", buffer, "csv")) ? buffer : defaultCitySirenFile;
-
-    LogFile::Format("SirenCSVName: %s\n", szSirenName);
-
-    vehCarAudioContainer::SetSirenCSVName(szSirenName);
-}
-
-void vehCarAudioContainerHandler::Install() {
-    HookConfig::GetProperty("DefaultCitySirenFile", defaultCitySirenFile, sizeof(defaultCitySirenFile));
-
-    InstallCallback("vehCarAudioContainer::SetSirenCSVName", "Allows for custom sirens in addon cities.",
-        &SetSirenCSVName, {
-            cb::call(0x412783),
-            cb::call(0x412772),
-        }
-    );
-}
 
 /*
     vehPoliceCarAudioHandler
@@ -1365,18 +1282,6 @@ void vehPoliceCarAudioHandler::Install() {
             cb::call(0x4D19D6),
         }
     );
-}
-
-/*
-    datCallbackExtensionHandler
-*/
-
-void datCallbackExtensionHandler::Install() {
-    InstallPatch("datCallback Fix 1", { 0x00, 0x00, 0x00, 0x40 }, { 0x4C7A5B + 2, 0x4C7AC8 + 2, 0x4C7B70 + 1, 0x4C7BA6 + 1 });
-    InstallPatch("datCallback Fix 2", { 0x00, 0x00, 0x00, 0x80 }, { 0x4C7A90 + 2, 0x4C7AFB + 2, 0x4C7B7E + 1, 0x4C7BB4 + 1 });
-    InstallPatch("datCallback Fix 3", { 0x00, 0x00, 0x00, 0xC0 }, { 0x4C7AB0 + 2, 0x4C7B2B + 2, 0x4C7B90 + 1, 0x4C7BC9 + 1, 0x4C7B61 + 1 });
-    InstallPatch("datCallback Fix 4", { 0xFF, 0xFF, 0xFF, 0x3F }, { 0x4C7B5B + 2 });
-    InstallPatch("datCallback Code Cave", { 0xFF, 0xE1 }, { 0x4C7BE3 });
 }
 
 /*
@@ -1503,33 +1408,6 @@ void lvlHandler::Install() {
             }
         );
     }
-}
-
-/*
-    memSafeHeapHandler
-*/
-
-int g_heapSize = 128;
-
-static ConfigProperty cfgHeapSize("HeapSize", "heapsize");
-
-void memSafeHeapHandler::Init(void *memAllocator, unsigned int heapSize, bool p3, bool p4, bool checkAlloc) {
-    // fast way of expanding to the proper size
-    // same as ((g_heapSize * 1024) * 1024)
-    heapSize = (g_heapSize << 20);
-
-    LogFile::Format("[memSafeHeap::Init]: Allocating %dMB heap (%d bytes)\n", g_heapSize, heapSize);
-    return hook::Thunk<0x577210>::Call<void>(this, memAllocator, heapSize, p3, p4, checkAlloc); //TODO: move to own class
-}
-
-void memSafeHeapHandler::Install() {
-    cfgHeapSize.Get(g_heapSize);
-
-    InstallCallback("memSafeHeap::Init", "Adds '-heapsize' parameter that takes a size in megabytes. Defaults to 128MB.",
-        &Init, {
-            cb::call(0x4015DD),
-        }
-    );
 }
 
 /*
@@ -1870,27 +1748,6 @@ void mmDirSndHandler::Install() {
             cb::call(0x51941D),
         }
     );
-}
-
-/*
-    gizFerryHandler
-*/
-
-static ConfigValue<float> cfgFerrySpeedMultiplier ("FerrySpeedMultiplier", 5.0f);
-
-void gizFerryHandler::SetSpeed(float value) {
-    value *= cfgFerrySpeedMultiplier;
-
-    hook::Thunk<0x579520>::Call<void>(this, value);
-}
-
-void gizFerryHandler::Install() {
-    InstallCallback("gizFerry:SetSpeed", "Allows a speed modifier to be applied to ferry speeds.",
-        &SetSpeed, {
-            cb::call(0x579951), // gizFerryMgr::ApplyTuning
-        }
-    );
-
 }
 
 /*
