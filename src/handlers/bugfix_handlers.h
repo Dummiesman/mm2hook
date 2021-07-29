@@ -11,6 +11,7 @@
 #include "bugfix_handlers/fxShardManagerBugfixHandler.h"
 #include "bugfix_handlers/gfxImageHandler.h"
 #include "bugfix_handlers/lvlSkyHandler.h"
+#include "bugfix_handlers/memMemoryAllocatorHandler.h"
 #include "bugfix_handlers/mmBillInstanceHandler.h"
 #include "bugfix_handlers/mmCDPlayerHandler.h"
 #include "bugfix_handlers/mmHudMapHandler.h"
@@ -122,11 +123,5 @@ public:
 class mmMirrorHandler {
 public:
     void Cull();
-    static void Install();
-};
-
-class mmPlayerBugfixHandler {
-public:
-    void Ctor();
     static void Install();
 };

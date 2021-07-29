@@ -128,6 +128,7 @@
     <ClInclude Include="src\handlers\bugfix_handlers\fxShardManagerBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\gfxImageHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\lvlSkyHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\memMemoryAllocatorHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmBillInstanceHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmCDPlayerHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmHudMapHandler.h" />
@@ -382,6 +383,7 @@
     <ClCompile Include="src\handlers\bugfix_handlers\fxShardManagerBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\gfxImageHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\lvlSkyHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\memMemoryAllocatorHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmBillInstanceHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmCDPlayerHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmHudMapHandler.cpp" />

@@ -30,7 +30,7 @@ static init_handler g_bugfix_handlers[] = {
     CreateHandler<vehPoliceCarAudioBugfixHandler>("vehPoliceCarAudio"),
     CreateHandler<vehSemiCarAudioBugfixHandler>("vehSemiCarAudio"),
     CreateHandler<mmViewMgrBugfixHandler>("mmViewMgr"),
-    CreateHandler<mmPlayerBugfixHandler>("mmPlayer"),
+    CreateHandler<memMemoryAllocatorHandler>("memMemoryAllocator"),
     CreateHandler<mmGearIndicatorHandler>("mmGearIndicator"),
     CreateHandler<mmSpeedIndicatorHandler>("mmSpeedIndicator"),
     CreateHandler<mmHudMapHandler>("mmHudMap"),
@@ -832,37 +832,6 @@ void aiRouteRacerHandler::Install() {
     InstallCallback("aiRouteRacer::Reset", "Resets opponent busted timer upon reset.",
         &Reset, {
             cb::call(0x536B4D), // aiMap::Reset
-        }
-    );
-}
-
-/*
-    mmPlayerBugfixHandler
-*/
-
-void mmPlayerBugfixHandler::Ctor()
-{
-    //clean up our memory
-    memset(this, 0x00, 0x23A4);
-
-    //call ctor original
-    hook::Thunk<0x4033D0>::Call<void>(this);
-}
-
-void mmPlayerBugfixHandler::Install()
-{
-    InstallCallback("mmPlayer::mmPlayer", "Clean up player memory on ctor.",
-        &Ctor, {
-            cb::call(0x415D79),
-            cb::call(0x41AE89),
-            cb::call(0x41C6E9),
-            cb::call(0x41E169),
-            cb::call(0x41FAD9),
-            cb::call(0x420169),
-            cb::call(0x421E09),
-            cb::call(0x423A2E),
-            cb::call(0x427739),
-            cb::call(0x428469),
         }
     );
 }
