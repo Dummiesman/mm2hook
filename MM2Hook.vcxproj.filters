@@ -1020,6 +1020,18 @@
     <ClInclude Include="src\handlers\bugfix_handlers\memMemoryAllocatorHandler.h">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\mmMirrorHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\cityLevelBugfixHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\aiPathHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\aiPedestrianHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -1407,6 +1419,18 @@
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\bugfix_handlers\memMemoryAllocatorHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\mmMirrorHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\cityLevelBugfixHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\aiPathHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\aiPedestrianHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
   </ItemGroup>

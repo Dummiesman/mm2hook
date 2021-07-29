@@ -52,48 +52,6 @@ static init_handler g_bugfix_handlers[] = {
 };
 
 /*
-    aiPathHandler
-*/
-
-int numPedUpdateAttempts = 0;
-
-void aiPathHandler::UpdatePedestrians(void) {
-    auto path = reinterpret_cast<aiPath*>(this);
-    numPedUpdateAttempts = 0;
-
-    path->UpdatePedestrians();
-}
-
-void aiPathHandler::Install() {
-    InstallCallback("aiPath::UpdatePedestrians", "Limits the number of update attempts for pedestrians.",
-        &UpdatePedestrians, {
-            cb::call(0x536FE0), // aiMap::Update
-        }
-    );
-}
-
-/*
-    aiPedestrianHandler
-*/
-
-static ConfigValue<int> cfgMaxPedUpdateAttempts("MaxPedUpdateAttempts", 256);
-
-void aiPedestrianHandler::Update(void) {
-    if (numPedUpdateAttempts < cfgMaxPedUpdateAttempts) {
-        ++numPedUpdateAttempts;
-        $::aiPedestrian::Update(this);
-    }
-}
-
-void aiPedestrianHandler::Install() {
-    InstallCallback("aiPedestrian::Update", "Limits the number of update attempts for a pedestrian.",
-        &Update, {
-            cb::call(0x544191), // aiPath::UpdatePedestrians
-        }
-    );
-}
-
-/*
     aiPoliceOfficerHandler
 */
 
@@ -554,79 +512,6 @@ void mmGearIndicatorHandler::Install() {
     }, {
         0x43F1A3 // mmGearIndicator::Init
     });
-}
-
-/*
-    cityLevelBugfixHandler
-*/
-
-hook::Type<asParticles*> sm_RainParticles(0x62770C);
-hook::Type<bool> sm_EnablePVS(0x62B070);
-bool cityLevelBugfixHandler::IsMirrorDrawing = false;
-
-Stream* cityLevelBugfixHandler::OpenPvsStream(const char * folder, const char * file, const char * extension, bool a4, bool a5) {
-    //open stream
-    auto stream = hook::StaticThunk<0x4C58C0>::Call<Stream*>(folder, file, extension, a4, a5);
-    
-    //stream will be NULL if the PVS doesn't exist
-    if (!stream) {
-        sm_EnablePVS = false;
-    }
-
-    //return original stream
-    return stream;
-}
-
-void cityLevelBugfixHandler::UpdateRainParticles() {
-    asParticles* rainParticles = (asParticles*)sm_RainParticles;
-
-    // set position if appropriate
-    if (!IsMirrorDrawing) {
-        Vector4 dotWith = Vector4(0.0, 10.0, -10.0, 1.0);
-        
-        Vector4 newParticlePosition = Vector4(0, 0, 0, 0);
-        newParticlePosition.Dot(dotWith, *(Matrix44*)gfxRenderState::sm_Camera);
-
-        rainParticles->pBirthRule->Position.X = newParticlePosition.X;
-        rainParticles->pBirthRule->Position.Y = newParticlePosition.Y;
-        rainParticles->pBirthRule->Position.Z = newParticlePosition.Z;
-    }
-    
-    // render particles
-    rainParticles->Cull();
-}
-
-void cityLevelBugfixHandler::Install() {
-    InstallCallback("cityLevel::Load", "Disables PVS when it doesn't exist.",
-        &OpenPvsStream, {
-            cb::call(0x4440E8), // cityLevel::Load
-        }
-    );
-
-    InstallCallback("lvlLevel::Draw", "Allows for control over when to update rain particle position.",
-        &UpdateRainParticles, {
-            cb::call(0x4462B7),
-        }
-    );
-    mem::nop(0x4462BA + 0x02, 76); // nop out the rest of the rain update, since we're replacing it
-}
-
-/*
-    mmMirrorHandler
-*/
-
-void mmMirrorHandler::Cull() {
-    cityLevelBugfixHandler::IsMirrorDrawing = true;
-    hook::Thunk<0x42B8C0>::Call<void>(this); // call original
-    cityLevelBugfixHandler::IsMirrorDrawing = false;
-}
-
-void mmMirrorHandler::Install() {
-    InstallVTableHook("mmMirror::Cull",
-        &Cull, {
-            0x5B0B80 ,
-        }
-    );
 }
 
 /*

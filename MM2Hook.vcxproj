@@ -121,11 +121,14 @@
     Lua 5.3.2 files
   -->
   <ItemGroup>
+    <ClInclude Include="src\handlers\bugfix_handlers\aiPathHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\aiPedestrianHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiVehicleAmbientHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiVehicleInstanceHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\asMeshCardInfoHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\audManagerHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\cityLevelBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\fxShardManagerBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\gfxImageHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\lvlSkyHandler.h" />
@@ -134,6 +137,7 @@
     <ClInclude Include="src\handlers\bugfix_handlers\mmCDPlayerHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmHudMapHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmInterfaceHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\mmMirrorHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmMultiCRHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmPopupHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmSpeedIndicatorHandler.h" />
@@ -377,11 +381,14 @@
     <ClInclude Include="src\lua\lzio.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\handlers\bugfix_handlers\aiPathHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\aiPedestrianHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiVehicleAmbientHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiVehicleInstanceHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\asMeshCardInfoHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\audManagerHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\cityLevelBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\fxShardManagerBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\gfxImageHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\lvlSkyHandler.cpp" />
@@ -390,6 +397,7 @@
     <ClCompile Include="src\handlers\bugfix_handlers\mmCDPlayerHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmHudMapHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmInterfaceHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\mmMirrorHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmMultiCRHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmPopupHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmSpeedIndicatorHandler.cpp" />
