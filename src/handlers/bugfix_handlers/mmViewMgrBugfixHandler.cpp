@@ -11,14 +11,11 @@ static ConfigValue<bool> cfgMissingDashboardFix("MissingDashboardFix", true);
 void mmViewMgrBugfixHandler::SetViewSetting(int a1)
 {
     mmGameManager* mgr = mmGameManager::Instance;
-    auto player = mgr->getGame()->getPlayer();
-    auto basename = player->getCar()->getCarDamage()->GetName();
 
-    //check if dashboard model is missing
-    //TODO: use mmDashView instead,
-    //byte at 0x604 is 1 if model exists, 0 if it does not
-    string_buf<80> buffer("%s_dash", basename);
-    if (!datAssetManager::Exists("geometry", buffer, "pkg"))
+    auto player = mgr->getGame()->getPlayer();
+    auto dash = player->getDashView();
+
+    if (!dash->getIsLoaded())
         return;
 
     //call original
