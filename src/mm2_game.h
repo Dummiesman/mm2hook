@@ -17,9 +17,12 @@ namespace MM2
     class mmArrow;
     class mmHUD;
     class mmPlayer;
+    class RadialGauge;
+    class mmDashView;
     
     // External declarations
     extern class asNode;
+    extern class asLinearCS;
     extern class dgPhysEntity;
     extern class mmPopup;
     extern class vehCar;
@@ -1001,14 +1004,117 @@ namespace MM2
         }
     };
 
+    class RadialGauge : public asNode
+    {
     private:
-        byte _buffer[0x6C0];
-    protected:
-        hook::Field<0x80, mmPlayer> _player;
+        asLinearCS LinearCS;
+        float* ValuePtr;
+        float MaxValue;
+        float RotMin;
+        float RotMax;
+        float MinValue;
+        Vector3 dword_ac;
+        int ShaderSet;
+        int ModStatic;
+        Vector3 Pivot;
+        Vector3 Offset;
+        Vector3 PivotOffset;
+        Matrix34 dword_e4;
+    };
+
+
     class mmDashView : public asLinearCS {
+    private:
+        mmPlayer* m_PlayerPtr;
+        int dword_84;
+        int dword_88;
+        int dword_8c;
+        RadialGauge RPMGauge;
+        RadialGauge SpeedGauge;
+        RadialGauge DamageGauge;
+        int dword_3cc;
+        int dword_3d0;
+        int dword_3d4;
+        int dword_3d8;
+        int dword_3dc;
+        int dword_3e0;
+        int dword_3e4;
+        int dword_3e8;
+        int dword_3ec;
+        int dword_3f0;
+        float dword_3f4;
+        int dword_3f8;
+        float dword_3fc;
+        float WheelFact;
+        int dword_404;
+        asLinearCS LinearCS_A;
+        asLinearCS LinearCS_B;
+        asLinearCS LinearCS_C;
+        int dword_588;
+        int dword_58c;
+        int dword_590;
+        Vector3 DashPos;
+        Vector3 RoofPos;
+        int dword_5ac;
+        int dword_5b0;
+        int dword_5b4;
+        int dword_5b8;
+        int dword_5bc;
+        int dword_5c0;
+        int dword_5c4;
+        int dword_5c8;
+        int dword_5cc;
+        float MaxSpeed;
+        float MaxRPM;
+        int MinSpeed;
+        int dword_5dc;
+        int DamageNeedleModStatic;
+        int DashModStatic;
+        int DashExtraModStatic;
+        int GearIndicatorModStatic;
+        int RoofModStatic;
+        int SpeedNeedleModStatic;
+        int TachNeedleModStatic;
+        int WheelModStatic;
+        int ShaderSet;
+        bool IsLoaded;
+        byte byte_605;
+        byte byte_606;
+        byte byte_607;
+        Vector3 GearIndicatorPivot;
+        Vector3 DamageNeedlePivot;
+        Vector3 SpeedNeedlePivot;
+        Vector3 TachNeedlePivot;
+        Vector3 DmgOffset;
+        Vector3 SpeedOffset;
+        Vector3 TachOffset;
+        Vector3 WheelPos;
+        Vector3 DmgPivotOffset;
+        Vector3 SpeedPivotOffset;
+        Vector3 TachPivotOffset;
+        Vector3 WheelPivotOffset;
+        Vector3 GearPivotOffset;
+        int dword_6a4;
+        int dword_6a8;
+        int dword_6ac;
+        int dword_6b0;
+        int dword_6b4;
+        int dword_6b8;
+        int dword_6bc;
+        int dword_6c0;
+        int dword_6c4;
+        int dword_6c8;
+        int dword_6cc;
+        int dword_6d0;
+        BOOL PivotDebug;
+        int dword_6d8;
     public:
+        inline bool getIsLoaded(void) const {
+            return this->IsLoaded;
+        }
+
         inline mmPlayer * getPlayer(void) const {
-            return _player.ptr(this);
+            return this->m_PlayerPtr;
         };
 
         AGE_API void Activate()                     { hook::Thunk<0x430E80>::Call<void>(this); }
