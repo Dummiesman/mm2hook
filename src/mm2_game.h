@@ -1001,11 +1001,11 @@ namespace MM2
         }
     };
 
-    class mmDashView : public asNode {
     private:
         byte _buffer[0x6C0];
     protected:
         hook::Field<0x80, mmPlayer> _player;
+    class mmDashView : public asLinearCS {
     public:
         inline mmPlayer * getPlayer(void) const {
             return _player.ptr(this);
