@@ -54,6 +54,7 @@
 #include "feature_handlers/vehCableCarInstanceHandler.h"
 //#include "feature_handlers/multiTireTrackHandler.h"
 #include "feature_handlers/vehCarSimHandler.h"
+#include "feature_handlers/vehEngineFeatureHandler.h"
 #include "feature_handlers/mmArrowHandler.h"
 #include "feature_handlers/vehSirenHandler.h"
 #include "feature_handlers/aiPoliceOfficerFeatureHandler.h"

@@ -7,7 +7,6 @@ using namespace MM2;
 */
 
 static ConfigValue<bool> cfgVehicleDebug("VehicleDebug", "vehicleDebug", false);
-static ConfigValue<bool> cfgPhysicalEngineDamage("PhysicalEngineDamage", true);
 
 void vehCarHandler::InitCar(LPCSTR vehName, int a2, int a3, bool a4, bool a5) {
     Displayf("Initializing vehicle (\"%s\", %d, %d, %s, %s)", vehName, a2, a3, bool_str(a4), bool_str(a5));
@@ -117,13 +116,6 @@ void vehCarHandler::Update() {
 
     if (vehCarModel::mm1StyleTransmission) {
         vehCarHandler::Mm1StyleTransmission();
-    }
-
-    if (cfgPhysicalEngineDamage.Get()) {
-        float damagePercent = (damage->getCurDamage() - damage->getMedDamage()) / (damage->getMaxDamage() - damage->getMedDamage());
-        if (damagePercent > 0.f && engine->getThrottleInput() > 0.1f) {
-            engine->setCurrentTorque((engine->getCurrentTorque() + (engine->getCurrentRPM() * 0.001f)) - (damagePercent * (engine->getMaxHorsePower() * 0.018f)));
-        }
     }
 
     // call original

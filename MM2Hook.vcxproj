@@ -190,6 +190,7 @@
     <ClInclude Include="src\handlers\feature_handlers\vehCarHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\vehCarModelFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\vehCarSimHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\vehEngineFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\vehPoliceCarAudioHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\vehSirenHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\vehTrailerFeatureHandler.h" />
@@ -500,6 +501,7 @@
     <ClCompile Include="src\handlers\feature_handlers\vehCarHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\vehCarModelFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\vehCarSimHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\vehEngineFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\vehPoliceCarAudioHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\vehSirenHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\vehTrailerFeatureHandler.cpp" />

@@ -60,6 +60,7 @@ static init_handler g_feature_handlers[] = {
     CreateHandler<vehTrailerInstanceFeatureHandler>("vehTrailerInstance"),
     CreateHandler<vehCableCarInstanceHandler>("vehCableCarInstance"),
     CreateHandler<vehSirenHandler>("vehSiren"),
+    CreateHandler<vehEngineFeatureHandler>("vehEngine"),
 
     CreateHandler<Dialog_NewPlayerHandler>("New player dialog"),
 

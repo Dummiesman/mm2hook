@@ -59,45 +59,64 @@ namespace MM2
         AGE_API char* GetClassName() override               { return hook::Thunk<0x4D9310>::Call<char*>(this); }
 
         //lua ahelpers
-        inline bool getWaitingOnGCL() {
+        inline bool getWaitingOnGCL() 
+        {
             return WaitingOnGCL == TRUE;
         }
 
-        inline float getThrottleInput() {
+        inline float getThrottleInput() 
+        {
             return ThrottleInput;
         }
 
-        inline void setThrottleInput(float input) {
+        inline void setThrottleInput(float input) 
+        {
             ThrottleInput = input;
         }
 
-        inline float getCurrentRPM() {
+        inline float getCurrentRPM() 
+        {
             return CurrentRPM;
         }
 
-        inline void setCurrentRPM(float rpm) {
+        inline void setCurrentRPM(float rpm) 
+        {
             CurrentRPM = rpm;
         }
 
-        inline float getCurrentTorque() {
+        inline float getCurrentTorque() 
+        {
             return CurrentTorque;
         }
 
-        inline void setCurrentTorque(float torque) {
+        inline void setCurrentTorque(float torque) 
+        {
             CurrentTorque = torque;
         }
 
-        inline float getMaxHorsePower() {
+        inline float getMaxHorsePower() 
+        {
             return MaxHorsePower;
         }
 
-        inline void setMaxHorsePower(float power) {
+        inline void setMaxHorsePower(float power) 
+        {
             MaxHorsePower = power;
+        }
+
+        inline void setThrottleTorque(float torque) 
+        {
+            ThrottleTorque = torque;
         }
 
         inline Matrix34* getVisualMatrixPtr()
         {
             return this->EngineVisualMatrixPtr;
+        }
+
+        inline vehCarSim* getCarSim()
+        {
+            return this->VehCarSimPtr;
         }
 
         static void BindLua(LuaState L) {
