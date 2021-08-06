@@ -5,6 +5,7 @@
 namespace MM2
 {
     // Forward declarations
+    class aiVehicleActive;
     class aiVehicleManager;
 
     // External declarations
@@ -12,7 +13,7 @@ namespace MM2
     extern class ltLight;
 
     // Class definitions
-    class aiVehicleActive
+    class aiVehicleActive 
     {
         byte buffer[0xAFC];
     };
