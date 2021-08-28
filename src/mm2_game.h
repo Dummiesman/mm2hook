@@ -1140,9 +1140,32 @@ namespace MM2
     ASSERT_SIZEOF(mmDashView, 0x6DC);
 
     class mmTimer : public asNode {
+    private:
+        BOOL ReverseMode;
+        int TicksMode;
+        float StartTime;
+        float Time;
+        BOOL Running;
+        int LastTicks;
+    public:
+        //api for running and reverse mode
+        inline bool getReverseMode() {
+            return this->ReverseMode == TRUE;
+        }
+
+        inline void setReverseMode(bool mode) 
+        {
+            this->ReverseMode = (mode) ? TRUE : FALSE;
+        }
+
+        inline bool getRunning() {
+            return this->Running == TRUE;
+        }
     public:
         AGE_API void Start()                        { hook::Thunk<0x42E610>::Call<void>(this); }
         AGE_API void Stop()                         { hook::Thunk<0x42E630>::Call<void>(this); }
+        AGE_API void StartStop()                    { hook::Thunk<0x42E640>::Call<void>(this); }
+        AGE_API float GetTime()                     { return hook::Thunk<0x42E4C0>::Call<float>(this); }
 
         /*
             asNode virtuals
@@ -1155,9 +1178,16 @@ namespace MM2
             LuaBinding(L).beginExtendClass<mmTimer, asNode>("mmTimer")
                 .addFunction("Start", &Start)
                 .addFunction("Stop", &Stop)
+                .addFunction("StartStop", &StartStop)
+
+                .addVariableRef("StartTime", &mmTimer::StartTime)
+                .addPropertyReadOnly("Time", &GetTime)
+                .addPropertyReadOnly("Running", &getRunning)
+                .addProperty("ReverseMode", &getReverseMode, &setReverseMode)
                 .endClass();
         }
     };
+    ASSERT_SIZEOF(mmTimer, 0x30);
 
     class mmPlayer : public asNode {
     private:
