@@ -1162,11 +1162,13 @@ namespace MM2
             return this->Running == TRUE;
         }
     public:
+        AGE_API void Init(BOOL reverse, float time, BOOL ticksMode)
+                                                    { hook::Thunk<0x42E490>::Call<void>(this, reverse, time, ticksMode); }
         AGE_API void Start()                        { hook::Thunk<0x42E610>::Call<void>(this); }
         AGE_API void Stop()                         { hook::Thunk<0x42E630>::Call<void>(this); }
         AGE_API void StartStop()                    { hook::Thunk<0x42E640>::Call<void>(this); }
         AGE_API float GetTime()                     { return hook::Thunk<0x42E4C0>::Call<float>(this); }
-
+        
         /*
             asNode virtuals
         */
