@@ -24,6 +24,7 @@
 #include "bugfix_handlers/mmMultiCRHandler.h"
 #include "bugfix_handlers/mmPopupHandler.h"
 #include "bugfix_handlers/mmSpeedIndicatorHandler.h"
+#include "bugfix_handlers/mmTimerHandler.h"
 #include "bugfix_handlers/mmViewMgrBugfixHandler.h"
 #include "bugfix_handlers/mpConsistencyHandler.h"
 #include "bugfix_handlers/modShaderHandler.h"

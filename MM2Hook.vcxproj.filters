@@ -1185,6 +1185,9 @@
     <ClInclude Include="src\handlers\feature_handlers\vehEngineFeatureHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\mmTimerHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -1738,6 +1741,12 @@
     </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\vehEngineFeatureHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\mm2_common.cpp">
+      <Filter>Source Files\mm2</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\mmTimerHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

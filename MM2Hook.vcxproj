@@ -141,6 +141,7 @@
     <ClInclude Include="src\handlers\bugfix_handlers\mmMultiCRHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmPopupHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmSpeedIndicatorHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\mmTimerHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mmViewMgrBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\modShaderHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mpConsistencyHandler.h" />
@@ -452,6 +453,7 @@
     <ClCompile Include="src\handlers\bugfix_handlers\mmMultiCRHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmPopupHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmSpeedIndicatorHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\mmTimerHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mmViewMgrBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\modShaderHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mpConsistencyHandler.cpp" />
