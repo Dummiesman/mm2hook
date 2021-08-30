@@ -139,10 +139,10 @@ namespace MM2 {
 
         AGE_API Timer()                                     { hook::Thunk<0x4C7840>::Call<void>(this); }
 
-        AGE_API void BeginBenchmark()                       { hook::Thunk<0x4C7980>::Call<void>(this); }
-        AGE_API void EndBenchmark()                         { hook::Thunk<0x4C79F0>::Call<void>(this); }
-        AGE_API uint QuickTicks()                           { return hook::Thunk<0x4C7810>::Call<uint>(this); }
-        AGE_API ulong Ticks()                               { return hook::Thunk<0x4C77E0>::Call<ulong>(this); }
+        static AGE_API void BeginBenchmark()                       { hook::StaticThunk<0x4C7980>::Call<void>(); }
+        static AGE_API void EndBenchmark()                         { hook::StaticThunk<0x4C79F0>::Call<void>(); }
+        static AGE_API uint QuickTicks()                           { return hook::StaticThunk<0x4C7810>::Call<uint>(); }
+        static AGE_API uint Ticks()                               { return hook::StaticThunk<0x4C77E0>::Call<uint>(); }   
     };
 
     class NetStartArray {
