@@ -1142,11 +1142,15 @@ namespace MM2
     class mmTimer : public asNode {
     private:
         BOOL ReverseMode;
-        int TicksMode;
+        BOOL TicksMode;
         float StartTime;
         float Time;
         BOOL Running;
-        int LastTicks;
+        Timer Timer;
+    private:
+        void luaInit(bool reverse, float startTime, bool ticksMode) {
+            this->Init(reverse ? TRUE : FALSE, startTime, ticksMode ? TRUE : FALSE);
+        }
     public:
         //api for running and reverse mode
         inline bool getReverseMode() {
@@ -1162,13 +1166,25 @@ namespace MM2
             return this->Running == TRUE;
         }
     public:
-        AGE_API void Init(BOOL reverse, float time, BOOL ticksMode)
-                                                    { hook::Thunk<0x42E490>::Call<void>(this, reverse, time, ticksMode); }
+        ANGEL_ALLOCATOR
+
+        AGE_API mmTimer(void) {
+            scoped_vtable x(this);
+            hook::Thunk<0x42E420>::Call<void>(this);
+        };
+
+        virtual AGE_API ~mmTimer(void) {
+            scoped_vtable x(this);
+            hook::Thunk<0x42E480>::Call<void>(this);
+        };
+
+        AGE_API void Init(BOOL reverse, float startTime, BOOL ticksMode)
+                                                    { hook::Thunk<0x42E490>::Call<void>(this, reverse, startTime, ticksMode); }
         AGE_API void Start()                        { hook::Thunk<0x42E610>::Call<void>(this); }
         AGE_API void Stop()                         { hook::Thunk<0x42E630>::Call<void>(this); }
         AGE_API void StartStop()                    { hook::Thunk<0x42E640>::Call<void>(this); }
         AGE_API float GetTime()                     { return hook::Thunk<0x42E4C0>::Call<float>(this); }
-        
+
         /*
             asNode virtuals
         */
@@ -1178,6 +1194,12 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmTimer, asNode>("mmTimer")
+                .addFactory([]() {
+                    auto timer = new mmTimer();
+                    return timer;
+                }, LUA_ARGS())
+
+                .addFunction("Init", &luaInit)
                 .addFunction("Start", &Start)
                 .addFunction("Stop", &Stop)
                 .addFunction("StartStop", &StartStop)
@@ -1310,6 +1332,7 @@ namespace MM2
     void luaAddModule<module_game>(LuaState L) {
         luaBind<mmGame>(L);
         luaBind<mmGameManager>(L);
+        luaBind<mmTimer>(L);
         luaBind<mmArrow>(L);
         luaBind<mmHUD>(L);
         luaBind<mmCDPlayer>(L);
