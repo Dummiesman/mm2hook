@@ -189,16 +189,13 @@ namespace MM2
         }
 
         inline std::tuple<int, int> mapComponentLua(const Vector3& position, int room) {
-            short outId;
-            short outType;
+            short outId, outType;
             this->MapComponent(position, &outId, &outType, room);
             return std::make_tuple((int)outType, (int)outId);
         }
 
         inline std::tuple<int, int, int> positionToAIMapCompLua(const Vector3& position) {
-            short outId;
-            short outType;
-            short outRoom;
+            short outId, outType, outRoom;
             auto res = this->PositionToAIMapComp(position, &outId, &outType, &outRoom, -1);
 
             if (res == FALSE)
