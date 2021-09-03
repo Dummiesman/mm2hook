@@ -26,8 +26,12 @@ function onGameEnd()
     modsystem.onGameEnd()
 end
 
-function onGameInit()
-    modsystem.onGameInit()
+function onGamePreInit()
+    modsystem.onGamePreInit()
+end
+
+function onGamePostInit()
+    modsystem.onGamePostInit()
 end
 
 function onSessionCreate(name, password, maxPlayers, details)

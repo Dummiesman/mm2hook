@@ -255,8 +255,13 @@ void MM2Lua::OnGameEnd() {
     tryCallFunction(func);
 }
 
-void MM2Lua::OnGameInit() {
-    LuaRef func(L, "onGameInit");
+void MM2Lua::OnGamePreInit() {
+    LuaRef func(L, "onGamePreInit");
+    tryCallFunction(func);
+}
+
+void MM2Lua::OnGamePostInit() {
+    LuaRef func(L, "onGamePostInit");
     tryCallFunction(func);
 }
 

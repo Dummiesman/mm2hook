@@ -13,10 +13,16 @@ void GameEventDispatcher::onGameEnd(int a1)
     cityTimeWeatherLightingHandler::Reset();
 }
 
-void GameEventDispatcher::onGameInit()
+void GameEventDispatcher::onGamePreInit()
 {
     if (MM2Lua::IsEnabled())
-        MM2Lua::OnGameInit();
+        MM2Lua::OnGamePreInit();
+}
+
+void GameEventDispatcher::onGamePostInit()
+{
+    if (MM2Lua::IsEnabled()) 
+        MM2Lua::OnGamePostInit();
     dgBangerInstanceHandler::Reset();
 }
 

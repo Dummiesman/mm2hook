@@ -35,6 +35,13 @@ local function loadMod(path)
     elseif type(loadedMod) ~= "table" then
         Errorf("Failed to load mod: " .. convertedPath .. ", got invalid return value.")
     else
+        -- fix deprecated things
+        if loadedMod.onGameInit and type(loadedMod.onGameInit) == 'function' then
+          Warningf("onGameInit is deprecated, now moved to onGamePreInit and onGamePostInit. Automatically patching to onGamePostInit.")
+          loadedMod.onGamePostInit = loadedMod.onGameInit
+          loadedMod.onGameInit = nil
+        end
+    
         table.insert(mods, loadedMod)
         Displayf("Loaded mod " .. path .. ".")
     end
@@ -76,49 +83,55 @@ end
 --mods functions
 local function tick()
     for _, mod in ipairs(mods) do
-        if mod.tick ~= nil then mod.tick() end
+        if mod.tick then mod.tick() end
     end
 end
 
 local function initMods()
     for _, mod in ipairs(mods) do
-        if mod.init ~= nil then mod.init() end
+        if mod.init then mod.init() end
     end
 end
 
 local function onChatMessage(message)
     for _, mod in ipairs(mods) do
-        if mod.onChatMessage ~= nil then mod.onChatMessage(message) end
+        if mod.onChatMessage then mod.onChatMessage(message) end
     end
 end
 
 local function onGameEnd()
     for _, mod in ipairs(mods) do
-        if mod.onGameEnd ~= nil then mod.onGameEnd() end
+        if mod.onGameEnd then mod.onGameEnd() end
     end
 end
 
-local function onGameInit()
+local function onGamePreInit()
     for _, mod in ipairs(mods) do
-        if mod.onGameInit ~= nil then mod.onGameInit() end
+        if mod.onGamePreInit then mod.onGamePreInit() end
+    end
+end
+
+local function onGamePostInit()
+    for _, mod in ipairs(mods) do
+        if mod.onGamePostInit then mod.onGamePostInit() end
     end
 end
 
 local function onSessionCreate(name, password, maxPlayers, details)
     for _, mod in ipairs(mods) do
-        if mod.onSessionCreate ~= nil then mod.onSessionCreate(name, password, maxPlayers, details) end
+        if mod.onSessionCreate then mod.onSessionCreate(name, password, maxPlayers, details) end
     end
 end
 
 local function onSessionJoin(a2, a3, a4)
     for _, mod in ipairs(mods) do
-        if mod.onSessionJoin ~= nil then mod.onSessionJoin(a2, a3, a4) end
+        if mod.onSessionJoin then mod.onSessionJoin(a2, a3, a4) end
     end
 end
 
 local function onDisconnect()
     for _, mod in ipairs(mods) do
-        if mod.onDisconnect ~= nil then mod.onDisconnect() end
+        if mod.onDisconnect then mod.onDisconnect() end
     end
 end
 
@@ -132,26 +145,26 @@ local function onRenderUi()
     --Render the main bar
     if imgui.BeginMainMenuBar() then
       for _, mod in ipairs(mods) do
-          if mod.drawMenuBar ~= nil then mod.drawMenuBar() end
+          if mod.drawMenuBar then mod.drawMenuBar() end
       end
       imgui.EndMainMenuBar()
     end
 
     --Render mod windows etc
     for _, mod in ipairs(mods) do
-        if mod.onRenderUi ~= nil then mod.onRenderUi() end
+        if mod.onRenderUi then mod.onRenderUi() end
     end
 end
 
 local function restart()
     for _, mod in ipairs(mods) do
-        if mod.restart ~= nil then mod.restart() end
+        if mod.restart then mod.restart() end
     end
 end
 
 local function shutdown()
     for _, mod in ipairs(mods) do
-        if mod.shutdown ~= nil then mod.shutdown() end
+        if mod.shutdown then mod.shutdown() end
     end
 end
 
@@ -162,7 +175,8 @@ M.initMods = initMods
 M.onChatMessage = onChatMessage
 M.onRenderUi = onRenderUi
 M.tick = tick
-M.onGameInit = onGameInit
+M.onGamePreInit = onGamePreInit
+M.onGamePostInit = onGamePostInit
 M.onGameEnd = onGameEnd
 M.onSessionCreate = onSessionCreate
 M.onSessionJoin = onSessionJoin

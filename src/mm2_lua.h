@@ -17,7 +17,8 @@ namespace MM2Lua
     //events
     void OnChatMessage(char* message);
     void OnGameEnd();
-    void OnGameInit();
+    void OnGamePreInit();
+    void OnGamePostInit();
     void OnReset();
     void OnDisconnect();
     void OnSessionCreate(char *sessionName, char *sessionPassword, int sessionMaxPlayers, MM2::NETSESSION_DESC *sessionData);

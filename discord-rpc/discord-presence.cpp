@@ -281,6 +281,10 @@ void mm2RichPresenceInfo::UpdatePresence(DiscordRichPresence &presence) {
 int discordHandler::GameInit(void) {
     LogFile::WriteLine("[discord] GameInit called.");
 
+    //forward to dispatcher
+    GameEventDispatcher::onGamePreInit();
+
+    //
     get<mmGame>()->mmGame::Init();
 
     mmCityInfo * cityInfo = CityListPtr->GetCurrentCity();
@@ -295,7 +299,7 @@ int discordHandler::GameInit(void) {
     g_mm2Info.UpdatePresence(presence);
 
     //forward to dispatcher
-    GameEventDispatcher::onGameInit();
+    GameEventDispatcher::onGamePostInit();
 
     return 1;
 }

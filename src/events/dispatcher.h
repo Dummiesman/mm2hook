@@ -4,7 +4,8 @@
 class GameEventDispatcher {
 public:
     static void onGameEnd(int a1);
-    static void onGameInit();
+    static void onGamePreInit();
+    static void onGamePostInit();
     static void onChatMessage(char* message);
     static void onTick();
     static void onSessionCreate(char *sessionName, char *sessionPassword, int sessionMaxPlayers, MM2::NETSESSION_DESC *sessionData);
