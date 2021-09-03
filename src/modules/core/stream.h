@@ -1,5 +1,6 @@
 #pragma once
 #include <modules\core.h>
+#include <vector>
 
 namespace MM2
 {
@@ -11,6 +12,35 @@ namespace MM2
     // Class definitions
 
     class Stream {
+    private:
+        //lua read
+        std::vector<char> luaRead(int length) 
+        {
+            //BROKEN
+            std::vector<char> buf((size_t)length);
+            int read = this->Read(buf.data(), length);
+            buf.resize(read);                     
+            return buf;
+        }
+
+        std::string asString() 
+        {
+            std::string str = "";
+            char buf[2048];
+            while (true) 
+            {
+                int read = this->Read(buf, sizeof(buf));
+                if (read == 0) 
+                {
+                    break;
+                }
+                else 
+                {
+                    str += std::string(reinterpret_cast<char const*>(&buf), read);
+                }
+            }
+            return str;
+        }
     public:
         static hook::Type<coreFileMethods *> sm_DefaultOpenMethods;
         static hook::Type<coreFileMethods *> sm_DefaultCreateMethods;
@@ -46,7 +76,9 @@ namespace MM2
                 .addStaticFunction("Open", static_cast<Stream * (*)(LPCSTR, bool)>(&Stream::Open))
                 .addStaticFunction("Create", static_cast<Stream * (*)(LPCSTR)>(&Stream::Create))
 
-                .addFunction("Read", &Stream::Read)
+                .addFunction("ReadAll", &Stream::asString) 
+
+                .addFunction("Read", &Stream::luaRead)
                 .addFunction("Write", &Stream::Write)
                 .addFunction("GetCh", &Stream::GetCh)
                 .addFunction("PutCh", &Stream::PutCh)
