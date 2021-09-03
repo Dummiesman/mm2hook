@@ -92,6 +92,7 @@ void luaSetGlobals()
     Lua::setGlobal(L, "Game", pGame);
     Lua::setGlobal(L, "Player", pPlayer);
     Lua::setGlobal(L, "ROOT", &ROOT);
+    Lua::setGlobal(L, "MMSTATE", &MMSTATE);
 
     LogFile::WriteLine("Done!");
 }
