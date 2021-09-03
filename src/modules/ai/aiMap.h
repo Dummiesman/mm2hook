@@ -30,6 +30,15 @@ namespace MM2
     extern class asNode;
 
     // Class definitions
+    enum aiMapComponentType
+    {
+        None = 0x0,
+        Road = 0x1,
+        Shortcut = 0x2,
+        Intersection = 0x3,
+    };
+
+
     struct aiMapStats {
     public:
         float _fSubwayUpdate;
@@ -58,6 +67,20 @@ namespace MM2
                 .endClass();
         }
     };
+
+    struct aiMapComponentListEntry
+    {
+        int Id;
+        aiMapComponentType Type;
+    };
+
+
+    struct aiMapComponentList
+    {
+        ushort Count;
+        aiMapComponentListEntry** Components;
+    };
+
 
     class aiMap : public asNode {
     public:
@@ -124,7 +147,7 @@ namespace MM2
         void *routingNodes;
         void *lastRoutingNode;
         void *routingStuff;
-        void *roomsThing;
+        aiMapComponentList* componentMap;
 
         bool drawHeadlights;
 
@@ -151,13 +174,36 @@ namespace MM2
             return numAmbientVehicles;
         }
 
-
         inline int getPathsCount() {
             return numPaths;
         }
 
         inline int getIntersectionCount() {
             return numIntersections;
+        }
+
+        inline std::tuple<int, int> mapComponentTypeLua(int room) {
+            int outId;
+            int componentType = this->MapComponentType(room, &outId);
+            return std::make_tuple(componentType, outId);
+        }
+
+        inline std::tuple<int, int> mapComponentLua(const Vector3& position, int room) {
+            short outId;
+            short outType;
+            this->MapComponent(position, &outId, &outType, room);
+            return std::make_tuple((int)outType, (int)outId);
+        }
+
+        inline std::tuple<int, int, int> positionToAIMapCompLua(const Vector3& position) {
+            short outId;
+            short outType;
+            short outRoom;
+            auto res = this->PositionToAIMapComp(position, &outId, &outType, &outRoom, -1);
+
+            if (res == FALSE)
+                return std::make_tuple((int)aiMapComponentType::None, 0, 0);
+            return std::make_tuple((int)outType, (int)outId, (int)outRoom);
         }
 
         aiMapStats getStats() {
@@ -211,8 +257,17 @@ namespace MM2
         AGE_API aiIntersection* Intersection(int num)        { return hook::Thunk<0x534880>::Call<aiIntersection*>(this, num); }
         AGE_API aiPath* Path(int num)                        { return hook::Thunk<0x534850>::Call<aiPath*>(this, num); }
 
+        aiMapComponentType MapComponentType(int room, int* outId)
+                                                             { return hook::Thunk<0x537600>::Call<aiMapComponentType>(this, room, outId); }
+        int MapComponent(const Vector3& position, short* outId, short* outType, int room)
+                                                             { return hook::Thunk<0x537680>::Call<int>(this, &position, outId, outType, room); }
+        BOOL PositionToAIMapComp(const Vector3& position, short* outId, short* outType, short* outRoom, short wantedRoadId)
+                                                             { return hook::Thunk<0x5377B0>::Call<BOOL>(this, &position, outId, outType, outRoom, wantedRoadId); }
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<aiMap, asNode>("aiMap")
+                .addFunction("MapComponentType", &mapComponentTypeLua)
+                .addFunction("MapComponent", &mapComponentLua)
+                .addFunction("PositionToAIMapComp", &positionToAIMapCompLua)
                 .addFunction("Dump", &Dump)
                 .addFunction("TestProbes", &TestProbes, LUA_ARGS(bool))
                 .addFunction("Pedestrian", &Pedestrian)
