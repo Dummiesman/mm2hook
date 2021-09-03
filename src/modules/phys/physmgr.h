@@ -13,6 +13,16 @@ namespace MM2
 
     class dgPhysManager {
     public:
+        static inline float getGravity() 
+        {
+            return dgPhysManager::Gravity.get();
+        }
+
+        static inline void setGravity(float gravity) 
+        {
+            dgPhysManager::Gravity.set(gravity);
+        }
+    public:
         static hook::Type<dgPhysManager *> Instance;
         static hook::Type<float> Gravity;
 
@@ -24,6 +34,9 @@ namespace MM2
                 //statics
                 .addStaticFunction("Instance", [] {return (dgPhysManager *)Instance; })
 
+                //properties
+                .addStaticProperty("Gravity", &getGravity, &setGravity)
+                 
                 //functions
                 .addFunction("IgnoreMover", &IgnoreMover)
                 .addFunction("DeclareMover", &DeclareMover)
