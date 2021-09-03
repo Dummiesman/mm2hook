@@ -132,8 +132,8 @@ namespace MM2 {
 
     class Timer {
     public:
-        static float TicksToSeconds;
-        static float TicksToMilliseconds;
+        static hook::Type<float> TicksToSeconds;
+        static hook::Type<float> TicksToMilliseconds;
 
         DWORD StartTime;
 
