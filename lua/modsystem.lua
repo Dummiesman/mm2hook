@@ -11,8 +11,19 @@ local modsPath = "lua/mods"
 local mods = {}
 
 --init!
+local function fileExists(name)
+   local f=io.open(name,"r")
+   if f~=nil then io.close(f) return true else return false end
+end
+
 local function loadMod(path)
-    local convertedPath = path:gsub("%/", "\\"):sub(1,-5)
+    local mainPath = path .. "/main.lua"
+    if not fileExists(mainPath) then
+      Warningf("Can't load mod at " .. path .. " because main.lua doesn't exist.")
+      return
+    end
+    
+    local convertedPath = mainPath:gsub("%/", "\\"):sub(1,-5)
     if M.useCache == false then
         package.loaded[convertedPath] = nil
     end
@@ -37,16 +48,10 @@ local function loadMods(path)
     for file in lfs.dir(path) do
         if file ~= "." and file ~= ".." then
             local fullPath = path..'/'..file
+            local attrib = lfs.attributes(fullPath)
 
-            --check if this is a mod
-            if ends_with(fullPath:lower(), ".lua") then
+            if attrib and attrib.mode == 'directory' then
                 loadMod(fullPath)
-            end
-
-            --recursive search mods
-            local attr = lfs.attributes (fullPath)
-            if attr ~= nil and attr.mode == "directory" then
-                loadMods (fullPath)
             end
         end
     end
