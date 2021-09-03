@@ -272,6 +272,7 @@ namespace MM2 {
         inline int getSkillLevel(void) {
             return (int)SkillLevel;
         }
+
         inline void setSkillLevel(int level) {
             SkillLevel = (dgSkillLevel)level;
         }
@@ -327,7 +328,23 @@ namespace MM2 {
         }
 
         void setNetName(LPCSTR name) {
-            memcpy(&NetName, name, sizeof(NetName) - 1); //copy all but last char to avoid overflow
+            memcpy(&NetName, name, sizeof(NetName) - 1);
+        }
+
+        LPCSTR getVehicleName() {
+            return (LPCSTR)VehicleName;
+        }
+
+        void setVehicleName(LPCSTR name) {
+            memcpy(&VehicleName, name, sizeof(VehicleName) - 1);
+        }
+
+        LPCSTR getCityName() {
+            return (LPCSTR)CityName;
+        }
+
+        void setCityName(LPCSTR name) {
+            memcpy(&CityName, name, sizeof(CityName) - 1);
         }
     public:
         char CityName[40];
@@ -468,6 +485,9 @@ namespace MM2 {
             .addStaticProperty("Instance", [] { return (mmStatePack*)0x6B1610; }) //HACK but it should work
 
             .addProperty("NetName", &getNetName, &setNetName)
+            .addProperty("VehicleName", &getVehicleName, &setVehicleName)
+            .addProperty("CityName", &getCityName, &setCityName)
+            .addVariableRef("VehiclePaintjob", &mmStatePack::VehiclePaintjob)
             .addVariableRef("InCrashCourse", &mmStatePack::InCrashCourse)
             .addVariableRef("FarClip", &mmStatePack::FarClip)
             .addVariableRef("TimeLimitOverride", &mmStatePack::TimeLimitOverride)
