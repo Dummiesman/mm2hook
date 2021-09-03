@@ -34,6 +34,14 @@ namespace MM2
                                                                         { return hook::StaticThunk<0x4C59E0>::Call<bool>(directory, filename, extension); }
         
 
+        //lua
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<datAssetManager>("datAssetManager")
+                .addStaticFunction("Open", static_cast<Stream* (*)(LPCSTR, LPCSTR, LPCSTR, bool, bool)>(&datAssetManager::Open))
+                .addStaticFunction("Exists", static_cast<bool (*)(LPCSTR, LPCSTR, LPCSTR)>(&datAssetManager::Exists))
+                .endClass();
+        }
+
     // Lua initialization
 
     };

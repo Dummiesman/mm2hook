@@ -16,5 +16,6 @@ namespace MM2
         luaBind<datOutput>(L);
         luaBind<datStack>(L);
         luaBind<datTimeManager>(L);
+        luaBind<datAssetManager>(L);
     }
 }
