@@ -1,6 +1,7 @@
 var class_matrix34 =
 [
     [ "Matrix34", "class_matrix34.html#a68698a8391a81cafafc1caa5bf661f2f", null ],
+    [ "Dot", "class_matrix34.html#ac9eaf0f241f6fbfc63e438f44f84d231", null ],
     [ "Identity", "class_matrix34.html#a9a9fa48343719ec7a1443838429831ee", null ],
     [ "Identity3x3", "class_matrix34.html#aa18c95636b254a38aa9365579d29f399", null ],
     [ "MakeRotateX", "class_matrix34.html#a578638d6f042574bc4bfc06ec4471a93", null ],
@@ -12,6 +13,7 @@ var class_matrix34 =
     [ "RotateY", "class_matrix34.html#a5e428b61e56443910573c81d7f010448", null ],
     [ "RotateZ", "class_matrix34.html#a9b89103ed6f105920b887918153868b7", null ],
     [ "Scale", "class_matrix34.html#a85d9f88d38d7cda207be4c522283bc79", null ],
+    [ "Transform", "class_matrix34.html#a5c8efc34e068a010d279af425bc2af4d", null ],
     [ "Zero", "class_matrix34.html#acd1d47d4e9603a53c3a7302403c55039", null ],
     [ "m00", "class_matrix34.html#a28b9e9316cb625dcb83f67bfbb5bfde8", null ],
     [ "m01", "class_matrix34.html#a63f9184b8439c021860ff29bc60a2a5d", null ],

@@ -1,6 +1,6 @@
 var classdg_path =
 [
-    [ "dgPath", "classdg_path.html#a2afa265350c9c162696a9d9585241d2a", null ],
+    [ "dgPath", "classdg_path.html#a9e3e9c4e9a42756be2d8c6940a190861", null ],
     [ "Enumerate", "classdg_path.html#a132d469778cff6d71b4dff2d354325a2", null ],
     [ "GetPoint", "classdg_path.html#af14ba0f697099b9a17e915cdd1076911", null ],
     [ "SetPointCount", "classdg_path.html#acdf9e7089e2a8f48428099a782801581", null ],

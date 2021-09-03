@@ -1,12 +1,21 @@
 var searchData=
 [
-  ['secondlink_1219',['SecondLink',['../classph_joint.html#ade647a505179915d305ef310ea6ef725',1,'phJoint']]],
-  ['seconds_1220',['Seconds',['../classdat_time_manager.html#a0858adf9acd292235824142390b8444c',1,'datTimeManager']]],
-  ['singleton_1221',['Singleton',['../classlvl_level.html#a28e0728e80239525fcfa527cb23f80b7',1,'lvlLevel']]],
-  ['siren_1222',['Siren',['../classveh_car.html#a99cb9a960f02c262550dbad9581c5313',1,'vehCar']]],
-  ['skilllevel_1223',['SkillLevel',['../classmm_state_pack.html#a58799813614f2af858f391a2f3635558',1,'mmStatePack']]],
-  ['spacing_1224',['Spacing',['../classdg_path.html#a232a4c14a558d45696fb87f23afd55c5',1,'dgPath']]],
-  ['speed_1225',['Speed',['../classveh_car_sim.html#acbd94032222dd6995acc5536592bdeda',1,'vehCarSim']]],
-  ['splash_1226',['Splash',['../classveh_car.html#a20ab867a1d4daf2f5b1e809b403e0cca',1,'vehCar']]],
-  ['steering_1227',['Steering',['../classveh_car_sim.html#a478429af1fd01b999c436021d2afb795',1,'vehCarSim']]]
+  ['radius_1600',['Radius',['../classas_birth_rule.html#a20b17845e42e09aeb0f3ba25bb48badd',1,'asBirthRule.Radius()'],['../class_geom_table_entry.html#ac750abaf5dac79b19db9deede1c8f5e1',1,'GeomTableEntry.Radius()'],['../classveh_wheel.html#a0d677e7151c99d54205d2b6b10d24c2b',1,'vehWheel.Radius()']]],
+  ['radiusvar_1601',['RadiusVar',['../classas_birth_rule.html#ade1cfb5b331094c4169493b3739cf5dc',1,'asBirthRule']]],
+  ['rearaxle_1602',['RearAxle',['../classveh_car_sim.html#af7c9044f58b6a7de21100eeae76c585d',1,'vehCarSim']]],
+  ['regeneraterate_1603',['RegenerateRate',['../classveh_car_damage.html#a2db353636af6883ac52e67ed5e43ae91',1,'vehCarDamage']]],
+  ['resetposition_1604',['ResetPosition',['../classveh_car_sim.html#a66b2023a5b325f4655101916c59e29d8',1,'vehCarSim']]],
+  ['reverse_1605',['Reverse',['../classveh_transmission.html#a34d2dfd8dbe4b94513427c401f141d05',1,'vehTransmission']]],
+  ['reverse180_1606',['Reverse180',['../classveh_gyro.html#ae7feb4527ca32f0844252adcd15fcfa7',1,'vehGyro']]],
+  ['reversemode_1607',['ReverseMode',['../classmm_timer.html#afccb8fd6a41e44776780ef95e8712e03',1,'mmTimer']]],
+  ['rightfreetrain_1608',['RightFreetrain',['../classveh_car_sim.html#a188ca88c1c347a890aa578cc208b20a0',1,'vehCarSim']]],
+  ['roll_1609',['Roll',['../classveh_gyro.html#ab553cc4ca208bc6e38ecc7f6ca5eaa96',1,'vehGyro']]],
+  ['roomid_1610',['RoomId',['../classai_intersection.html#a936e0ebeb0558db11632b13b9b415949',1,'aiIntersection']]],
+  ['rotation_1611',['Rotation',['../classveh_stuck.html#a7c7b8646c4f39ef84929ca6989f3a450',1,'vehStuck']]],
+  ['rotationrate_1612',['RotationRate',['../classlvl_sky.html#ab8d38181b54580a7b91dbe434a31d325',1,'lvlSky.RotationRate()'],['../classveh_siren.html#a6cf98abfcc19af084f1b45517130e3f2',1,'vehSiren.RotationRate()']]],
+  ['rotationspeed_1613',['RotationSpeed',['../classlvl_sky.html#ad31ce059a110744928473d90dca5f6b5',1,'lvlSky']]],
+  ['rpm_1614',['RPM',['../classveh_engine.html#ad9568c8477f3c117955015594daa28c2',1,'vehEngine']]],
+  ['rubberdamp_1615',['RubberDamp',['../classai_vehicle_data.html#ae525671ff749be844ffc7796868846a4',1,'aiVehicleData']]],
+  ['rubberspring_1616',['RubberSpring',['../classai_vehicle_data.html#a5a73ed2e0bb5865fe8b45d6a38e02365',1,'aiVehicleData']]],
+  ['running_1617',['Running',['../classmm_timer.html#ae4b05dd92b5f1b3982b80af7f1ad6c20',1,'mmTimer']]]
 ];

@@ -1,9 +1,19 @@
 var searchData=
 [
-  ['shadowmode_1126',['ShadowMode',['../classlt_light.html#ae6b4893964b00050191f35e2dbf2c95e',1,'ltLight']]],
-  ['size_1127',['Size',['../classai_vehicle_data.html#a8f9097a445cde2dd5c850965f40206a3',1,'aiVehicleData']]],
-  ['spewrate_1128',['SpewRate',['../classas_birth_rule.html#a62c71ea0e4406c1092ebbd4b8aeaa4b1',1,'asBirthRule']]],
-  ['spewtimelimit_1129',['SpewTimeLimit',['../classas_birth_rule.html#abcfb400c497968a5c4b33ca51c95ce9d',1,'asBirthRule']]],
-  ['spotexponent_1130',['SpotExponent',['../classlt_light.html#a9689cfc3a7ae8b2d12813cc43ae6f5fc',1,'ltLight']]],
-  ['spring_1131',['Spring',['../classai_vehicle_data.html#adac71ab8cefb831adf0235561d23e544',1,'aiVehicleData']]]
+  ['texframeend_1527',['TexFrameEnd',['../classas_birth_rule.html#a2a70327d9146d75e795d308e81d43d8e',1,'asBirthRule']]],
+  ['texframestart_1528',['TexFrameStart',['../classas_birth_rule.html#a65e4647a6f86063c47892fc1a1217b64',1,'asBirthRule']]],
+  ['texteldamageradius_1529',['TextelDamageRadius',['../classveh_car_damage.html#aef8ec36d1461914d92f41ff1fe614331',1,'vehCarDamage']]],
+  ['timethresh_1530',['TimeThresh',['../classveh_stuck.html#af53a05f4d58ca8589f0663416ae16d9b',1,'vehStuck']]],
+  ['timeweathertype_1531',['TimeWeatherType',['../classlvl_sky.html#a35e66c24966eab224da1a03deced6997',1,'lvlSky']]],
+  ['tiredampcoeflat_1532',['TireDampCoefLat',['../classveh_wheel.html#a38a729245e099b0de8a7eb3ee3afcab4',1,'vehWheel']]],
+  ['tiredampcoeflong_1533',['TireDampCoefLong',['../classveh_wheel.html#af838302839f4185eba0989efdbe53177',1,'vehWheel']]],
+  ['tiredisplimitlat_1534',['TireDispLimitLat',['../classveh_wheel.html#a8b7826bf5b0a1608ed24eb34eee67e62',1,'vehWheel']]],
+  ['tiredisplimitlong_1535',['TireDispLimitLong',['../classveh_wheel.html#a11cb0f5b3f6a5975a12ec6096ae72980',1,'vehWheel']]],
+  ['tiredragcoeflat_1536',['TireDragCoefLat',['../classveh_wheel.html#acc8840074e07d7f3b4cb61416c7e8abb',1,'vehWheel']]],
+  ['tiredragcoeflong_1537',['TireDragCoefLong',['../classveh_wheel.html#ac153f7e44fbbe2a74f314a904df32062',1,'vehWheel']]],
+  ['topspeed_1538',['TopSpeed',['../classmm_veh_info.html#a2414cd2e57b58b63b6f2c99c7bb0f8db',1,'mmVehInfo']]],
+  ['torquecoef_1539',['TorqueCoef',['../classveh_axle.html#a35598591e160af666e68903b9ee8295c',1,'vehAxle']]],
+  ['translation_1540',['Translation',['../classveh_stuck.html#aed1bcbd232c21077ed8e6bc7d2a73ac6',1,'vehStuck']]],
+  ['turn_1541',['Turn',['../classveh_stuck.html#a952a6fee0513d631c903e0c812115380',1,'vehStuck']]],
+  ['type_1542',['Type',['../classlt_light.html#a6c14e9ceacce0226bfa85706650b90f1',1,'ltLight']]]
 ];

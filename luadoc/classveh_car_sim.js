@@ -1,15 +1,18 @@
 var classveh_car_sim =
 [
-    [ "BottomedOut", "classveh_car_sim.html#a26db53bf780eb7a27479e1eff8a68250", null ],
-    [ "OnGround", "classveh_car_sim.html#ab97c66c47855d135a46b444b724f25d6", null ],
-    [ "ReconfigureDrivetrain", "classveh_car_sim.html#a005d4d2372b78ed13228bb8daf13b0f0", null ],
-    [ "RestoreImpactParams", "classveh_car_sim.html#a2ec96c565e3d158d2d1298f96803a367", null ],
-    [ "SetHackedImpactParams", "classveh_car_sim.html#ac4f0b30940762457193825fa514a6499", null ],
-    [ "SetResetPos", "classveh_car_sim.html#aa08eb82e28899b491c435cb1295fe494", null ],
-    [ "Brake", "classveh_car_sim.html#aac0652529cd420f64cc194e894b92d4e", null ],
+    [ "Aero", "classveh_car_sim.html#a6567744dcb787ee642b6adbfd43a85a2", null ],
+    [ "CarFrictionHandling", "classveh_car_sim.html#a1440faf685af940ffcfa4f6f0e4e0572", null ],
+    [ "CenterOfGravity", "classveh_car_sim.html#a61e9a8c7c76cd8950df69faa6b4b714c", null ],
+    [ "Drivetrain", "classveh_car_sim.html#abefc4c74bd299546789c2b510204224d", null ],
     [ "Engine", "classveh_car_sim.html#a893480e520df2d6a490000c802a487b3", null ],
+    [ "FrontAxle", "classveh_car_sim.html#ac0e7e65312f21c1b042fc04b69b0c3ae", null ],
+    [ "LeftFreetrain", "classveh_car_sim.html#a8e94c3e8ad04d6e042dde330e6456179", null ],
+    [ "RearAxle", "classveh_car_sim.html#af7c9044f58b6a7de21100eeae76c585d", null ],
     [ "ResetPosition", "classveh_car_sim.html#a66b2023a5b325f4655101916c59e29d8", null ],
+    [ "RightFreetrain", "classveh_car_sim.html#a188ca88c1c347a890aa578cc208b20a0", null ],
     [ "Speed", "classveh_car_sim.html#acbd94032222dd6995acc5536592bdeda", null ],
-    [ "Steering", "classveh_car_sim.html#a478429af1fd01b999c436021d2afb795", null ],
-    [ "Transmission", "classveh_car_sim.html#a63efb06efbc9cc295bc52380a389e676", null ]
+    [ "SSSThreshold", "classveh_car_sim.html#ad583bf863b4f4e35870b2fe21b6ef214", null ],
+    [ "SSSValue", "classveh_car_sim.html#a7e2ca3524e078e02844d32efd85781e4", null ],
+    [ "Transmission", "classveh_car_sim.html#a63efb06efbc9cc295bc52380a389e676", null ],
+    [ "WorldMatrix", "classveh_car_sim.html#a8f61d732d1b0334ce3f3685bc5423c93", null ]
 ];

@@ -94,8 +94,10 @@ $(document).ready(function(){initNavTree('class_stream.html',''); initResizable(
 Public Member Functions</h2></td></tr>
 <tr class="memitem:a1cf4448fc4503e414f2504f634b482ea"><td class="memItemLeft" align="right" valign="top">&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#a1cf4448fc4503e414f2504f634b482ea">Stream</a> (string filename, bool createFile=false)</td></tr>
 <tr class="separator:a1cf4448fc4503e414f2504f634b482ea"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a046cca6ff00bdc151c335652805768ed"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#a046cca6ff00bdc151c335652805768ed">Read</a> (LPVOID dstBuf, int size)</td></tr>
-<tr class="separator:a046cca6ff00bdc151c335652805768ed"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a93a2f4c8c0ab68bac4cd0391ad36b064"><td class="memItemLeft" align="right" valign="top">string&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#a93a2f4c8c0ab68bac4cd0391ad36b064">ReadAll</a> ()</td></tr>
+<tr class="separator:a93a2f4c8c0ab68bac4cd0391ad36b064"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac8668d5fd0f3ec619b02ccef2c48fb55"><td class="memItemLeft" align="right" valign="top">vector&lt; char &gt;&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ac8668d5fd0f3ec619b02ccef2c48fb55">Read</a> (int length)</td></tr>
+<tr class="separator:ac8668d5fd0f3ec619b02ccef2c48fb55"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ab0d2ed5179baa2b877c2f8e371426f37"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ab0d2ed5179baa2b877c2f8e371426f37">Write</a> (LPVOID srcBuf, int size)</td></tr>
 <tr class="separator:ab0d2ed5179baa2b877c2f8e371426f37"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ad684c06379567930a4dcaa5039f862df"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_stream.html#ad684c06379567930a4dcaa5039f862df">GetCh</a> ()</td></tr>
@@ -308,28 +310,35 @@ Static Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a046cca6ff00bdc151c335652805768ed"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a046cca6ff00bdc151c335652805768ed">&#9670;&nbsp;</a></span>Read()</h2>
+<a id="ac8668d5fd0f3ec619b02ccef2c48fb55"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac8668d5fd0f3ec619b02ccef2c48fb55">&#9670;&nbsp;</a></span>Read()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname">int Stream.Read </td>
+          <td class="memname">vector&lt;char&gt; Stream.Read </td>
           <td>(</td>
-          <td class="paramtype">LPVOID&#160;</td>
-          <td class="paramname"><em>dstBuf</em>, </td>
-        </tr>
-        <tr>
-          <td class="paramkey"></td>
-          <td></td>
           <td class="paramtype">int&#160;</td>
-          <td class="paramname"><em>size</em>&#160;</td>
-        </tr>
-        <tr>
+          <td class="paramname"><em>length</em></td><td>)</td>
           <td></td>
-          <td>)</td>
-          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+</div>
+</div>
+<a id="a93a2f4c8c0ab68bac4cd0391ad36b064"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a93a2f4c8c0ab68bac4cd0391ad36b064">&#9670;&nbsp;</a></span>ReadAll()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">string Stream.ReadAll </td>
+          <td>(</td>
+          <td class="paramname"></td><td>)</td>
+          <td></td>
         </tr>
       </table>
 </div><div class="memdoc">

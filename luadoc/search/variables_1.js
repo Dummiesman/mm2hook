@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['birthflags_1046',['BirthFlags',['../classas_birth_rule.html#a8f2a00a43b5cf150990f4302ccadec4b',1,'asBirthRule']]],
-  ['byte_1047',['byte',['../classas_birth_rule.html#a3b491e164189fd81b0ecb0e6ae919f9c',1,'asBirthRule']]]
+  ['int_1400',['int',['../classai_map.html#a17e30f28743080c8edfd35991e9b3cd3',1,'aiMap.int()'],['../classai_path.html#aaad46732b0c484a5b1d710b1cbfe6eda',1,'aiPath.int()']]]
 ];

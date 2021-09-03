@@ -10,7 +10,7 @@ var classveh_siren =
     [ "SetLightPosition", "classveh_siren.html#a02dc395f58c1d64985fbbbf324b4037a", null ],
     [ "Update", "classveh_siren.html#ae5968df54b1bf693c618faff83ca2926", null ],
     [ "Active", "classveh_siren.html#aca648d93c1b3dee48a3259366ffe04fb", null ],
-    [ "RotationRate", "classveh_siren.html#a6cf98abfcc19af084f1b45517130e3f2", null ],
     [ "HasLights", "classveh_siren.html#a3a302987cf1b2758f02b1538824dd10e", null ],
-    [ "LightCount", "classveh_siren.html#a3acb79801be6b0ab3bb5fbcc3a76d6fa", null ]
+    [ "LightCount", "classveh_siren.html#a3acb79801be6b0ab3bb5fbcc3a76d6fa", null ],
+    [ "RotationRate", "classveh_siren.html#a6cf98abfcc19af084f1b45517130e3f2", null ]
 ];

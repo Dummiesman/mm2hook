@@ -37,6 +37,6 @@ var classlvl_instance =
     [ "SetupGfxLights", "classlvl_instance.html#a797182168c09f9a88f45383e21826f25", null ],
     [ "SetVariant", "classlvl_instance.html#a99efcb541d95d73174644efe0e5026e7", null ],
     [ "SizeOf", "classlvl_instance.html#afe04a24594709e02bcd9f297a3883051", null ],
-    [ "CurrentRoom", "classlvl_instance.html#a6d7545d30f284895b2f613a2ee4c07a4", null ],
+    [ "CurrentRoom", "classlvl_instance.html#a5dd15f42665432e5f081af452714d92c", null ],
     [ "GeometrySetIndex", "classlvl_instance.html#a0d998a3c805a240af935af90d30fe727", null ]
 ];
