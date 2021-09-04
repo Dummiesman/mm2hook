@@ -324,6 +324,10 @@ namespace MM2
     };
 
     class camAICS : public camCarCS {
+    private:
+        float Speed;
+        float RotationSpeed;
+        byte SegmentInfo[12]; // lvlSegmentInfo
     public:
         AGE_API camAICS(void) {
             scoped_vtable x(this);
@@ -355,11 +359,15 @@ namespace MM2
             LuaBinding(L).beginExtendClass<camAICS, camCarCS>("camAICS")
                 //properties
                 .addStaticProperty("Height", &getHeight, &setHeight)
+                .addVariableRef("Speed", &camAICS::Speed)
+                .addVariableRef("RotationSpeed", &camAICS::RotationSpeed)
                 .addProperty("Position", &getPosition, &SetPosition)
                 .addProperty("Matrix", &getMatrix, &SetMatrix)
             .endClass();
         }
     };
+    ASSERT_SIZEOF(camAICS, 0x124);
+
     class camTransitionCS : public camCarCS {
     private:
         camCarCS* FromCamera;
