@@ -883,6 +883,7 @@ namespace MM2
         byte _buffer[0xB9C]; // unconfirmed
     protected:
         hook::Field<0x0B94, mmCDPlayer*> _cdplayer;
+        hook::Field<0xBA4, camViewCS*> _camview;
         hook::Field<0x09BC, mmArrow> _arrow;
     public:
         inline mmCDPlayer* getCdPlayer(void) const {
@@ -892,6 +893,10 @@ namespace MM2
         inline mmArrow* getArrow(void) const {
             return _arrow.ptr(this);
         };
+
+        inline camViewCS* getCamView(void) const {
+            return _camview.get(this);
+        }
 
         /*
             asNode virtuals
@@ -937,6 +942,7 @@ namespace MM2
             LuaBinding(L).beginExtendClass<mmHUD, asNode>("mmHUD")
                 .addPropertyReadOnly("CDPlayer", &getCdPlayer)
                 .addPropertyReadOnly("Arrow", &getArrow)
+                .addPropertyReadOnly("CamView", &getCamView)
 
                 .addFunction("Init", &Init, LUA_ARGS(LPCSTR, mmPlayer*, BOOL))
                 .addFunction("SetMessage", static_cast<void (mmHUD::*)(LPCSTR, float, int)>(&SetMessage))
