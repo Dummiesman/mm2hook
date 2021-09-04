@@ -46,7 +46,7 @@ namespace MM2
         Matrix34 matrix_1;
         Matrix34 matrix_2;
 
-        camViewCS *view; // never assigned to? used by IsViewCSInTransition, but result is discarded (see: camPostCS::Update)
+        camViewCS *view;
 
         float BlendTime;
         float BlendGoal;
@@ -188,11 +188,11 @@ namespace MM2
         Vector3 position;
         Vector3 velocity;
 
-        float unk_128; // maxDist * 2?
+        float maxDistSqr;
         float maxDist;
         float appRate;
         float minDist;
-        float unk_138; // minDist * 2?
+        float minDistSqr;
     public:
         AGE_API camPointCS(void) {
             scoped_vtable x(this);
@@ -281,6 +281,9 @@ namespace MM2
     ASSERT_SIZEOF(camPovCS, 0x148);
 
     class camTrackCS : public camCarCS {
+    protected:
+        byte buffer[0x298 - sizeof(camCarCS)];
+    private:
         AGE_API void Collide(Vector3 a1)                    { hook::Thunk<0x51EED0>::Call<void>(this, a1); }
         AGE_API void Front(float a1)                        { hook::Thunk<0x51F980>::Call<void>(this, a1); }
         AGE_API void MinMax(Matrix34 a1)                    { hook::Thunk<0x51ECC0>::Call<void>(this, a1); }
@@ -322,6 +325,7 @@ namespace MM2
             .endClass();
         }
     };
+    ASSERT_SIZEOF(camTrackCS, 0x298);
 
     class camAICS : public camCarCS {
     private:
@@ -411,13 +415,13 @@ namespace MM2
 
         camCarCS *carCS;
         void *unk_34;
-        void *transitionCS; // type: camTransitionCS *
+        camTransitionCS *transitionCS;
 
-        // overrides?
-        bool unk_3C; // use values below?
+        // overrides
+        bool OverrideClip; 
 
-        float unk_40; // camera far? (4th param in gfxViewport::Perspective)
-        float unk_44; // camera near? (3rd param in gfxViewport::Perspective)
+        float OverrideFar; // camera far? (4th param in gfxViewport::Perspective)
+        float OverrideNear; // camera near? (3rd param in gfxViewport::Perspective)
         int unk_48; // no idea; completely unused?
     public:
         AGE_API camViewCS(void) {
@@ -489,6 +493,10 @@ namespace MM2
                 .addFunction("NewCam", static_cast<bool(camViewCS::*)(camCarCS *, int, float)>(&NewCam))
                 .addFunction("Init", &Init)
                 .addFunction("ForceMatrixDelta", static_cast<void(camViewCS::*)(const Matrix34 *)>(&ForceMatrixDelta))
+
+                .addVariableRef("Override", &camViewCS::OverrideClip)
+                .addVariableRef("OverrideFar", &camViewCS::OverrideFar)
+                .addVariableRef("OverrideNear", &camViewCS::OverrideNear)
             .endClass();
         }
     };
