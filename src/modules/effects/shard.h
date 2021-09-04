@@ -54,11 +54,7 @@ namespace MM2
             auto renderStateData = &renderState->Data;
             
             //set cull mode
-            byte oldCullMode = renderStateData->CullMode;
-            if (renderStateData->CullMode != 1) {
-                renderStateData->CullMode = 1;
-                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 1;
-            }
+            auto oldCullMode = gfxRenderState::SetCullMode(D3DCULL_NONE);
             
             //draw shards
             for (int i = 0; i < this->ShardCount; i++) {
@@ -73,14 +69,10 @@ namespace MM2
             }
 
             //reset cull mode
-            if (renderStateData->CullMode != oldCullMode) {
-                renderStateData->CullMode = oldCullMode;
-                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 1;
-            }
+            gfxRenderState::SetCullMode(oldCullMode);
 
             //finish off
-            memcpy(&gfxRenderState::sm_World, (Matrix44*)0x6A3B48, sizeof(Matrix44));
-            gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+            gfxRenderState::SetWorldMatrix(*(Matrix44*)0x6A3B48);
         }
     };
 

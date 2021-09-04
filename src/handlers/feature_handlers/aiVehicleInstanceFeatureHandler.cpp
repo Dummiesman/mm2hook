@@ -17,8 +17,7 @@ void aiVehicleInstanceFeatureHandler::Draw(int a1) {
 
     //setup renderer
     Matrix34 carMatrix = inst->GetMatrix(&aiVehicleMatrix);
-    Matrix44::Convert(gfxRenderState::sm_World, &carMatrix);
-    gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+    gfxRenderState::SetWorldMatrix(carMatrix);
 
     //get our shader set
     auto shaderSet = *getPtr<signed short>(this, 0x1E);
@@ -48,8 +47,7 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
 
     //setup renderer
     Matrix34 carMatrix = inst->GetMatrix(&aiVehicleMatrix);
-    Matrix44::Convert(gfxRenderState::sm_World, &carMatrix);
-    gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+    gfxRenderState::SetWorldMatrix(aiVehicleMatrix);
 
     //get our shader set
     auto shaderSet = *getPtr<signed short>(this, 0x1E);
@@ -137,8 +135,7 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
         }
         if (ambientHeadlightStyle == 1 || ambientHeadlightStyle == 2) {
             //MM1 headlights
-            Matrix44::Convert(gfxRenderState::sm_World, &carMatrix);
-            gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+            gfxRenderState::SetWorldMatrix(carMatrix);
 
             if (hlight != nullptr && aiMap::Instance->drawHeadlights) {
                 hlight->Draw(shaders);

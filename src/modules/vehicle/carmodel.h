@@ -798,13 +798,10 @@ namespace MM2
             //vppanozgt hack... use full alpha for paintjob 4
             auto bodyGeomName = lvlInstance::GetGeomName(geomSetIdOffset);
             int oldAlphaRef = (&RSTATE->Data)->AlphaRef;
+
             if (!strcmp(bodyGeomName, "vppanozgt_body") && this->getVariant() == 4)
             {
-                if ((&RSTATE->Data)->AlphaRef != 0)
-                {
-                    (&RSTATE->Data)->AlphaRef = 0;
-                    gfxRenderState::m_Touched = gfxRenderState::m_Touched | 1;
-                }
+                gfxRenderState::SetAlphaRef(0);
             }
 
             //draw BREAK objects above the body
@@ -812,8 +809,7 @@ namespace MM2
                 this->genBreakableMgr->Draw(this->carSim->getWorldMatrix(), shaders, lod);
 
             //setup renderer
-            Matrix44::Convert(gfxRenderState::sm_World, this->carSim->getWorldMatrix());
-            gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+            gfxRenderState::SetWorldMatrix(*this->carSim->getWorldMatrix());
 
             //draw the body
             auto bodyModel = mainGeomEntry->getLOD(lod);
@@ -828,20 +824,9 @@ namespace MM2
             auto decalModel = lvlInstance::GetGeomTableEntry(geomSetIdOffset + 11)->getLOD(lod);
             if (decalModel != nullptr)
             {
-                int oldAlphaRef2 = (&RSTATE->Data)->AlphaRef;
-                if ((&RSTATE->Data)->AlphaRef != 0)
-                {
-                    (&RSTATE->Data)->AlphaRef = 0;
-                    gfxRenderState::m_Touched = gfxRenderState::m_Touched | 1;
-                }
-
+                auto oldAlphaRef2 = gfxRenderState::SetAlphaRef(0);
                 DrawPart(decalModel, this->carSim->getWorldMatrix(), shaders);
-
-                if ((&RSTATE->Data)->AlphaRef != oldAlphaRef2)
-                {
-                    (&RSTATE->Data)->AlphaRef = oldAlphaRef2;
-                    gfxRenderState::m_Touched = gfxRenderState::m_Touched | 1;
-                }
+                gfxRenderState::SetAlphaRef(oldAlphaRef2);
             }
 
             //draw reflection (only in H LOD)
@@ -1179,11 +1164,7 @@ namespace MM2
             }
 
             //set alpha back if requireed
-            if (oldAlphaRef != (&RSTATE->Data)->AlphaRef)
-            {
-                (&RSTATE->Data)->AlphaRef = oldAlphaRef;
-                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 1;
-            }
+            gfxRenderState::SetAlphaRef(oldAlphaRef);
         }
 
         AGE_API void DrawShadow() override                  { hook::Thunk<0x4CE940>::Call<void>(this); }
@@ -1213,8 +1194,7 @@ namespace MM2
                 return;
 
             //setup renderer
-            Matrix44::Convert(gfxRenderState::sm_World, this->carSim->getWorldMatrix());
-            gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+            gfxRenderState::SetWorldMatrix(*this->carSim->getWorldMatrix());
 
 
             //draw signals
@@ -1364,8 +1344,7 @@ namespace MM2
                 }
                 if (vehCarModel::HeadlightType == 1 || vehCarModel::HeadlightType == 2) {
                     //MM1 headlights
-                    Matrix44::Convert(gfxRenderState::sm_World, this->carSim->getWorldMatrix());
-                    gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+                    gfxRenderState::SetWorldMatrix(*this->carSim->getWorldMatrix());
 
                     if (enabledElectrics[2] || enabledElectrics[3])
                     {
@@ -1387,8 +1366,7 @@ namespace MM2
                 }
                 if (vehCarModel::SirenType == 1 || vehCarModel::SirenType == 2) {
                     //MM1 siren
-                    Matrix44::Convert(gfxRenderState::sm_World, this->carSim->getWorldMatrix());
-                    gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+                    gfxRenderState::SetWorldMatrix(*this->carSim->getWorldMatrix());
 
                     if (siren != nullptr && siren->Active) {
                         int sirenStage = fmod(datTimeManager::ElapsedTime, 2 * vehCarModel::SirenCycle) >= vehCarModel::SirenCycle ? 1 : 0;

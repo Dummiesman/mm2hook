@@ -3,8 +3,12 @@
 
 namespace MM2
 {
+    //Forward declarations
+    class gfxRenderState;
+
     //External declarations
     extern class datParser;
+    extern _TypeProxy<gfxRenderState> RSTATE;
 
     namespace $
     {
@@ -515,14 +519,25 @@ namespace MM2
         gfxTexture *Texture[2];
         gfxMaterial *Material;
     };
+    ASSERT_SIZEOF(gfxRenderStateData, 0x50);
 
     class gfxRenderState {
     public:
         gfxRenderStateData Data;
         gfxMaterial Material;
 
+    private:
+        /*
+            m_Touched:
+            0x01 | State Changed
+            0x02 | Texture Changed
+            0x04 | Material Changed
+            0x08 | Transform Changed
+            0x80 | Should Regenerate (gfxRenderState::Regenerate())
+        */
         static hook::Type<int> m_Touched;
 
+    public:
         static hook::TypeProxy<Matrix44> sm_Camera;
         static hook::TypeProxy<Matrix44> sm_World;
 
@@ -536,6 +551,40 @@ namespace MM2
         static hook::TypeProxy<Matrix44> sm_Transform;
     public:
         static void SetCamera(Matrix44 * mtx)   { hook::StaticThunk<0x4B2A20>::Call<void>(mtx); }
+    public:
+        static D3DCULL SetCullMode(D3DCULL cullMode)
+        {
+            auto original = static_cast<D3DCULL>((&RSTATE->Data)->AlphaRef);
+            if (original == cullMode)
+                return original;
+
+            (&RSTATE->Data)->CullMode = static_cast<byte>(cullMode);
+            gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            return original;
+        }
+
+        static byte SetAlphaRef(byte alphaRef) 
+        {
+            byte original = (&RSTATE->Data)->AlphaRef;
+            if (original == alphaRef)
+                return original;
+
+            (&RSTATE->Data)->AlphaRef = alphaRef;
+            gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            return original;
+        }
+
+        static void SetWorldMatrix(const Matrix44& matrix)
+        {
+            gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+            memcpy(&gfxRenderState::sm_World, &matrix, sizeof(Matrix44));
+        }
+
+        static void SetWorldMatrix(const Matrix34& matrix)
+        {
+            gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+            Matrix44::Convert(gfxRenderState::sm_World, &matrix);
+        }
     };
 
     class ltLight {

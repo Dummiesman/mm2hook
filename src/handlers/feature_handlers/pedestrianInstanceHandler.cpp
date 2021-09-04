@@ -51,8 +51,9 @@ void pedestrianInstanceHandler::DrawRagdoll() {
     auto active = reinterpret_cast<pedActive*>(inst->GetEntity());
 
     //set matrix
-    gfxRenderState::sm_World->Identity();
-    gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+    Matrix44 identityMatrix;
+    identityMatrix.Identity();
+    gfxRenderState::SetWorldMatrix(identityMatrix);
 
     //attach skeleton
     auto ragdollSkel = active->getSkeleton();

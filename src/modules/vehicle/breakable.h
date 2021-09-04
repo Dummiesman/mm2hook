@@ -86,8 +86,7 @@ namespace MM2
                         drawMatrix.Dot(a1);
 
                         //setup renderer
-                        Matrix44::Convert(gfxRenderState::sm_World, &drawMatrix);
-                        gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+                        gfxRenderState::SetWorldMatrix(drawMatrix);
 
                         lodModel->Draw(a2);
 

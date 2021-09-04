@@ -63,8 +63,7 @@ void vehTrailerInstanceFeatureHandler::DrawPart(int a1, int a2, Matrix34* a3, mo
     auto geomSet = lvlInstance::GetGeomTableEntry(geomID);
 
     //setup renderer
-    Matrix44::Convert(gfxRenderState::sm_World, a3);
-    gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+    gfxRenderState::SetWorldMatrix(*a3);
 
     //get part
     modStatic* part = *getPtr<modStatic*>((geomSet + a2), a1 * 4);
@@ -187,9 +186,8 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
     int geomSet = inst->getGeomSetId() - 1;
 
     //setup renderer
-    gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
     inst->GetMatrix(&trailerMatrix);
-    Matrix44::Convert(gfxRenderState::sm_World, &trailerMatrix);
+    gfxRenderState::SetWorldMatrix(trailerMatrix);
 
     //get our shader set
     int shaderSet = *getPtr<int>(this, 24);

@@ -32,8 +32,7 @@ void vehCableCarInstanceHandler::DrawShadow()
     if (lvlInstance::ComputeShadowMatrix(&shadowMatrix, inst->getRoomId(), &inst->GetMatrix(&dummyMatrix)))
     {
         //setup renderer
-        gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
-        Matrix44::Convert(gfxRenderState::sm_World, &shadowMatrix);
+        gfxRenderState::SetWorldMatrix(shadowMatrix);
 
         //draw shadow
         modStatic* shadow = lvlInstance::GetGeomTableEntry(geomSet + SHADOW_GEOM_ID)->getHighestLOD();
@@ -55,11 +54,9 @@ void vehCableCarInstanceHandler::DrawGlow()
     int geomSet = inst->getGeomSetId() - 1;
 
     //setup renderer
-    gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
     Matrix34 instMtx = inst->GetMatrix(&cableCarMatrix);
     memcpy(&cableCarMatrix, &instMtx, sizeof(Matrix34));
-
-    Matrix44::Convert(gfxRenderState::sm_World, &cableCarMatrix);
+    gfxRenderState::SetWorldMatrix(cableCarMatrix);
 
     //get our shader set
     int shaderSet = 0;
