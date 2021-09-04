@@ -8,16 +8,13 @@ static ConfigValue<bool> cfgMm1StyleRefl("MM1StyleReflections", false);
     modShaderHandler
 */
 
-float lastFogStart;
-float lastFogEnd;
+float oldFogStart, oldFogEnd;
 
 void modShaderHandler::BeginEnvMap(gfxTexture* a1, const Matrix34* a2)
 {
-    // Set fog distance so it's not blended with reflections
-    lastFogStart = (&RSTATE->Data)->FogStart;
-    lastFogEnd = (&RSTATE->Data)->FogEnd;
-    (&RSTATE->Data)->FogStart = 9999;
-    (&RSTATE->Data)->FogEnd = 10000;
+    // Disable fog so it's not blended with reflections
+    oldFogStart = gfxRenderState::SetFogStart(9999.f);
+    oldFogEnd = gfxRenderState::SetFogEnd(10000.f);
 
     hook::StaticThunk<0x4A41B0>::Call<void>(a1, a2); //call original
 }
@@ -25,8 +22,8 @@ void modShaderHandler::BeginEnvMap(gfxTexture* a1, const Matrix34* a2)
 void modShaderHandler::EndEnvMap()
 {
     // Restore last fog settings
-    (&RSTATE->Data)->FogStart = lastFogStart;
-    (&RSTATE->Data)->FogEnd = lastFogEnd;
+    gfxRenderState::SetFogStart(oldFogStart);
+    gfxRenderState::SetFogEnd(oldFogEnd);
 
     hook::StaticThunk<0x4A4420>::Call<void>(); //call original
 }

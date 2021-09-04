@@ -105,6 +105,9 @@ void InstallVTableHook(LPCSTR name, auto_ptr lpAddr, std::initializer_list<unsig
 
 union ColorARGB
 {
+    bool ColorARGB::operator==(const ColorARGB& other) const { return this->color == other.color; }
+    bool ColorARGB::operator!=(const ColorARGB& other) { return !(*this == other); }
+
     struct
     {
         byte b, g, r, a;

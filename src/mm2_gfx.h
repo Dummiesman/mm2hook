@@ -552,35 +552,143 @@ namespace MM2
     public:
         static void SetCamera(Matrix44 * mtx)   { hook::StaticThunk<0x4B2A20>::Call<void>(mtx); }
     public:
-        static D3DCULL SetCullMode(D3DCULL cullMode)
+        inline static D3DCULL SetCullMode(D3DCULL cullMode)
         {
-            auto original = static_cast<D3DCULL>((&RSTATE->Data)->AlphaRef);
-            if (original == cullMode)
-                return original;
-
-            (&RSTATE->Data)->CullMode = static_cast<byte>(cullMode);
-            gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            auto original = static_cast<D3DCULL>((&RSTATE->Data)->CullMode);
+            if (original != cullMode) {
+                (&RSTATE->Data)->CullMode = static_cast<byte>(cullMode);
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
             return original;
         }
 
-        static byte SetAlphaRef(byte alphaRef) 
+        inline static byte SetAlphaRef(byte alphaRef) 
         {
-            byte original = (&RSTATE->Data)->AlphaRef;
-            if (original == alphaRef)
-                return original;
-
-            (&RSTATE->Data)->AlphaRef = alphaRef;
-            gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            auto original = (&RSTATE->Data)->AlphaRef;
+            if (original != alphaRef) {
+                (&RSTATE->Data)->AlphaRef = alphaRef;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
             return original;
         }
 
-        static void SetWorldMatrix(const Matrix44& matrix)
+        inline static bool SetLighting(bool enabled)
+        {
+            auto original = (&RSTATE->Data)->Lighting;
+            if (original != enabled) {
+                (&RSTATE->Data)->Lighting = enabled;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
+
+        inline static bool SetZWriteEnabled(bool enabled)
+        {
+            auto original = (&RSTATE->Data)->ZWriteEnable;
+            if (original != enabled) {
+                (&RSTATE->Data)->ZWriteEnable = enabled;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
+
+        inline static D3DZBUFFERTYPE SetZEnabled(D3DZBUFFERTYPE enabled)
+        {
+            auto original = static_cast<D3DZBUFFERTYPE>((&RSTATE->Data)->ZEnable);
+            if (original != enabled) {
+                (&RSTATE->Data)->ZEnable = static_cast<byte>(enabled);
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
+
+        inline static bool SetAlphaEnabled(bool enabled)
+        {
+            auto original = (&RSTATE->Data)->AlphaEnable;
+            if (original != enabled) {
+                (&RSTATE->Data)->AlphaEnable = enabled;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
+
+        inline static bool SetClipping(bool enabled)
+        {
+            auto original = (&RSTATE->Data)->Clipping;
+            if (original != enabled) {
+                (&RSTATE->Data)->Clipping = enabled;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
+
+        inline static bool SetFogEnabled(bool enabled)
+        {
+            auto original = (&RSTATE->Data)->FogEnable;
+            if (original != enabled) {
+                (&RSTATE->Data)->FogEnable = enabled;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
+
+        inline static D3DCMPFUNC SetAlphaFunc(D3DCMPFUNC func) 
+        {
+            auto original = static_cast<D3DCMPFUNC>((&RSTATE->Data)->AlphaFunc);
+            if (original != func) {
+                (&RSTATE->Data)->AlphaFunc = static_cast<byte>(func);
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
+
+        inline static float SetFogStart(float value)
+        {
+            auto original = (&RSTATE->Data)->FogStart;
+            if (original != value) {
+                (&RSTATE->Data)->FogStart = value;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
+
+        inline static float SetFogEnd(float value)
+        {
+            auto original = (&RSTATE->Data)->FogEnd;
+            if (original != value) {
+                (&RSTATE->Data)->FogEnd = value;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
+
+        inline static ColorARGB SetFogColor(ColorARGB color)
+        {
+            auto original = (&RSTATE->Data)->FogColor;
+            if (original != color) {
+                (&RSTATE->Data)->FogColor = color;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
+
+        inline static D3DFOGMODE SetFogVertexMode(D3DFOGMODE func)
+        {
+            auto original = static_cast<D3DFOGMODE>((&RSTATE->Data)->FogVertexMode);
+            if (original != func) {
+                (&RSTATE->Data)->FogVertexMode = static_cast<byte>(func);
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
+
+        inline static void SetWorldMatrix(const Matrix44& matrix)
         {
             gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
             memcpy(&gfxRenderState::sm_World, &matrix, sizeof(Matrix44));
         }
 
-        static void SetWorldMatrix(const Matrix34& matrix)
+        inline static void SetWorldMatrix(const Matrix34& matrix)
         {
             gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
             Matrix44::Convert(gfxRenderState::sm_World, &matrix);
