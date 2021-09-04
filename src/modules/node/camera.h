@@ -360,6 +360,38 @@ namespace MM2
             .endClass();
         }
     };
+    class camTransitionCS : public camCarCS {
+    private:
+        camCarCS* FromCamera;
+        camCarCS* ToCamera;
+        camCarCS* dword_118;
+        int dword_11c;
+        int dword_120;
+        int dword_124;
+    public:
+        AGE_API camTransitionCS(void) {
+            scoped_vtable x(this);
+            hook::Thunk<0x521530>::Call<void>(this);
+        }
+
+        virtual AGE_API ~camTransitionCS(void) {
+            scoped_vtable x(this);
+            hook::Thunk<0x5215C0>::Call<void>(this);
+        }
+
+
+
+        // asNode overrides
+        AGE_API void Reset() override                       { hook::Thunk<0x520AB0>::Call<void>(this); }
+        AGE_API void Update() override                      { hook::Thunk<0x521610>::Call<void>(this); }
+
+        //lua
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<camTransitionCS, camCarCS>("camTransitionCS")
+                .endClass();
+        }
+    };
+    ASSERT_SIZEOF(camTransitionCS, 0x128);
 
     class camViewCS : public asNode {
     protected:
