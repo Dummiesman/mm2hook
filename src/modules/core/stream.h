@@ -14,32 +14,23 @@ namespace MM2
     class Stream {
     private:
         //lua read
-        std::vector<char> luaRead(int length) 
+        std::string luaRead(int length) 
         {
-            //BROKEN
-            std::vector<char> buf((size_t)length);
-            int read = this->Read(buf.data(), length);
+            int remainBytes = this->Size() - this->Tell();
+            int cappedLength = min(remainBytes, length);
+            
+            std::string buf;
+            buf.resize(cappedLength);
+            
+            int read = this->Read((LPVOID)buf.data(), cappedLength);
             buf.resize(read);                     
             return buf;
         }
 
         std::string asString() 
         {
-            std::string str = "";
-            char buf[2048];
-            while (true) 
-            {
-                int read = this->Read(buf, sizeof(buf));
-                if (read == 0) 
-                {
-                    break;
-                }
-                else 
-                {
-                    str += std::string(reinterpret_cast<char const*>(&buf), read);
-                }
-            }
-            return str;
+            int remainBytes = this->Size() - this->Tell();
+            return luaRead(remainBytes);
         }
     public:
         static hook::Type<coreFileMethods *> sm_DefaultOpenMethods;
