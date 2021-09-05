@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\phys.h>
+#include <modules\phys\segment.h>
+#include <modules\phys\phintersection.h>
 
 namespace MM2
 {
@@ -14,6 +15,17 @@ namespace MM2
 
     // Class definitions
     class dgPhysManager {
+    private:
+        //lua collide, returns tuple of (hit, distance, position, normal)
+        phIntersectionPoint* collideLua(Vector3 start, Vector3 end) 
+        {
+            lvlSegment segment;
+            lvlIntersection isect;
+            segment.Set(start, end, 0, nullptr);
+            
+            bool collided = dgPhysManager::Collide(segment, &isect, 0, nullptr, 0x20, 0);
+            return collided ? new phIntersectionPoint(isect.IntersectionPoint) : nullptr;
+        }
     public:
         static inline float getGravity() 
         {
@@ -36,13 +48,13 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<dgPhysManager>("dgPhysManager")
                 //statics
-                .addStaticFunction("Instance", [] {return (dgPhysManager *)Instance; })
+                .addStaticProperty("Instance", [] {return (dgPhysManager *)Instance; })
 
                 //properties
                 .addStaticProperty("Gravity", &getGravity, &setGravity)
                  
                 //functions
-                //.addFunction("Collide", &collideLua)
+                .addFunction("Collide", &collideLua)
                 .addFunction("IgnoreMover", &IgnoreMover)
                 .addFunction("DeclareMover", &DeclareMover)
 

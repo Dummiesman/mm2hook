@@ -10,12 +10,13 @@ namespace MM2
     // External declarations
     extern class phBound;
     extern struct phPolygon;
+    extern struct phIntersectionPoint;
 
     // Class definitions
 
     struct phIntersection
     {
-        phIntersectionPoint Point;
+        phIntersectionPoint IntersectionPoint;
         int PolyIndex;
         int field_28;
         int field_2C;
@@ -24,7 +25,7 @@ namespace MM2
         Vector3 EndPos;
         Vector3 field_4C;
         phPolygon* Poly;
-        int field_5C;
+        int MaterialIndex;
         int field_60;
         int field_64;
         int field_68;
