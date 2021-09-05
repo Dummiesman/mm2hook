@@ -16,14 +16,12 @@ namespace MM2
         //lua read
         std::string luaRead(int length) 
         {
-            int remainBytes = this->Size() - this->Tell();
-            int cappedLength = min(remainBytes, length);
-            
             std::string buf;
-            buf.resize(cappedLength);
+            buf.resize(length);
             
-            int read = this->Read((LPVOID)buf.data(), cappedLength);
-            buf.resize(read);                     
+            int read = this->Read((LPVOID)buf.data(), length);
+            if(read != length)
+                buf.resize(read);                     
             return buf;
         }
 
