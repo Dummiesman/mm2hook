@@ -6,11 +6,10 @@ namespace MM2
 {
     // Extern declarations
     extern class phMaterial;
-    extern class phSegment;
-    extern class phIntersection;
-    extern class phIntersectionBase;
-    extern class phIntersectionPoint;
     extern class phImpactBase;
+    extern struct phSegment;
+    extern struct phIntersection;
+    extern struct phIntersectionPoint;
 
     // Forward declarations
     class phBoundGeometry;

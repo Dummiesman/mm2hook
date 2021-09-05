@@ -4,14 +4,21 @@
 namespace MM2
 {
     // Forward declarations
-    class phIntersectionPoint;
+    struct phIntersectionPoint;
 
     // External declarations
 
 
     // Class definitions
 
-    class phIntersectionPoint {};
+    struct phIntersectionPoint {
+        Vector3 Point;
+        Vector3 Normal;
+        float Distance;
+        float SomeDotProduct;
+        byte IntersectResult;
+    };
+    ASSERT_SIZEOF(phIntersectionPoint, 0x24);
 
 
     // Lua initialization

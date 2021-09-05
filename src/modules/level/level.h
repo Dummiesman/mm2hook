@@ -1,6 +1,7 @@
 #pragma once
 #include <modules\level.h>
 #include <handlers\lua_drawable.h>
+#include <modules\phys\segment.h>
 #include <..\mm2_particle.h>
 
 namespace MM2
@@ -11,6 +12,8 @@ namespace MM2
     // External declarations
     extern class asParticles;
     extern class gfxViewport;
+    extern struct lvlSegment;
+    extern struct lvlIntersection;
 
     // Class definitions
 
@@ -53,7 +56,7 @@ namespace MM2
                                                                     PURE;
         AGE_API virtual int GetVisitList(int* a1, int a2, Vector3 const& a3, Vector3 const& a4, int a5, int a6)
                                                                     { return 0; }
-        AGE_API virtual bool Collide(int a1, class lvlSegment & a2, class lvlIntersection & a3)
+        AGE_API virtual bool Collide(int a1, lvlSegment & a2, lvlIntersection & a3)
                                                                     { return false; }
         AGE_API virtual bool GetBoundSphere(Vector4& a1, int a2)    { return false; }
         AGE_API virtual const class lvlLevelBound* GetBound()       PURE;
