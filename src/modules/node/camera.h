@@ -494,7 +494,7 @@ namespace MM2
                 .addFunction("Init", &Init)
                 .addFunction("ForceMatrixDelta", static_cast<void(camViewCS::*)(const Matrix34 *)>(&ForceMatrixDelta))
 
-                .addVariableRef("Override", &camViewCS::OverrideClip)
+                .addVariableRef("OverrideClip", &camViewCS::OverrideClip)
                 .addVariableRef("OverrideFar", &camViewCS::OverrideFar)
                 .addVariableRef("OverrideNear", &camViewCS::OverrideNear)
             .endClass();
