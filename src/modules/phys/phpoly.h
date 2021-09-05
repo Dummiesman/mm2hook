@@ -17,6 +17,16 @@ namespace MM2
         Vector4 EdgeNormalCross[4];
         ushort Indices[4];
         ushort Indices2[4];
+
+        inline byte getMaterialIndex() 
+        {
+            return *(byte*)&Radius;
+        }
+
+        inline void setMaterialIndex(byte index) 
+        {
+            *(byte*)&Radius = index;
+        }
     };
 
 
