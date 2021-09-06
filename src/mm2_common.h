@@ -420,8 +420,8 @@ namespace MM2 {
             View settings (NAMES NEED CONFIRMATION!)
         */
 
-        bool unk_36C;
-        char MapMode;
+        byte ViewMode;
+        byte MapMode;
         bool UseWideFOV;
         bool ShowDash;
 
@@ -492,6 +492,8 @@ namespace MM2 {
             .addVariableRef("FarClip", &mmStatePack::FarClip)
             .addVariableRef("TimeLimitOverride", &mmStatePack::TimeLimitOverride)
             .addProperty("UsePortals", &getUsePortals, &setUsePortals)
+            .addVariableRef("ViewMode", &mmStatePack::ViewMode, false)
+            .addVariableRef("MapMode", &mmStatePack::MapMode, false)
             .endClass();
         }
     };

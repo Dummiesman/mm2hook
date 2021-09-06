@@ -109,7 +109,7 @@ void mmSingleRoamHandler::EscapeDeepWater() {
         player->getCamView()->SetCam(player->getCurrentCameraPtr());
 
         if (MMSTATE->ShowDash || *getPtr<int>(player, 0x880)) {
-            MMSTATE->unk_36C = 1;
+            MMSTATE->ViewMode = 1;
             *getPtr<int>(player, 0xE48) = 1;
             player->getCamView()->SetCam(player->getDashCam());
             player->getHUD()->ActivateDash();
