@@ -11,9 +11,20 @@ namespace MM2
 
     // Class definitions
     class phBound {
+    public:
+        enum BoundType
+        {
+            Sphere = 0,
+            Geometry = 1,
+            Box = 2,
+            Terrain = 4,
+            TerrainLocal = 5,
+            Hotdog = 6,
+            Level = 7
+        };
     private:
         int MaterialCount;
-        int Type;
+        BoundType Type;
         Vector3 Min;
         Vector3 Max;
         bool IsOffset;
@@ -25,9 +36,14 @@ namespace MM2
         float Penetration;
         float PenetrationBarelyMoved;
     public:
+        inline BoundType getType(void) 
+        {
+            return this->Type;
+        }
+
         inline int getMaterialCount(void) 
         {
-            return MaterialCount;
+            return this->MaterialCount;
         }
     public:
         void SetOffset(Vector3& offset) { hook::Thunk<0x4872C0>::Call<void>(this, &offset); }
@@ -77,6 +93,7 @@ namespace MM2
             LuaBinding(L).beginClass<phBound>("phBound")
                 .addFunction("SetOffset", &SetOffset)
                 .addFunction("GetMaterial", &GetMaterial)
+                .addPropertyReadOnly("Type", &getType)
                 .addPropertyReadOnly("MaterialCount", &getMaterialCount)
                 .endClass();
         }
