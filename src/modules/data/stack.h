@@ -34,7 +34,7 @@ namespace MM2
         };
         
         AGE_API static void DoTraceback(int length, DWORD* contextRecordEbpPtr, FILE* output, char const* lineSeperator) {
-            char addressBuffer[128];
+            char addressBuffer[1024];
             DWORD* currentEbpPtr = contextRecordEbpPtr;
             for (int i = 0; i < length; i++)
             {
