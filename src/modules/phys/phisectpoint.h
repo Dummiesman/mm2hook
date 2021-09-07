@@ -14,16 +14,16 @@ namespace MM2
     struct phIntersectionPoint {
         Vector3 Point;
         Vector3 Normal;
-        float Distance;
-        float SomeDotProduct;
+        float NormalizedDistance;
+        float Penetration;
         byte IntersectResult;
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<phIntersectionPoint>("phIntersectionPoint")
                 .addVariableRef("Point", &phIntersectionPoint::Point, false)
                 .addVariableRef("Normal", &phIntersectionPoint::Normal, false)
-                .addVariableRef("Distance", &phIntersectionPoint::Distance, false)
-                .addVariableRef("Dot", &phIntersectionPoint::SomeDotProduct, false)
+                .addVariableRef("Penetration", &phIntersectionPoint::Penetration, false)
+                .addVariableRef("NormalizedDistance", &phIntersectionPoint::NormalizedDistance, false)
                 .endClass();
         }
     };
