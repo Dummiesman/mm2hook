@@ -211,7 +211,7 @@ namespace MM2
 
         AGE_API virtual ~asParticles(void) {
             scoped_vtable x(this);
-            hook::Thunk<0x4619E0>::Call<void>(this);
+            hook::Thunk<0x460F20>::Call<void>(this);
         }
 
         void InitLua(int count, int wt, int ht) {
