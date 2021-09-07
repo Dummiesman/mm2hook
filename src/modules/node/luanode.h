@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\node.h>
+#include <modules\node\cullmgr.h>
+#include <modules\parse\parse.h>
 
 namespace MM2
 {
@@ -20,52 +21,50 @@ namespace MM2
         LuaRef m_ResChangeFunction;
         LuaRef m_CullFunction;
         bool m_AutoDeclareCullbale;
-    private:
-        static bool CheckFunctionAndWarn(LuaRef ref, LPCSTR functionName) {
-            bool retVal = ref.isValid() && ref.isFunction();
-            if (!retVal) {
-                Warningf("%s must recieve a valid lua function as it's parameter.", functionName);
-            }
-            return retVal;
-        }
     public:
         ANGEL_ALLOCATOR
 
-        luaNode(LPCSTR name) {
+            luaNode(LPCSTR name) {
             m_ClassName = "luaNode";
+            m_UpdateFunction = getNil();
+            m_UpdatePausedFunction = getNil();
+            m_ResetFunction = getNil();
+            m_ResChangeFunction = getNil();
+            m_CullFunction = getNil();
+
             this->SetName(name);
             this->m_AutoDeclareCullbale = false;
         }
 
+        //lua getter
+        LuaRef getNil() {
+            return LuaRef();
+        }
+
         //lua setters
         void SetUpdateFunction(LuaRef function) {
-            if (!CheckFunctionAndWarn(function, "SetUpdateFunction"))
-                return;
-            m_UpdateFunction = function;
+            if (function.isFunction() && function.isValid())
+                m_UpdateFunction = function;
         }
 
         void SetUpdatePausedFunction(LuaRef function) {
-            if (!CheckFunctionAndWarn(function, "SetUpdatePausedFunction"))
-                return;
-            m_UpdatePausedFunction = function;
+            if (function.isFunction() && function.isValid())
+                m_UpdatePausedFunction = function;
         }
 
         void SetResetFunction(LuaRef function) {
-            if (!CheckFunctionAndWarn(function, "SetResetFunction"))
-                return;
-            m_ResetFunction = function;
+            if (function.isFunction() && function.isValid())
+                m_ResetFunction = function;
         }
 
         void SetResChangeFunction(LuaRef function) {
-            if (!CheckFunctionAndWarn(function, "SetResChangeFunction"))
-                return;
-            m_ResChangeFunction = function;
+            if (function.isFunction() && function.isValid())
+                m_ResChangeFunction = function;
         }
 
         void SetCullFunction(LuaRef function) {
-            if (!CheckFunctionAndWarn(function, "SetCullFunction"))
-                return;
-            m_CullFunction = function;
+            if (function.isFunction() && function.isValid())
+                m_CullFunction = function;
         }
 
         //overrides
@@ -74,32 +73,37 @@ namespace MM2
         }
 
         void Update() override {
+            //Warningf("luaNode::Update");
             if (m_UpdateFunction.isValid() && m_UpdateFunction.isFunction())
                 m_UpdateFunction();
-            //if (m_AutoDeclareCullbale)
-                //asCullManager::Instance->DeclareCullable(this);
+            if (m_AutoDeclareCullbale)
+                asCullManager::Instance->DeclareCullable(this);
             asNode::Update();
         }
 
         void UpdatePaused() override {
+            //Warningf("luaNode::UpdatePaused");
             if (m_UpdatePausedFunction.isValid() && m_UpdatePausedFunction.isFunction())
                 m_UpdatePausedFunction();
             asNode::UpdatePaused();
         }
 
         void Reset() override {
+            //Warningf("luaNode::Reset");
             if (m_ResetFunction.isValid() && m_ResetFunction.isFunction())
                 m_ResetFunction();
             asNode::Reset();
         }
 
         void ResChange(int width, int height) override {
+            //Warningf("luaNode::ResChange");
             if (m_ResChangeFunction.isValid() && m_ResChangeFunction.isFunction())
                 m_ResChangeFunction(width, height);
             asNode::ResChange(width, height);
         }
 
         void Cull() override {
+            //Warningf("luaNode::Cull");
             if (m_CullFunction.isValid() && m_CullFunction.isFunction())
                 m_CullFunction();
             //don't call base here because base does nothing
@@ -110,11 +114,11 @@ namespace MM2
             LuaBinding(L).beginExtendClass<luaNode, asNode>("luaNode")
                 .addConstructor(LUA_ARGS(LPCSTR))
                 .addVariableRef("AutoDeclareCullable", &luaNode::m_AutoDeclareCullbale)
-                .addFunction("SetUpdateFunction", &SetUpdateFunction)
-                .addFunction("SetUpdatePausedFunction", &SetUpdatePausedFunction)
-                .addFunction("SetResetFunction", &SetResetFunction)
-                .addFunction("SetResChangeFunction", &SetResChangeFunction)
-                .addFunction("SetCullFunction", &SetCullFunction)
+                .addProperty("Update", &getNil, &SetUpdateFunction)
+                .addProperty("UpdatePaused", &getNil, &SetUpdatePausedFunction)
+                .addProperty("Reset", &getNil, &SetResetFunction)
+                .addProperty("ResChange", &getNil, &SetResChangeFunction)
+                .addProperty("Cull", &getNil, &SetCullFunction)
                 .endClass();
         }
     };
