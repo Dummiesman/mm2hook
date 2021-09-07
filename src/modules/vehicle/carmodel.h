@@ -37,7 +37,7 @@ namespace MM2
         static bool breakableRenderTweak;
 
         //light states
-        static bool HeadlightsState;
+        static bool ShowHeadlights;
         static bool HazardLightsState;
         static bool LeftSignalLightState;
         static bool RightSignalLightState;
@@ -980,7 +980,7 @@ namespace MM2
             //draw plight
             if (lod >= 1)
             {
-                if (car->IsPlayer() && vehCarModel::HeadlightsState || !car->IsPlayer() && vehCar::sm_DrawHeadlights)
+                if (car->IsPlayer() && vehCarModel::ShowHeadlights || !car->IsPlayer() && vehCar::sm_DrawHeadlights)
                     //plighton
                     DrawPart(lod, 53, this->carSim->getWorldMatrix(), shaders, vehCarModel::PartReflections);
                 else
@@ -1232,7 +1232,7 @@ namespace MM2
                         if (carsim->getBrake() > 0.1)
                             tslight0->Draw(shaders);
                         //draw headlight copy
-                        if (vehCarModel::HeadlightsState)
+                        if (vehCarModel::ShowHeadlights)
                             tslight0->Draw(shaders);
                     }
                 }
@@ -1242,7 +1242,7 @@ namespace MM2
                         if (carsim->getBrake() > 0.1)
                             tslight1->Draw(shaders);
                         //draw headlight copy
-                        if (vehCarModel::HeadlightsState)
+                        if (vehCarModel::ShowHeadlights)
                             tslight1->Draw(shaders);
                     }
                 }
@@ -1278,7 +1278,7 @@ namespace MM2
                     if (carsim->getBrake() > 0.1)
                         tlight->Draw(shaders);
                     //draw headlight copy
-                    if (car->IsPlayer() && vehCarModel::HeadlightsState || !car->IsPlayer() && vehCar::sm_DrawHeadlights)
+                    if (car->IsPlayer() && vehCarModel::ShowHeadlights || !car->IsPlayer() && vehCar::sm_DrawHeadlights)
                         tlight->Draw(shaders);
                 }
 
@@ -1328,14 +1328,14 @@ namespace MM2
                             this->DrawHeadlights(true);
                             this->DrawExtraHeadlights(true);
                         }
-                        else if (car->IsPlayer() && vehCarModel::HeadlightsState || !car->IsPlayer() && vehCar::sm_DrawHeadlights)
+                        else if (car->IsPlayer() && vehCarModel::ShowHeadlights || !car->IsPlayer() && vehCar::sm_DrawHeadlights)
                         {
                             this->DrawHeadlights(false);
                             this->DrawExtraHeadlights(false);
                         }
                     }
                     else {
-                        if (car->IsPlayer() && vehCarModel::HeadlightsState || !car->IsPlayer() && vehCar::sm_DrawHeadlights)
+                        if (car->IsPlayer() && vehCarModel::ShowHeadlights || !car->IsPlayer() && vehCar::sm_DrawHeadlights)
                         {
                             this->DrawHeadlights(false);
                             this->DrawExtraHeadlights(false);
@@ -1349,7 +1349,7 @@ namespace MM2
                     if (enabledElectrics[2] || enabledElectrics[3])
                     {
                         if (hlight != nullptr) {
-                            if (car->IsPlayer() && vehCarModel::HeadlightsState || !car->IsPlayer() && vehCar::sm_DrawHeadlights)
+                            if (car->IsPlayer() && vehCarModel::ShowHeadlights || !car->IsPlayer() && vehCar::sm_DrawHeadlights)
                                 hlight->Draw(shaders);
                         }
                     }
@@ -1394,6 +1394,7 @@ namespace MM2
                 .addPropertyReadOnly("WheelBreakables", &getMechBreakableMgr)
                 .addProperty("Variant", &getVariant, &setVariant)
                 .addProperty("Visible", &GetVisible, &SetVisible)
+                .addStaticVariableRef("ShowHeadlights", &vehCarModel::ShowHeadlights)
 
                 //lua functions
                 .addFunction("GetHeadlight", &getHeadlight)

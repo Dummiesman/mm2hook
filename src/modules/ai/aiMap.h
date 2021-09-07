@@ -149,7 +149,7 @@ namespace MM2
         void *routingStuff;
         aiMapComponentList* componentMap;
 
-        bool drawHeadlights;
+        bool showHeadlights;
 
         float avoidThing_1;
         float avoidThing_2;
@@ -278,6 +278,7 @@ namespace MM2
                 .addPropertyReadOnly("NumAmbientVehicles", &getAmbientCount)
                 .addPropertyReadOnly("NumPaths", &getPathsCount)
                 .addPropertyReadOnly("NumIntersections", &getIntersectionCount)
+                .addVariableRef("ShowHeadlights", &aiMap::showHeadlights)
                 .addStaticProperty("Instance", [] { return  &aiMap::Instance; })
             .endClass();
         }

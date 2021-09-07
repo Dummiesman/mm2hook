@@ -28,11 +28,11 @@ void aiVehicleInstanceFeatureHandler::Draw(int a1) {
     modStatic* plightoff = lvlInstance::GetGeomTableEntry(geomID + 20)->getHighLOD();
 
     if (plighton != nullptr) {
-        if (aiMap::Instance->drawHeadlights)
+        if (aiMap::Instance->showHeadlights)
             inst->DrawPart(plighton, &carMatrix, shaders, *getPtr<int>(this, 6));
     }
     if (plightoff != nullptr) {
-        if (!aiMap::Instance->drawHeadlights)
+        if (!aiMap::Instance->showHeadlights)
             inst->DrawPart(plightoff, &carMatrix, shaders, *getPtr<int>(this, 6));
     }
 
@@ -81,7 +81,7 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
         if (brake < 0.f || speed == 0.f)
             tlight->Draw(shaders);
         //draw headlight copy
-        if (aiMap::Instance->drawHeadlights)
+        if (aiMap::Instance->showHeadlights)
             tlight->Draw(shaders);
     }
 
@@ -100,7 +100,7 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
             if (brake < 0.f || speed == 0.f)
                 tslight0->Draw(shaders);
             //draw headlight copy
-            if (aiMap::Instance->drawHeadlights)
+            if (aiMap::Instance->showHeadlights)
                 tslight0->Draw(shaders);
         }
     }
@@ -119,7 +119,7 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
             if (brake < 0.f || speed == 0.f)
                 tslight1->Draw(shaders);
             //draw headlight copy
-            if (aiMap::Instance->drawHeadlights)
+            if (aiMap::Instance->showHeadlights)
                 tslight1->Draw(shaders);
         }
     }
@@ -128,7 +128,7 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
     if (ambientHeadlightStyle < 3) {
         if (ambientHeadlightStyle == 0 || ambientHeadlightStyle == 2) {
             //MM2 headlights
-            if (aiMap::Instance->drawHeadlights) {
+            if (aiMap::Instance->showHeadlights) {
                 //call original
                 hook::Thunk<0x552930>::Call<void>(this);
             }
@@ -137,7 +137,7 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
             //MM1 headlights
             gfxRenderState::SetWorldMatrix(carMatrix);
 
-            if (hlight != nullptr && aiMap::Instance->drawHeadlights) {
+            if (hlight != nullptr && aiMap::Instance->showHeadlights) {
                 hlight->Draw(shaders);
             }
         }

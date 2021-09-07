@@ -34,7 +34,7 @@ int vehCarModel::HeadlightType = 0;
 float vehCarModel::SirenCycle = 0.25f;
 float vehCarModel::HeadlightFlashingSpeed = 42.411503f;
 
-bool vehCarModel::HeadlightsState = false;
+bool vehCarModel::ShowHeadlights = false;
 bool vehCarModel::HazardLightsState = false;
 bool vehCarModel::LeftSignalLightState = false;
 bool vehCarModel::RightSignalLightState = false;

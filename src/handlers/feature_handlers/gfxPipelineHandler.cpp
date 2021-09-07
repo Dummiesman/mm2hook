@@ -72,24 +72,6 @@ bool gfxPipelineHandler::HandleKeyPress(DWORD vKey)
         } return true;
     }
 
-    if (vKey == HeadlightsToggleKey) {
-        mmGameManager *mgr = mmGameManager::Instance;
-        auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
-
-        if (gamePtr != NULL)
-        {
-            auto popup = gamePtr->getPopup();
-
-            if (popup != NULL) {
-                if (!popup->IsEnabled()) {
-                    // toggle vehicle headlights
-                    vehCarModel::HeadlightsState = !vehCarModel::HeadlightsState;
-                }
-            }
-        }
-        return true;
-    }
-
     if (vKey == HazardLightsToggleKey) {
         mmGameManager *mgr = mmGameManager::Instance;
         auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;

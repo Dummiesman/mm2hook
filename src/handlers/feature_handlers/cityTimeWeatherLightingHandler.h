@@ -61,9 +61,9 @@ struct TimeWeatherInfo {
         static hook::Type<float> g_FlatColorIntensity = 0x5C9DA0;
         static hook::Type<float> g_WeatherFriction = 0x5CF6B8;
 
-        aiMap::Instance->drawHeadlights = ShowHeadlights;
+        aiMap::Instance->showHeadlights = ShowHeadlights;
         vehCar::sm_DrawHeadlights = ShowHeadlights;
-        vehCarModel::HeadlightsState = ShowHeadlights;
+        vehCarModel::ShowHeadlights = ShowHeadlights;
 
         g_FlatColorIntensity = FlatColorIntensity;
         g_WeatherFriction = WeatherFriction;

@@ -236,7 +236,7 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
     //draw tlight
     if (tlight != nullptr) {
         //draw night copy
-        if (vehCarModel::HeadlightsState)
+        if (vehCarModel::ShowHeadlights)
             tlight->Draw(shaders);
 
         //draw brake input copy
@@ -247,7 +247,7 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
 
     //draw hlight
     if (hlight != nullptr) {
-        if (vehCarModel::HeadlightsState)
+        if (vehCarModel::ShowHeadlights)
             hlight->Draw(shaders);
     }
 
@@ -272,7 +272,7 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
     if (!vehCarModel::LeftSignalLightState && !vehCarModel::HazardLightsState) {
         if (tslight0 != nullptr) {
             //draw night copy
-            if (vehCarModel::HeadlightsState)
+            if (vehCarModel::ShowHeadlights)
                 tslight0->Draw(shaders);
 
             //draw brake input copy
@@ -285,7 +285,7 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
     if (!vehCarModel::RightSignalLightState && !vehCarModel::HazardLightsState) {
         if (tslight1 != nullptr) {
             //draw night copy
-            if (vehCarModel::HeadlightsState)
+            if (vehCarModel::ShowHeadlights)
                 tslight1->Draw(shaders);
 
             //draw brake input copy
