@@ -726,9 +726,6 @@ public:
         LogFile::WriteLine("Installing handlers...");
         InstallHandlers();
 
-        // Initialize the Lua engine
-        MM2Lua::Initialize();
-
         // limit the amount of logging if specified
         // otherwise, everything will be captured
         //   1 = Printf, Messagef, Displayf
@@ -772,20 +769,6 @@ public:
     static void Reset(bool restarting) {
         LogFile::Write("Hook reset request received: ");
         LogFile::WriteLine((restarting) ? "leaving GameLoop" : "entering GameLoop");
-
-        if (MM2Lua::IsEnabled()) {
-            if (restarting)
-                MM2Lua::OnRestart();
-
-            MM2Lua::Reset();
-        }
-
-        if (!restarting)
-        {
-            auto imguiNode = new mmImGuiManager();
-            imguiNode->Init();
-            MM2::ROOT->AddChild(imguiNode);
-        }
     }
 
     // TODO: fix this horrible logic
@@ -798,6 +781,33 @@ public:
         Reset(true);
     }
 
+    static void BeginPhase(bool a1) {
+        //call original
+        hook::StaticThunk<0x401AA0>::Call<void>(a1);
+
+        //initialize lua
+        if (MM2Lua::IsEnabled()) {
+            MM2Lua::Initialize();
+        }
+
+        //initialize imgui
+        auto imguiNode = new mmImGuiManager();
+        MM2::ROOT->AddChild(imguiNode);
+    }
+
+    static void EndPhase(bool a1) {
+        //call original
+        hook::StaticThunk<0x401FC0>::Call<void>();
+
+        //shutdown lua (therefore releasing all memory)
+        MM2Lua::OnShutdown();
+
+        // shutdown imgui
+        if (mmImGuiManager::Instance != nullptr) {
+            delete mmImGuiManager::Instance;
+        }
+    }
+
     static void Shutdown() {
         LogFile::WriteLine("Hook shutdown request received.");
 
@@ -805,15 +815,6 @@ public:
 
         // gfxPipeline::EndGfx2D
         hook::StaticThunk<0x4AAA10>::Call<void>();
-
-        // we can now safely close everything else
-        if (MM2Lua::IsEnabled())
-            MM2Lua::OnShutdown(); // release Lua
-
-        // shutdown imgui
-        if (mmImGuiManager::Instance != nullptr) {
-            mmImGuiManager::Instance->Shutdown();
-        }
 
         // close this stuff as late as possible
         atexit([](){
@@ -841,6 +842,15 @@ public:
                 cb::call(0x40161B) // Main
             }, "Shutdown hook");
 
+        InstallCallback(
+            &BeginPhase, {
+                cb::call(0x401704),
+            }, "BeginPhase hook" );
+
+        InstallCallback(
+            &EndPhase, {
+                cb::call(0x4019E2), 
+            }, "EndPhase hook" );
         /*
             We'll hook into ArchInit (an empty function),
             and use it to install our callbacks/patches.

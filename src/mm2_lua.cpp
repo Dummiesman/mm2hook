@@ -152,6 +152,11 @@ void LoadMainScript() {
     }
 }
 
+void GC()
+{
+    L.gc();
+}
+
 void ReloadScript()
 {
     // try reloading Lua
@@ -171,6 +176,9 @@ void ReloadScript()
     {
         LogFile::WriteLine("Lua script reloaded.\n");
     }
+
+    // garbage collect
+    GC();
 }
 
 LuaState * MM2Lua::GetState() {
@@ -216,7 +224,7 @@ void MM2Lua::Initialize() {
 
         //
         LogFile::WriteLine("Loading main script...");
-        LoadMainScript();
+        ReloadScript();
     }
 }
 
@@ -226,51 +234,67 @@ void MM2Lua::Reset()
 }
 
 void MM2Lua::OnChatMessage(char* message) {
-    LuaRef func(L, "onChatMessage");
-    tryCallFunction<void>(func, message);
+    if (IsLoaded()) {
+        LuaRef func(L, "onChatMessage");
+        tryCallFunction<void>(func, message);
+    }
 }
 
 void MM2Lua::OnGameEnd() {
-    LuaRef func(L, "onGameEnd");
-    tryCallFunction(func);
+    if (IsLoaded()) {
+        LuaRef func(L, "onGameEnd");
+        tryCallFunction(func);
+    }
 }
 
 void MM2Lua::OnGamePreInit() {
-    LuaRef func(L, "onGamePreInit");
-    tryCallFunction(func);
+    if (IsLoaded()) {
+        LuaRef func(L, "onGamePreInit");
+        tryCallFunction(func);
+    }
 }
 
 void MM2Lua::OnGamePostInit() {
-    luaSetGlobals(); //set globals so post init has access to things like Game
-    LuaRef func(L, "onGamePostInit");
-    tryCallFunction(func);
+    if (IsLoaded()) {
+        luaSetGlobals(); //set globals so post init has access to things like Game
+        LuaRef func(L, "onGamePostInit");
+        tryCallFunction(func);
+    }
 }
 
 void MM2Lua::OnSessionCreate(char * sessionName, char * sessionPassword, int sessionMaxPlayers, NETSESSION_DESC * sessionData)
 {
-    LuaRef func(L, "onSessionCreate");
-    tryCallFunction<void>(func, sessionName, sessionPassword, sessionMaxPlayers, sessionData);
+    if (IsLoaded()) {
+        LuaRef func(L, "onSessionCreate");
+        tryCallFunction<void>(func, sessionName, sessionPassword, sessionMaxPlayers, sessionData);
+    }
 }
 
 void MM2Lua::OnSessionJoin(char * a2, GUID * a3, char * a4)
 {
-    LuaRef func(L, "onSessionJoin");
-    tryCallFunction<void>(func, a2, a3, a4);
+    if (IsLoaded()) {
+        LuaRef func(L, "onSessionJoin");
+        tryCallFunction<void>(func, a2, a3, a4);
+    }
 }
 
 void MM2Lua::OnDisconnect() {
-    LuaRef func(L, "onDisconnect");
-    tryCallFunction(func);
+    if (IsLoaded()) {
+        LuaRef func(L, "onDisconnect");
+        tryCallFunction(func);
+    }
 }
 
 void MM2Lua::OnReset() {
-    LuaRef func(L, "onReset");
-    tryCallFunction(func);
+    if (IsLoaded()) {
+        LuaRef func(L, "onReset");
+        tryCallFunction(func);
+    }
 }
 
 void MM2Lua::OnTick()
 {
-    if (isMainLuaLoaded) {
+    if (IsLoaded()) {
         LuaRef tickFunction(L, "tick");
         tryCallFunction(tickFunction);
     }
@@ -279,28 +303,23 @@ void MM2Lua::OnTick()
     Lua::setGlobal(L, "lastKey", -1);
 }
 
-void MM2Lua::OnRestart()
-{
-    if (isMainLuaLoaded) {
-        LuaRef func(L, "restart");
-        tryCallFunction(func);
-    }
-}
-
 void MM2Lua::OnShutdown()
 {
-    if (isMainLuaLoaded) {
+    if(IsLoaded()) {
         LuaRef func(L, "shutdown");
         tryCallFunction(func);
     }
-
+    GC();
     L.close();
+    isMainLuaLoaded = false;
 }
 
 void MM2Lua::OnRenderUi()
 {
-    LuaRef func(L, "onRenderUi");
-    tryCallFunction(func);
+    if (IsLoaded()) {
+        LuaRef func(L, "onRenderUi");
+        tryCallFunction(func);
+    }
 }
 
 void MM2Lua::OnKeyPress(DWORD vKey)

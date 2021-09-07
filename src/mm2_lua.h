@@ -25,7 +25,6 @@ namespace MM2Lua
     void OnSessionJoin(char *a2, GUID *a3, char *a4);
     
     void OnTick();
-    void OnRestart();
     void OnShutdown();
     void OnKeyPress(DWORD vKey);
 
