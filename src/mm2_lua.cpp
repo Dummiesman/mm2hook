@@ -19,12 +19,8 @@ void mm2L_error(LPCSTR message)
 template <class retType, typename... T>
 retType tryCallFunction(LuaRef func, T&&... args)
 {
-    if (func.isValid()) {
-        if (!func.isFunction()) {
-            mm2L_error("Tried to call a LuaRef that's not a function.");
-            return;
-        }
-
+    if (func.isValid() && func.isFunction()) 
+    {
         try 
         {
             return func.call<retType>(std::forward<T>(args)...);
@@ -36,24 +32,8 @@ retType tryCallFunction(LuaRef func, T&&... args)
     }
 }
 
-
 void tryCallFunction(LuaRef func)
 {
-    /*if (func.isValid()) {
-        if (!func.isFunction()) {
-            mm2L_error("Tried to call a LuaRef that's not a function.");
-            return;
-        }
-
-        try
-        {
-            func.call();
-        }
-        catch (LuaException le)
-        {
-            mm2L_error(le.what());
-        }
-    }*/
     tryCallFunction<void>(func);
 }
 
@@ -261,6 +241,7 @@ void MM2Lua::OnGamePreInit() {
 }
 
 void MM2Lua::OnGamePostInit() {
+    luaSetGlobals(); //set globals so post init has access to things like Game
     LuaRef func(L, "onGamePostInit");
     tryCallFunction(func);
 }
