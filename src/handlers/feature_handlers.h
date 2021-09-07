@@ -22,6 +22,7 @@
 #include "feature_handlers/gfxPipelineHandler.h"
 #include "feature_handlers/gizFerryHandler.h"
 #include "feature_handlers/gizParkedCarMgrHandler.h"
+#include "feature_handlers/InitMapHandler.h"
 #include "feature_handlers/ltLensFlareHandler.h"
 #include "feature_handlers/lvlHandler.h"
 #include "feature_handlers/memSafeHeapHandler.h"

@@ -162,6 +162,7 @@
     <ClInclude Include="src\handlers\feature_handlers\gfxPipelineHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gizFerryHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\InitMapHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\ltLensFlareHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\lvlHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\memSafeHeapHandler.h" />
@@ -474,6 +475,7 @@
     <ClCompile Include="src\handlers\feature_handlers\gfxPipelineHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gizFerryHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\InitMapHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\ltLensFlareHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\lvlHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\memSafeHeapHandler.cpp" />

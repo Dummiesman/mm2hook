@@ -14,6 +14,7 @@ static init_handler g_feature_handlers[] = {
     CreateHandler<memSafeHeapHandler>("memSafeHeap"),
 
     CreateHandler<datCallbackExtensionHandler>("datCallback Extensions"),
+    CreateHandler<InitMapHandler>("InitMapHandler"),
 
     /*
         Initialize the rest of the handlers
