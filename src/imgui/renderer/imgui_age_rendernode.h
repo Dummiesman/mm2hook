@@ -82,37 +82,28 @@ private:
         hook::StaticThunk<0x4BB7A0>::Call<void>(); //ioPad::UpdateAll
     }
 public:
-    bool IsShowing() {
-        return this->uiShowing;
-    }
+    ANGEL_ALLOCATOR 
 
-    void ToggleShowUI() {
-        this->uiShowing = !this->uiShowing;
-        ImGui::GetIO().MouseDrawCursor = this->uiShowing;
-    }
-
-    void Init() {
+    mmImGuiManager::mmImGuiManager() 
+    {
         // delete instance if we already have one
         if (mmImGuiManager::Instance != nullptr) {
-            Warningf("Cleaning up old mmImGuiManager");
-
-            mmImGuiManager::Instance->Shutdown();
-            delete mmImGuiManager::Instance;
+            Quitf("mmImGuiManager already created!");
         }
+
+        Displayf("Initializing ImGui");
 
         // init the AGE part
         viewport = gfxPipeline::CreateViewport();
 
         // init the imgui part
-        Displayf("Initializing ImGui");
-
         ImGui::CreateContext();
         ImPlot::CreateContext();
 
         ImGuiIO& io = ImGui::GetIO(); (void)io;
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
-        
+
         // Make the background a little more transparent
         auto style = &ImGui::GetStyle();
         ImVec4* colors = style->Colors;
@@ -161,14 +152,29 @@ public:
         );
 
         mmImGuiManager::Instance = this;
+
+        asNode::asNode();
     }
 
-    void Shutdown() {
+    mmImGuiManager::~mmImGuiManager()
+    {
         Displayf("Shutting down IMGUI");
         ImGui_ImplAGE_Shutdown();
         ImGui_ImplWin32_Shutdown();
         ImPlot::DestroyContext();
         ImGui::DestroyContext();
+        mmImGuiManager::Instance = nullptr;
+
+        asNode::~asNode();
+    }
+
+    bool IsShowing() {
+        return this->uiShowing;
+    }
+
+    void ToggleShowUI() {
+        this->uiShowing = !this->uiShowing;
+        ImGui::GetIO().MouseDrawCursor = this->uiShowing;
     }
 
 	virtual void Cull() override {
