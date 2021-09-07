@@ -50,7 +50,7 @@ namespace MM2
         AGE_API int RemoveChild(int index)                  { return hook::Thunk<0x4A0F50>::Call<int>(this, index); };
         AGE_API int RemoveChild(asNode *child)              { return hook::Thunk<0x4A0FD0>::Call<int>(this, child); };
         AGE_API void RemoveAllChildren(void)                { hook::Thunk<0x4A1010>::Call<void>(this); };
-        AGE_API asNode * GetChild(int index)                { return hook::Thunk<0x4A1030>::Call<asNode *>(this); };
+        AGE_API asNode * GetChild(int index)                { return hook::Thunk<0x4A1030>::Call<asNode *>(this, index); };
         AGE_API asNode* GetNext(void)                       { return hook::Thunk<0x4A1060>::Call<asNode *>(this); };
         AGE_API asNode* GetLastChild(void)                  { return hook::Thunk<0x4A1070>::Call<asNode *>(this); };
         AGE_API int NumChildren(void)                       { return hook::Thunk<0x4A10A0>::Call<int>(this); };
