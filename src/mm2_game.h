@@ -1200,10 +1200,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmTimer, asNode>("mmTimer")
-                .addFactory([]() {
-                    auto timer = new mmTimer();
-                    return timer;
-                }, LUA_ARGS())
+                .addConstructor(LUA_ARGS())
 
                 .addFunction("Init", &luaInit)
                 .addFunction("Start", &Start)
