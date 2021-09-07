@@ -25,8 +25,9 @@ Multiple declarations will cause compiler errors!
 // Allocator
 // Calls MM2's internal operator new
 //
-#define ANGEL_ALLOCATOR void* operator new(size_t size) { return hook::StaticThunk<0x577360>::Call<void*>(size); }
-
+#define ANGEL_ALLOCATOR void* operator new(size_t size)          { Warningf("memAllocator allocation from hook"); return hook::StaticThunk<0x577360>::Call<void*>(size); } \
+                        void operator delete(void * pointer)     { Warningf("memAllocator delete from hook"); hook::StaticThunk<0x577380>::Call<void>(pointer);}       \
+                        void operator delete[](void * pointer)   { Warningf("memAllocator delete[] from hook"); hook::StaticThunk<0x5773C0>::Call<void>(pointer);}
 //
 // MM2 uses DirectX 7
 //
