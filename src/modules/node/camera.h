@@ -98,7 +98,7 @@ namespace MM2
 
     class camAppCS : public camBaseCS {
     protected:
-        Matrix34 *unk_90; // parent?
+        Matrix34 *Target;
 
         Vector3 TrackTo;
 
@@ -142,7 +142,7 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camAppCS, camBaseCS>("camAppCS")
-                // TODO
+                .addVariableRef("Target", &camAppCS::Target)
             .endClass();
         }
     };
