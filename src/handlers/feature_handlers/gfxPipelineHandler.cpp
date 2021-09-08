@@ -306,7 +306,7 @@ void gfxPipelineHandler::SetRes(int width, int height, int cdepth, int zdepth, b
     }
 
     // We don't want to set the width/height if we are in a menu, it just fucks it up
-    if (MMSTATE->SplashScreen != 0) {
+    if (MMSTATE->NextState != 0) {
         if (datArgParser::Get("max")) {
             HDC hDC = GetDC(NULL);
             width = GetDeviceCaps(hDC, HORZRES);

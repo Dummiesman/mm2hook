@@ -383,7 +383,7 @@ namespace MM2 {
 
         float TimeLimit;
 
-        int SplashScreen; // -1 = ???, 0 = main menu, 1 = race
+        int NextState; // -1 = ???, 0 = main menu, 1 = race
         BOOL DisableRegen; // educated guess based on a skipped call to mmPlayer::UpdateRegen if true
 
         /*
@@ -495,6 +495,7 @@ namespace MM2 {
             .addProperty("UsePortals", &getUsePortals, &setUsePortals)
             .addVariableRef("ViewMode", &mmStatePack::ViewMode, false)
             .addVariableRef("MapMode", &mmStatePack::MapMode, false)
+            .addVariableRef("NextState", &mmStatePack::NextState, false)
             .endClass();
         }
     };
