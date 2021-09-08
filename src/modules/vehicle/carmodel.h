@@ -279,10 +279,7 @@ namespace MM2
                 auto lightPos = this->headlightPositions[i];
                 auto carMatrix = this->carSim->getWorldMatrix();
 
-                float lX = lightPos.Y * carMatrix->m10 + lightPos.Z * carMatrix->m20 + lightPos.X * carMatrix->m00 + carMatrix->m30;
-                float lY = lightPos.Y * carMatrix->m11 + lightPos.Z * carMatrix->m21 + lightPos.X * carMatrix->m01 + carMatrix->m31;
-                float lZ = lightPos.Y * carMatrix->m12 + lightPos.Z * carMatrix->m22 + lightPos.X * carMatrix->m02 + carMatrix->m32;
-                light->Position = Vector3(lX, lY, lZ);
+                light->Position = carMatrix->Transform(lightPos);
 
                 Vector3* someCameraThing = (Vector3*)0x685490;
                 light->DrawGlow(someCameraThing);
@@ -318,10 +315,7 @@ namespace MM2
                 auto lightPos = this->extraHeadlightPositions[i];
                 auto carMatrix = this->carSim->getWorldMatrix();
 
-                float lX = lightPos.Y * carMatrix->m10 + lightPos.Z * carMatrix->m20 + lightPos.X * carMatrix->m00 + carMatrix->m30;
-                float lY = lightPos.Y * carMatrix->m11 + lightPos.Z * carMatrix->m21 + lightPos.X * carMatrix->m01 + carMatrix->m31;
-                float lZ = lightPos.Y * carMatrix->m12 + lightPos.Z * carMatrix->m22 + lightPos.X * carMatrix->m02 + carMatrix->m32;
-                light->Position = Vector3(lX, lY, lZ);
+                light->Position = carMatrix->Transform(lightPos);
 
                 Vector3* someCameraThing = (Vector3*)0x685490;
                 light->DrawGlow(someCameraThing);
@@ -1028,12 +1022,10 @@ namespace MM2
                     auto refWheel = this->carSim->getWheel(2);
                     dummyWhl4Matrix.Set(&refWheel->getMatrix());
 
-                    float offsetX = carSim->BackBackLeftWheelPosDiff.Y * carMatrix->m10 + carSim->BackBackLeftWheelPosDiff.Z * carMatrix->m20 + carSim->BackBackLeftWheelPosDiff.X * carMatrix->m00;
-                    float offsetY = carSim->BackBackLeftWheelPosDiff.Y * carMatrix->m11 + carSim->BackBackLeftWheelPosDiff.Z * carMatrix->m21 + carSim->BackBackLeftWheelPosDiff.X * carMatrix->m01;
-                    float offsetZ = carSim->BackBackLeftWheelPosDiff.Y * carMatrix->m12 + carSim->BackBackLeftWheelPosDiff.Z * carMatrix->m22 + carSim->BackBackLeftWheelPosDiff.X * carMatrix->m02;
-                    dummyWhl4Matrix.m30 += offsetX;
-                    dummyWhl4Matrix.m31 += offsetY;
-                    dummyWhl4Matrix.m32 += offsetZ;
+                    Vector3 offset = carMatrix->Transform(carSim->BackBackLeftWheelPosDiff);
+                    dummyWhl4Matrix.m30 += (offset.X - carMatrix->m30);
+                    dummyWhl4Matrix.m31 += (offset.Y - carMatrix->m31);
+                    dummyWhl4Matrix.m32 += (offset.Z - carMatrix->m32);
 
                     if (fabs(refWheel->getRotationRate()) > 26.f && shub4model != nullptr && vehCarModel::EnableSpinningWheels)
                     {
@@ -1052,12 +1044,10 @@ namespace MM2
                     auto refWheel = this->carSim->getWheel(3);
                     dummyWhl5Matrix.Set(&refWheel->getMatrix());
 
-                    float offsetX = carSim->BackBackRightWheelPosDiff.Y * carMatrix->m10 + carSim->BackBackRightWheelPosDiff.Z * carMatrix->m20 + carSim->BackBackRightWheelPosDiff.X * carMatrix->m00;
-                    float offsetY = carSim->BackBackRightWheelPosDiff.Y * carMatrix->m11 + carSim->BackBackRightWheelPosDiff.Z * carMatrix->m21 + carSim->BackBackRightWheelPosDiff.X * carMatrix->m01;
-                    float offsetZ = carSim->BackBackRightWheelPosDiff.Y * carMatrix->m12 + carSim->BackBackRightWheelPosDiff.Z * carMatrix->m22 + carSim->BackBackRightWheelPosDiff.X * carMatrix->m02;
-                    dummyWhl5Matrix.m30 += offsetX;
-                    dummyWhl5Matrix.m31 += offsetY;
-                    dummyWhl5Matrix.m32 += offsetZ;
+                    Vector3 offset = carMatrix->Transform(carSim->BackBackRightWheelPosDiff);
+                    dummyWhl5Matrix.m30 += (offset.X - carMatrix->m30);
+                    dummyWhl5Matrix.m31 += (offset.Y - carMatrix->m31);
+                    dummyWhl5Matrix.m32 += (offset.Z - carMatrix->m32);
 
                     if (fabs(refWheel->getRotationRate()) > 26.f && shub5model != nullptr && vehCarModel::EnableSpinningWheels)
                     {
@@ -1122,12 +1112,10 @@ namespace MM2
                     auto refWheel = this->carSim->getWheel(2);
                     dummyWhl4Matrix.Set(&refWheel->getMatrix());
 
-                    float offsetX = carSim->BackBackLeftWheelPosDiff.Y * carMatrix->m10 + carSim->BackBackLeftWheelPosDiff.Z * carMatrix->m20 + carSim->BackBackLeftWheelPosDiff.X * carMatrix->m00;
-                    float offsetY = carSim->BackBackLeftWheelPosDiff.Y * carMatrix->m11 + carSim->BackBackLeftWheelPosDiff.Z * carMatrix->m21 + carSim->BackBackLeftWheelPosDiff.X * carMatrix->m01;
-                    float offsetZ = carSim->BackBackLeftWheelPosDiff.Y * carMatrix->m12 + carSim->BackBackLeftWheelPosDiff.Z * carMatrix->m22 + carSim->BackBackLeftWheelPosDiff.X * carMatrix->m02;
-                    dummyWhl4Matrix.m30 += offsetX;
-                    dummyWhl4Matrix.m31 += offsetY;
-                    dummyWhl4Matrix.m32 += offsetZ;
+                    Vector3 offset = carMatrix->Transform(carSim->BackBackLeftWheelPosDiff);
+                    dummyWhl4Matrix.m30 += (offset.X - carMatrix->m30);
+                    dummyWhl4Matrix.m31 += (offset.Y - carMatrix->m31);
+                    dummyWhl4Matrix.m32 += (offset.Z - carMatrix->m32);
 
                     if (fabs(refWheel->getRotationRate()) > 26.f && swhl4model != nullptr && vehCarModel::EnableSpinningWheels)
                     {
@@ -1146,12 +1134,10 @@ namespace MM2
                     auto refWheel = this->carSim->getWheel(3);
                     dummyWhl5Matrix.Set(&refWheel->getMatrix());
 
-                    float offsetX = carSim->BackBackRightWheelPosDiff.Y * carMatrix->m10 + carSim->BackBackRightWheelPosDiff.Z * carMatrix->m20 + carSim->BackBackRightWheelPosDiff.X * carMatrix->m00;
-                    float offsetY = carSim->BackBackRightWheelPosDiff.Y * carMatrix->m11 + carSim->BackBackRightWheelPosDiff.Z * carMatrix->m21 + carSim->BackBackRightWheelPosDiff.X * carMatrix->m01;
-                    float offsetZ = carSim->BackBackRightWheelPosDiff.Y * carMatrix->m12 + carSim->BackBackRightWheelPosDiff.Z * carMatrix->m22 + carSim->BackBackRightWheelPosDiff.X * carMatrix->m02;
-                    dummyWhl5Matrix.m30 += offsetX;
-                    dummyWhl5Matrix.m31 += offsetY;
-                    dummyWhl5Matrix.m32 += offsetZ;
+                    Vector3 offset = carMatrix->Transform(carSim->BackBackRightWheelPosDiff);
+                    dummyWhl5Matrix.m30 += (offset.X - carMatrix->m30);
+                    dummyWhl5Matrix.m31 += (offset.Y - carMatrix->m31);
+                    dummyWhl5Matrix.m32 += (offset.Z - carMatrix->m32);
 
                     if (fabs(refWheel->getRotationRate()) > 26.f && swhl5model != nullptr && vehCarModel::EnableSpinningWheels)
                     {
