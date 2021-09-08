@@ -40,6 +40,17 @@ namespace MM2
                 flags ^= 1;
         }
 
+        inline asNode* getParent(void) const {
+            return this->parent;
+        }
+
+        inline void setParent(asNode* parent) {
+            if (this->getParent() != nullptr)
+                this->getParent()->RemoveChild(this);
+            if(parent != nullptr)
+                parent->AddChild(this);
+        }
+
         AGE_API char * GetName() const {
             return (name) ? name : "";
         };
@@ -78,6 +89,7 @@ namespace MM2
             LuaBinding(L).beginExtendClass<asNode, asCullable>("asNode")
             .addProperty("Name", &GetName, &SetName)
             .addProperty("Active", &isActive, &setActive)
+            .addProperty("Parent", &getParent, &setParent)
 
             .addFunction("AddChild", &AddChild)
             .addFunction("InsertChild", &InsertChild)
