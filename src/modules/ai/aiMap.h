@@ -168,8 +168,28 @@ namespace MM2
         short unk_1C8;
 
         short numAmbients;
-    private:
+    public:
         //helpers
+        inline int getHookmanCount() {
+            return numHookmen;
+        }
+
+        inline int getPedestrianCount() {
+            return numPedestrians;
+        }
+
+        inline int getCtfRacerCount() {
+            return numCTFRacers;
+        }
+
+        inline int getPlayerCount() {
+            return numPlayers;
+        }
+
+        inline int getOpponentCount() {
+            return numOpponents;
+        }
+
         inline int getAmbientCount() {
             return numAmbientVehicles;
         }
@@ -278,6 +298,11 @@ namespace MM2
                 .addPropertyReadOnly("NumAmbientVehicles", &getAmbientCount)
                 .addPropertyReadOnly("NumPaths", &getPathsCount)
                 .addPropertyReadOnly("NumIntersections", &getIntersectionCount)
+                .addPropertyReadOnly("NumPedestrians", &getPedestrianCount)
+                .addPropertyReadOnly("NumHookmen", &getHookmanCount)
+                .addPropertyReadOnly("NumOpponents", &getOpponentCount)
+                .addPropertyReadOnly("NumPlayers", &getPlayerCount)
+                .addPropertyReadOnly("NumCTFRacers", &getCtfRacerCount)
                 .addVariableRef("ShowHeadlights", &aiMap::showHeadlights)
                 .addStaticProperty("Instance", [] { return  &aiMap::Instance; })
             .endClass();
