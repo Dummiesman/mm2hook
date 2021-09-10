@@ -151,8 +151,22 @@ namespace MM2
         static int GetGeomSetCount() {
             return *reinterpret_cast<int*>(0x655764);
         }
+    private:
+        Matrix34 getMatrixLua() 
+        {
+            Matrix34 discard;
+            auto matrix = this->GetMatrix(&discard);
+            discard.Set(&matrix);
+            return discard;
+        }
+
+        Vector3 getPositionLua() 
+        {
+            auto position = this->GetPosition();
+            return Vector3(position);
+        }
+
     public:
-        
         inline ushort getRoomId(void) const {
             return room;
         }
@@ -301,7 +315,7 @@ namespace MM2
                 .addStaticFunction("SetShadowBillboardMtx", &SetShadowBillboardMtx)
                 .addStaticFunction("GetGeomSet", &GetGeomSet)
 
-                //functiolns
+                //functions
                 .addFunction("LoadBoundOnLastEntry", &LoadBoundOnLastEntry)
                 .addFunction("GetBoundSphere", &GetBoundSphere)
                 .addFunction("BeginGeom", &BeginGeom)
@@ -317,11 +331,12 @@ namespace MM2
                 .addStaticFunction("DeleteTempBounds", &DeleteTempBounds)
                 .addFunction("PreLoadShader", &PreLoadShader)
                 .addFunction("Optimize", &Optimize)
+
                 //virtuals
                 .addFunction("Reset", &Reset)
                 .addFunction("IsVisible", &IsVisible)
-                .addFunction("GetMatrix", &GetMatrix)
-                .addFunction("GetPosition", &GetPosition)
+                .addFunction("GetMatrix", &getMatrixLua)
+                .addFunction("GetPosition", &getPositionLua)
                 .addFunction("SetMatrix", &SetMatrix)
                 .addFunction("SetVariant", &SetVariant)
                 .addFunction("GetRadius", &GetRadius)
