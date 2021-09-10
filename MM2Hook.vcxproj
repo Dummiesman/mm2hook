@@ -201,7 +201,6 @@
     <ClInclude Include="src\handlers\feature_handlers\vglHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\Wanted_Common.h" />
     <ClInclude Include="src\hook.h" />
-    <ClInclude Include="src\handlers\debug_handlers.h" />
     <ClInclude Include="src\handlers\lua_drawable.h" />
     <ClInclude Include="src\imgui\imconfig.h" />
     <ClInclude Include="src\imgui\imgui.h" />
@@ -514,7 +513,6 @@
     <ClCompile Include="src\handlers\feature_handlers\vglHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\Wanted_Common.cpp" />
     <ClCompile Include="src\hook.cpp" />
-    <ClCompile Include="src\handlers\debug_handlers.cpp" />
     <ClCompile Include="src\handlers\lua_drawable.cpp" />
     <ClCompile Include="src\imgui\imgui.cpp" />
     <ClCompile Include="src\imgui\imgui_demo.cpp" />

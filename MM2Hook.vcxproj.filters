@@ -111,9 +111,6 @@
     <Filter Include="Source Files\handlers\feature_handlers">
       <UniqueIdentifier>{99305f13-f779-4d2e-ace8-076236dee7f5}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\handlers\debug_handlers">
-      <UniqueIdentifier>{82986dc7-e7ce-459f-b4e9-9f6a438b13af}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -878,9 +875,6 @@
     <ClInclude Include="src\modules\vehicle.h">
       <Filter>Source Files\modules</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\debug_handlers.h">
-      <Filter>Source Files\handlers</Filter>
-    </ClInclude>
     <ClInclude Include="src\handlers\lua_drawable.h">
       <Filter>Source Files\handlers</Filter>
     </ClInclude>
@@ -1459,9 +1453,6 @@
     </ClCompile>
     <ClCompile Include="src\modules\vehicle.cpp">
       <Filter>Source Files\modules</Filter>
-    </ClCompile>
-    <ClCompile Include="src\handlers\debug_handlers.cpp">
-      <Filter>Source Files\handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\lua_drawable.cpp">
       <Filter>Source Files\handlers</Filter>
