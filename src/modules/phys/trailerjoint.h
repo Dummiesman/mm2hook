@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\phys.h>
+#include <modules\node\fileio.h>
+#include <modules\phys\phjoint.h>
 
 namespace MM2
 {
@@ -7,11 +8,32 @@ namespace MM2
     class dgTrailerJoint;
 
     // External declarations
-
+    extern class vehCarSim;
 
     // Class definitions
 
     class dgTrailerJoint : public phJoint, public asFileIO {
+    private:
+        float ForceLimit;
+        int JointStatus;
+        Matrix34 RestOrientMat2;
+        Matrix34 RestOrientMat;
+        float RestoreLimitForceLean;
+        float DampConstLean;
+        float DampLinearLean;
+        float RestoreForceRoll;
+        float DampConstRoll;
+        float DampLinearRoll;
+        float LeanLimit;
+        float NegativeRollLimit;
+        float PositiveRollLimit;
+        float LimitElasticityLean;
+        float LimitElasticityRoll;
+        float FreeRange;
+        float FreeLean;
+        float CosFreeLean;
+        float FreeRoll;
+        vehCarSim* CarSim;
     public:
         AGE_API void Reset()                                { hook::Thunk<0x592E50>::Call<void>(this); }
         AGE_API void BreakJoint()                           { hook::Thunk<0x5942D0>::Call<void>(this); }
@@ -51,7 +73,7 @@ namespace MM2
                 .endClass();
         }
     };
-
+    ASSERT_SIZEOF(dgTrailerJoint, 0x11C);
 
     // Lua initialization
 
