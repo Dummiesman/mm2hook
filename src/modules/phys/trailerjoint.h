@@ -35,6 +35,21 @@ namespace MM2
         float FreeRoll;
         vehCarSim* CarSim;
     public:
+        ANGEL_ALLOCATOR
+
+        AGE_API dgTrailerJoint() {
+            scoped_vtable x(this);
+            hook::Thunk<0x592CC0>::Call<void>(this);
+        }
+
+        AGE_API ~dgTrailerJoint() {
+            scoped_vtable x(this);
+            hook::Thunk<0x592CC0>::Call<void>(this);
+        }
+
+        AGE_API void Init(char const* name, phInertialCS* ICS1, phInertialCS* ICS2, Vector3 const & Offset1, Vector3 const & Offset2)
+                                                            { hook::Thunk<0x592D20>::Call<void>(this, name, ICS1, ICS2, &Offset1, &Offset2); }
+
         AGE_API void Reset()                                { hook::Thunk<0x592E50>::Call<void>(this); }
         AGE_API void BreakJoint()                           { hook::Thunk<0x5942D0>::Call<void>(this); }
         AGE_API void UnbreakJoint()                         { hook::Thunk<0x5942E0>::Call<void>(this); }
@@ -62,6 +77,8 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<dgTrailerJoint, phJoint>("dgTrailerJoint")
+                .addConstructor(LUA_ARGS())
+                .addFunction("Init", &Init)
                 .addFunction("Reset", &Reset)
                 .addFunction("BreakJoint", &BreakJoint)
                 .addFunction("UnbreakJoint", &UnbreakJoint)
