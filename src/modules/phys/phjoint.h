@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\phys.h>
+#include <modules\phys\phinertia.h>
 
 namespace MM2
 {
@@ -7,21 +7,50 @@ namespace MM2
     class phJoint;
 
     // External declarations
-
+    extern class phInertialCS;
 
     // Class definitions
 
     class phJoint {
-    protected:
-        hook::Field<0x04, phInertialCS *> _linkA;
-        hook::Field<0x08, phInertialCS *> _linkB;
+    private:
+        phInertialCS* ICS1;
+        phInertialCS* ICS2;
+        Vector3 Offset1;
+        Vector3 Offset2;
+        Vector3 PremultipliedOffset;
+        Vector3 PremultipliedOffset1;
+        Matrix34 InvMassMatrix;
     public:
-        inline phInertialCS* getFirstLink(void) const {
-            return _linkA.get(this);
+        inline phInertialCS* getFirstLink(void) {
+            return this->ICS1;
         }
 
-        inline phInertialCS* getSecondLink(void) const {
-            return _linkB.get(this);
+        inline void setFirstLink(phInertialCS* ics) {
+            this->ICS1 = ics;
+        }
+
+        inline phInertialCS* getSecondLink(void) {
+            return this->ICS2;
+        }
+
+        inline void setSecondLink(phInertialCS* ics) {
+            this->ICS2 = ics;
+        }
+
+        inline Vector3 getFirstOffset(void) {
+            return this->Offset1;
+        }
+
+        inline void setFirstOffset(Vector3 offset) {
+            this->Offset1 = offset;
+        }
+
+        inline Vector3 getSecondOffset(void) {
+            return this->Offset2;
+        }
+
+        inline void setSecondOffset(Vector3 offset) {
+            this->Offset2 = offset;
         }
 
         virtual AGE_API bool IsBroken(void)                 { return hook::Thunk<0x5961F0>::Call<bool>(this); }
@@ -34,8 +63,10 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<phJoint>("phJoint")
-                .addPropertyReadOnly("FirstLink", &getFirstLink)
-                .addPropertyReadOnly("SecondLink", &getSecondLink)
+                .addProperty("FirstLink", &getFirstLink, &setSecondLink)
+                .addProperty("SecondLink", &getSecondLink, &setSecondLink)
+                .addProperty("FirstOffset", &getFirstOffset, &setSecondOffset)
+                .addProperty("SecondOffset", &getSecondOffset, &setSecondOffset)
                 .addFunction("IsBroken", &IsBroken)
                 .endClass();
         }
