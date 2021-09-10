@@ -68,7 +68,8 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<vehTrailer, dgPhysEntity>("vehTrailer")
-                .addPropertyReadOnly("vehCarSim", &getCarSim)
+                .addFunction("GetWheel", &getWheel)
+                .addPropertyReadOnly("CarSim", &getCarSim)
                 .addPropertyReadOnly("Joint", &getJoint)
             .endClass();
         }
