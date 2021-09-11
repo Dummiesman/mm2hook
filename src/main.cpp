@@ -172,14 +172,10 @@ public:
         if (MM2Lua::IsLoaded())
         {
             auto L = MM2Lua::GetState();
-
-            L->getGlobal("GetLocaleString");
-            L->push(stringId);
-
-            if ((L->pcall(1, 1, 0) == LUA_OK) && !L->isNil(-1))
-                str = L->toString(-1);
-
-            L->pop(1);
+            
+            LuaRef func(*L, "GetLocaleString");
+            if (func.isFunction())
+                str = func.call<LPCSTR>();
         }
 
         auto locStr = &string_buffer[(string_index++ & 0x7)];
