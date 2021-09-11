@@ -1,6 +1,7 @@
 #pragma once
 #include <modules\city.h>
-#include <modules\level.h>
+#include <modules\level\sky.h>
+#include <modules\level\inst.h>
 #include <modules\phys\segment.h>
 
 namespace MM2
@@ -9,11 +10,14 @@ namespace MM2
 
 
     // External declarations
+    extern class lvlInstance;
     extern struct lvlSegment;
     extern struct lvlIntersection;
 
     // Class definitions
     class cityLevel : public lvlLevel {
+    private:
+        int unk28;
     protected:
         //helpers
     public:
