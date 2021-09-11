@@ -345,14 +345,12 @@ namespace MM2
             if (model != nullptr) {
                 DrawPart(model, matrix, shaders);
 
-                hook::Type<gfxTexture*> g_ReflectionMap = 0x628914;
-                bool isSoftware = *(bool*)0x6830D4;
-
-                auto state = &MMSTATE;
-                if (lod == 3 && (g_ReflectionMap != nullptr && !isSoftware && state->EnableReflections))
+                float reflectionIntensity = 1.f;
+                auto reflectionMap = lvlLevel::Singleton->GetEnvMap(this->getRoomId(), this->GetPosition(), &reflectionIntensity);
+                if (reflectionMap != nullptr)
                 {
-                    modShader::BeginEnvMap(g_ReflectionMap, *matrix);
-                    model->DrawEnvMapped(shaders, g_ReflectionMap, 1.f);
+                    modShader::BeginEnvMap(reflectionMap, *matrix);
+                    model->DrawEnvMapped(shaders, reflectionMap, reflectionIntensity);
                     modShader::EndEnvMap();
                 }
             }
@@ -824,14 +822,12 @@ namespace MM2
             }
 
             //draw reflection (only in H LOD)
-            hook::Type<gfxTexture*> g_ReflectionMap = 0x628914;
-            bool isSoftware = *(bool*)0x6830D4;
-            auto state = &MMSTATE;
-
-            if (bodyModel != nullptr && lod == 3 && (g_ReflectionMap != nullptr && !isSoftware && state->EnableReflections))
+            float reflectionIntensity = 1.f;
+            auto reflectionMap = lvlLevel::Singleton->GetEnvMap(this->getRoomId(), this->GetPosition(), &reflectionIntensity);
+            if (lod == 3 && reflectionMap != nullptr && bodyModel != nullptr)
             {
-                modShader::BeginEnvMap(g_ReflectionMap, *this->carSim->getWorldMatrix());
-                bodyModel->DrawEnvMapped(shaders, g_ReflectionMap, 1.f);
+                modShader::BeginEnvMap(reflectionMap, this->GetMatrix());
+                bodyModel->DrawEnvMapped(shaders, reflectionMap, 1.f);
                 modShader::EndEnvMap();
             }
 
