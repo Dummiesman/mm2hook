@@ -167,6 +167,18 @@ namespace MM2
         }
 
     public:
+        LEVEL_ALLOCATOR
+
+        AGE_API lvlInstance(void) {
+            scoped_vtable x(this);
+            hook::Thunk<0x4631F0>::Call<void>(this);
+        }
+
+        AGE_API ~lvlInstance(void) {
+            scoped_vtable x(this);
+            hook::Thunk<0x463220>::Call<void>(this);
+        }
+
         inline ushort getRoomId(void) const {
             return room;
         }
