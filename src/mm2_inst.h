@@ -5,7 +5,6 @@
 #include <modules\level.h>
 #include <modules\banger.h>
 #include <modules\ped.h>
-
 namespace MM2
 {
     // External declarations
@@ -13,7 +12,12 @@ namespace MM2
 
     template<>
     void luaAddModule<module_inst>(LuaState L) {
-        luaBind <lvlInstance::GeomTableEntry>(L);
+        luaBind<lvlInstance::GeomTableEntry>(L);
         luaBind<lvlInstance>(L);
+        luaBind<lvlFixedAny>(L);
+        luaBind<lvlFixedRotY>(L);
+        luaBind<lvlFixedMatrix>(L);
+        luaBind<lvlLandmark>(L);
+        luaBind<aiPedestrianInstance>(L);
     }
 }
