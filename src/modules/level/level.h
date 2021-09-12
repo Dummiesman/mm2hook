@@ -32,10 +32,21 @@ namespace MM2
 
     struct lvlRoomInfo
     {
+    private:
+        int getInstancesLua(lua_State* L)
+        {
+            return CppFunctor::make<LvlInstanceLuaIterator>(L, this->FirstInstance);
+        }
+
+        int getStaticInstancesLua(lua_State* L)
+        {
+            return CppFunctor::make<LvlInstanceLuaIterator>(L, this->FirstStaticInstance);
+        }
+    public:
         unsigned __int16 Flags;
         unsigned __int16 InstanceFlags;
         lvlInstance* FirstInstance;
-        lvlInstance* LastInstanceMaybe;
+        lvlInstance* FirstStaticInstance;
         Vector4 BoundSphere;
         int Color;
         float MinY;
@@ -43,10 +54,12 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<lvlRoomInfo>("lvlRoomInfo")
+                .addFunction("GetInstances", &lvlRoomInfo::getInstancesLua)
+                .addFunction("GetStaticInstances", &lvlRoomInfo::getStaticInstancesLua)
                 .addVariable("Flags", &lvlRoomInfo::Flags, false)
                 .addVariable("InstanceFlags", &lvlRoomInfo::InstanceFlags, false)
                 .addVariable("FirstInstance", &lvlRoomInfo::FirstInstance, false)
-                .addVariable("LastInstance", &lvlRoomInfo::LastInstanceMaybe, false)
+                .addVariable("FirstStaticInstance", &lvlRoomInfo::FirstStaticInstance, false)
                 .addVariable("BoundSphere", &lvlRoomInfo::BoundSphere, false)
                 .addVariable("Color", &lvlRoomInfo::Color, false)
                 .addVariable("MinY", &lvlRoomInfo::MinY, false)

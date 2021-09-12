@@ -6,6 +6,7 @@ namespace MM2
 {
     // Forward declarations
     class lvlInstance;
+    class lvlInstanceLuaIterator;
 
     // External declarations
     extern class cltLight;
@@ -18,7 +19,6 @@ namespace MM2
     extern class modPackage;
 
     // Class definitions
-
     class lvlInstance
     {
     private:
@@ -30,8 +30,7 @@ namespace MM2
 
         short GeomSet;
 
-        int dwordC;
-
+        lvlInstance* Previous;
         lvlInstance *Next;
     protected:
         static AGE_API int GetGeomSet(char const * a1, char const * a2, int a3)
@@ -179,6 +178,14 @@ namespace MM2
             hook::Thunk<0x463220>::Call<void>(this);
         }
 
+        inline lvlInstance* getNext(void) const {
+            return this->Next;
+        }
+
+        inline lvlInstance* getPrevious(void) const {
+            return this->Previous;
+        }
+
         inline ushort getRoomId(void) const {
             return room;
         }
@@ -314,6 +321,8 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<lvlInstance>("lvlInstance")
                 //fields
+                .addPropertyReadOnly("Previous", &getPrevious)
+                .addPropertyReadOnly("Next", &getNext)
                 .addPropertyReadOnly("CurrentRoom", &getRoomId)
                 .addPropertyReadOnly("GeometrySetIndex", &getGeomSetId)
 
@@ -375,6 +384,43 @@ namespace MM2
         }
     };
 
+    class LvlInstanceLuaIterator : public CppFunctor
+    {
+    private:
+        lvlInstance* last;
+        lvlInstance* end;
+    public:
+        LvlInstanceLuaIterator(lvlInstance* instance)
+        {
+            this->last = instance;
+        }
+
+        LvlInstanceLuaIterator(lvlInstance* instance, lvlInstance* end)
+        {
+            this->last = instance;
+            this->end = end;
+        }
+
+        virtual ~LvlInstanceLuaIterator()
+        {
+        }
+
+        virtual int run(lua_State* L) override
+        {
+            if (this->last)
+            {
+                LuaState(L).push(this->last);
+                this->last = this->last->getNext();
+                if (this->last == this->end)
+                    this->last = nullptr;
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+    };
     // Lua initialization
 
 }
