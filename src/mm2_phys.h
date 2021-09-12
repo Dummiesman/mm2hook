@@ -2,6 +2,7 @@
 #include "mm2_common.h"
 
 #include <modules\phys.h>
+#include <modules\banger.h>
 
 namespace MM2
 {
@@ -14,5 +15,7 @@ namespace MM2
         luaBind<phJoint>(L);
         luaBind<dgTrailerJoint>(L);
         luaBind<dgPhysEntity>(L);
+        luaBind<dgBangerData>(L);
+        luaBind<dgBangerInstance>(L);
     }
 }

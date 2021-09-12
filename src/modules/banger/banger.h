@@ -13,12 +13,20 @@ namespace MM2
     // Class definitions
 
     //TODO : find out inheritance / virtual stuff!!!
-    class dgBangerInstance {
+    class dgBangerInstance : public lvlInstance {
     public:
-        void Draw(int a1) { hook::Thunk<0x4415E0>::Call<void>(this, a1); }
+        void Draw(int a1)                   { hook::Thunk<0x4415E0>::Call<void>(this, a1); }
+        dgBangerData* GetData()             { return hook::Thunk<0x441AB0>::Call<dgBangerData*>(this); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<dgBangerInstance, lvlInstance>("dgBangerInstance")
+                //functions
+                .addFunction("GetData", &GetData)
+                .endClass();
+        }
     };
 
-    class dgUnhitBangerInstance : public lvlInstance {
+    class dgUnhitBangerInstance : public dgBangerInstance {
     public:
         /*
             lvlInstance virtuals
