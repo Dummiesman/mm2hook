@@ -26,7 +26,7 @@ void BridgeFerryHandler::Cull(int lod) {
 }
 
 void BridgeFerryHandler::Draw(int lod) {
-    reinterpret_cast<dgBangerInstance*>(this)->Draw(lod);
+    reinterpret_cast<dgBangerInstance*>(this)->dgBangerInstance::Draw(lod);
 }
 
 void BridgeFerryHandler::Install() {
