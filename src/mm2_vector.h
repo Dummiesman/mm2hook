@@ -366,9 +366,6 @@ namespace MM2
         float m31;
         float m32;
 
-        void Set(Matrix34* values) {
-            hook::Thunk<0x4BBFB0>::Call<void>(this, values);
-        }
 
         void MakeScale(float xScale, float yScale, float zScale) {
             this->m00 = xScale;
@@ -642,13 +639,97 @@ namespace MM2
             return returnVec;
         }
 
+        Vector4 GetColumn(int column)
+        {
+            switch (column)
+            {
+            case 0:
+                return Vector4(this->m00, this->m10, this->m20, this->m30);
+            case 1:
+                return Vector4(this->m01, this->m11, this->m21, this->m31);
+            case 2:
+                return Vector4(this->m02, this->m12, this->m22, this->m32);
+            default:
+                return Vector4();
+            }
+        }
+
+        Vector3 GetRow(int row)
+        {
+            switch (row)
+            {
+            case 0:
+                return Vector3(this->m00, this->m01, this->m02);
+            case 1:
+                return Vector3(this->m10, this->m11, this->m12);
+            case 2:
+                return Vector3(this->m20, this->m21, this->m22);
+            case 3:
+                return Vector3(this->m30, this->m31, this->m32);
+            default:         
+                return Vector3();
+            }
+        }
+
+        void SetColumn(int column, Vector4 value)
+        {
+            switch (column)
+            {
+            case 0:
+                this->m00 = value.X;
+                this->m10 = value.Y;
+                this->m20 = value.Z;
+                this->m30 = value.W;
+                break;
+            case 1:
+                this->m01 = value.X;
+                this->m11 = value.Y;
+                this->m21 = value.Z;
+                this->m31 = value.W;
+                break;
+            case 2:
+                this->m02 = value.X;
+                this->m12 = value.Y;
+                this->m22 = value.Z;
+                this->m32 = value.W;
+                break;
+            }
+        }
+
+        void SetRow(int row, Vector3 value)
+        {
+            switch (row)
+            {
+            case 0:
+                this->m00 = value.X;
+                this->m01 = value.Y;
+                this->m02 = value.Z;
+                break;
+            case 1:
+                this->m10 = value.X;
+                this->m11 = value.Y;
+                this->m12 = value.Z;
+                break;
+            case 2:
+                this->m20 = value.X;
+                this->m21 = value.Y;
+                this->m22 = value.Z;
+                break;
+            case 3:
+                this->m30 = value.X;
+                this->m31 = value.Y;
+                this->m32 = value.Z;
+                break;;
+            }
+        }
+
         AGE_API void Set(const Matrix34* a1)                { hook::Thunk<0x4BBFB0>::Call<void>(this, a1); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<Matrix34>("Matrix34")
-                .addFactory([](float m00 = 0.0, float m01 = 0.0, float m02 = 0.0,
-                               float m10 = 0.0, float m11 = 0.0, float m12 = 0.0, 
-                               float m20 = 0.0, float m21 = 0.0, float m22 = 0.0, 
+                .addFactory([](float m00 = 1.0, float m01 = 0.0, float m02 = 0.0,
+                               float m10 = 0.0, float m11 = 1.0, float m12 = 0.0, 
+                               float m20 = 0.0, float m21 = 0.0, float m22 = 1.0, 
                                float m30 = 0.0, float m31 = 0.0, float m32 = 0.0) {
                     auto mtx = new Matrix34();
                     mtx->m00 = m00;
@@ -683,6 +764,11 @@ namespace MM2
                 .addVariableRef("m31", &Matrix34::m31)
                 .addVariableRef("m32", &Matrix34::m32)
 
+                .addFunction("GetColumn", &GetColumn)
+                .addFunction("GetRow", &GetRow)
+                .addFunction("SetColumn", &SetColumn)
+                .addFunction("SetRow", &SetRow)
+
                 .addFunction("Identity", &Matrix34::Identity)
                 .addFunction("Identity3x3", &Matrix34::Identity3x3)
                 .addFunction("Scale", static_cast<void(Matrix34::*)(float, float, float)>(&Matrix34::Scale))
@@ -698,6 +784,8 @@ namespace MM2
                 .addFunction("RotateX", &Matrix34::RotateX)
                 .addFunction("RotateY", &Matrix34::RotateY)
                 .addFunction("RotateZ", &Matrix34::RotateZ)
+
+                .addFunction("Set", &Matrix34::Set)
             .endClass();
         }
     };
