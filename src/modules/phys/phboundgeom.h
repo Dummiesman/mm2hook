@@ -17,7 +17,12 @@ namespace MM2
         phHotEdge* HotEdges;
         Vector3* EdgeNormals;
         float* EdgeCosines;
-        bool dword_78;
+        bool KeepMemory; // if true, dtor doesn't delete materials, hotedges, normals, or cosines
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<phBoundGeometry, phBoundPolygonal>("phBoundGeometry")
+                .endClass();
+        }
     };
     ASSERT_SIZEOF(phBoundGeometry, 0x7C);
 

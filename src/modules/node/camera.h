@@ -365,8 +365,6 @@ namespace MM2
                 .addStaticProperty("Height", &getHeight, &setHeight)
                 .addVariableRef("Speed", &camAICS::Speed)
                 .addVariableRef("RotationSpeed", &camAICS::RotationSpeed)
-                .addProperty("Position", &getPosition, &SetPosition)
-                .addProperty("Matrix", &getMatrix, &SetMatrix)
             .endClass();
         }
     };
