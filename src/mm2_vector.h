@@ -237,6 +237,9 @@ namespace MM2
             $::Vector3::$$op_e_sub$2(this, &vec);
         }
 
+        AGE_API Vector3 operator+(Vector3& vec) {
+            return Vector3(this->X + vec.X, this->Y + vec.Y, this->Z + vec.Z);
+        }
         AGE_API Vector3 operator-(const Vector3& vec) const {
             return $::Vector3::$$op_sub(this, &vec);
         }
@@ -259,6 +262,10 @@ namespace MM2
                 .addVariableRef("x", &Vector3::X)
                 .addVariableRef("y", &Vector3::Y)
                 .addVariableRef("z", &Vector3::Z)
+
+                .addFunction("__add", &Vector3::operator+)
+                .addFunction("__sub", &Vector3::operator-)
+
                 .addFunction("Mag", &Mag)
                 .addFunction("Mag2", &Mag2)
                 .addFunction("InvMag", &InvMag)
