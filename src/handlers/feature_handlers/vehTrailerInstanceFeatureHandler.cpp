@@ -82,10 +82,6 @@ void vehTrailerInstanceFeatureHandler::Draw(int a1) {
     auto geomSet = lvlInstance::GetGeomTableEntry(geomID);
     auto trailer = inst->getTrailer();
     auto trailerMtx = inst->GetMatrix(&trailerMatrix);
-    auto twhl0 = trailer->getWheel(0);
-    auto twhl1 = trailer->getWheel(1);
-    auto twhl2 = trailer->getWheel(2);
-    auto twhl3 = trailer->getWheel(3);
 
     //get our shader set
     int shaderSet = *getPtr<int>(this, 24);
@@ -99,10 +95,10 @@ void vehTrailerInstanceFeatureHandler::Draw(int a1) {
     modStatic* tswhl4 = *getPtr<modStatic*>((geomSet + TSWHL4_GEOM_ID), a1 * 4);
     modStatic* tswhl5 = *getPtr<modStatic*>((geomSet + TSWHL5_GEOM_ID), a1 * 4);
 
-    vehWheel* wheels[4] = { twhl0, twhl1, twhl2, twhl3 };
+    vehWheel* wheels[4] = { trailer->getWheel(0), trailer->getWheel(1),  trailer->getWheel(2), trailer->getWheel(3) };
     modStatic* sWhlGeometries[4] = { tswhl0, tswhl1, tswhl2, tswhl3 };
     int sWhlIds[4] = { TSWHL0_GEOM_ID, TSWHL1_GEOM_ID, TSWHL2_GEOM_ID, TSWHL3_GEOM_ID };
-    int whlIds[4] = { TWHL0_GEOM_ID, TWHL1_GEOM_ID, TWHL2_GEOM_ID, TSWHL3_GEOM_ID };
+    int whlIds[4] = { TWHL0_GEOM_ID, TWHL1_GEOM_ID, TWHL2_GEOM_ID, TWHL3_GEOM_ID };
 
     //draw trailer
     DrawPart(a1, 0, &trailerMtx, shaders);
@@ -120,20 +116,20 @@ void vehTrailerInstanceFeatureHandler::Draw(int a1) {
         }
     }
 
-    if (fabs(twhl2->getRotationRate()) > 26.f && tswhl4 != nullptr && vehCarModel::EnableSpinningWheels)
+    if (fabs(wheels[2]->getRotationRate()) > 26.f && tswhl4 != nullptr && vehCarModel::EnableSpinningWheels)
     {
-        DrawTwhl4(a1, TSWHL4_GEOM_ID, &twhl2->getMatrix(), shaders);
+        DrawTwhl4(a1, TSWHL4_GEOM_ID, &wheels[2]->getMatrix(), shaders);
     }
     else {
-        DrawTwhl4(a1, TWHL4_GEOM_ID, &twhl2->getMatrix(), shaders);
+        DrawTwhl4(a1, TWHL4_GEOM_ID, &wheels[2]->getMatrix(), shaders);
     }
 
-    if (fabs(twhl3->getRotationRate()) > 26.f && tswhl5 != nullptr && vehCarModel::EnableSpinningWheels)
+    if (fabs(wheels[3]->getRotationRate()) > 26.f && tswhl5 != nullptr && vehCarModel::EnableSpinningWheels)
     {
-        DrawTwhl5(a1, TSWHL5_GEOM_ID, &twhl3->getMatrix(), shaders);
+        DrawTwhl5(a1, TSWHL5_GEOM_ID, &wheels[3]->getMatrix(), shaders);
     }
     else {
-        DrawTwhl5(a1, TWHL5_GEOM_ID, &twhl3->getMatrix(), shaders);
+        DrawTwhl5(a1, TWHL5_GEOM_ID, &wheels[3]->getMatrix(), shaders);
     }
 }
 
