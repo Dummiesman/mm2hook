@@ -83,7 +83,7 @@ namespace MM2
                     {
                         Matrix34 drawMatrix = Matrix34();
                         drawMatrix.Set(&i->matrix);
-                        drawMatrix.Dot(a1);
+                        drawMatrix.Dot(*a1);
 
                         //setup renderer
                         gfxRenderState::SetWorldMatrix(drawMatrix);
