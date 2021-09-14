@@ -635,7 +635,6 @@ public:
     }
 };
 
-static ConfigValue<bool> cfgUseAllParkedCars ("UseAllParkedCars", true);
 static ConfigValue<bool> cfgUseAllTrafficColors ("UseAllTrafficColors", true);
 
 class HookSystemFramework
@@ -668,12 +667,6 @@ private:
         InstallPatch("Increase cop limit", { 64 }, {
             0x55100B,
         });
-
-        if (cfgUseAllParkedCars) {
-            InstallPatch("Use all parked cars", { 4 }, {
-                0x579BE1,
-            });
-        }
 
         InstallPatch("Fix crash for missing images", { 0xEB /* jnz -> jmp */ }, {
             0x4B329B, // gfxGetBitmap
