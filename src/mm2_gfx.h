@@ -353,10 +353,19 @@ namespace MM2
             return hook::StaticThunk<0x4AD090>::Call<gfxTexture*>(img, lastMip);
         }
 
+        AGE_API static gfxTexture* CreateRenderTarget(int width, int height)
+        {
+            return hook::StaticThunk<0x4ADF00>::Call<gfxTexture*>(width, height);
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<gfxTexture>("gfxTexture")
+                .addStaticFunction("CreateRenderTarget", &CreateRenderTarget)
+
                 .addStaticProperty("First", [] { return sm_First.get(); })
                 .addStaticProperty("UseInternalCache", [] { return sm_UseInternalCache.get(); })
+
+                .addFunction("Clone", &Clone)
 
                 .addPropertyReadOnly("Name", &getName)
                 .addPropertyReadOnly("Next", &getNext)
@@ -439,6 +448,10 @@ namespace MM2
 
     class gfxPipeline {
     public:
+        static bool SetRenderTarget(gfxTexture const* target) {
+            return hook::StaticThunk<0x4AB570>::Call<bool>(target);
+        }
+
         static gfxViewport * CreateViewport() {
             return hook::StaticThunk<0x4A90B0>::Call<gfxViewport*>();
         }
@@ -550,7 +563,9 @@ namespace MM2
         // educated guess -- applied to view?
         static hook::TypeProxy<Matrix44> sm_Transform;
     public:
-        static void SetCamera(Matrix44 * mtx)   { hook::StaticThunk<0x4B2A20>::Call<void>(mtx); }
+        static void SetCamera(Matrix44 const & mtx)     { hook::StaticThunk<0x4B2A20>::Call<void>(&mtx); }
+        static void SetCamera(Matrix34 const & mtx)     { hook::StaticThunk<0x4B2970>::Call<void>(&mtx); }
+        static void SetCameraFull(Matrix34 const & mtx) { hook::StaticThunk<0x4B2B50>::Call<void>(&mtx); }
     public:
         inline static D3DCULL SetCullMode(D3DCULL cullMode)
         {

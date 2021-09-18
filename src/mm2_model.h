@@ -19,9 +19,29 @@ namespace MM2
     extern class gfxTexture;
 
     class modShader {
-    public:
+    private:
         gfxTexture *Texture;
         gfxMaterial *Material;
+    public:
+        inline void setTexture(gfxTexture* texture)
+        {
+            this->Texture = texture;
+        }
+
+        inline gfxTexture* getTexture()
+        {
+            return this->Texture;
+        }
+
+        inline gfxMaterial* getMaterial()
+        {
+            return this->Material;
+        }
+
+        inline void setMaterial(gfxMaterial* material)
+        {
+            this->Material = material;
+        }
     public:
         static hook::Type<gfxMaterial *> sm_Materials;
         static hook::Type<int> sm_StaticMaterialCount;
@@ -37,6 +57,15 @@ namespace MM2
         
         AGE_API void Load(Stream *stream, bool a2)              { return hook::Thunk<0x4A3B30>::Call<void>(this, stream, a2); }
         AGE_API void PreLoad(void)                              { return hook::Thunk<0x4A40C0>::Call<void>(this); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<modShader>("modShader")
+                .addStaticFunction("BeginEnvMap", &BeginEnvMap)
+                .addStaticFunction("EndEnvMap", &EndEnvMap)
+                .addPropertyReadOnly("Texture", &getTexture)
+                .addPropertyReadOnly("Material", &getMaterial)
+                .endClass();
+        }
     };
 
     class modPackage {

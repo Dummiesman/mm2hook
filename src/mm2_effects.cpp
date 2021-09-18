@@ -33,11 +33,11 @@ namespace MM2
 
         for (int i = 0; i < shaderCount; ++i)
         {
-            CleanShaders[i].Texture = shaders[i].Texture;
-            CleanShaders[i].Material = shaders[i].Material;
+            CleanShaders[i].setTexture(shaders[i].getTexture());
+            CleanShaders[i].setMaterial(shaders[i].getMaterial());
 
-            CurrentShaders[i].Texture = CleanShaders[i].Texture;
-            CurrentShaders[i].Material = CleanShaders[i].Material;
+            CurrentShaders[i].setTexture(CleanShaders[i].getTexture());
+            CurrentShaders[i].setMaterial(CleanShaders[i].getMaterial());
 
             DamageTextures[i] = nullptr;
         }
@@ -50,11 +50,11 @@ namespace MM2
             modShader* cleanShader = &CleanShaders[shaderIndex];
             cleanShader->PreLoad();
 
-            if (cleanShader->Texture)
+            if (cleanShader->getTexture())
             {
                 char textureName[128];
 
-                strcpy_s(textureName, cleanShader->Texture->Name);
+                strcpy_s(textureName, cleanShader->getTexture()->Name);
 
                 char* find = strrchr(textureName, '_');
 
@@ -62,13 +62,13 @@ namespace MM2
                 {
                     *find = '\0';
 
-                    DamageTextures[shaderIndex] = cleanShader->Texture;
+                    DamageTextures[shaderIndex] = cleanShader->getTexture();
 
                     gfxTexture* cleanTexture = gfxGetTexture(textureName, 1);
 
                     if (cleanTexture)
                     {
-                        cleanShader->Texture = cleanTexture;
+                        cleanShader->setTexture(cleanTexture);
                     }
 
                     hasDamageTextures = true;
@@ -89,8 +89,8 @@ namespace MM2
 
                 modShader* dirtyShader = &CurrentShaders[shaderIndex];
 
-                dirtyShader->Texture = cleanShader->Texture->Clone();
-                dirtyShader->Material = new gfxMaterial(*cleanShader->Material);
+                dirtyShader->setTexture(cleanShader->getTexture()->Clone());
+                dirtyShader->setMaterial(new gfxMaterial(*cleanShader->getMaterial()));
             }
         }
 
@@ -176,19 +176,19 @@ namespace MM2
     {
         for (int i = 0; i < TextureCount; ++i)
         {
-            if (CleanShaders[i].Texture != CurrentShaders[i].Texture)
+            if (CleanShaders[i].getTexture() != CurrentShaders[i].getTexture())
             {
-                CurrentShaders[i].Texture->Blit(
+                CurrentShaders[i].getTexture()->Blit(
                     0, 0,
-                    CleanShaders[i].Texture,
+                    CleanShaders[i].getTexture(),
                     0, 0,
-                    CleanShaders[i].Texture->Width, CleanShaders[i].Texture->Height
+                    CleanShaders[i].getTexture()->Width, CleanShaders[i].getTexture()->Height
                 );
             }
 
-            if (CleanShaders[i].Material != CurrentShaders[i].Material)
+            if (CleanShaders[i].getMaterial() != CurrentShaders[i].getMaterial())
             {
-                *CleanShaders[i].Material = *CurrentShaders[i].Material;
+                CleanShaders[i].setMaterial(CurrentShaders[i].getMaterial());
             }
         }
     }
@@ -244,10 +244,10 @@ namespace MM2
                         + randY * TexCoords[tri1].Y
                         + randZ * TexCoords[tri2].Y;
 
-                    if (CleanShaders[texIndex].Texture != CurrentShaders[texIndex].Texture)
+                    if (CleanShaders[texIndex].getTexture() != CurrentShaders[texIndex].getTexture())
                     {
                         ApplyBirdPoopDamage(
-                            CurrentShaders[texIndex].Texture,
+                            CurrentShaders[texIndex].getTexture(),
                             damageTexture,
                             texDamageX,
                             texDamageY);
@@ -282,9 +282,9 @@ namespace MM2
 
             for (int i = 0; i < TextureCount; ++i)
             {
-                if (CleanShaders[i].Material != CurrentShaders[i].Material)
+                if (CleanShaders[i].getMaterial() != CurrentShaders[i].getMaterial())
                 {
-                    delete CurrentShaders[i].Material;
+                    delete CurrentShaders[i].getMaterial();
                 }
             }
 
