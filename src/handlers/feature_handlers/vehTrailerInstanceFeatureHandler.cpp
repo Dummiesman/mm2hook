@@ -10,8 +10,8 @@ const int TWHL0_GEOM_ID = 3;
 const int TWHL1_GEOM_ID = 4;
 const int TWHL2_GEOM_ID = 5;
 const int TWHL3_GEOM_ID = 6;
-const int TWHL4_GEOM_ID = 6;
-const int TWHL5_GEOM_ID = 7;
+const int TWHL4_GEOM_ID = 15; 
+const int TWHL5_GEOM_ID = 16;
 const int RLIGHT_GEOM_ID = 8;
 const int BLIGHT_GEOM_ID = 9;
 const int HLIGHT_GEOM_ID = 10;
@@ -60,13 +60,13 @@ void vehTrailerInstanceFeatureHandler::DrawPartReflections(modStatic* a1, Matrix
 void vehTrailerInstanceFeatureHandler::DrawPart(int a1, int a2, Matrix34* a3, modShader* a4) {
     auto inst = reinterpret_cast<vehTrailerInstance*>(this);
     auto geomID = inst->getGeomSetId() - 1;
-    auto geomSet = lvlInstance::GetGeomTableEntry(geomID);
+    auto geomSet = lvlInstance::GetGeomTableEntry(geomID + a2);
 
     //setup renderer
     gfxRenderState::SetWorldMatrix(*a3);
 
     //get part
-    modStatic* part = *getPtr<modStatic*>((geomSet + a2), a1 * 4);
+    modStatic* part = geomSet->getLOD(a1); 
 
     if (part != nullptr) {
         if (vehCarModel::PartReflections && a1 == 3)
@@ -95,7 +95,7 @@ void vehTrailerInstanceFeatureHandler::Draw(int a1) {
     modStatic* tswhl4 = *getPtr<modStatic*>((geomSet + TSWHL4_GEOM_ID), a1 * 4);
     modStatic* tswhl5 = *getPtr<modStatic*>((geomSet + TSWHL5_GEOM_ID), a1 * 4);
 
-    vehWheel* wheels[4] = { trailer->getWheel(0), trailer->getWheel(1),  trailer->getWheel(2), trailer->getWheel(3) };
+    vehWheel* wheels[4] = { trailer->getWheel(0), trailer->getWheel(1), trailer->getWheel(2), trailer->getWheel(3) };
     modStatic* sWhlGeometries[4] = { tswhl0, tswhl1, tswhl2, tswhl3 };
     int sWhlIds[4] = { TSWHL0_GEOM_ID, TSWHL1_GEOM_ID, TSWHL2_GEOM_ID, TSWHL3_GEOM_ID };
     int whlIds[4] = { TWHL0_GEOM_ID, TWHL1_GEOM_ID, TWHL2_GEOM_ID, TWHL3_GEOM_ID };
