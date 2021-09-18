@@ -10,8 +10,7 @@ void aiPoliceForceHandler::Reset(void) {
     // reset number of cops pursuing player
     // fixes incorrect music bug
     vehPoliceCarAudio::iNumCopsPursuingPlayer = 0;
-
-    $::aiPoliceForce::Reset(this);
+    reinterpret_cast<aiPoliceForce*>(this)->Reset();
 }
 
 void aiPoliceForceHandler::Install() {
