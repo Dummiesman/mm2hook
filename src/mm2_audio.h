@@ -81,8 +81,8 @@ namespace MM2
         byte _buffer[0x40];
     private:
         //lua helper
-        bool LoadLua(LPCSTR wavName, int handle) {
-            return Load(wavName, handle, false) != FALSE;
+        bool LoadLua(LPCSTR wavName, int handleIndex) {
+            return Load(wavName, handleIndex, false) != FALSE;
         }
     public:
         AGE_API AudSoundBase() {
@@ -96,7 +96,6 @@ namespace MM2
         };
 
         AGE_API ~AudSoundBase() {
-            Warningf("audSoundBase DTOR");
             scoped_vtable x(this);
             hook::Thunk<0x50D7B0>::Call<void>(this);
         };
@@ -125,6 +124,7 @@ namespace MM2
         AGE_API void SetVolume(float volume)                { hook::Thunk<0x50DA30>::Call<void>(this, volume); }
         AGE_API void SetPan(float pan, int a2)              { hook::Thunk<0x50DB30>::Call<void>(this, pan, a2); }
         AGE_API void SetSoundHandleIndex(int index)         { hook::Thunk<0x50E2C0>::Call<void>(this, index); }
+        AGE_API void SetExtension(LPCSTR extension)         { hook::Thunk<0x50D900>::Call<void>(this, extension); }
         AGE_API void SetSubPath(LPCSTR path)                { hook::Thunk<0x50D8D0>::Call<void>(this, path); }
         AGE_API void SetPlayPosition(unsigned int position)
                                                             { hook::Thunk<0x50E2E0>::Call<void>(this, position); }
@@ -156,7 +156,9 @@ namespace MM2
                 .addFunction("SetFrequency", &SetFrequency)
                 .addFunction("SetPan", &SetPan)
                 .addFunction("SetVolume", &SetVolume)
+                
                 .addFunction("SetSubPath", &SetSubPath)
+                .addFunction("SetExtension", &SetExtension)
                 .endClass();
         }
     };
