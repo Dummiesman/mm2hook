@@ -7,16 +7,10 @@
 namespace MM2
 {
     //External declarations
-    extern class asNode;
-    extern class Stream;
-    extern class aiMap;
-    extern class lvlAiMap;
-    extern class lvlAiRoad;
-    extern class aiVehicleSpline;
-    extern class aiVehicleAmbient;
 
     template<>
     void luaAddModule<module_ai>(LuaState L) {
+        luaBind<aiPoliceForce>(L);
         luaBind<aiPath>(L);
         luaBind<aiIntersection>(L);
         luaBind<aiMap>(L);

@@ -169,6 +169,10 @@ namespace MM2
         short numAmbients;
     public:
         //helpers
+        inline aiPoliceForce* getPoliceForce() {
+            return policeForce;
+        }
+
         inline int getHookmanCount() {
             return numHookmen;
         }
@@ -293,6 +297,7 @@ namespace MM2
                 .addFunction("Opponent", &Opponent)
                 .addFunction("Intersection", &Intersection)
                 .addFunction("Vehicle", &Vehicle)
+                .addPropertyReadOnly("PoliceForce", &getPoliceForce)
                 .addPropertyReadOnly("Stats", &getStats)
                 .addPropertyReadOnly("NumAmbientVehicles", &getAmbientCount)
                 .addPropertyReadOnly("NumPaths", &getPathsCount)

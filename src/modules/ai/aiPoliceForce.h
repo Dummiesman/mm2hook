@@ -26,6 +26,16 @@ namespace MM2
         AGE_API int Find(vehCar *cop, vehCar *perp)               { return hook::Thunk<0x550F40>::Call<int>(this, cop, perp); }
         AGE_API int State(vehCar *cop, vehCar *perp, float a3 )   { return hook::Thunk<0x551120>::Call<int>(this, cop, perp, a3); }
         AGE_API void Reset()                                      { hook::Thunk<0x550EF0>::Call<void>(this); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<aiPoliceForce>("aiPoliceForce")
+                .addFunction("UnRegisterCop", &UnRegisterCop)
+                .addFunction("RegisterPerp", &RegisterPerp)
+                .addFunction("Find", &Find)
+                .addFunction("State", &State)
+                .addFunction("Reset", &Reset)
+                .endClass();
+        }
     };
 
     // Lua initialization
