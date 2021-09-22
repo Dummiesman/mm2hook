@@ -270,6 +270,7 @@ namespace MM2
 
                 .addFunction("__add", &Vector3::operator+)
                 .addFunction("__sub", &Vector3::operator-)
+                .addFunction("__div", &Vector3::operator/)
 
                 .addFunction("Mag", &Mag)
                 .addFunction("Mag2", &Mag2)
