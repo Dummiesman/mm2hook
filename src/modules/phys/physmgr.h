@@ -146,7 +146,7 @@ namespace MM2
             for (int i = 0; i < count; i++) 
             {
                 auto entry = getMover(i);
-                if (entry->Instance == instance)
+                if (entry->getInstance() == instance)
                     return entry;
             }
             return nullptr;
