@@ -12,6 +12,7 @@ namespace MM2
         luaBind<phPolygon>(L);
         luaBind<LuaRaycastResult>(L);
         luaBind<phInertialCS>(L);
+        luaBind<dgPhysManager::CollisionTableEntry>(L);
         luaBind<dgPhysManager>(L);
         luaBind<phJoint>(L);
         luaBind<dgTrailerJoint>(L);

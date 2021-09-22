@@ -8,6 +8,7 @@ namespace MM2
     class dgPhysManager;
 
     // External declarations
+    extern class dgPhysEntity;
     extern class lvlInstance;
     extern struct lvlSegment;
     extern struct phIntersectionPoint;
@@ -69,6 +70,50 @@ namespace MM2
     };
 
     class dgPhysManager {
+    public:
+        struct CollisionTableEntry
+        {
+        private:
+            lvlInstance* Instance;
+            dgPhysEntity* PhysEntity;
+            short CollidablesCount;
+            lvlInstance* Collidables[32];
+            short Flags;
+            byte byte_8e;
+            byte byte_8f;
+
+        public:
+            inline short getFlags()
+            {
+                return this->Flags;
+            }
+
+            inline lvlInstance* getInstance()
+            {
+                return this->Instance;
+            }
+
+            inline int getCollidablesCount()
+            {
+                return this->CollidablesCount;
+            }
+
+            inline lvlInstance* getCollidable(int num)
+            {
+                if (num < 0 || num >= this->getCollidablesCount())
+                    return nullptr;
+                return this->Collidables[num];
+            }
+
+            static void BindLua(LuaState L) {
+                LuaBinding(L).beginClass<dgPhysManager>("dgPhysManager")
+                    .beginClass<CollisionTableEntry>("CollisionTableEntry")
+                        .addPropertyReadOnly("NumCollidables", &getCollidablesCount)
+                        .addPropertyReadOnly("Instance", &getInstance)
+                        .addFunction("GetCollidable", &getCollidable)
+                        .endClass();
+            }
+        };
     private:
         std::shared_ptr<LuaRaycastResult> collideLua(Vector3 start, Vector3 end)
         {
@@ -80,8 +125,33 @@ namespace MM2
             LuaRaycastResult* result = (collided) ? new LuaRaycastResult(&segment, &isect) : nullptr;
             return std::shared_ptr<LuaRaycastResult>(result);
         }
-        }
     public:
+        int getMoverCount()
+        {
+            return *getPtr<int>(this, 0x80);
+        }
+
+        CollisionTableEntry* getMover(int num)
+        {
+            if (num < 0 || num >= this->getMoverCount())
+                return nullptr;
+
+            auto entry = getPtr<CollisionTableEntry>(this, 0xA4) + num;
+            return entry;
+        }
+
+        CollisionTableEntry* findMover(lvlInstance* instance)
+        {
+            int count = this->getMoverCount();
+            for (int i = 0; i < count; i++) 
+            {
+                auto entry = getMover(i);
+                if (entry->Instance == instance)
+                    return entry;
+            }
+            return nullptr;
+        }
+    
         static inline float getGravity() 
         {
             return dgPhysManager::Gravity.get();
@@ -92,6 +162,7 @@ namespace MM2
             dgPhysManager::Gravity.set(gravity);
         }
     public:
+        static hook::Type<lvlInstance *> PlayerInst;
         static hook::Type<dgPhysManager *> Instance;
         static hook::Type<float> Gravity;
 
@@ -103,15 +174,21 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<dgPhysManager>("dgPhysManager")
                 //statics
-                .addStaticProperty("Instance", [] {return (dgPhysManager *)Instance; })
+                .addStaticProperty("Instance", [] { return (dgPhysManager*)Instance; })
 
                 //properties
+                .addPropertyReadOnly("NumMovers", &getMoverCount)
+
                 .addStaticProperty("Gravity", &getGravity, &setGravity)
-                 
+                .addStaticProperty("PlayerInst", [] { return (lvlInstance*)dgPhysManager::PlayerInst; })
+
                 //functions
                 .addFunction("Collide", &collideLua)
                 .addFunction("IgnoreMover", &IgnoreMover)
                 .addFunction("DeclareMover", &DeclareMover)
+
+                .addFunction("FindMover", &findMover)
+                .addFunction("GetMover", &getMover)
 
                 .endClass();
         }
