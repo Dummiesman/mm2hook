@@ -1,5 +1,4 @@
 #pragma once
-#include <modules\vehicle.h>
 #include <mm2_gfx.h>
 #include <mm2_effects.h>
 
@@ -7,6 +6,7 @@
 #include "breakable.h"
 #include "siren.h"
 #include "cardamage.h"
+#include "bound.h"
 
 namespace MM2
 {
@@ -172,7 +172,7 @@ namespace MM2
                     if (this->carSim->getSpeedMPH() <= 50.f)
                         return;
 
-                    int i = 3 * (rand() % 4);
+                    int i = 3 * (irand() % 4);
 
                     int wheelStatusFlag = 1 << i;
                     int hubStatusFlag = 1 << (i + 1);
@@ -184,7 +184,7 @@ namespace MM2
 
                     int ejectPackage = (wheelStatusFlag | hubStatusFlag | fenderStatusFlag);
 
-                    int ii = 3 * (rand() % 2);
+                    int ii = 3 * (irand() % 2);
 
                     int extraWheelStatusFlag = 1 << (ii + 12);
                     int extraHubStatusFlag = 1 << (ii + 13);
@@ -201,7 +201,7 @@ namespace MM2
                     return;
                 }
                 else {
-                    int i = 3 * (rand() % 4);
+                    int i = 3 * (irand() % 4);
 
                     int wheelStatusFlag = 1 << i;
                     int hubStatusFlag = 1 << (i + 1);
@@ -213,7 +213,7 @@ namespace MM2
 
                     int ejectPackage = (wheelStatusFlag | hubStatusFlag | fenderStatusFlag);
 
-                    int ii = 3 * (rand() % 4);
+                    int ii = 3 * (irand() % 4);
 
                     int wheelStatusFlag2 = 1 << ii;
                     int hubStatusFlag2 = 1 << (ii + 1);
@@ -225,7 +225,7 @@ namespace MM2
 
                     int ejectPackage2 = (wheelStatusFlag2 | hubStatusFlag2 | fenderStatusFlag2);
 
-                    int iii = 3 * (rand() % 2);
+                    int iii = 3 * (irand() % 2);
 
                     int extraWheelStatusFlag = 1 << (iii + 12);
                     int extraHubStatusFlag = 1 << (iii + 13);
@@ -1377,7 +1377,7 @@ namespace MM2
                 .addProperty("Variant", &getVariant, &setVariant)
                 .addProperty("Visible", &GetVisible, &SetVisible)
                 .addStaticVariableRef("ShowHeadlights", &vehCarModel::ShowHeadlights)
-
+                
                 //lua functions
                 .addFunction("GetHeadlight", &getHeadlight)
 

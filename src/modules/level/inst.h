@@ -56,6 +56,7 @@ namespace MM2
                 break;
             case phBound::BoundType::Terrain:
                 LuaState(L).push(reinterpret_cast<phBoundTerrain*>(bound));
+                break;
             case phBound::BoundType::TerrainLocal:
                 LuaState(L).push(reinterpret_cast<phBoundTerrainLocal*>(bound));
                 break;

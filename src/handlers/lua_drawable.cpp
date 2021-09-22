@@ -17,8 +17,8 @@ void luaDrawableHandler::RegisterCallback(LuaRef self, LuaRef function, int phas
         return;
 
     //verify
-    if (!function.isFunction()) {
-        Errorf("RegisterLuaDrawable: function input is not function type.");
+    if (!function.isValid() || !function.isFunction()) {
+        Errorf("RegisterLuaDrawable: function input wasn't valid");
         return;
     }
 

@@ -23,7 +23,13 @@ namespace MM2
         */
         AGE_API virtual void SetFriction(float a1)  override    { hook::Thunk<0x4DA700>::Call<void>(this, a1); }
         AGE_API virtual void SetElasticity(float a1)  override  { hook::Thunk<0x4DA710>::Call<void>(this, a1); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<vehBound, phBoundGeometry>("vehBound")
+                .endClass();
+        }
     };
+
 
 
     // Lua initialization
