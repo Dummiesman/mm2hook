@@ -36,14 +36,34 @@ namespace MM2
         float Penetration;
         float PenetrationBarelyMoved;
     public:
-        inline BoundType getType(void) 
+        inline BoundType getType() 
         {
             return this->Type;
         }
 
-        inline int getMaterialCount(void) 
+        inline int getMaterialCount() 
         {
             return this->MaterialCount;
+        }
+
+        inline Vector3 getMin()
+        {
+            return this->Min;
+        }
+
+        inline Vector3 getMax()
+        {
+            return this->Max;
+        }
+
+        inline bool getIsOffset()
+        {
+            return this->IsOffset == TRUE;
+        }
+
+        inline Vector3 getOffset() 
+        {
+            return this->Offset;
         }
     public:
         void SetOffset(Vector3& offset) { hook::Thunk<0x4872C0>::Call<void>(this, &offset); }
@@ -96,6 +116,10 @@ namespace MM2
                 .addFunction("GetMaterial", &GetMaterial)
                 .addPropertyReadOnly("Type", &getType)
                 .addPropertyReadOnly("NumMaterials", &getMaterialCount)
+                .addPropertyReadOnly("IsOffset", &getIsOffset)
+                .addPropertyReadOnly("Offset", &getOffset)
+                .addPropertyReadOnly("Min", &getMin)
+                .addPropertyReadOnly("Max", &getMax)
                 .endClass();
         }
     };

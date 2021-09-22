@@ -23,5 +23,7 @@ namespace MM2
         luaBind<phBoundBox>(L);
         luaBind<phBoundSphere>(L);
         luaBind<phBoundHotdog>(L);
+        luaBind<phBoundTerrain>(L);
+        luaBind<phBoundTerrainLocal>(L);
     }
 }

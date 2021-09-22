@@ -181,6 +181,8 @@ namespace MM2
         luaBind<vehTrailer>(L);
         luaBind<vehTrailerInstance>(L);
 
+        luaBind<vehBound>(L);
+
         luaBind<mmVehInfo>(L);
         luaBind<mmVehList>(L);
     }

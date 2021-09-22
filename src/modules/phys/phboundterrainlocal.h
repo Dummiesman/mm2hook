@@ -12,6 +12,11 @@ namespace MM2
     // Class definitions
     class phBoundTerrainLocal : public phBoundTerrain
     {
+    public:
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<phBoundTerrainLocal, phBoundTerrain>("phBoundTerrainLocal")
+                .endClass();
+        }
     };
     ASSERT_SIZEOF(phBoundTerrainLocal, 0xCC);
 

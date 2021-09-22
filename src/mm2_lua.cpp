@@ -138,6 +138,12 @@ LUAMOD_API int luaopen_MM2(lua_State *L)
     LogFile::WriteLine("      module_vehicle");
     luaAddModule<module_vehicle>(modL);
 
+    // Kind of hacky
+    // This references derived classes that aren't registered
+    // during the time of the initial lua registration
+    LogFile::WriteLine("      lvlInstance::BindLuaLate");
+    MM2::lvlInstance::BindLuaLate(modL);
+
     mod.pushToStack();
 
     LogFile::WriteLine("Done!");

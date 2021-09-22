@@ -2,6 +2,8 @@
 #include <modules\level.h>
 #include <..\mm2_model.h>
 
+#include <modules\phys\bound.h>
+
 namespace MM2
 {
     // Forward declarations
@@ -32,6 +34,34 @@ namespace MM2
 
         lvlInstance* Previous;
         lvlInstance *Next;
+        int getBoundLua(lua_State* L, int a1)
+        {
+            auto bound = this->GetBound(a1);
+            switch (bound->getType()) 
+            {
+            case phBound::BoundType::Box:
+                LuaState(L).push(reinterpret_cast<phBoundBox*>(bound));
+                break;
+            case phBound::BoundType::Geometry:
+                LuaState(L).push(reinterpret_cast<phBoundGeometry*>(bound));
+                break;
+            case phBound::BoundType::Hotdog:
+                LuaState(L).push(reinterpret_cast<phBoundHotdog*>(bound));
+                break;
+            case phBound::BoundType::Level:
+                LuaState(L).push(nullptr);
+                break;
+            case phBound::BoundType::Sphere:
+                LuaState(L).push(reinterpret_cast<phBoundSphere*>(bound));
+                break;
+            case phBound::BoundType::Terrain:
+                LuaState(L).push(reinterpret_cast<phBoundTerrain*>(bound));
+            case phBound::BoundType::TerrainLocal:
+                LuaState(L).push(reinterpret_cast<phBoundTerrainLocal*>(bound));
+                break;
+            }
+            return 1;
+        }
     protected:
         static AGE_API int GetGeomSet(char const * a1, char const * a2, int a3)
                                                             { return hook::StaticThunk<0x4632C0>::Call<int>(a1, a2, a3); }
@@ -318,6 +348,12 @@ namespace MM2
                                                             { return hook::Thunk<0x464670>::Call<int>(this, &a1); }
         virtual AGE_API phBound * GetBound(int a1)          { return hook::Thunk<0x4648C0>::Call<phBound *>(this, a1); };
 
+        static void BindLuaLate(LuaState L) {
+            LuaBinding(L).beginClass<lvlInstance>("lvlInstance")
+                .addFunction("GetBound", &getBoundLua)
+            .endClass();
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<lvlInstance>("lvlInstance")
                 //fields
@@ -379,7 +415,7 @@ namespace MM2
                 .addFunction("GetNumLightSources", &GetNumLightSources)
                 //addFunction("GetLightInfo", [](int light) { cltLight light; lvlInstance::GetLightInfo(light, &light); return light; })
                 .addFunction("SetupGfxLights", &SetupGfxLights)
-                .addFunction("GetBound", &GetBound)
+                //.addFunction("GetBound", &GetBound) -> moved to BindLuaLate
             .endClass();
         }
     };
