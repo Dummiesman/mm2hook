@@ -44,7 +44,7 @@ namespace MM2
 
         AGE_API ~dgTrailerJoint() {
             scoped_vtable x(this);
-            hook::Thunk<0x592CC0>::Call<void>(this);
+            hook::Thunk<0x592CF0>::Call<void>(this);
         }
 
         AGE_API void Init(char const* name, phInertialCS* ICS1, phInertialCS* ICS2, Vector3 const & Offset1, Vector3 const & Offset2)

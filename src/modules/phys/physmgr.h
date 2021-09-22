@@ -14,18 +14,72 @@ namespace MM2
     extern struct lvlIntersection;
 
     // Class definitions
+    struct LuaRaycastResult 
+    {
+    private:
+        lvlSegment* segment;
+        lvlIntersection* isect;
+    private:
+        inline Vector3 getIntersectionPoint()
+        {
+            return isect->IntersectionPoint.Point;
+        }
+
+        inline Vector3 getNormal()
+        {
+            return isect->IntersectionPoint.Normal;
+        }
+
+        inline float getNormalizedDistance()
+        {
+            return isect->IntersectionPoint.NormalizedDistance;
+        }
+
+        inline float getPenetration()
+        {
+            return isect->IntersectionPoint.Penetration;
+        }
+
+        inline phBound* getBound()
+        {
+            return isect->Bound;
+        }
+
+        inline phPolygon* getPolygon()
+        {
+            return isect->Poly;
+        }
+    public:
+        LuaRaycastResult(lvlSegment* segment, lvlIntersection* isect) 
+        {
+            this->segment = segment;
+            this->isect = isect;
+        }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<LuaRaycastResult>("LuaRaycastResult")
+                .addPropertyReadOnly("NormalizedDistance", &getNormalizedDistance)
+                .addPropertyReadOnly("Penetration", &getPenetration)
+                .addPropertyReadOnly("Point", &getIntersectionPoint)
+                .addPropertyReadOnly("Bound", &getBound)
+                .addPropertyReadOnly("Normal", &getNormal)
+                .addPropertyReadOnly("Polygon", &getPolygon)
+                .endClass();
+        }
+    };
+
     class dgPhysManager {
     private:
-        //todo: make a LuaRaycastResult, and add optional flags arguments
-        std::shared_ptr<phIntersectionPoint> collideLua(Vector3 start, Vector3 end)
+        std::shared_ptr<LuaRaycastResult> collideLua(Vector3 start, Vector3 end)
         {
             lvlSegment segment;
             lvlIntersection isect;
             segment.Set(start, end, 0, nullptr);
             
             bool collided = dgPhysManager::Collide(segment, &isect, 0, nullptr, 0x20, 0);
-            phIntersectionPoint* point = (collided) ? new phIntersectionPoint(isect.IntersectionPoint) : nullptr;
-            return std::shared_ptr<phIntersectionPoint>(point);
+            LuaRaycastResult* result = (collided) ? new LuaRaycastResult(&segment, &isect) : nullptr;
+            return std::shared_ptr<LuaRaycastResult>(result);
+        }
         }
     public:
         static inline float getGravity() 
