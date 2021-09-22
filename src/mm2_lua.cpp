@@ -79,7 +79,7 @@ void luaSetGlobals()
 
 LUAMOD_API int luaopen_MM2(lua_State *L)
 {
-    LogFile::Write(" - Registering MM2 library...");
+    LogFile::WriteLine(" - Registering MM2 library...");
 
     LuaRef mod = LuaRef::createTable(L);
     auto modL = mod.state();
@@ -90,29 +90,52 @@ LUAMOD_API int luaopen_MM2(lua_State *L)
     // register all Lua modules
     // empty modules will be safely ignored
     // note that order matters. any beginExtendClass<>
-    // which is missing a parent class will CTD before the game even starts!!
+    // which is missing a parent class will CTD/softlock before the game even starts!
+    LogFile::WriteLine("      module_base");
     luaAddModule<module_base>(modL);
-    luaAddModule<module_inst>(modL);
-    luaAddModule<module_ai>(modL);
+    LogFile::WriteLine("      module_audio");
     luaAddModule<module_audio>(modL);
+    LogFile::WriteLine("      module_bound");
     luaAddModule<module_bound>(modL);
+    LogFile::WriteLine("      module_inst");
+    luaAddModule<module_inst>(modL);
+    LogFile::WriteLine("      module_phys");
     luaAddModule<module_phys>(modL);
+    LogFile::WriteLine("      module_ai");
+    luaAddModule<module_ai>(modL);
+    LogFile::WriteLine("      module_breakable");
     luaAddModule<module_breakable>(modL);
+    LogFile::WriteLine("      module_camera");
     luaAddModule<module_camera>(modL);
+    LogFile::WriteLine("      module_common");
     luaAddModule<module_common>(modL);
+    LogFile::WriteLine("      module_creature");
     luaAddModule<module_creature>(modL);
+    LogFile::WriteLine("      module_stream");
     luaAddModule<module_stream>(modL);
+    LogFile::WriteLine("      module_data");
     luaAddModule<module_data>(modL);
+    LogFile::WriteLine("      module_game");
     luaAddModule<module_game>(modL);
+    LogFile::WriteLine("      module_gfx");
     luaAddModule<module_gfx>(modL);
+    LogFile::WriteLine("      module_input");
     luaAddModule<module_input>(modL);
+    LogFile::WriteLine("      module_particle");
     luaAddModule<module_particle>(modL);
+    LogFile::WriteLine("      module_level");
     luaAddModule<module_level>(modL);
+    LogFile::WriteLine("      module_city");
     luaAddModule<module_city>(modL);
+    LogFile::WriteLine("      module_model");
     luaAddModule<module_model>(modL);
+    LogFile::WriteLine("      module_network");
     luaAddModule<module_network>(modL);
+    LogFile::WriteLine("      module_rgl");
     luaAddModule<module_rgl>(modL);
+    LogFile::WriteLine("      module_ui");
     luaAddModule<module_ui>(modL);
+    LogFile::WriteLine("      module_vehicle");
     luaAddModule<module_vehicle>(modL);
 
     mod.pushToStack();
