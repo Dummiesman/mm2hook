@@ -249,7 +249,11 @@ namespace MM2
             return $::Vector3::$$op_sub(this, &vec);
         }
         AGE_API Vector3 operator/(float value) const {
-            return $::Vector3::$$op_div(this, value);
+            float inv = 1.f / value;
+            return Vector3(this->X * inv, this->Y * inv, this->Z * inv);
+        }
+        AGE_API Vector3 operator*(float value) const {
+            return Vector3(this->X * value, this->Y * value, this->Z * value);
         }
         AGE_API Vector3 operator%(const Vector3& vec) const {
             return $::Vector3::$$op_mod(this, &vec);
@@ -271,6 +275,8 @@ namespace MM2
                 .addFunction("__add", &Vector3::operator+)
                 .addFunction("__sub", &Vector3::operator-)
                 .addFunction("__div", &Vector3::operator/)
+                .addFunction("__mul", &Vector3::operator*)
+                .addFunction("__eq", &Vector3::IsEqual)
 
                 .addFunction("Mag", &Mag)
                 .addFunction("Mag2", &Mag2)
