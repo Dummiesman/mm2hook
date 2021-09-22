@@ -560,7 +560,7 @@ void pedAnimationInstanceHandler::PreUpdate(float seconds) {
 void pedAnimationInstanceHandler::aiMapUpdate()
 {
     //call preupdate
-    if (ioKeyboard::GetKeyState(DIK_0) == 0)
+    if (!ioKeyboard::GetKey(DIK_0))
         pedAnimationInstanceHandler::PreUpdate(datTimeManager::ActualSeconds);
 
     //call aimap update

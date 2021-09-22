@@ -20,7 +20,6 @@ public:
 private:
     gfxViewport* viewport;
     bool uiShowing = false;
-    bool lastUiKeyPressed = false;
 private:
     //mmInput::PutEventInQueue called from mmInput::ProcessMouseEvents
     void PutMouseEventInQueue(long long a1)
@@ -202,11 +201,9 @@ public:
 
 	virtual void Update() override {
         // Showing toggle
-        bool uiKeyPressed = ioKeyboard::GetKeyState(DIK_F10) != 0;
-        if (uiKeyPressed && !this->lastUiKeyPressed) {
+        if (ioKeyboard::GetKeyDown(DIK_F10)) {
             ToggleShowUI();
         }
-        this->lastUiKeyPressed = uiKeyPressed;
 
         //Declare Cullable
         if (uiShowing) 
