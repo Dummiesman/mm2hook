@@ -22,14 +22,13 @@ namespace MM2
             return this->Radius;
         }
 
-        inline void setRadius(float radius)
-        {
-            this->Radius = radius;
-        }
+        AGE_API void SetRadius(float radius)            { hook::Thunk<0x484510>::Call<void>(this, radius); }
+        AGE_API void ScaleRadius(float scale)           { hook::Thunk<0x484550>::Call<void>(this, scale); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<phBoundSphere, phBound>("phBoundSphere")
-                .addProperty("Radius", &getRadius, &setRadius)
+                .addProperty("Radius", &getRadius, &SetRadius)
+                .addFunction("ScaleRadius", &ScaleRadius)
                 .endClass();
         }
     };

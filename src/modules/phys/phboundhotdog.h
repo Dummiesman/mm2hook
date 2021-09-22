@@ -25,7 +25,7 @@ namespace MM2
 
         inline void setRadius(float radius) 
         {
-            this->Radius = radius;
+            this->SetSize(radius, this->getHeight());
         }
 
         inline float getHeight()
@@ -35,8 +35,10 @@ namespace MM2
 
         inline void setHeight(float height)
         {
-            this->Height = height;
+            this->SetSize(this->getRadius(), height);
         }
+
+        AGE_API void SetSize(float radius, float height)           { hook::Thunk<0x480B60>::Call<void>(this, radius, height); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<phBoundHotdog, phBound>("phBoundHotdog")
