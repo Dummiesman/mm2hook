@@ -12,8 +12,26 @@ namespace MM2
     // Class definitions
     class phBoundSphere : public phBound
     {
+    private:
         float Radius;
         phMaterial Material;
+
+    public:
+        inline float getRadius()
+        {
+            return this->Radius;
+        }
+
+        inline void setRadius(float radius)
+        {
+            this->Radius = radius;
+        }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<phBoundSphere, phBound>("phBoundSphere")
+                .addProperty("Radius", &getRadius, &setRadius)
+                .endClass();
+        }
     };
     ASSERT_SIZEOF(phBoundSphere, 0x80);
 

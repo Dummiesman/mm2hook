@@ -91,10 +91,11 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<phBound>("phBound")
+                .addFunction("GetVertex", &GetVertex)
                 .addFunction("SetOffset", &SetOffset)
                 .addFunction("GetMaterial", &GetMaterial)
                 .addPropertyReadOnly("Type", &getType)
-                .addPropertyReadOnly("MaterialCount", &getMaterialCount)
+                .addPropertyReadOnly("NumMaterials", &getMaterialCount)
                 .endClass();
         }
     };

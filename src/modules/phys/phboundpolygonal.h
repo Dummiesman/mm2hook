@@ -17,12 +17,60 @@ namespace MM2
 
     class phBoundPolygonal : public phBound
     {
+    private:
         int VertexCount;
-        int FaceCount;
+        int PolygonCount;
         int EdgeCount;
         Vector3* VertexPtr;
-        phPolygon* Polygons;
+        phPolygon* PolygonsPtr;
         phHotEdge* HotEdgePtr;
+    public:
+        inline int getVertexCount()
+        {
+            return VertexCount;
+        }
+
+        inline int getPolygonCount()
+        {
+            return PolygonCount;
+        }
+
+        inline int getEdgeCount()
+        {
+            return EdgeCount;
+        }
+
+        inline phPolygon* getPolygon(int index) 
+        {
+            if(PolygonsPtr == nullptr || index < 0 || index >= PolygonCount)
+                return nullptr;
+            return &PolygonsPtr[index];
+        }
+
+        inline phHotEdge* getEdge(int index)
+        {
+            if (HotEdgePtr == nullptr || index < 0 || index >= EdgeCount)
+                return nullptr;
+            return &HotEdgePtr[index];
+        }
+
+        inline Vector3* getVertex(int index)
+        {
+            if (VertexPtr == nullptr || index < 0 || index >= VertexCount)
+                return nullptr;
+            return &VertexPtr[index];
+        }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<phBoundPolygonal, phBound>("phBoundPolygonal")
+                .addFunction("GetPolygon", &getPolygon)
+                .addFunction("GetEdge", &getEdge)
+                .addFunction("GetVertex", &getVertex)
+                .addPropertyReadOnly("NumPolygons", &getPolygonCount)
+                .addPropertyReadOnly("NumEdges", &getEdgeCount)
+                .addPropertyReadOnly("NumVertices", &getVertexCount)
+                .endClass();
+        }
     };
     ASSERT_SIZEOF(phBoundPolygonal, 0x64);
 

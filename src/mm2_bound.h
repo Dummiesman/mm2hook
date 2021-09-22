@@ -1,15 +1,12 @@
 #pragma once
 #include "mm2_common.h"
-#include "mm2_phys.h"
+
+#include <modules\phys.h>
 
 namespace MM2
 {
     // Extern declarations
-    extern class phMaterial;
-    extern class phImpactBase;
-    extern struct phSegment;
-    extern struct phIntersection;
-    extern struct phIntersectionPoint;
+
 
     // Forward declarations
     
@@ -20,5 +17,10 @@ namespace MM2
     template<>
     void luaAddModule<module_bound>(LuaState L) {
         luaBind<phBound>(L);
+        luaBind<phBoundPolygonal>(L);
+        luaBind<phBoundGeometry>(L);
+        luaBind<phBoundBox>(L);
+        luaBind<phBoundSphere>(L);
+        luaBind<phBoundHotdog>(L);
     }
 }
