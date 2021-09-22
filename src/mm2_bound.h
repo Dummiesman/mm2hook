@@ -17,6 +17,7 @@ namespace MM2
     template<>
     void luaAddModule<module_bound>(LuaState L) {
         luaBind<phBound>(L);
+        luaBind<phHotEdge>(L);
         luaBind<phBoundPolygonal>(L);
         luaBind<phBoundGeometry>(L);
         luaBind<phBoundBox>(L);

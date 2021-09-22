@@ -13,6 +13,19 @@ namespace MM2
     struct phHotEdge
     {
         ushort Indices[2];
+    
+        short getIndex(int i)
+        {
+            if (i < 0 || i >= 2)
+                return -1;
+            return (short)this->Indices[i];
+        }
+        
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<phHotEdge>("phHotEdge")
+                .addFunction("GetIndex", &getIndex)
+                .endClass();
+        }
     };
 
     class phBoundPolygonal : public phBound

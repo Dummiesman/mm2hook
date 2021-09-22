@@ -44,8 +44,14 @@ namespace MM2
             *(byte*)&Radius = index;
         }
 
+        inline bool isQuad()
+        {
+            return this->Indices[3] != 0;
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<phPolygon>("phPolygon")
+                .addPropertyReadOnly("IsQuad", &isQuad)
                 .addVariableRef("Radius", &phPolygon::Radius)
                 .addVariableRef("Normal", &phPolygon::Normal)
                 .addProperty("MaterialIndex", &getMaterialIndex, &setMaterialIndex)
