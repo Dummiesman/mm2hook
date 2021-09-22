@@ -1309,11 +1309,11 @@ namespace MM2
                 .addPropertyReadOnly("PovCam", &getPovCam)
                 .addPropertyReadOnly("PointCam", &getPointCam)
 
-                //.addPropertyReadOnly("PreCam", &getPreCam)
-                //.addPropertyReadOnly("PostCam", &getPostCam)
-                //.addPropertyReadOnly("PolarCamOne", &getPolarCamOne)
-                //.addPropertyReadOnly("PolarCamTwo", &getPolarCamTwo)
-                //.addPropertyReadOnly("PolarCamThree", &getPolarCamThree)
+                .addPropertyReadOnly("PreCam", &getPreCam)
+                .addPropertyReadOnly("PostCam", &getPostCam)
+                .addPropertyReadOnly("PolarCamOne", &getPolarCamOne)
+                .addPropertyReadOnly("PolarCamTwo", &getPolarCamTwo)
+                .addPropertyReadOnly("PolarCamThree", &getPolarCamThree)
 
                 //functions
                 .addFunction("EnableRegen", &EnableRegen)
