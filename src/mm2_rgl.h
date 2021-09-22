@@ -142,6 +142,7 @@ namespace MM2
             .addFunction("rglDrawAxis", &rglDrawAxis)
             .addFunction("rglDrawSphere", static_cast<void(*)(float p1, int p2)>(&rglDrawSphere))
             .addFunction("rglDrawParticle", &rglDrawParticle)
+            .addFunction("rglDrawEllipsoid", &rglDrawEllipsoid)
             .addFunction("rglResetDrawTexture", &rglResetDrawTexture)
             .addFunction("rglDrawTexture", &rglDrawTexture)
             .addFunction("rglPushMatrix", &rglPushMatrix)
