@@ -17,15 +17,6 @@ namespace MM2
         float NormalizedDistance;
         float Penetration;
         byte IntersectResult;
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<phIntersectionPoint>("phIntersectionPoint")
-                .addVariableRef("Point", &phIntersectionPoint::Point, false)
-                .addVariableRef("Normal", &phIntersectionPoint::Normal, false)
-                .addVariableRef("Penetration", &phIntersectionPoint::Penetration, false)
-                .addVariableRef("NormalizedDistance", &phIntersectionPoint::NormalizedDistance, false)
-                .endClass();
-        }
     };
     ASSERT_SIZEOF(phIntersectionPoint, 0x24);
 
