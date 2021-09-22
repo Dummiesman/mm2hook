@@ -72,66 +72,6 @@ bool gfxPipelineHandler::HandleKeyPress(DWORD vKey)
         } return true;
     }
 
-    if (vKey == HazardLightsToggleKey) {
-        mmGameManager *mgr = mmGameManager::Instance;
-        auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
-        
-        if (gamePtr != NULL)
-        {
-            auto popup = gamePtr->getPopup();
-
-            if (popup != NULL) {
-                if (!popup->IsEnabled()) {
-                    // toggle hazard lights
-                    vehCarModel::HazardLightsState = !vehCarModel::HazardLightsState;
-                    vehCarModel::LeftSignalLightState = false;
-                    vehCarModel::RightSignalLightState = false;
-                }
-            }
-        }
-        return true;
-    }
-
-    if (vKey == LeftTurnSignalToggleKey) {
-        mmGameManager *mgr = mmGameManager::Instance;
-        auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
-
-        if (gamePtr != NULL)
-        {
-            auto popup = gamePtr->getPopup();
-
-            if (popup != NULL) {
-                if (!popup->IsEnabled()) {
-                    // toggle left signal
-                    vehCarModel::LeftSignalLightState = !vehCarModel::LeftSignalLightState;
-                    vehCarModel::HazardLightsState = false;
-                    vehCarModel::RightSignalLightState = false;
-                }
-            }
-        }
-        return true;
-    }
-
-    if (vKey == RightTurnSignalToggleKey) {
-        mmGameManager *mgr = mmGameManager::Instance;
-        auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
-
-        if (gamePtr != NULL)
-        {
-            auto popup = gamePtr->getPopup();
-
-            if (popup != NULL) {
-                if (!popup->IsEnabled()) {
-                    // toggle right signal
-                    vehCarModel::RightSignalLightState = !vehCarModel::RightSignalLightState;
-                    vehCarModel::HazardLightsState = false;
-                    vehCarModel::LeftSignalLightState = false;
-                }
-            }
-        }
-        return true;
-    }
-
     if (vKey == SirenLightsToggleKey) {
         mmGameManager *mgr = mmGameManager::Instance;
         auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;

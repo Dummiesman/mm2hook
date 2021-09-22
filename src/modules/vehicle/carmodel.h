@@ -1376,7 +1376,11 @@ namespace MM2
                 .addPropertyReadOnly("WheelBreakables", &getMechBreakableMgr)
                 .addProperty("Variant", &getVariant, &setVariant)
                 .addProperty("Visible", &GetVisible, &SetVisible)
+
                 .addStaticVariableRef("ShowHeadlights", &vehCarModel::ShowHeadlights)
+                .addStaticVariableRef("LeftSignalLightState", &vehCarModel::LeftSignalLightState)
+                .addStaticVariableRef("RightSignalLightState", &vehCarModel::RightSignalLightState)
+                .addStaticVariableRef("HazardLightsState", &vehCarModel::HazardLightsState)
                 
                 //lua functions
                 .addFunction("GetHeadlight", &getHeadlight)
