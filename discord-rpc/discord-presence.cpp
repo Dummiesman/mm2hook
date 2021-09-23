@@ -1,439 +1,259 @@
 #include "discord-presence.h"
-#include "..\src\events\dispatcher.h"
+#include "gamesdk/discord.h"
+#include <mm2_common.h>
 
-using namespace MM2;
+static discord::Core* core{};
+static discord::Activity activity{};
+bool discordHandler::initialized = false;
 
-static const char* APPLICATION_ID = "379767166267817984";
-
-static DiscordRichPresence presence;
-
-static HMODULE g_DiscordModule = nullptr;
-
-static decltype(Discord_Initialize) * _Discord_Initialize = nullptr;
-static decltype(Discord_Shutdown) * _Discord_Shutdown = nullptr;
-static decltype(Discord_UpdatePresence) * _Discord_UpdatePresence = nullptr;
-static decltype(Discord_RunCallbacks) * _Discord_RunCallbacks = nullptr;
-
-struct _discord_function {
-    void *proc;
-    const char *name;
-} g_DiscordFunctions[] = {
-    { &_Discord_Initialize, "Discord_Initialize" },
-    { &_Discord_Shutdown, "Discord_Shutdown" },
-    { &_Discord_UpdatePresence, "Discord_UpdatePresence" },
-    { &_Discord_RunCallbacks, "Discord_RunCallbacks" },
-    { NULL },
-};
-
-static bool LoadDiscordFunctions() {
-    for (_discord_function *func = g_DiscordFunctions; func->name != nullptr; func++) {
-        auto proc = GetProcAddress(g_DiscordModule, func->name);
-
-        if (proc == nullptr) {
-            Errorf("[discord] Failed to load '%s'!", func->name);
-            return false;
-        }
-
-        *reinterpret_cast<void **>(func->proc) = proc;
-    }
-    return true;
-}
-
-static bool LoadDiscordModule() {
-    g_DiscordModule = LoadLibraryA("discord-rpc.dll");
-
-    if (g_DiscordModule != nullptr)
+static LPCSTR TranslateResult(discord::Result result)
+{
+    switch (result)
     {
-        // try loading the required functions
-        if (LoadDiscordFunctions())
-            return true;
-
-        // one or more required functions not found,
-        // so free the library since we won't need it
-        FreeLibrary(g_DiscordModule);
-        g_DiscordModule = nullptr;
+    case discord::Result::ApplicationMismatch:
+        return "ApplicationMismatch";
+    case discord::Result::CaptureShortcutAlreadyListening:
+        return "CaptureShortcutAlreadyListening";
+    case discord::Result::Conflict:
+        return "Conflict";
+    case discord::Result::GetGuildTimeout:
+        return "GetGuildTimeout";
+    case discord::Result::InsufficientBuffer:
+        return "InsufficientBuffer";
+    case discord::Result::InternalError:
+        return "InternalError";
+    case discord::Result::InvalidAccessToken:
+        return "InvalidAccessToken";
+    case discord::Result::InvalidBase64:
+        return "InvalidBase64";
+    case discord::Result::InvalidChannel:
+        return "InvalidChannel";
+    case discord::Result::InvalidCommand:
+        return "InvalidCommand";
+    case discord::Result::InvalidDataUrl:
+        return "InvalidDataUrl";
+    case discord::Result::InvalidEntitlement:
+        return "InvalidEntitlement";
+    case discord::Result::InvalidEvent:
+        return "InvalidEvent";
+    case discord::Result::InvalidFilename:
+        return "InvalidFilename";
+    case discord::Result::InvalidFileSize:
+        return "InvalidFileSize";
+    case discord::Result::InvalidGiftCode:
+        return "InvalidGiftCode";
+    case discord::Result::InvalidGuild:
+        return "InvalidGuild";
+    case discord::Result::InvalidInvite:
+        return "InvalidInvite";
+    case discord::Result::InvalidJoinSecret:
+        return "InvalidJoinSecret";
+    case discord::Result::InvalidLobbySecret:
+        return "InvalidLobbySecret";
+    case discord::Result::InvalidOrigin:
+        return "InvalidOrigin";
+    case discord::Result::InvalidPayload:
+        return "InvalidPayload";
+    case discord::Result::InvalidPermissions:
+        return "InvalidPermissions";
+    case discord::Result::InvalidSecret:
+        return "InvalidSecret";
+    case discord::Result::InvalidVersion:
+        return "InvalidVersion";
+    case discord::Result::LobbyFull:
+        return "LobbyFull";
+    case discord::Result::LockFailed:
+        return "LockFailed";
+    case discord::Result::NoEligibleActivity:
+        return "NoEligibleActivity";
+    case discord::Result::NotAuthenticated:
+        return "NotAuthenticated";
+    case discord::Result::NotFetched:
+        return "NotFetched";
+    case discord::Result::NotFiltered:
+        return "NotFiltered";
+    case discord::Result::NotFound:
+        return "NotFound";
+    case discord::Result::NotInstalled:
+        return "NotInstalled";
+    case discord::Result::NotRunning:
+        return "NotRunning";
+    case discord::Result::OAuth2Error:
+        return "OAuth2Error";
+    case discord::Result::Ok:
+        return "Ok";
+    case discord::Result::PurchaseCanceled:
+        return "PurchaseCanceled";
+    case discord::Result::PurchaseError:
+        return "PurchaseError";
+    case discord::Result::RateLimited:
+        return "RateLimited";
+    case discord::Result::SelectChannelTimeout:
+        return "SelectChannelTimeout";
+    case discord::Result::SelectVoiceForceRequired:
+        return "SelectVoiceForceRequired";
+    case discord::Result::ServiceUnavailable:
+        return "ServiceUnavailable";
+    case discord::Result::TransactionAborted:
+        return "TransactionAborted";
+    case discord::Result::UnauthorizedForAchievement:
+        return "UnauthorizedForAchievement";
     }
-
-    // failed to load
-    return false;
+    return "UNKNOWN";
 }
 
-void handleDiscordReady() {
-    Warningf("Discord's ready...");
+bool discordHandler::IsInitialized()
+{
+    return discordHandler::initialized;
 }
 
-void handleDiscordError(int errorCode, const char *message) {
-    Warningf("Discord error number %d: %s\n", errorCode, message);
-}
+void discordHandler::Initialize(int64_t appid)
+{
+    if (IsInitialized())
+        return;
 
-void handleDiscordDisconnected(int errorCode, const char *message) {
-    Warningf("Discord disconnected! Error number %d: %s\n", errorCode, message);
-}
+    activity.SetType(discord::ActivityType::Playing);
 
-void handleDiscordJoinGame(const char *joinSecret) {
-    Warningf("Joining game... invite: %s\n", joinSecret);
-}
+    auto result = discord::Core::Create(appid, DiscordCreateFlags_Default, &core);
+    initialized = (result == discord::Result::Ok);
 
-void handleDiscordSpectateGame(const char *spectateSecret) {
-    Warningf("Spectating game... invite: %s\n", spectateSecret);
-}
-
-void handleDiscordJoinRequest(const DiscordJoinRequest *request) {
-    Warningf("Handling Discord join request...\n");
-}
-
-void InitDiscord(void) {
-    // initialize handlers
-    DiscordEventHandlers handlers;
-    memset(&handlers, 0, sizeof(handlers));
-    handlers.ready = handleDiscordReady;
-    handlers.errored = handleDiscordError;
-    handlers.disconnected = handleDiscordDisconnected;
-    handlers.joinGame = handleDiscordJoinGame;
-    handlers.spectateGame = handleDiscordSpectateGame;
-    handlers.joinRequest = handleDiscordJoinRequest;
-
-    LogFile::WriteLine("[discord] Initializing...");
-    _Discord_Initialize(APPLICATION_ID, &handlers, 1, NULL);
-}
-
-#define NUM_DEFAULT_VEHICLES 20
-
-char * carImageKeys[] = {
-    // Default vehicles
-    "vpcoop",
-    "vpbug",
-    "vpcab",
-    "vpcaddie",
-    "vpford",
-    "vpmustang99",
-    "vpcop",
-    "vpbullet",
-    "vppanoz",
-    "vpbus",
-    "vpddbus",
-    "vpcentury",
-    "vpcoop2k",
-    "vpdune",
-    "vpvwcup",
-    "vp4x4",
-    "vpauditt",
-    "vpdb7",
-    "vppanozgt",
-    "vplafrance",
-
-    // Beta vehicles
-	"vpcaddie59",
-	"vpeagle",
-	"vpmoonrover",
-	"vpmtruck",
-
-    // Miscellaneous
-	"vpredcar",
-};
-
-bool isRaceMode() {
-    switch (MMSTATE->GameMode) {
-        case dgGameMode::Checkpoint:
-        case dgGameMode::Circuit:
-        case dgGameMode::Blitz:
-            return true;
-    }
-
-    return false;
-}
-
-static const char * gameModeNames[] = {
-    "Cruise",
-    "Checkpoint",
-    "Cops N' Robbers",
-    "Circuit",
-    "Blitz",
-    "---",
-    "Crash Course",
-};
-
-char * getRaceName(int raceId) {
-    char buffer[512]{ NULL };
-    
-    mmCityInfo *cityInfo = CityListPtr->GetCurrentCity();
-
-    if (cityInfo->GetRaceNames(MMSTATE->GameMode, buffer) > 0) {
-        string raceNames = string(buffer);
-        int numRaces = raceNames.NumSubStrings();
-
-        if (raceId < numRaces)
-            return raceNames.SubString(raceId + 1);
-
-        Errorf("RACENAME(%d) -- OVERFLOW!!!\n", raceId);
-    }
-
-    return "???";
-}
-
-char * getCarImageKey(mmVehInfo *vehInfo) {
-    char *baseName = vehInfo->GetBaseName();
-
-    // first we'll try using the vehicle id
-    int vehicleId = VehicleListPtr->GetVehicleID(baseName);
-
-    if (vehicleId < NUM_DEFAULT_VEHICLES) {
-        char *key = carImageKeys[vehicleId];
-
-        // use the hardcoded ID if possible
-        // (no need to set the result, just return)
-        if (VehicleListPtr->GetVehicleID(key) == vehicleId)
-            return key;
-    }
-
-    // iterate through the list until we find a match.
-    // we'll return "nocardesc" if it's not found
-    for (char* key : carImageKeys)
+    if (result != discord::Result::Ok) 
     {
-        if (!strcmp(key, baseName))
-            return key;
+        MM2::Errorf("discordHandler::Initialize resulted in %s", TranslateResult(result));
     }
-
-    return "nocardesc";
 }
 
-char* getCityImageKey(mmCityInfo *cityInfo) {
-    char* cityName = cityInfo->GetMapName();
-
-    if ((strcmp(cityName, "london") == 0) || (strcmp(cityName, "sf") == 0))
-        return cityName;
-
-    return "nocitydesc";
+void discordHandler::Update()
+{
+    if (!IsInitialized())
+        return;
+    core->ActivityManager().UpdateActivity(activity, [](discord::Result result) 
+    {
+        MM2::Errorf("discordHandler::Update resulted in %s", TranslateResult(result));
+    });
 }
 
-void mm2RichPresenceInfo::UpdatePresence(DiscordRichPresence &presence) {
-    LPCSTR state;
-    string_buf<128> details;
-
-    int8_t instance = 0;
-
-    presence.largeImageKey = NULL;
-    presence.largeImageText = NULL;
-    presence.smallImageKey = NULL;
-    presence.smallImageText = NULL;
-
-    if (inGame) {
-        bool raceMode = isRaceMode();
-        
-        if (inMultiplayer) {
-            state = (raceMode) ? "Racing online" : "In multiplayer";
-            instance = 0;
-        }
-        else {
-            state = (raceMode) ? "In a race" : "In singleplayer";
-        }
-
-        switch (MMSTATE->GameMode) {
-            case dgGameMode::Cruise:
-            case dgGameMode::CRoam:
-                details.set("Cruisin' around");
-                break;
-            case dgGameMode::Checkpoint:
-            case dgGameMode::Circuit:
-            case dgGameMode::Blitz:
-            case dgGameMode::CrashCourse:
-                details.format("%s: %s", gameModeNames[MMSTATE->GameMode], raceName);
-                break;
-            case dgGameMode::CnR:
-                details.format("%s", gameModeNames[MMSTATE->GameMode]);
-                break;
-        }
-
-        presence.largeImageText = city;
-        presence.largeImageKey = cityImageKey;
-        presence.smallImageText = vehicle;
-        presence.smallImageKey = vehicleImageKey;
-    } else {
-        if (inMultiplayer) {
-            state = "In multiplayer";
-            details.set("In lobby");
-            presence.largeImageKey = "mpmenu";
-            presence.largeImageText = "Multiplayer lobby";
-
-            instance = 0;
-        }
-        else {
-            state = "In main menu";
-            details.set("");
-            presence.largeImageKey = "menu";
-            presence.largeImageText = "Main menu";
-        }
-    }
-
-    presence.state = state;
-    presence.details = details;
-
-    //Multiplayer side, to implement
-    presence.instance = instance;
-    presence.partyId = lobbyId;
-    presence.partyMax = lobbyMaxPlayers;
-    presence.partySize = lobbyNumPlayers;
-
-    LogFile::WriteLine("[discord] Updating presence...");
-    _Discord_UpdatePresence(&presence);
+void discordHandler::RunCallbacks()
+{
+    if (!IsInitialized())
+        return;
+    core->RunCallbacks();
 }
 
-int discordHandler::GameInit(void) {
-    LogFile::WriteLine("[discord] GameInit called.");
-
-    //forward to dispatcher
-    GameEventDispatcher::onGamePreInit();
-
-    //
-    get<mmGame>()->mmGame::Init();
-
-    mmCityInfo * cityInfo = CityListPtr->GetCurrentCity();
-    mmVehInfo * vehInfo = VehicleListPtr->GetVehicleInfo(MMSTATE->VehicleName);
-
-    g_mm2Info.inGame = true;
-    g_mm2Info.city = cityInfo->GetLocalisedName();
-    g_mm2Info.cityImageKey = getCityImageKey(cityInfo);
-    g_mm2Info.vehicle = vehInfo->GetDescription();
-    g_mm2Info.vehicleImageKey = getCarImageKey(vehInfo);
-    g_mm2Info.raceName = getRaceName(MMSTATE->RaceId);
-    g_mm2Info.UpdatePresence(presence);
-
-    //forward to dispatcher
-    GameEventDispatcher::onGamePostInit();
-
-    return 1;
+/*
+    Getters and setters
+*/
+LPCSTR discordHandler::GetState()
+{
+    return activity.GetState();
 }
 
-void discordHandler::GameBeDone(int a1) {
-    LogFile::WriteLine("[discord] GameBeDone called.");
-
-    g_mm2Info.inGame = false;
-    g_mm2Info.city = NULL;
-    g_mm2Info.cityImageKey = NULL;
-    g_mm2Info.vehicle = NULL;
-    g_mm2Info.vehicleImageKey = NULL;
-    g_mm2Info.raceName = NULL;
-    g_mm2Info.UpdatePresence(presence);
-
-    //forward to dispatcher
-    GameEventDispatcher::onGameEnd(a1);
+void discordHandler::SetState(LPCSTR str)
+{
+    activity.SetState(str);
 }
 
-int discordHandler::DetectHostMPLobby(char *sessionName, char *sessionPassword, int sessionMaxPlayers, NETSESSION_DESC *sessionData) {
-    int result = NETMGR->CreateSession(sessionName, sessionPassword, sessionMaxPlayers, sessionData);
-
-    if (result) {
-        LogFile::WriteLine("Entered multiplayer lobby");
-        g_mm2Info.inMultiplayer = true;
-        g_mm2Info.lobbyNumPlayers = 1;
-        g_mm2Info.lobbyMaxPlayers = sessionMaxPlayers;
-        g_mm2Info.UpdatePresence(presence);
-    }
-
-    //forward to dispatcher
-    GameEventDispatcher::onSessionCreate(sessionName, sessionPassword, sessionMaxPlayers, sessionData);
-
-    return result;
+LPCSTR discordHandler::GetDetails()
+{
+    return activity.GetDetails();
 }
 
-byte data[sizeof(DPSESSIONDESC2)]{ NULL };
-
-int discordHandler::DetectJoinMPLobby(char *a2, GUID *a3, char *a4) {
-    int result = NETMGR->JoinSession(a2, a3, a4);
-
-    if (result) {
-        LogFile::WriteLine("Entered multiplayer lobby");
-        g_mm2Info.inMultiplayer = true;
-
-        DWORD dataSize = 0;
-
-        IDirectPlay4 *dplay = NETMGR->pDPlay;
-
-        dplay->GetSessionDesc(NULL, &dataSize); //Get the data size
-
-        dplay->GetSessionDesc(&data, &dataSize); //Populate our data buffer
-
-        auto desc = (DPSESSIONDESC2*)data;
-
-        g_mm2Info.lobbyMaxPlayers = desc->dwMaxPlayers;
-        g_mm2Info.UpdatePresence(presence);
-
-        //forward to dispatcher
-        GameEventDispatcher::onSessionJoin(a2, a3, a4);
-    }
-
-    return result;
+void discordHandler::SetDetails(LPCSTR str)
+{
+    activity.SetDetails(str);
 }
 
-int discordHandler::DetectJoinMPLobbySession(void) {
-    int result = NETMGR->JoinLobbySession();
-
-    if (result) {
-        LogFile::WriteLine("Entered multiplayer lobby session");
-        g_mm2Info.inMultiplayer = true;
-
-        DWORD dataSize = 0;
-
-        IDirectPlay4 *dplay = NETMGR->pDPlay;
-
-        dplay->GetSessionDesc(NULL, &dataSize); //Get the data size
-
-        dplay->GetSessionDesc(&data, &dataSize); //Populate our data buffer
-
-        auto desc = (DPSESSIONDESC2*)data;
-
-        g_mm2Info.lobbyMaxPlayers = desc->dwMaxPlayers;
-        g_mm2Info.UpdatePresence(presence);
-    }
-
-    return result;
+LPCSTR discordHandler::GetSmallImage()
+{
+    return activity.GetAssets().GetSmallImage();
 }
 
-void discordHandler::DetectDisconnectMPLobby(void) {
-    LogFile::WriteLine("Exited multiplayer lobby");
-    g_mm2Info.inMultiplayer = false;
-    g_mm2Info.lobbyMaxPlayers = NULL;
-    g_mm2Info.lobbyNumPlayers = NULL;
-    g_mm2Info.UpdatePresence(presence);
-
-    NETMGR->Disconnect();
-
-    //forward to dispatcher
-    GameEventDispatcher::onDisconnect();
+void discordHandler::SetSmallImage(LPCSTR str)
+{
+    activity.GetAssets().SetSmallImage(str);
 }
 
-void discordHandler::DetectDisconnectMPGame(void) {
-    LogFile::WriteLine("Exited multiplayer game");
-    g_mm2Info.inMultiplayer = false;
-    g_mm2Info.lobbyMaxPlayers = NULL;
-    g_mm2Info.lobbyNumPlayers = NULL;
-    g_mm2Info.UpdatePresence(presence);
-
-    NETMGR->CloseSession();
+LPCSTR discordHandler::GetLargeImage()
+{
+    return activity.GetAssets().GetLargeImage();
 }
 
-int discordHandler::RefreshNumPlayersLobby(void) {
-    g_mm2Info.lobbyNumPlayers = NETMGR->GetNumPlayers();
-    g_mm2Info.UpdatePresence(presence);
-    return g_mm2Info.lobbyNumPlayers;
+void discordHandler::SetLargeImage(LPCSTR str)
+{
+    activity.GetAssets().SetLargeImage(str);
+}
+
+LPCSTR discordHandler::GetSmallText()
+{
+    return activity.GetAssets().GetSmallText();
+}
+
+void discordHandler::SetSmallText(LPCSTR text)
+{
+    activity.GetAssets().SetSmallText(text);
+}
+
+LPCSTR discordHandler::GetLargeText()
+{
+    return activity.GetAssets().GetLargeText();
+}
+
+void  discordHandler::SetLargeText(LPCSTR text)
+{
+    activity.GetAssets().SetLargeText(text);
+}
+
+int64_t discordHandler::GetStartTimestamp()
+{
+    return activity.GetTimestamps().GetStart();
+}
+
+void discordHandler::SetStartTimestamp(int64_t timestamp)
+{
+    activity.GetTimestamps().SetStart(timestamp);
+}
+
+int64_t discordHandler::GetEndTimestamp()
+{
+    return activity.GetTimestamps().GetEnd();
+}
+
+void discordHandler::SetEndTimestamp(int64_t timestamp)
+{
+    activity.GetTimestamps().SetEnd(timestamp);
+}
+
+static void test()
+{
+ 
+}
+
+void discordHandler::BindLua(lua_State* L) {
+    LuaBinding(L).beginModule("DiscordRichPresence")
+        .addProperty("Initialized", &discordHandler::IsInitialized)
+
+        .addProperty("State", &GetState, &SetState)
+        .addProperty("Details", &GetDetails, &SetDetails)
+        .addProperty("SmallImage", &GetSmallImage, &SetSmallImage)
+        .addProperty("LargeImage", &GetLargeImage, &SetLargeImage)
+        .addProperty("SmallText", &GetSmallText, &SetSmallText)
+        .addProperty("LargeText", &GetLargeText, &SetLargeText)
+        .addProperty("StartTimestamp", &GetStartTimestamp, &SetStartTimestamp)
+        .addProperty("EndTimestamp", &GetEndTimestamp, &SetEndTimestamp)
+
+        .addFunction("Initialize", &Initialize)
+        .addFunction("Update", &Update)
+        .addFunction("RunCallbacks", &RunCallbacks)
+
+        .endModule();
 }
 
 void discordHandler::Install() {
+    /*TODO: REIMPLEMENT
     bool discordLoaded = (cfgUseRichPresence && LoadDiscordModule());
 
     if (discordLoaded)
     {
-        InstallCallback("mmGame::Init", "Updates Discord Rich Presence when entering a race.",
-            &GameInit, {
-                cb::jmp(0x433AA0),      //mmGameSingle::Init
-                cb::call(0x438F81),     //mmGameMulti::Init
-            }
-        );
-        InstallCallback("mmGame::BeDone", "Updates Discord Rich Presence when exiting a race.",
-            &GameBeDone, {
-                cb::jmp(0x414DF1),      //end of mmGame::BeDone
-            }
-        );
         InstallCallback("asNetwork::CreateSession", "Update the multiplayer status to on when creating the lobby.",
             &DetectHostMPLobby, {
                 cb::call(0x4117C5),     //mmInterface::CreateSession
@@ -475,15 +295,5 @@ void discordHandler::Install() {
     {
         Warningf("**** Discord Rich Presence was NOT loaded! ****");
     }
-}
-
-void discordHandler::Release() {
-    if (g_DiscordModule != nullptr)
-    {
-        LogFile::WriteLine("[discord] Shutting down...");
-        _Discord_Shutdown();
-
-        FreeLibrary(g_DiscordModule);
-        g_DiscordModule = nullptr;
-    }
+    */
 }

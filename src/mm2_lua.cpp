@@ -2,6 +2,7 @@
 #include "mm2_lua.h"
 #include "mm2_network.h"
 #include "luafilesystem/lfs.h"
+#include <discord-presence.h>
 #include <imgui\luabindings\imgui_lua_bindings.cpp>
 
 using namespace LuaIntf;
@@ -137,6 +138,9 @@ LUAMOD_API int luaopen_MM2(lua_State *L)
     luaAddModule<module_ui>(modL);
     LogFile::WriteLine("      module_vehicle");
     luaAddModule<module_vehicle>(modL);
+
+    LogFile::WriteLine("      discordHandler::BindLua");
+    discordHandler::BindLua(modL);
 
     // Kind of hacky
     // This references derived classes that aren't registered

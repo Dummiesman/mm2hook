@@ -1,7 +1,10 @@
 #pragma once
 #include "mm2.h"
 
-class GameEventDispatcher {
+class GameEventDispatcher : handler_t {
+private:
+    void onGameInitHook();
+    void onGameEndHook(int a1);
 public:
     static void onGameEnd(int a1);
     static void onGamePreInit();

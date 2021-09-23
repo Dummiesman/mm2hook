@@ -98,7 +98,7 @@
       <GenerateDebugInformation>DebugFastLink</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <FullProgramDatabaseFile>true</FullProgramDatabaseFile>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;dxguid.lib;dbghelp.lib;discord-rpc.lib;shlwapi.lib;$(DX7Libs);%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;dxguid.lib;dbghelp.lib;discord_game_sdk.dll.lib;shlwapi.lib;$(DX7Libs);%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <!--
@@ -123,6 +123,23 @@
     Lua 5.3.2 files
   -->
   <ItemGroup>
+    <ClInclude Include="discord-rpc\gamesdk\achievement_manager.h" />
+    <ClInclude Include="discord-rpc\gamesdk\activity_manager.h" />
+    <ClInclude Include="discord-rpc\gamesdk\application_manager.h" />
+    <ClInclude Include="discord-rpc\gamesdk\core.h" />
+    <ClInclude Include="discord-rpc\gamesdk\discord.h" />
+    <ClInclude Include="discord-rpc\gamesdk\event.h" />
+    <ClInclude Include="discord-rpc\gamesdk\ffi.h" />
+    <ClInclude Include="discord-rpc\gamesdk\image_manager.h" />
+    <ClInclude Include="discord-rpc\gamesdk\lobby_manager.h" />
+    <ClInclude Include="discord-rpc\gamesdk\network_manager.h" />
+    <ClInclude Include="discord-rpc\gamesdk\overlay_manager.h" />
+    <ClInclude Include="discord-rpc\gamesdk\relationship_manager.h" />
+    <ClInclude Include="discord-rpc\gamesdk\storage_manager.h" />
+    <ClInclude Include="discord-rpc\gamesdk\store_manager.h" />
+    <ClInclude Include="discord-rpc\gamesdk\types.h" />
+    <ClInclude Include="discord-rpc\gamesdk\user_manager.h" />
+    <ClInclude Include="discord-rpc\gamesdk\voice_manager.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiPathHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiPedestrianHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.h" />
@@ -435,6 +452,20 @@
     <ClInclude Include="src\lua\lzio.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="discord-rpc\gamesdk\achievement_manager.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\activity_manager.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\application_manager.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\core.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\image_manager.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\lobby_manager.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\network_manager.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\overlay_manager.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\relationship_manager.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\storage_manager.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\store_manager.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\types.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\user_manager.cpp" />
+    <ClCompile Include="discord-rpc\gamesdk\voice_manager.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiPathHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiPedestrianHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.cpp" />
@@ -692,7 +723,6 @@
   -->
   <ItemGroup>
     <ClInclude Include="discord-rpc\discord-presence.h" />
-    <ClInclude Include="discord-rpc\discord-rpc.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="discord-rpc\discord-presence.cpp" />

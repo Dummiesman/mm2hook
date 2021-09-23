@@ -5,6 +5,25 @@
 
 using namespace MM2;
 
+/*
+    thiscall hooked functions
+*/
+void GameEventDispatcher::onGameInitHook()
+{
+    GameEventDispatcher::onGamePreInit();
+    get<mmGame>()->mmGame::Init();
+    GameEventDispatcher::onGamePostInit();
+}
+
+void GameEventDispatcher::onGameEndHook(int a1)
+{
+    GameEventDispatcher::onGameEnd(a1);
+}
+
+/*
+    Dispatcher static functions
+*/
+
 void GameEventDispatcher::onGameEnd(int a1)
 {
     if (MM2Lua::IsEnabled())
@@ -70,6 +89,18 @@ void GameEventDispatcher::onReset() {
 }
 
 void GameEventDispatcher::Install() {
+    InstallCallback("mmGame::Init", "Register onGameInitHook with dispatcher.",
+        &onGameInitHook, {
+            cb::jmp(0x433AA0),      //mmGameSingle::Init
+            cb::call(0x438F81),     //mmGameMulti::Init
+        }
+    );
+    InstallCallback("mmGame::BeDone", "Register onGameEndHook with dispatcher.",
+        &onGameEndHook, {
+            cb::jmp(0x414DF1),      //end of mmGame::BeDone
+        }
+    );
+
     InstallCallback("mmGame::Reset", "Register onGameReset with dispatcher.",
         &GameEventDispatcher::onReset, {
             cb::call(0x433B3C),      //mmGameSingle::Reset

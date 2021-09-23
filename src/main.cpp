@@ -799,8 +799,6 @@ public:
     static void Shutdown() {
         LogFile::WriteLine("Hook shutdown request received.");
 
-        discordHandler::Release();
-
         // gfxPipeline::EndGfx2D
         hook::StaticThunk<0x4AAA10>::Call<void>();
 

@@ -111,6 +111,9 @@
     <Filter Include="Source Files\handlers\feature_handlers">
       <UniqueIdentifier>{99305f13-f779-4d2e-ace8-076236dee7f5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Discord Rich Presence\gamesdk">
+      <UniqueIdentifier>{61b521a8-ff2e-47ee-89d5-5413f2db3758}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -327,9 +330,6 @@
       <Filter>Source Files\mm2</Filter>
     </ClInclude>
     <ClInclude Include="discord-rpc\discord-presence.h">
-      <Filter>Source Files\Discord Rich Presence</Filter>
-    </ClInclude>
-    <ClInclude Include="discord-rpc\discord-rpc.h">
       <Filter>Source Files\Discord Rich Presence</Filter>
     </ClInclude>
     <ClInclude Include="src\mm2_network.h">
@@ -1185,6 +1185,57 @@
     <ClInclude Include="src\handlers\feature_handlers\InitMapHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\relationship_manager.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\storage_manager.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\store_manager.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\types.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\user_manager.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\voice_manager.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\achievement_manager.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\activity_manager.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\application_manager.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\core.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\discord.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\event.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\ffi.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\image_manager.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\lobby_manager.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\network_manager.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
+    <ClInclude Include="discord-rpc\gamesdk\overlay_manager.h">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -1744,6 +1795,48 @@
     </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\InitMapHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\storage_manager.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\store_manager.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\types.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\user_manager.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\voice_manager.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\achievement_manager.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\activity_manager.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\application_manager.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\core.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\image_manager.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\lobby_manager.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\network_manager.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\overlay_manager.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="discord-rpc\gamesdk\relationship_manager.cpp">
+      <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
