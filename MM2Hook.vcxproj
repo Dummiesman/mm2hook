@@ -86,6 +86,7 @@
       <MinimalRebuild>false</MinimalRebuild>
       <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -111,6 +112,7 @@
       <FavorSizeOrSpeed>Neither</FavorSizeOrSpeed>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <RemoveUnreferencedCodeData>false</RemoveUnreferencedCodeData>
+      <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(IntDir)/%(RelativeDir)/</ObjectFileName>
     </ClCompile>
     <Link>
       <LinkTimeCodeGeneration>Default</LinkTimeCodeGeneration>
