@@ -73,7 +73,7 @@ namespace MM2 {
     };
 
     class asNetwork {
-    public:
+    private:
         datCallback SysMessageCB;
         datCallback AppMessageCB;
         IDirectPlay4A *pDPlay;
@@ -85,14 +85,24 @@ namespace MM2 {
         uint32_t pRecvBuf;
         float float34;
         uint32_t MaxPlayers;
-        uint32_t SessionOpen;
-        uint32_t InLobby;
+        BOOL InSession;
+        BOOL InLobby;
         uint32_t dword44;
         uint32_t dword48;
-        uint8_t IsHost;
+        bool IsHost;
         Timer Time;
         float Elapsed;
         netZoneScore NetScore;
+    public:
+        inline bool getInSession() 
+        {
+            return this->InSession == TRUE;
+        }
+
+        inline IDirectPlay4A* getDPlay()
+        {
+            return this->pDPlay;
+        }
 
         AGE_API asNetwork(void)                             { hook::Thunk<0x56FCD0>::Call<void>(this); }
         AGE_API ~asNetwork(void)                            { hook::Thunk<0x56FD70>::Call<void>(this); }
@@ -171,12 +181,18 @@ namespace MM2 {
         AGE_API int GetNumModems(void)                      { return hook::Thunk<0x5727B0>::Call<int>(this); }
         AGE_API char * GetEnumModem(int a2)                 { return hook::Thunk<0x5727C0>::Call<char *>(this, a2); }
         AGE_API int QueryModems(void)                       { return hook::Thunk<0x5727F0>::Call<int>(this); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<asNetwork>("asNetwork")
+                .addPropertyReadOnly("InSession", &getInSession)
+                .endClass();
+        }
     };
 
     declhook(0x6B3968, _TypeProxy<asNetwork>, NETMGR);
 
     template<>
     void luaAddModule<module_network>(LuaState L) {
-
+        luaBind<asNetwork>(L);
     }
 }

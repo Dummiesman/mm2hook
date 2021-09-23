@@ -74,6 +74,7 @@ void luaSetGlobals()
     Lua::setGlobal(L, "Player", pPlayer);
     Lua::setGlobal(L, "ROOT", &ROOT);
     Lua::setGlobal(L, "MMSTATE", &MMSTATE);
+    Lua::setGlobal(L, "NETMGR", &NETMGR);
 
     LogFile::WriteLine("Done!");
 }
