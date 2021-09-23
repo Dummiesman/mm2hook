@@ -72,6 +72,79 @@ namespace MM2 {
         void *pZoneScore; // unused, never initialized
     };
 
+    struct LuaSessionInfo
+    {
+    private:
+        bool IsHost;
+        int PlayerCount;
+        int MaxPlayerCount;
+        char SessionName[256];
+    public:
+        LuaSessionInfo(IDirectPlay4A* DPLAY, bool isHost)
+        {
+            bool populated = false;
+            if (DPLAY != nullptr) 
+            {
+                LPVOID data = nullptr;
+                DWORD dataSize = 0;
+                auto result = DPLAY->GetSessionDesc(NULL, &dataSize);
+
+                if (result == DPERR_BUFFERTOOSMALL)
+                {
+                    data = malloc(dataSize);
+                    result = DPLAY->GetSessionDesc(data, &dataSize);    
+                }
+                if (result == S_OK) 
+                {
+                    auto desc = (DPSESSIONDESC2*)data;
+                    this->PlayerCount = desc->dwCurrentPlayers;
+                    this->MaxPlayerCount = desc->dwMaxPlayers;
+                    strncpy(SessionName, desc->lpszSessionNameA, sizeof(SessionName));
+                    populated = true;
+                }
+                if (data != nullptr)
+                    free(data);
+            }
+            
+            if(!populated)
+            {
+                this->PlayerCount = 0;
+                this->MaxPlayerCount = 0;
+            }
+
+            this->IsHost = isHost;
+        }
+
+        inline int getPlayerCount()
+        {
+            return this->PlayerCount;
+        }
+
+        inline int getMaxPlayerCount()
+        {
+            return this->MaxPlayerCount;
+        }
+
+        inline LPCSTR getSessionName()
+        {
+            return (LPCSTR)&this->SessionName;
+        }
+
+        inline bool getIsHost()
+        {
+            return this->IsHost;
+        }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<LuaSessionInfo>("LuaSessionInfo")
+                .addPropertyReadOnly("Name", &getSessionName)
+                .addPropertyReadOnly("MaxPlayers", &getMaxPlayerCount)
+                .addPropertyReadOnly("NumPlayers", &getPlayerCount)
+                .addPropertyReadOnly("IsHost", &getIsHost)
+                .endClass();
+        }
+    };
+
     class asNetwork {
     private:
         datCallback SysMessageCB;
@@ -93,6 +166,11 @@ namespace MM2 {
         Timer Time;
         float Elapsed;
         netZoneScore NetScore;
+    private:
+        LuaSessionInfo getSessionInfoLua()
+        {
+            return LuaSessionInfo(this->getDPlay(), this->IsHost);
+        }
     public:
         inline bool getInSession() 
         {
@@ -182,9 +260,11 @@ namespace MM2 {
         AGE_API char * GetEnumModem(int a2)                 { return hook::Thunk<0x5727C0>::Call<char *>(this, a2); }
         AGE_API int QueryModems(void)                       { return hook::Thunk<0x5727F0>::Call<int>(this); }
 
+        //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<asNetwork>("asNetwork")
                 .addPropertyReadOnly("InSession", &getInSession)
+                .addFunction("GetSessionInfo", &getSessionInfoLua)
                 .endClass();
         }
     };
@@ -192,7 +272,8 @@ namespace MM2 {
     declhook(0x6B3968, _TypeProxy<asNetwork>, NETMGR);
 
     template<>
-    void luaAddModule<module_network>(LuaState L) {
+    void luaAddModule<module_network>(LuaState L) {        
+        luaBind<LuaSessionInfo>(L);
         luaBind<asNetwork>(L);
     }
 }
