@@ -129,7 +129,10 @@ void discordHandler::Update()
         return;
     core->ActivityManager().UpdateActivity(activity, [](discord::Result result) 
     {
-        MM2::Errorf("discordHandler::Update resulted in %s", TranslateResult(result));
+        if (result != discord::Result::Ok)
+        {
+            MM2::Errorf("discordHandler::Update resulted in %s", TranslateResult(result));
+        }
     });
 }
 
@@ -223,6 +226,26 @@ void discordHandler::SetEndTimestamp(int64_t timestamp)
     activity.GetTimestamps().SetEnd(timestamp);
 }
 
+int discordHandler::GetCurrentPartySize()
+{
+    return activity.GetParty().GetSize().GetCurrentSize();
+}
+
+void discordHandler::SetCurrentPartySize(int size)
+{
+    activity.GetParty().GetSize().SetCurrentSize(size);
+}
+
+int discordHandler::GetMaxPartySize()
+{
+    return activity.GetParty().GetSize().GetMaxSize();
+}
+
+void discordHandler::SetMaxPartySize(int size)
+{
+    activity.GetParty().GetSize().SetMaxSize(size);
+}
+
 static void test()
 {
  
@@ -240,6 +263,8 @@ void discordHandler::BindLua(lua_State* L) {
         .addProperty("LargeText", &GetLargeText, &SetLargeText)
         .addProperty("StartTimestamp", &GetStartTimestamp, &SetStartTimestamp)
         .addProperty("EndTimestamp", &GetEndTimestamp, &SetEndTimestamp)
+        .addProperty("CurrentPartySize", &GetCurrentPartySize, &SetCurrentPartySize)
+        .addProperty("MaxPartySize", &GetMaxPartySize, &SetMaxPartySize)
 
         .addFunction("Initialize", &Initialize)
         .addFunction("Update", &Update)

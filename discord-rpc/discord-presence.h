@@ -29,6 +29,11 @@ public:
     static void SetStartTimestamp(int64_t timestamp);
     static void SetEndTimestamp(int64_t timestamp);
 
+    static int GetMaxPartySize();
+    static int GetCurrentPartySize();
+    static void SetMaxPartySize(int size);
+    static void SetCurrentPartySize(int size);
+
     static void BindLua(lua_State* L);
     static void Install(void);
 };
