@@ -341,6 +341,11 @@
     <ClInclude Include="src\modules\lights.h" />
     <ClInclude Include="src\modules\lights\flare.h" />
     <ClInclude Include="src\modules\lights\light.h" />
+    <ClInclude Include="src\modules\mmcityinfo.h" />
+    <ClInclude Include="src\modules\mmcityinfo\cityinfo.h" />
+    <ClInclude Include="src\modules\mmcityinfo\citylist.h" />
+    <ClInclude Include="src\modules\mmcityinfo\vehinfo.h" />
+    <ClInclude Include="src\modules\mmcityinfo\vehlist.h" />
     <ClInclude Include="src\modules\mmeffects.h" />
     <ClInclude Include="src\modules\mmeffects\meshform.h" />
     <ClInclude Include="src\modules\model.h" />
@@ -605,6 +610,7 @@
     <ClCompile Include="src\modules\input.cpp" />
     <ClCompile Include="src\modules\level.cpp" />
     <ClCompile Include="src\modules\lights.cpp" />
+    <ClCompile Include="src\modules\mmcityinfo.cpp" />
     <ClCompile Include="src\modules\mmeffects.cpp" />
     <ClCompile Include="src\modules\model.cpp" />
     <ClCompile Include="src\modules\node.cpp" />

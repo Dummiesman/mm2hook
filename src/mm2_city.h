@@ -3,14 +3,13 @@
 #include "mm2_level.h"
 
 #include <modules\city.h>
+#include <modules\mmcityinfo.h>
 
 namespace MM2
 {
     // Forward declarations
     class cityTimeWeatherLighting;
     class sdlPage16;
-    class mmCityInfo;
-    class mmCityList;
 
     // External declarations
     extern class gfxTexture;
@@ -165,130 +164,6 @@ namespace MM2
             return $::sdlPage16::GetShadedColor$2(p1, p2, p3);
         }
     };
-
-    class mmCityInfo {
-    private:
-        char localisedName[40];
-        char mapName[40];
-        char raceDir[40];
-
-        char *blitzNames;
-        char *checkpointNames;
-        char *circuitNames;
-        
-        BOOL isValid;
-
-        int blitzCount;
-        int checkpointCount;
-        int circuitCount;
-
-        int _unk[2]; // ???
-
-        inline char * getRaceNamesPtr(int mode) {
-            switch (mode) {
-                case 1: return checkpointNames;
-                case 3: return circuitNames;
-                case 4: return blitzNames;
-            }
-            return NULL;
-        }
-
-        inline int getRaceNamesCount(int mode) {
-            switch (mode) {
-                case 1: return checkpointCount;
-                case 3: return circuitCount;
-                case 4: return blitzCount;
-            }
-            return -1;
-        }
-    public:
-        AGE_API mmCityInfo(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x52A540>::Call<void>(this);
-        }
-
-        virtual AGE_API ~mmCityInfo(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x52A560>::Call<void>(this);
-        }
-
-        inline char * GetLocalisedName(void) {
-            return localisedName;
-        }
-
-        inline char * GetMapName(void) {
-            return mapName;
-        }
-
-        inline char * GetRaceDir(void) {
-            return raceDir;
-        }
-
-        inline int GetRaceNames(int mode, char *buffer) {
-            char *names = getRaceNamesPtr(mode);
-
-            if (names != NULL) {
-                strcpy(buffer, names);
-                return getRaceNamesCount(mode);
-            }
-
-            return -1;
-        }
-
-        //lua
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<mmCityInfo>("mmCityInfo")
-                .endClass();
-        }
-    };
-
-    class mmCityList {
-    private:
-        mmCityInfo **cityInfos;
-        int numCities;
-        int curCity;
-    public:
-        AGE_API mmCityList(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x524160>::Call<void>(this);
-        }
-
-        virtual AGE_API ~mmCityList(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x524180>::Call<void>(this);
-        }
-
-        AGE_API void LoadAll()                              { hook::Thunk<0x5244F0>::Call<void>(this); }
-        AGE_API void Load(char* cinfoName)                  { hook::Thunk<0x524330>::Call<void>(this, cinfoName); }
-        AGE_API int GetCityID(char const *city)             { return hook::Thunk<0x524270>::Call<int>(this, city); }
-
-        AGE_API mmCityInfo * GetCityInfo(int city)          { return hook::Thunk<0x5241F0>::Call<mmCityInfo *>(this, city); }
-        AGE_API mmCityInfo * GetCityInfo(char const* city)  { return hook::Thunk<0x524220>::Call<mmCityInfo *>(this, city); }
-
-        AGE_API mmCityInfo * GetCurrentCity(void)           { return hook::Thunk<0x524320>::Call<mmCityInfo *>(this); }
-
-        AGE_API void SetCurrentCity(char const* city)       { hook::Thunk<0x5242C0>::Call<void>(this, city); }
-        AGE_API void Print()                                { hook::Thunk<0x524420>::Call<void>(this); }
-
-        //helper
-        inline int GetNumCities() {
-            return this->numCities;
-        }
-
-        //lua
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<mmCityList>("mmCityList")
-                .addFunction("Print", &Print)
-                .addPropertyReadOnly("NumCities", &GetNumCities)
-                .addFunction("GetCityInfo", static_cast<mmCityInfo * (mmCityList::*)(char const*)>(&GetCityInfo))
-                .addFunction("GetCityInfoByIndex", static_cast<mmCityInfo * (mmCityList::*)(int)>(&GetCityInfo))
-                .addFunction("GetCityID", &GetCityID)
-                .addFunction("SetCurrentCity", &SetCurrentCity)
-                .endClass();
-        }
-    };
-
-    declhook(0x6B1CA0, _Type<mmCityList *>, CityListPtr);
 
     template<>
     void luaAddModule<module_city>(LuaState L) {

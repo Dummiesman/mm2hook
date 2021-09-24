@@ -129,6 +129,9 @@
     <Filter Include="Source Files\modules\mmeffects">
       <UniqueIdentifier>{d1297fa5-96ea-4c33-97fe-77a79adb071a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\modules\mmcityinfo">
+      <UniqueIdentifier>{caa47de4-6405-4ccc-8bc9-20f9a1965fe9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -1338,6 +1341,21 @@
     <ClInclude Include="src\modules\effects\texeldamage.h">
       <Filter>Source Files\modules\effects</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmcityinfo.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmcityinfo\citylist.h">
+      <Filter>Source Files\modules\mmcityinfo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmcityinfo\vehlist.h">
+      <Filter>Source Files\modules\mmcityinfo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmcityinfo\cityinfo.h">
+      <Filter>Source Files\modules\mmcityinfo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmcityinfo\vehinfo.h">
+      <Filter>Source Files\modules\mmcityinfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -1953,6 +1971,9 @@
       <Filter>Source Files\modules</Filter>
     </ClCompile>
     <ClCompile Include="src\modules\rgl.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mmcityinfo.cpp">
       <Filter>Source Files\modules</Filter>
     </ClCompile>
   </ItemGroup>
