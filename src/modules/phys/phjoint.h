@@ -79,8 +79,8 @@ namespace MM2
                 .addProperty("SecondLink", &getSecondLink, &setSecondLink)
                 .addProperty("FirstOffset", &getFirstOffset, &setSecondOffset)
                 .addProperty("SecondOffset", &getSecondOffset, &setSecondOffset)
-                .addFunction("IsBroken", &IsBroken)
                 .addFunction("Init", static_cast<void(phJoint::*)(phInertialCS*, phInertialCS*, const Vector3&, const Vector3&)>(&Init))
+                .addPropertyReadOnly("IsBroken", &IsBroken)
                 .endClass();
         }
     };
