@@ -16,8 +16,6 @@ namespace MM2
     class lvlFixedAny : public lvlInstance
     {
     public:
-        LEVEL_ALLOCATOR
-
         AGE_API lvlFixedAny(void) {
             scoped_vtable x(this);
             hook::Thunk<0x467300>::Call<void>(this);
@@ -51,8 +49,6 @@ namespace MM2
         Vector3 Position;
         Vector2 XAxis;
     public:
-        LEVEL_ALLOCATOR
-
         AGE_API lvlFixedRotY(void) {
             scoped_vtable x(this);
             hook::Thunk<0x467910>::Call<void>(this);
@@ -84,8 +80,6 @@ namespace MM2
     private:
         Matrix34 Matrix;
     public:
-        LEVEL_ALLOCATOR
-
         AGE_API lvlFixedMatrix(void) {
             scoped_vtable x(this);
             hook::Thunk<0x467A20>::Call<void>(this);
@@ -116,8 +110,6 @@ namespace MM2
     class lvlLandmark : public lvlFixedRotY
     {
     public:
-        LEVEL_ALLOCATOR
-
         /*
             lvlInstance virtuals
         */
