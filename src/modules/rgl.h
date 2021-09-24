@@ -2,7 +2,7 @@
 #include <mm2_common.h>
 #include <modules\core.h>
 
-#include <modules\rgl\vgl.h>
+#include "rgl\vgl.h"
 
 namespace MM2
 {

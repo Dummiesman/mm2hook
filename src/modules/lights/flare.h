@@ -9,9 +9,9 @@ namespace MM2
 
     // Class definitions
     class ltLensFlare {
-    public:
+    private:
         byte _buffer[0x20];
-
+    public:
         ANGEL_ALLOCATOR
 
         AGE_API ltLensFlare(int a1) { hook::Thunk<0x59BE80>::Call<void>(this, a1); }
