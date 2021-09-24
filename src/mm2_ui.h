@@ -228,6 +228,11 @@ namespace MM2
         // TODO...
     private:
         byte _buffer[0x60];
+
+        bool getIsEnabledLua()
+        {
+            return this->IsEnabled() == TRUE;
+        }
     protected:
         hook::Field<0x18, mmGame *> _game;
     public:
@@ -235,7 +240,7 @@ namespace MM2
             return _game.get(this);
         };
 
-        AGE_API int IsEnabled(void)                         { return hook::Thunk<0x42A280>::Call<int>(this); };
+        AGE_API BOOL IsEnabled(void)                        { return hook::Thunk<0x42A280>::Call<BOOL>(this); };
         AGE_API void Lock(void)                             { hook::Thunk<0x42B4F0>::Call<void>(this); };
         AGE_API void Unlock(void)                           { hook::Thunk<0x42B500>::Call<void>(this); };
         AGE_API void ProcessChat(void)                      { hook::Thunk<0x42A400>::Call<void>(this); };
@@ -243,7 +248,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<mmPopup>("mmPopup")
-                .addPropertyReadOnly("IsEnabled", &IsEnabled)
+                .addPropertyReadOnly("IsEnabled", &getIsEnabledLua)
                 .addFunction("Lock", &Lock)
                 .addFunction("Unlock", &Unlock)
                 .addFunction("ProcessChat", &ProcessChat)
