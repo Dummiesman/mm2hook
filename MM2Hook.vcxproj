@@ -303,10 +303,14 @@
     <ClInclude Include="src\modules\data\token.h" />
     <ClInclude Include="src\modules\data\__template__.h" />
     <ClInclude Include="src\modules\effects.h" />
+    <ClInclude Include="src\modules\effects\birth.h" />
     <ClInclude Include="src\modules\effects\linespark.h" />
+    <ClInclude Include="src\modules\effects\ptx.h" />
     <ClInclude Include="src\modules\effects\shard.h" />
     <ClInclude Include="src\modules\effects\__template__.h" />
     <ClInclude Include="src\modules\gfx.h" />
+    <ClInclude Include="src\modules\gfx\font.h" />
+    <ClInclude Include="src\modules\gfx\gettex.h" />
     <ClInclude Include="src\modules\gfx\pipeline.h" />
     <ClInclude Include="src\modules\gfx\image.h" />
     <ClInclude Include="src\modules\gfx\light.h" />
@@ -406,6 +410,8 @@
     <ClInclude Include="src\modules\phys\segment.h" />
     <ClInclude Include="src\modules\phys\trailerjoint.h" />
     <ClInclude Include="src\modules\phys\__template__.h" />
+    <ClInclude Include="src\modules\rgl.h" />
+    <ClInclude Include="src\modules\rgl\vgl.h" />
     <ClInclude Include="src\modules\vehicle.h" />
     <ClInclude Include="src\modules\vehicle\aero.h" />
     <ClInclude Include="src\modules\vehicle\aiambientvehicleaudio.h" />
@@ -604,6 +610,7 @@
     <ClCompile Include="src\modules\parse.cpp" />
     <ClCompile Include="src\modules\ped.cpp" />
     <ClCompile Include="src\modules\phys.cpp" />
+    <ClCompile Include="src\modules\rgl.cpp" />
     <ClCompile Include="src\modules\vehicle.cpp" />
     <ClCompile Include="src\settings.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers.cpp" />

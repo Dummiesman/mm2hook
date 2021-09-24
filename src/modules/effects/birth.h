@@ -1,5 +1,6 @@
 #pragma once
 #include <modules\node\node.h>
+#include <modules\rgl.h>
 
 namespace MM2
 {

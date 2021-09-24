@@ -1317,6 +1317,24 @@
     <ClInclude Include="src\modules\model\getpivot.h">
       <Filter>Source Files\modules\model</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\effects\ptx.h">
+      <Filter>Source Files\modules\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\effects\birth.h">
+      <Filter>Source Files\modules\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\rgl.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\rgl\vgl.h">
+      <Filter>Source Files\modules\rgl</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gfx\font.h">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gfx\gettex.h">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -1929,6 +1947,9 @@
       <Filter>Source Files\modules</Filter>
     </ClCompile>
     <ClCompile Include="src\modules\mmeffects.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\rgl.cpp">
       <Filter>Source Files\modules</Filter>
     </ClCompile>
   </ItemGroup>

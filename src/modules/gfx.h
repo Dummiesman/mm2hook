@@ -7,8 +7,10 @@
 
 #include "gfx\packet.h"
 #include "gfx\texture.h"
+#include "gfx\gettex.h"
 #include "gfx\image.h"
 #include "gfx\light.h"
+#include "gfx\font.h"
 #include "gfx\material.h"
 #include "gfx\viewport.h"
 #include "gfx\rstate.h"

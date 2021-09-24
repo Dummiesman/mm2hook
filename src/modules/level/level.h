@@ -8,6 +8,7 @@ namespace MM2
     // Forward declarations
     class lvlLevel;
     struct lvlRoomInfo;
+    class cltLight;
 
     // External declarations
     extern class gfxTexture;
@@ -29,6 +30,10 @@ namespace MM2
         Instance = 0x80,
     };
 
+    class cltLight
+    {
+
+    };
 
     struct lvlRoomInfo
     {

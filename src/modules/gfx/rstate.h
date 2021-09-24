@@ -5,10 +5,21 @@ namespace MM2
     // Forward declarations
     class gfxRenderStateData;
     class gfxRenderState;
+    enum gfxDrawMode;
 
     // External declarations
 
     // Class definitions
+    // same values as D3DPRIMITIVETYPE
+    enum gfxDrawMode {
+        DRAWMODE_POINTLIST      = 1,
+        DRAWMODE_LINELIST       = 2,
+        DRAWMODE_LINESTRIP      = 3,
+        DRAWMODE_TRIANGLELIST   = 4,
+        DRAWMODE_TRIANGLESTRIP  = 5,
+        DRAWMODE_TRIANGLEFAN    = 6,
+    };
+
     class gfxRenderStateData {
         /*
             Don't edit this unless you know what you're doing!
@@ -243,6 +254,7 @@ namespace MM2
             Matrix44::Convert(gfxRenderState::sm_World, &matrix);
         }
     };
+    ASSERT_SIZEOF(gfxRenderState, 0x98);
 
     // Lua initialization
 
