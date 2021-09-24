@@ -37,27 +37,7 @@ void mmGameHandler::SendChatMessage(char *message) {
     else {
         LogFile::Format("Got chat message: %s\n", message);
 
-        //handle custom commands (TODO: some "RegisterCommand" thing?)
-        if (!strcmp(message, "/freecam")) {
-            mmGameManager *mgr = mmGameManager::Instance;
-            auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
-            auto playerPtr = (gamePtr != NULL) ? gamePtr->getPlayer() : NULL;
-
-            if (gamePtr != NULL && playerPtr != NULL)
-            {
-                auto playerPosition = playerPtr->getCar()->getModel()->GetPosition();
-                auto freecam = playerPtr->getFreecam();
-
-                //setcam and update view
-                playerPtr->getCamView()->SetCam(freecam);
-                freecam->UpdateView();
-
-                //set freecam pos if >=100m away
-                if (playerPosition.Dist(*freecam->getPosition()) >= 100.f) {
-                    freecam->SetPosition(&playerPosition);
-                }
-            }
-        }
+        //handle custom commands
         if (!strcmp(message, "/fuzz")) {
             mmGameManager *mgr = mmGameManager::Instance;
             auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
@@ -68,9 +48,6 @@ void mmGameHandler::SendChatMessage(char *message) {
                 //ShowAllCops
                 *getPtr<BOOL>(playerPtr->getHudmap(), 0x38) = !*getPtr<BOOL>(playerPtr->getHudmap(), 0x38);
             }
-        }
-        if (!strcmp(message, "/grav")) {
-            dgPhysManager::Gravity.set(dgPhysManager::Gravity.get() == -19.6f ? -9.8f : -19.6f);
         }
         if (!strcmp(message, "/slide")) {
             if (MMSTATE->WeatherType == 3 && MMSTATE->TimeOfDay == 3)
