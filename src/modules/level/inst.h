@@ -1,8 +1,6 @@
 #pragma once
-#include <modules\level.h>
-#include <..\mm2_model.h>
-
 #include <modules\phys\bound.h>
+#include <modules\model\package.h>
 
 namespace MM2
 {
@@ -16,8 +14,6 @@ namespace MM2
     extern class gfxViewport;
     extern class modStatic;
     extern class modShader;
-    extern class phBound;
-    extern class phBoundGeometry;
     extern class modPackage;
 
     // Class definitions

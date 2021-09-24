@@ -7,10 +7,9 @@ namespace MM2
     class lvlFixedAny;
     class lvlFixedRotY;
     class lvlFixedMatrix;
-    class lvlLandmark;
 
     // External declarations
-
+    extern class gfxViewport;
 
     // Class definitions
     class lvlFixedAny : public lvlInstance
@@ -61,7 +60,7 @@ namespace MM2
         virtual AGE_API const Vector3 & GetPosition() override
                                                             { return hook::Thunk<0x467940>::Call<const Vector3 &>(this); }
         virtual AGE_API int IsVisible(const gfxViewport & a1)
-                                                            { return hook::Thunk<0x467950>::Call<int>(this, a1); }
+                                                            { return hook::Thunk<0x467950>::Call<int>(this, &a1); }
         virtual AGE_API const Matrix34 & GetMatrix(Matrix34 *a1)
                                                             { return hook::Thunk<0x4679A0>::Call<const Matrix34 &>(this); }
         virtual AGE_API void SetMatrix(const Matrix34 & a1) { hook::Thunk<0x4679F0>::Call<void>(this, a1); }
@@ -105,32 +104,6 @@ namespace MM2
         }
     };
     ASSERT_SIZEOF(lvlFixedMatrix, 0x44);
-
-
-    class lvlLandmark : public lvlFixedRotY
-    {
-    public:
-        /*
-            lvlInstance virtuals
-        */
-
-        virtual AGE_API int IsVisible(const gfxViewport *a1) override
-                                                                    { return hook::Thunk<0x468030>::Call<int>(this, a1); }
-
-        virtual AGE_API int Init(const char *a1, const Matrix34 &a2, int a3) override
-                                                                    { return hook::Thunk<0x468010>::Call<int>(this, a1, &a2, a3); }
-
-        virtual AGE_API unsigned int SizeOf(void) override          { return sizeof(this); }
-
-        virtual AGE_API bool IsLandmark() override                  { return hook::Thunk<0x467FF0>::Call<bool>(this); }
-        virtual AGE_API bool IsCollidable() override                { return hook::Thunk<0x465EB0>::Call<bool>(this); }
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<lvlLandmark, lvlFixedRotY>("lvlLandmark")
-                .endClass();
-        }
-    };
-    ASSERT_SIZEOF(lvlLandmark, 0x28);
 
     // Lua initialization
 

@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\level.h>
+#include <modules\node\cullable.h>
 
 namespace MM2
 {
@@ -7,7 +7,8 @@ namespace MM2
 
 
     // External declarations
-
+    extern class modStatic;
+    extern class modShader;
 
     // Class definitions
     class lvlSky : public asCullable

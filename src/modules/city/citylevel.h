@@ -1,8 +1,6 @@
 #pragma once
-#include <modules\city.h>
+#include <modules\level\level.h>
 #include <modules\level\sky.h>
-#include <modules\level\inst.h>
-#include <modules\phys\segment.h>
 
 namespace MM2
 {
@@ -10,6 +8,7 @@ namespace MM2
 
 
     // External declarations
+    extern class gfxViewport;
     extern class lvlInstance;
     extern struct lvlSegment;
     extern struct lvlIntersection;
@@ -42,7 +41,7 @@ namespace MM2
         AGE_API virtual void PreDraw() override                     { hook::Thunk<0x4452E0>::Call<void>(this); }
         AGE_API virtual void PostDraw() override                    { hook::Thunk<0x445300>::Call<void>(this); }
         AGE_API virtual void Draw(const gfxViewport& a1, uint a2) override
-                                                                    { hook::Thunk<0x445400>::Call<void>(this, a1, a2); }
+                                                                    { hook::Thunk<0x445400>::Call<void>(this, &a1, a2); }
 
         AGE_API virtual int FindRoomId(Vector3 const& a1, int a2) override
                                                                     { return hook::Thunk<0x446A60>::Call<int>(this, a1, a2); }
@@ -64,7 +63,7 @@ namespace MM2
         AGE_API virtual float GetWaterLevel(int a1)  override       { return hook::Thunk<0x445280>::Call<float>(this, a1); }
         AGE_API virtual float GetLightingIntensity(Vector3 const& a1) override
                                                                     { return hook::Thunk<0x445290>::Call<float>(this, a1); }
-        AGE_API virtual void SetPtxHeight(asParticles& a1) override { hook::Thunk<0x4452A0>::Call<void>(this, a1); }
+        AGE_API virtual void SetPtxHeight(asParticles& a1) override { hook::Thunk<0x4452A0>::Call<void>(this, &a1); }
 
         AGE_API virtual gfxTexture* GetEnvMap(int a1, Vector3 const& a2, float* a3) override
                                                                     { return hook::Thunk<0x443940>::Call<gfxTexture*>(this, a1, a2, a3); }

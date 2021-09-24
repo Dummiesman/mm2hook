@@ -1,8 +1,7 @@
 #pragma once
-#include <modules\level.h>
 #include <handlers\lua_drawable.h>
 #include <modules\phys\segment.h>
-#include <..\mm2_particle.h>
+#include <modules\level\inst.h>
 
 namespace MM2
 {
@@ -11,20 +10,21 @@ namespace MM2
     struct lvlRoomInfo;
 
     // External declarations
+    extern class gfxTexture;
     extern class asParticles;
     extern class gfxViewport;
     extern struct lvlSegment;
     extern struct lvlIntersection;
 
     // Class definitions
-    enum class RoomFlags : unsigned __int8
+    enum class RoomFlags : byte
     {
         Unknown = 0x1,
         Subterranean = 0x2,
-        HasWater = 0x4, //Maybe HasWater?
+        HasWater = 0x4,
         Road = 0x8,
         Intersection = 0x10,
-        SpecialBound = 0x20,
+        SpecialBound = 0x20, //Might actually be instance
         Warp = 0x40,
         Instance = 0x80,
     };
@@ -68,13 +68,14 @@ namespace MM2
         }
     };
 
+
     class lvlLevel : public asCullable {
     private:
         int unk4;
         lvlRoomInfo** RoomInfo;
         int RoomCount;
-        lvlInstance* FirstInstance;
-        int InstanceCount;
+        lvlInstance* FirstLoadedInstance;
+        int LoadedInstanceCount;
         char* Name;
     private:
         //lua drawables!

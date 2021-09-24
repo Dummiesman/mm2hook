@@ -114,6 +114,21 @@
     <Filter Include="Source Files\Discord Rich Presence\gamesdk">
       <UniqueIdentifier>{61b521a8-ff2e-47ee-89d5-5413f2db3758}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\modules\model">
+      <UniqueIdentifier>{b2dce090-5e28-4a22-9bcf-88fd1c080580}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\modules\gfx">
+      <UniqueIdentifier>{1b5a79d7-f3c6-4911-a8df-32abd384f370}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\modules\lights">
+      <UniqueIdentifier>{c8457a78-b902-4e35-8344-1fd813548e01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\modules\rgl">
+      <UniqueIdentifier>{83e8017d-0772-4772-88be-aa15736fd46b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\modules\mmeffects">
+      <UniqueIdentifier>{d1297fa5-96ea-4c33-97fe-77a79adb071a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -1236,6 +1251,72 @@
     <ClInclude Include="discord-rpc\gamesdk\overlay_manager.h">
       <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\model.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\model\package.h">
+      <Filter>Source Files\modules\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\model\static2.h">
+      <Filter>Source Files\modules\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\model\shader.h">
+      <Filter>Source Files\modules\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\model\model2.h">
+      <Filter>Source Files\modules\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gfx.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gfx\packet.h">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gfx\texture.h">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gfx\image.h">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\lights.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\lights\light.h">
+      <Filter>Source Files\modules\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\lights\flare.h">
+      <Filter>Source Files\modules\lights</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gfx\rstate.h">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gfx\material.h">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gfx\pipeline.h">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gfx\viewport.h">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gfx\light.h">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmeffects.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmeffects\meshform.h">
+      <Filter>Source Files\modules\mmeffects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\model\getstatic.h">
+      <Filter>Source Files\modules\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\model\loader.h">
+      <Filter>Source Files\modules\model</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\model\getpivot.h">
+      <Filter>Source Files\modules\model</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -1837,6 +1918,18 @@
     </ClCompile>
     <ClCompile Include="discord-rpc\gamesdk\relationship_manager.cpp">
       <Filter>Source Files\Discord Rich Presence\gamesdk</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\model.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\gfx.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\lights.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mmeffects.cpp">
+      <Filter>Source Files\modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\phys.h>
+#include <modules\phys\phcollider.h>
+#include <modules\phys\phjoint.h>
 
 namespace MM2
 {
