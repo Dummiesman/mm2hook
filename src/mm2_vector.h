@@ -249,8 +249,7 @@ namespace MM2
             return $::Vector3::$$op_sub(this, &vec);
         }
         AGE_API Vector3 operator/(float value) const {
-            float inv = 1.f / value;
-            return Vector3(this->X * inv, this->Y * inv, this->Z * inv);
+            return Vector3(this->X / value, this->Y / value, this->Z / value);
         }
         AGE_API Vector3 operator*(float value) const {
             return Vector3(this->X * value, this->Y * value, this->Z * value);
