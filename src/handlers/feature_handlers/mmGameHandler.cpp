@@ -38,17 +38,6 @@ void mmGameHandler::SendChatMessage(char *message) {
         LogFile::Format("Got chat message: %s\n", message);
 
         //handle custom commands
-        if (!strcmp(message, "/fuzz")) {
-            mmGameManager *mgr = mmGameManager::Instance;
-            auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
-            auto playerPtr = (gamePtr != NULL) ? gamePtr->getPlayer() : NULL;
-
-            if (gamePtr != NULL && playerPtr != NULL)
-            {
-                //ShowAllCops
-                *getPtr<BOOL>(playerPtr->getHudmap(), 0x38) = !*getPtr<BOOL>(playerPtr->getHudmap(), 0x38);
-            }
-        }
         if (!strcmp(message, "/slide")) {
             if (MMSTATE->WeatherType == 3 && MMSTATE->TimeOfDay == 3)
                 vehWheel::WeatherFriction.set(vehWheel::WeatherFriction.get() == 0.75f ? -0.02f : 0.75f);
