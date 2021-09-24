@@ -196,44 +196,59 @@ namespace MM2
             return Vector3(position);
         }
 
+        void setPositionLua(Vector3 position)
+        {
+            auto matrix = getMatrixLua();
+            matrix.SetRow(3, position);
+            this->SetMatrix(matrix);
+        }
     public:
         LEVEL_ALLOCATOR
 
-        AGE_API lvlInstance(void) {
+        AGE_API lvlInstance(void) 
+        {
             scoped_vtable x(this);
             hook::Thunk<0x4631F0>::Call<void>(this);
         }
 
-        AGE_API ~lvlInstance(void) {
+        AGE_API ~lvlInstance(void) 
+        {
             scoped_vtable x(this);
             hook::Thunk<0x463220>::Call<void>(this);
         }
 
-        inline lvlInstance* getNext(void) const {
+        inline lvlInstance* getNext() 
+        {
             return this->Next;
         }
 
-        inline lvlInstance* getPrevious(void) const {
+        inline lvlInstance* getPrevious() 
+        {
             return this->Previous;
         }
 
-        inline ushort getRoomId(void) const {
+        inline ushort getRoomId() 
+        {
             return room;
         }
 
-        inline short getGeomSetId(void) const {
+        inline short getGeomSetId() 
+        {
             return GeomSet;
         }
 
-        short getFlags() const {
+        short getFlags() const 
+        {
             return this->Flags;
         }
 
-        inline void setFlags(ushort flags) {
+        inline void setFlags(ushort flags) 
+        {
             this->Flags = flags;
         }
 
-        inline void setFlag(ushort flag) {
+        inline void setFlag(ushort flag) 
+        {
             this->Flags |= flag;
         }
 
@@ -358,6 +373,7 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<lvlInstance>("lvlInstance")
                 //fields
+                .addProperty("Flags", &getFlags, &setFlags)
                 .addPropertyReadOnly("Previous", &getPrevious)
                 .addPropertyReadOnly("Next", &getNext)
                 .addPropertyReadOnly("CurrentRoom", &getRoomId)
@@ -396,6 +412,7 @@ namespace MM2
                 .addFunction("GetMatrix", &getMatrixLua)
                 .addFunction("GetPosition", &getPositionLua)
                 .addFunction("SetMatrix", &SetMatrix)
+                .addFunction("SetPosition", &setPositionLua)
                 .addFunction("SetVariant", &SetVariant)
                 .addFunction("GetRadius", &GetRadius)
                 .addFunction("GetEntity", &GetEntity)
