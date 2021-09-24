@@ -243,7 +243,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<mmPopup>("mmPopup")
-                .addFunction("IsEnabled", &IsEnabled)
+                .addPropertyReadOnly("IsEnabled", &IsEnabled)
                 .addFunction("Lock", &Lock)
                 .addFunction("Unlock", &Unlock)
                 .addFunction("ProcessChat", &ProcessChat)
