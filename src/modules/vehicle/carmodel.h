@@ -1,6 +1,6 @@
 #pragma once
-#include <mm2_gfx.h>
-#include <mm2_effects.h>
+#include "..\level\inst.h"
+#include "..\effects\texeldamage.h"
 
 #include "car.h"
 #include "breakable.h"

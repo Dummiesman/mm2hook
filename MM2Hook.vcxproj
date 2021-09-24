@@ -307,6 +307,7 @@
     <ClInclude Include="src\modules\effects\linespark.h" />
     <ClInclude Include="src\modules\effects\ptx.h" />
     <ClInclude Include="src\modules\effects\shard.h" />
+    <ClInclude Include="src\modules\effects\texeldamage.h" />
     <ClInclude Include="src\modules\effects\__template__.h" />
     <ClInclude Include="src\modules\gfx.h" />
     <ClInclude Include="src\modules\gfx\font.h" />

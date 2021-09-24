@@ -2,12 +2,14 @@
 #include <mm2_common.h>
 
 #include <modules\node.h>
-#include <..\mm2_model.h>
+#include <modules\model.h>
+#include <modules\gfx.h>
 
-#include <modules\effects\shard.h>
-#include <modules\effects\linespark.h>
-#include <modules\effects\birth.h>
-#include <modules\effects\ptx.h>
+#include "effects\shard.h"
+#include "effects\linespark.h"
+#include "effects\birth.h"
+#include "effects\ptx.h"
+#include "effects\texeldamage.h"
 
 namespace MM2
 {
