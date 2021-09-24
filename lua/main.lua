@@ -1,19 +1,11 @@
 package.loaded.modsystem = nil
+package.loaded.constants = nil
+require("constants")
 local modsystem = require("modsystem")
 
+local node = nil -- main node to get cull/update from
+
 --MODSYSTEM FORWARDERS
-function init()
-    local vms, massagems = pcall(modsystem.init)
-    if not vms then Errorf(massagems) end
-
-    --Init modsystem
-    modsystem.initMods()
-end
-
-function tick()
-    modsystem.tick()
-end
-
 function onRenderUi()
   modsystem.onRenderUi()
 end
@@ -50,14 +42,39 @@ function onReset()
     modsystem.onReset()
 end
 
-function restart()
-    modsystem.restart()
-end
-
 function shutdown()
-    modsystem.shutdown()
+    modsystem.onShutdown()
 end
 
---Testing, TODO: Make this work in the C++ side so we don't leak global functions
+local function onUpdate()
+  modsystem.onUpdate()
+end
+
+local function onUpdatePaused()
+  modsystem.onUpdatePaused()
+end
+
+local function onCull()
+  modsystem.onCull()
+end
+
+function init()
+    -- create node
+    node = luaNode("mm2hook")
+    ROOT:AddChild(node)
+    
+    node.Update = onUpdate
+    node.UpdatePaused = onUpdatePaused
+    node.Cull = onCull
+    node.AutoDeclareCullable = true
+    
+    --
+    local vms, massagems = pcall(modsystem.init)
+    if not vms then Errorf(massagems) end
+
+    --Init modsystem
+    modsystem.initMods()
+end
+
 local M = {}
 return M
