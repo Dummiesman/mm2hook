@@ -132,6 +132,9 @@
     <Filter Include="Source Files\modules\mmcityinfo">
       <UniqueIdentifier>{caa47de4-6405-4ccc-8bc9-20f9a1965fe9}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\modules\mmgame">
+      <UniqueIdentifier>{75eb01fe-00c2-4955-8479-009ae94bcba7}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -1356,6 +1359,72 @@
     <ClInclude Include="src\modules\mmcityinfo\vehinfo.h">
       <Filter>Source Files\modules\mmcityinfo</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmgame.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\gameman.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\game.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\singleroam.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\gamesingle.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\gamemulti.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\singlerace.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\singlecircuit.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\singleblitz.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\singlestunt.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\multiroam.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\multiblitz.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\multirace.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\multicircuit.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\multicr.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\cd.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\hud.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\hudmap.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\gauge.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\player.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\dash.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmgame\mmgamemusicdata.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -1974,6 +2043,9 @@
       <Filter>Source Files\modules</Filter>
     </ClCompile>
     <ClCompile Include="src\modules\mmcityinfo.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mmgame.cpp">
       <Filter>Source Files\modules</Filter>
     </ClCompile>
   </ItemGroup>
