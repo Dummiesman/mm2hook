@@ -5,11 +5,74 @@ namespace MM2
 {
     // Forward declarations
     class mmHudMap;
+    struct OppIconInfo;
 
     // External declarations
+    extern class mmWaypoints;
+    extern class gfxViewport;
+    extern class asMeshSetForm;
 
     // Class definitions
+    struct OppIconInfo
+    {
+        ColorARGB Color;
+        int dword_04;
+        Matrix34* MatrixPtr;
+        int dword_0c;
+        int dword_10;
+        int dword_14;
+        int dword_18;
+        int dword_1c;
+        int Bitmap;
+        int dword_24;
+    };
+
     class mmHudMap : public asNode {
+    private:
+        mmWaypoints* Waypoints;
+        BOOL ShowWaypoints;
+        Vector3* GoldLocation;
+        Vector3* BankLocation;
+        Vector3* HideoutLocation;
+        int dword_2c;
+        mmPlayer* PlayerPtr;
+        OppIconInfo* OppIconInfo;
+        BOOL ShowAllCops;
+        bool MapOnLeft;
+        bool MapMissing;
+        int LastNonFSMapMode;
+        int MapMode;
+        Matrix34* PlayerMatrixPtr;
+        float ApproachRate;
+        float ZoomLevel;
+        float ZoomInDist;
+        float ZoomOutDist;
+        float ZoonInDistFS;
+        float ZoomOutDistFS;
+        float IconScale;
+        float IconScaleMin;
+        float IconScaleMax;
+        float IconScaleMinFS;
+        float IconScaleMaxFS;
+        Vector3 BackgroundColor;
+        Vector2 Size;
+        Vector2 Pos;
+        gfxViewport* Viewport;
+        asMeshSetForm* HudmapModel;
+        byte gap[32];
+        int NumOpponents;
+        asMeshSetForm* HudmapSquareModel;
+        asMeshSetForm* HudmapTriModel;
+    private:
+        bool getShowAllCopsLua()
+        {
+            return this->ShowAllCops == TRUE;
+        }
+
+        void setShowAllCopsLua(bool b)
+        {
+            this->ShowAllCops = b ? TRUE : FALSE;
+        }
     protected:
         AGE_API int GetCurrentMapMode()                     { return hook::Thunk<0x42EF20>::Call<int>(this); }
         AGE_API int GetNextMapMode()                        { return hook::Thunk<0x42EF00>::Call<int>(this); }
@@ -37,6 +100,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmHudMap, asNode>("mmHudMap")
+                .addProperty("ShowAllCops", &getShowAllCopsLua, &setShowAllCopsLua)
                 .addFunction("Activate", &Activate)
                 .addFunction("Deactivate", &Deactivate)
                 .addFunction("SetOrient", &SetOrient)
@@ -51,4 +115,5 @@ namespace MM2
             .endClass();  
         }
     };
+    ASSERT_SIZEOF(mmHudMap, 0xC8);
 }

@@ -4,8 +4,6 @@
 
 #pragma once
 
-struct OppIconInfo;
-
 class Wanted_Common
 {
 public:
@@ -19,10 +17,3 @@ public:
     static bool enableOppBustedTimer;
     static bool enableResetTimer;
 };
-
-struct OppIconInfo {
-    int color;
-    char buffer[0x24];
-};
-
-//ASSERT_SIZEOF(OppIconInfo, 0x28);

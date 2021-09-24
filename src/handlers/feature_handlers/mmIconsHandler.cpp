@@ -45,42 +45,42 @@ void mmIconsHandler::RegisterOpponents(OppIconInfo *icons, int count, void *a3) 
     for (int i = 0; i < count; i++) {
         if (opponentIconTransparency) {
             if (opponentIconStyle == 0) {
-                icons[i].color = SemiTransIconColors[5];
+                icons[i].Color = SemiTransIconColors[5];
             }
             if (opponentIconStyle == 1) {
-                icons[i].color = SemiTransIconColors[i];
+                icons[i].Color = SemiTransIconColors[i];
             }
             if (opponentIconStyle == 2) {
-                icons[i].color = SemiTransIconColors[1];
+                icons[i].Color = SemiTransIconColors[1];
             }
             if (opponentIconStyle == 3) {
-                icons[i].color = 0x80C0EC42; // semi-transparent Light Green
+                icons[i].Color = 0x80C0EC42; // semi-transparent Light Green
             }
             if (opponentIconStyle == 4) {
-                icons[i].color = SemiTransIconColors[4];
+                icons[i].Color = SemiTransIconColors[4];
             }
             if (opponentIconStyle >= 5) {
-                icons[i].color = SemiTransIconColors[opponentIconColor];
+                icons[i].Color = SemiTransIconColors[opponentIconColor];
             }
         }
         else {
             if (opponentIconStyle == 0) {
-                icons[i].color = IconColors[5];
+                icons[i].Color = IconColors[5];
             }
             if (opponentIconStyle == 1) {
-                icons[i].color = IconColors[i];
+                icons[i].Color = IconColors[i];
             }
             if (opponentIconStyle == 2) {
-                icons[i].color = IconColors[1];
+                icons[i].Color = IconColors[1];
             }
             if (opponentIconStyle == 3) {
-                icons[i].color = 0xFFC0EC42; // Light Green
+                icons[i].Color = 0xFFC0EC42; // Light Green
             }
             if (opponentIconStyle == 4) {
-                icons[i].color = IconColors[4];
+                icons[i].Color = IconColors[4];
             }
             if (opponentIconStyle >= 5) {
-                icons[i].color = IconColors[opponentIconColor];
+                icons[i].Color = IconColors[opponentIconColor];
             }
         }
     }
@@ -93,18 +93,18 @@ void mmIconsHandler::RegisterOpponents_Blitz(OppIconInfo *icons, int count, void
     for (int i = 0; i < count; i++) {
         if (blitzIconTransparency) {
             if (blitzIconMultiColor) {
-                icons[i].color = SemiTransIconColors[i];
+                icons[i].Color = SemiTransIconColors[i];
             }
             if (!blitzIconMultiColor) {
-                icons[i].color = SemiTransIconColors[blitzIconColor];
+                icons[i].Color = SemiTransIconColors[blitzIconColor];
             }
         }
         if (!blitzIconTransparency) {
             if (blitzIconMultiColor) {
-                icons[i].color = IconColors[i];
+                icons[i].Color = IconColors[i];
             }
             if (!blitzIconMultiColor) {
-                icons[i].color = IconColors[blitzIconColor];
+                icons[i].Color = IconColors[blitzIconColor];
             }
         }
     }

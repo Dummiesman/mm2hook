@@ -11,6 +11,7 @@ namespace MM2
 
     // External declarations
     extern class mmPlayer;
+    extern class mmHudMap;
 
     // Class definitions
     class mmArrow : public asNode {
@@ -118,19 +119,28 @@ namespace MM2
         byte _buffer[0xB9C]; // unconfirmed
     protected:
         hook::Field<0x0B94, mmCDPlayer*> _cdplayer;
+        hook::Field<0xBA0, mmHudMap*> _hudmap;
         hook::Field<0xBA4, camViewCS*> _camview;
         hook::Field<0x09BC, mmArrow> _arrow;
     public:
-        inline mmCDPlayer* getCdPlayer(void) const {
+        inline mmCDPlayer* getCdPlayer() 
+        {
             return _cdplayer.get(this);
         };
 
-        inline mmArrow* getArrow(void) const {
+        inline mmArrow* getArrow() 
+        {
             return _arrow.ptr(this);
         };
 
-        inline camViewCS* getCamView(void) const {
+        inline camViewCS* getCamView() 
+        {
             return _camview.get(this);
+        }
+
+        inline mmHudMap* getHudMap()
+        {
+            return _hudmap.get(this);
         }
 
         /*
@@ -177,6 +187,7 @@ namespace MM2
             LuaBinding(L).beginExtendClass<mmHUD, asNode>("mmHUD")
                 .addPropertyReadOnly("CDPlayer", &getCdPlayer)
                 .addPropertyReadOnly("Arrow", &getArrow)
+                .addPropertyReadOnly("Map", &getHudMap)
                 .addPropertyReadOnly("CamView", &getCamView)
 
                 .addFunction("Init", &Init, LUA_ARGS(LPCSTR, mmPlayer*, BOOL))

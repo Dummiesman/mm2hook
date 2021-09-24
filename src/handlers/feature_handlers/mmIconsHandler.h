@@ -7,8 +7,8 @@
 
 class mmIconsHandler {
 public:
-    void RegisterOpponents(OppIconInfo *icons, int count, void *a3);
-    void RegisterOpponents_Blitz(OppIconInfo *icons, int count, void *a3);
+    void RegisterOpponents(MM2::OppIconInfo *icons, int count, void *a3);
+    void RegisterOpponents_Blitz(MM2::OppIconInfo *icons, int count, void *a3);
 
     static void Install();
 };
