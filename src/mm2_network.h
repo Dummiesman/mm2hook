@@ -79,6 +79,7 @@ namespace MM2 {
         int PlayerCount;
         int MaxPlayerCount;
         char SessionName[256];
+        char SessionPassword[256];
     public:
         LuaSessionInfo(IDirectPlay4A* DPLAY, bool isHost)
         {
@@ -100,6 +101,7 @@ namespace MM2 {
                     this->PlayerCount = desc->dwCurrentPlayers;
                     this->MaxPlayerCount = desc->dwMaxPlayers;
                     strncpy(SessionName, desc->lpszSessionNameA, sizeof(SessionName));
+                    strncpy(SessionPassword, desc->lpszPasswordA, sizeof(SessionPassword));
                     populated = true;
                 }
                 if (data != nullptr)
@@ -130,17 +132,29 @@ namespace MM2 {
             return (LPCSTR)&this->SessionName;
         }
 
+        inline LPCSTR getSessionPassword()
+        {
+            return (LPCSTR)&this->SessionPassword;
+        }
+
         inline bool getIsHost()
         {
             return this->IsHost;
         }
 
+        inline bool isPassworded()
+        {
+            return SessionPassword[0] != 0x00;
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<LuaSessionInfo>("LuaSessionInfo")
                 .addPropertyReadOnly("Name", &getSessionName)
+                .addPropertyReadOnly("Password", &getSessionPassword)
                 .addPropertyReadOnly("MaxPlayers", &getMaxPlayerCount)
                 .addPropertyReadOnly("NumPlayers", &getPlayerCount)
                 .addPropertyReadOnly("IsHost", &getIsHost)
+                .addPropertyReadOnly("IsPassworded", &isPassworded)
                 .endClass();
         }
     };
