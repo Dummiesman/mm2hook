@@ -64,11 +64,35 @@ namespace MM2
         }
 
         //fields
-        inline Matrix34 * getMatrix(void)                   { return &matrix_1; }
-        inline Vector3 * getPosition(void)                  { return reinterpret_cast<Vector3 *>(&matrix_1.m30); }
+        inline Matrix34 getMatrix()
+        {
+            return matrix_1; 
+        }
 
-        inline float getFOV(void)                           { return CameraFOV; }
-        inline void setFOV(float fov)                       { CameraFOV = fov; }
+        inline void setMatrix(Matrix34 matrix)
+        {
+            matrix_1 = matrix;
+        }
+        
+        inline Vector3 getPosition()
+        {
+            return matrix_1.GetRow(3); 
+        }
+
+        inline void setPosition(Vector3 position)
+        {
+            matrix_1.SetRow(3, position);
+        }
+
+        inline float getFOV() 
+        {
+            return CameraFOV; 
+        }
+        
+        inline void setFOV(float fov)
+        {
+            CameraFOV = fov;
+        }
 
         //virtuals
         virtual AGE_API void MakeActive()                   { hook::Thunk<0x521520>::Call<void>(this); }
@@ -85,8 +109,10 @@ namespace MM2
             LuaBinding(L).beginExtendClass<camBaseCS, asNode>("camBaseCS")
                 //properties
                 .addProperty("FOV", &getFOV, &setFOV)
-                .addPropertyReadOnly("Position", &getPosition)
-                .addPropertyReadOnly("Matrix", &getMatrix)
+                .addFunction("GetPosition", &getPosition)
+                .addFunction("GetMatrix", &getMatrix)
+                .addFunction("SetMatrix", &setMatrix)
+                .addFunction("SetPosition", &setPosition)
 
                 //members
                 .addFunction("UpdateView", &UpdateView)
@@ -390,7 +416,6 @@ namespace MM2
         }
 
 
-
         // asNode overrides
         AGE_API void Reset() override                       { hook::Thunk<0x520AB0>::Call<void>(this); }
         AGE_API void Update() override                      { hook::Thunk<0x521610>::Call<void>(this); }
@@ -458,29 +483,6 @@ namespace MM2
             return NewCam(cam, a2, a3, datCallback::NullCallback);
         }
 
-        //will try and retrieve the instance from the games current player
-        //todo : move mmGameManager to something that can be include'd without
-        //breaking the entire thing!
-        /*static camViewCS* Instance() {
-            auto gameInstance = mmGameManager::Instance.get()->getGame();
-            if (gameInstance == nullptr)
-                return nullptr;
-
-            auto playerInstance = gameInstance->getPlayer();
-            if (playerInstance == nullptr)
-                return nullptr;
-
-            auto playerCar = playerInstance->getCar();
-            if (playerCar == nullptr) {
-                return nullptr;
-            }else{
-                return Instance(playerCar);
-            }
-        }*/
-
-        //lua
-        //.addFunction("RemoveChild", static_cast<int(asNode::*)(asNode* child)>(&RemoveChild))
-
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camViewCS, asNode>("camViewCS")
                 //properties
@@ -499,7 +501,7 @@ namespace MM2
         }
     };
 
-    ASSERT_SIZEOF(camViewCS, 0x4C); //matches operator new @0x51FE4C
+    ASSERT_SIZEOF(camViewCS, 0x4C);
 
     // Lua initialization
     template<>
