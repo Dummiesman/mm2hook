@@ -110,7 +110,6 @@ namespace MM2
                 //properties
                 .addPropertyReadOnly("CarDamage", &getCarDamage)
                 .addPropertyReadOnly("CarSim", &getCarSim)
-                .addPropertyReadOnly("Model", &getModel)
                 .addPropertyReadOnly("Splash", &getSplash)
                 .addPropertyReadOnly("Audio", &getAudio)
                 .addPropertyReadOnly("Trailer", &getTrailer)
@@ -118,6 +117,8 @@ namespace MM2
                 .addPropertyReadOnly("WheelPtx", &getWheelPtx)
                 .addPropertyReadOnly("Gyro", &getGyro)
                 .addPropertyReadOnly("Stuck", &getStuck)
+
+                .addPropertyReadOnly("Instance", &getModel)
 
                 //functions
                 .addFunction("Init", &Init)

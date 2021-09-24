@@ -19,21 +19,25 @@ namespace MM2
     class vehTrailer : public dgPhysEntity, public asNode {
     protected:
         hook::Field<0x1E4, vehCarSim *> _sim;
+        hook::Field<0x1E8, vehTrailerInstance> _instance;
         hook::Field<0xCC, dgTrailerJoint> _joint;
         hook::Field<0x528, vehWheel> _twhl0;
         hook::Field<0x794, vehWheel> _twhl1;
         hook::Field<0xA00, vehWheel> _twhl2;
         hook::Field<0xC6C, vehWheel> _twhl3;
     public:
-        inline vehCarSim* getCarSim(void) const {
+        inline vehCarSim* getCarSim() 
+        {
             return _sim.get(this);
         }
 
-        inline dgTrailerJoint * getJoint(void) const {
+        inline dgTrailerJoint* getJoint()  
+        {
             return _joint.ptr(this);
         }
 
-        inline vehWheel * getWheel(int num) {
+        inline vehWheel * getWheel(int num) 
+        {
             switch (num) {
             case 0:
                 return _twhl0.ptr(this);
@@ -45,6 +49,11 @@ namespace MM2
                 return _twhl3.ptr(this);
             }
             return nullptr;
+        }
+
+        inline vehTrailerInstance* getInstance()
+        {
+            return _instance.ptr(this);
         }
 
         AGE_API void Init(const char* basename, const Vector3* a2, vehCarSim* a3, int a4)
@@ -71,6 +80,7 @@ namespace MM2
                 .addFunction("GetWheel", &getWheel)
                 .addPropertyReadOnly("CarSim", &getCarSim)
                 .addPropertyReadOnly("Joint", &getJoint)
+                .addPropertyReadOnly("Instance", &getInstance)
             .endClass();
         }
     };
