@@ -370,6 +370,10 @@
     <ClInclude Include="src\modules\mmgame\singlerace.h" />
     <ClInclude Include="src\modules\mmgame\singleroam.h" />
     <ClInclude Include="src\modules\mmgame\singlestunt.h" />
+    <ClInclude Include="src\modules\mmnetwork.h" />
+    <ClInclude Include="src\modules\mmnetwork\luasessinfo.h" />
+    <ClInclude Include="src\modules\mmnetwork\network.h" />
+    <ClInclude Include="src\modules\mmnetwork\zone.h" />
     <ClInclude Include="src\modules\model.h" />
     <ClInclude Include="src\modules\model\getpivot.h" />
     <ClInclude Include="src\modules\model\getstatic.h" />
@@ -635,6 +639,7 @@
     <ClCompile Include="src\modules\mmcityinfo.cpp" />
     <ClCompile Include="src\modules\mmeffects.cpp" />
     <ClCompile Include="src\modules\mmgame.cpp" />
+    <ClCompile Include="src\modules\mmnetwork.cpp" />
     <ClCompile Include="src\modules\model.cpp" />
     <ClCompile Include="src\modules\node.cpp" />
     <ClCompile Include="src\modules\parse.cpp" />

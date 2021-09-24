@@ -135,6 +135,9 @@
     <Filter Include="Source Files\modules\mmgame">
       <UniqueIdentifier>{75eb01fe-00c2-4955-8479-009ae94bcba7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\modules\mmnetwork">
+      <UniqueIdentifier>{766ceeb5-38c1-4a7d-b4ef-d525aa7adf05}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -1425,6 +1428,18 @@
     <ClInclude Include="src\modules\mmgame\mmgamemusicdata.h">
       <Filter>Source Files\modules\mmgame</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmnetwork.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmnetwork\network.h">
+      <Filter>Source Files\modules\mmnetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmnetwork\zone.h">
+      <Filter>Source Files\modules\mmnetwork</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmnetwork\luasessinfo.h">
+      <Filter>Source Files\modules\mmnetwork</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2046,6 +2061,9 @@
       <Filter>Source Files\modules</Filter>
     </ClCompile>
     <ClCompile Include="src\modules\mmgame.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mmnetwork.cpp">
       <Filter>Source Files\modules</Filter>
     </ClCompile>
   </ItemGroup>
