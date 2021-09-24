@@ -6,6 +6,8 @@
 
 #include <modules\effects\shard.h>
 #include <modules\effects\linespark.h>
+#include <modules\effects\birth.h>
+#include <modules\effects\ptx.h>
 
 namespace MM2
 {

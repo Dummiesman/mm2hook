@@ -1,5 +1,4 @@
 #pragma once
-#include <modules\effects.h>
 
 namespace MM2
 {
