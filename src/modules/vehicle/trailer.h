@@ -76,6 +76,13 @@ namespace MM2
     };
 
     class vehTrailerInstance : public lvlInstance {
+    private:
+        Vector3 getTrailerHitchOffsetLua()
+        {
+            Vector3 vec;
+            this->GetTrailerHitch(&vec);
+            return vec;
+        }
     protected:
         hook::Field<0x14, vehTrailer *> _trailer;
     public:
@@ -83,10 +90,13 @@ namespace MM2
             return _trailer.get(this);
         }
 
+        AGE_API bool GetTrailerHitch(Vector3* out)      { return hook::Thunk<0x4D8420>::Call<bool>(this, out); }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<vehTrailerInstance, lvlInstance>("vehTrailerInstance")
                 //properties
                 .addPropertyReadOnly("Trailer", &getTrailer)
+                .addPropertyReadOnly("TrailerHitchOffset", &getTrailerHitchOffsetLua)
             .endClass();
         }
     };

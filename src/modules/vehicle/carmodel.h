@@ -97,28 +97,34 @@ namespace MM2
             hook::Thunk<0x4CCF800>::Call<void>(this);
         }
 
-        inline vehBreakableMgr * getGenBreakableMgr(void) const {
+        inline vehBreakableMgr * getGenBreakableMgr() 
+        {
             return this->genBreakableMgr;
         }
         
-        inline vehBreakableMgr * getMechBreakableMgr(void) const {
+        inline vehBreakableMgr * getMechBreakableMgr()  
+        {
             return this->wheelBreakableMgr;
         }
 
-        inline vehCar * getCar(void) const {
+        inline vehCar * getCar(void) 
+        {
             return this->car;
         }
 
-        inline int getVariant(void) const {
+        inline int getVariant()  
+        {
             return this->variant;
         }
 
-        inline void setVariant(int variant) {
+        inline void setVariant(int variant) 
+        {
             this->PreLoadShader(variant);
             this->variant = variant;
         }
 
-        inline ltLight* getHeadlight(int index) {
+        inline ltLight* getHeadlight(int index) 
+        {
             //cap index
             if (index < 0)
                 index = 0;
@@ -131,8 +137,14 @@ namespace MM2
             return &headlightLightsArray[index];
         }
 
-        inline int getWheelBrokenStatus(void) const {
+        inline int getWheelBrokenStatus()  
+        {
             return this->wheelBrokenStatus;
+        }
+
+        inline Vector3 getTrailerHitchOffset()
+        {
+            return this->trailerHitchPosition;
         }
 
         AGE_API void GetSurfaceColor(modStatic* model, Vector3* outVector)
@@ -1374,9 +1386,10 @@ namespace MM2
                 //properties
                 .addPropertyReadOnly("Breakables", &getGenBreakableMgr)
                 .addPropertyReadOnly("WheelBreakables", &getMechBreakableMgr)
+                .addPropertyReadOnly("TrailerHitchOffset", &getTrailerHitchOffset)
                 .addProperty("Variant", &getVariant, &setVariant)
                 .addProperty("Visible", &GetVisible, &SetVisible)
-
+                
                 .addStaticVariableRef("ShowHeadlights", &vehCarModel::ShowHeadlights)
                 .addStaticVariableRef("LeftSignalLightState", &vehCarModel::LeftSignalLightState)
                 .addStaticVariableRef("RightSignalLightState", &vehCarModel::RightSignalLightState)
