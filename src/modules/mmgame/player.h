@@ -48,7 +48,6 @@ namespace MM2
         inline mmDashView * getDashView(void) const         { return _dashView.ptr(this); }
         inline mmTimer * getTimer(void) const               { return _timer.ptr(this); }
 
-        inline mmHudMap * getHudmap(void) const             { return _hudmap.get(this); }
         inline camViewCS * getCamView(void) const           { return _camView.get(this); }
 
         inline camTrackCS * getNearCam(void) const          { return _nearCam.ptr(this); }
@@ -95,7 +94,6 @@ namespace MM2
                 //properties
                 .addPropertyReadOnly("Car", &getCar)
                 .addPropertyReadOnly("HUD", &getHUD)
-                .addPropertyReadOnly("Hudmap", &getHudmap)
                 .addPropertyReadOnly("CamView", &getCamView)
                 .addPropertyReadOnly("FreeCam", &getFreecam)
                 .addPropertyReadOnly("FarCam", &getFarCam)
