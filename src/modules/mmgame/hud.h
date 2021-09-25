@@ -176,8 +176,8 @@ namespace MM2
         AGE_API void PostLapTime(bool finalLap)             { hook::Thunk<0x42E0E0>::Call<void>(this, finalLap); }
         AGE_API void SetLapTime(int lap, int a3, bool stopTimer) 
                                                             { hook::Thunk<0x42E140>::Call<void>(this, lap, a3, stopTimer); }
-        AGE_API void SetMessage(LPCSTR message, float duration, int p2)
-                                                            { hook::Thunk<0x42E1F0>::Call<void>(this, message, duration, p2); };
+        AGE_API void SetMessage(LPCSTR message, float duration, int position)
+                                                            { hook::Thunk<0x42E1F0>::Call<void>(this, message, duration, position); };
         AGE_API void SetMessage(LPCSTR message)             { hook::Thunk<0x42E240>::Call<void>(this, message); };
         AGE_API void PostChatMessage(LPCSTR message)        { hook::Thunk<0x42D280>::Call<void>(this, message); };
         AGE_API void PlayNetAlert()                         { hook::Thunk<0x42E340>::Call<void>(this); }
@@ -191,7 +191,7 @@ namespace MM2
                 .addPropertyReadOnly("CamView", &getCamView)
 
                 .addFunction("Init", &Init, LUA_ARGS(LPCSTR, mmPlayer*, BOOL))
-                .addFunction("SetMessage", static_cast<void (mmHUD::*)(LPCSTR, float, int)>(&SetMessage))
+                .addFunction("SetMessage", static_cast<void (mmHUD::*)(LPCSTR, float, int)>(&SetMessage), LUA_ARGS(LPCSTR, _def<float, 3>, _def<int, 0>))
                 .addFunction("StartTimers", &StartTimers)
                 .addFunction("StopTimers", &StopTimers)
                 .addFunction("ResetTimers", &ResetTimers)
