@@ -37,6 +37,17 @@ namespace MM2
         hook::Field<0xC4, vehWheelPtx *> _wheelPtx;
         hook::Field<0xD0, vehGyro *> _gyro;
         hook::Field<0xCC, vehStuck*> _stuck;
+    private:
+        /*
+            Valid Modes:
+            1 - Forced neutral transmission. Brake input is forced to 1.0.
+            2 - Brake input is forced to 1.0. Other inputs are cleared.
+            3 - Like mode 2, additionally neutral transmission set on function call, but not enforced. 
+        */
+        void setDrivable(bool drivable, int mode)
+        {
+            this->SetDrivable(drivable ? TRUE : FALSE, mode);
+        }
     public:
         AGE_API vehCar(BOOL a1)                             { hook::Thunk<0x42BAB0>::Call<void>(this, a1); }
         AGE_API ~vehCar()                                   { hook::Thunk<0x42BCC0>::Call<void>(this); }
@@ -90,7 +101,7 @@ namespace MM2
         AGE_API void Init(char const *a1, int a2, int a3, bool a4, bool a5)
                                                             { hook::Thunk<0x42BE10>::Call<void>(this, a1, a2, a3, a4, a5); }
         AGE_API void InitAudio(char const *a1, int a2)      { hook::Thunk<0x42C1F0>::Call<void>(this, a1, a2); }
-        AGE_API void SetDrivable(BOOL a1, int a2)           { hook::Thunk<0x42C2C0>::Call<void>(this, a1, a2); }
+        AGE_API void SetDrivable(BOOL drivable, int mode)   { hook::Thunk<0x42C2C0>::Call<void>(this, drivable, mode); }
 
         /*
             dgPhysEntity virtuals
@@ -125,7 +136,7 @@ namespace MM2
                 .addFunction("InitAudio", &InitAudio)
                 .addFunction("Reset", &Reset)
                 .addFunction("ClearDamage", &ClearDamage)
-                .addFunction("SetDrivable", &SetDrivable, LUA_ARGS(bool,int))
+                .addFunction("SetDrivable", &setDrivable, LUA_ARGS(bool, _def<int, 3>))
                 .addFunction("IsPlayer", &IsPlayer)
             .endClass();
         }
