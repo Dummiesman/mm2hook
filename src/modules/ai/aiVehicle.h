@@ -6,6 +6,9 @@ namespace MM2
     // Forward declarations
     class aiObstacle;
     class aiVehicle;
+    class aiRailSet;
+    class aiVehicleSpline;
+    class aiVehicleInstance;
 
     // External declarations
     extern class aiVehicleInstance;
@@ -14,10 +17,34 @@ namespace MM2
     extern class aiVehicleData;
 
     // Class definitions
+    class aiRailSet {
+    private:
+        hook::Field<0x98, float> _speed;
+        hook::Field<0x44, float> _accelFactor;
+    public:
+        inline float getSpeed()
+        {
+            return _speed.get(this);
+        }
+
+        inline float getAccelFactor()
+        {
+            return _accelFactor.get(this);
+        }
+    };
+
     class aiVehicleInstance : public lvlInstance {
+    private:
+        hook::Field<0x14, aiVehicleSpline*> _spline;
     public:
         aiVehicleInstance(void)                                    DONOTCALL;
 
+        //properties
+        inline aiVehicleSpline* getSpline() 
+        {
+            return _spline.get(this);
+        }
+        
         //overrides
         AGE_API Vector3 const& GetPosition() override              { return hook::Thunk<0x553030>::Call<Vector3 const&>(this); };
         AGE_API Matrix34 const& GetMatrix(Matrix34* a1) override   { return hook::Thunk<0x553020>::Call<Matrix34 const&>(this, a1); };
