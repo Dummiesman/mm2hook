@@ -30,6 +30,7 @@ void GameEventDispatcher::onGameEnd(int a1)
         MM2Lua::OnGameEnd();
     TextureVariantHandler::Reset();
     cityTimeWeatherLightingHandler::Reset();
+    luaDrawableHandler::ResetLuaCallbacks();
 }
 
 void GameEventDispatcher::onGamePreInit()

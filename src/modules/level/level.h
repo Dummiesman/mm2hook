@@ -84,8 +84,14 @@ namespace MM2
         char* Name;
     private:
         //lua drawables!
-        inline void RegisterLuaDrawable(LuaRef self, LuaRef function, int phase = 1) {
-            luaDrawableHandler::RegisterCallback(self, function, phase);
+        inline int RegisterLuaDrawable(LuaRef self, LuaRef function, int phase = 1) 
+        {
+            return luaDrawableHandler::RegisterCallback(self, function, phase);
+        }
+
+        inline void UnregisterLuaDrawable(int id)
+        {
+            luaDrawableHandler::UnregisterCallback(id);
         }
     public:
         inline lvlRoomInfo* GetRoomInfo(int room) 
@@ -170,6 +176,7 @@ namespace MM2
                 .addFunction("ResetInstances", &ResetInstances)
 
                 //drawable
+                .addFunction("UnregisterDrawable", &UnregisterLuaDrawable)
                 .addFunction("RegisterDrawable", &RegisterLuaDrawable, 
                     LUA_ARGS(LuaRef, LuaRef, _opt<int>)) //register a LuaCallback
 
