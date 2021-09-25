@@ -377,6 +377,10 @@ namespace MM2
         float m31;
         float m32;
 
+        void MakeRotate(Vector3 const& axis, float angle)
+        {
+            hook::Thunk<0x4BCFA0>::Call<void>(this, &axis, angle);
+        }
 
         void MakeScale(float xScale, float yScale, float zScale) {
             this->m00 = xScale;
@@ -406,11 +410,11 @@ namespace MM2
             this->m02 = 0.0;
             float v2 = sinf(angle);
             float v3 = cosf(angle);
-            this->m00 = *(float*)&v3;
+            this->m00 = v3;
             this->m01 = v2;
             this->m10 = -v2;
             this->m12 = 0.0;
-            this->m11 = *(float*)&v3;
+            this->m11 = v3;
             this->m20 = 0.0;
             this->m21 = 0.0;
             this->m22 = 1.0;
@@ -442,6 +446,16 @@ namespace MM2
             this->m21 = -v2;
             this->m20 = 0.0;
             this->m22 = v3;
+        }
+
+        void Rotate(Vector3 const& axis, float angle)
+        {
+            hook::Thunk<0x4BCD70>::Call<void>(this, &axis, angle);
+        }
+
+        void RotateFull(Vector3 const& axis, float angle)
+        {
+            hook::Thunk<0x4BCE60>::Call<void>(this, &axis, angle);
         }
 
         void RotateX(float angle) {
@@ -785,12 +799,15 @@ namespace MM2
                 .addFunction("Scale", static_cast<void(Matrix34::*)(float, float, float)>(&Matrix34::Scale))
                 .addFunction("Normalize", &Matrix34::Normalize)
                 .addFunction("Dot", &Matrix34::Dot)
+                .addFunction("Rotate", &Matrix34::Rotate)
+                .addFunction("RotateFull", &Matrix34::RotateFull)
 
                 .addFunction("Zero", &Matrix34::Zero)
                 .addFunction("MakeRotateX", &Matrix34::MakeRotateX)
                 .addFunction("MakeRotateY", &Matrix34::MakeRotateY)
                 .addFunction("MakeRotateZ", &Matrix34::MakeRotateZ)
                 .addFunction("MakeScale", static_cast<void(Matrix34::*)(float, float, float)>(&Matrix34::MakeScale))
+                .addFunction("MakeRotate", &Matrix34::MakeRotate)
                 .addFunction("Transform", static_cast<Vector3(Matrix34::*)(const Vector3&)>(&Matrix34::Transform))
                 .addFunction("RotateX", &Matrix34::RotateX)
                 .addFunction("RotateY", &Matrix34::RotateY)
