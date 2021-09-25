@@ -127,6 +127,11 @@ namespace MM2
             hook::Thunk<0x45FBF0>::Call<void>(this);
         }
 
+        //overrides
+        AGE_API char* GetClassName() override           { return hook::Thunk<0x45FC20>::Call<char*>(this); }
+        AGE_API const char* GetDirName() override       { return hook::Thunk<0x45EDB0>::Call<const char*>(this); }
+        AGE_API void FileIO(datParser &parser) override { hook::Thunk<0x45F900>::Call<void>(this, &parser); }
+
         //helpers
         inline std::tuple<byte, byte, byte, byte> getColorTuple(void) {
             return std::make_tuple(Color.r, Color.g, Color.b, Color.a);
