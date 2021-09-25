@@ -304,6 +304,7 @@
     <ClInclude Include="src\modules\data\__template__.h" />
     <ClInclude Include="src\modules\effects.h" />
     <ClInclude Include="src\modules\effects\birth.h" />
+    <ClInclude Include="src\modules\effects\card2d.h" />
     <ClInclude Include="src\modules\effects\linespark.h" />
     <ClInclude Include="src\modules\effects\ptx.h" />
     <ClInclude Include="src\modules\effects\shard.h" />
@@ -348,6 +349,7 @@
     <ClInclude Include="src\modules\mmcityinfo\vehlist.h" />
     <ClInclude Include="src\modules\mmeffects.h" />
     <ClInclude Include="src\modules\mmeffects\meshform.h" />
+    <ClInclude Include="src\modules\mmeffects\mmtext.h" />
     <ClInclude Include="src\modules\mmgame.h" />
     <ClInclude Include="src\modules\mmgame\cd.h" />
     <ClInclude Include="src\modules\mmgame\dash.h" />
@@ -365,6 +367,7 @@
     <ClInclude Include="src\modules\mmgame\multirace.h" />
     <ClInclude Include="src\modules\mmgame\multiroam.h" />
     <ClInclude Include="src\modules\mmgame\player.h" />
+    <ClInclude Include="src\modules\mmgame\popup.h" />
     <ClInclude Include="src\modules\mmgame\singleblitz.h" />
     <ClInclude Include="src\modules\mmgame\singlecircuit.h" />
     <ClInclude Include="src\modules\mmgame\singlerace.h" />
@@ -374,6 +377,14 @@
     <ClInclude Include="src\modules\mmnetwork\luasessinfo.h" />
     <ClInclude Include="src\modules\mmnetwork\network.h" />
     <ClInclude Include="src\modules\mmnetwork\zone.h" />
+    <ClInclude Include="src\modules\mmwidget.h" />
+    <ClInclude Include="src\modules\mmwidget\bm_button.h" />
+    <ClInclude Include="src\modules\mmwidget\button.h" />
+    <ClInclude Include="src\modules\mmwidget\icon.h" />
+    <ClInclude Include="src\modules\mmwidget\label.h" />
+    <ClInclude Include="src\modules\mmwidget\menu.h" />
+    <ClInclude Include="src\modules\mmwidget\ttip.h" />
+    <ClInclude Include="src\modules\mmwidget\widget.h" />
     <ClInclude Include="src\modules\model.h" />
     <ClInclude Include="src\modules\model\getpivot.h" />
     <ClInclude Include="src\modules\model\getstatic.h" />
@@ -640,6 +651,7 @@
     <ClCompile Include="src\modules\mmeffects.cpp" />
     <ClCompile Include="src\modules\mmgame.cpp" />
     <ClCompile Include="src\modules\mmnetwork.cpp" />
+    <ClCompile Include="src\modules\mmwidget.cpp" />
     <ClCompile Include="src\modules\model.cpp" />
     <ClCompile Include="src\modules\node.cpp" />
     <ClCompile Include="src\modules\parse.cpp" />

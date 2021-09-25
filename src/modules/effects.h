@@ -10,6 +10,7 @@
 #include "effects\birth.h"
 #include "effects\ptx.h"
 #include "effects\texeldamage.h"
+#include "effects\card2d.h"
 
 namespace MM2
 {

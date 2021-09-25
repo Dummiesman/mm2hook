@@ -138,6 +138,9 @@
     <Filter Include="Source Files\modules\mmnetwork">
       <UniqueIdentifier>{766ceeb5-38c1-4a7d-b4ef-d525aa7adf05}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\modules\mmwidget">
+      <UniqueIdentifier>{fa6eca2a-2c5b-42f5-bd39-333e2b696e93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -1440,6 +1443,39 @@
     <ClInclude Include="src\modules\mmnetwork\luasessinfo.h">
       <Filter>Source Files\modules\mmnetwork</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmgame\popup.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmwidget.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmwidget\ttip.h">
+      <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmwidget\widget.h">
+      <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmwidget\button.h">
+      <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmeffects\mmtext.h">
+      <Filter>Source Files\modules\mmeffects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmwidget\bm_button.h">
+      <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\effects\card2d.h">
+      <Filter>Source Files\modules\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmwidget\icon.h">
+      <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmwidget\label.h">
+      <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmwidget\menu.h">
+      <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2064,6 +2100,9 @@
       <Filter>Source Files\modules</Filter>
     </ClCompile>
     <ClCompile Include="src\modules\mmnetwork.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mmwidget.cpp">
       <Filter>Source Files\modules</Filter>
     </ClCompile>
   </ItemGroup>

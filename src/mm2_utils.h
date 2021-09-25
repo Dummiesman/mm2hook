@@ -107,7 +107,7 @@ union ColorARGB
 {
     bool ColorARGB::operator==(const ColorARGB& other) const { return this->color == other.color; }
     bool ColorARGB::operator!=(const ColorARGB& other) { return !(*this == other); }
-    void ColorARGB::operator=(const unsigned int color) const { *this = color; }
+    void ColorARGB::operator=(unsigned int colorInt) const { *getPtr<unsigned int>(this, 0x00) = colorInt; }
 
     struct
     {
