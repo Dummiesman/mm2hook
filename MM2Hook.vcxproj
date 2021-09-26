@@ -321,6 +321,9 @@
     <ClInclude Include="src\modules\gfx\rstate.h" />
     <ClInclude Include="src\modules\gfx\texture.h" />
     <ClInclude Include="src\modules\gfx\viewport.h" />
+    <ClInclude Include="src\modules\gizmo.h" />
+    <ClInclude Include="src\modules\gizmo\pathspline.h" />
+    <ClInclude Include="src\modules\gizmo\pathspline_wrapper.h" />
     <ClInclude Include="src\modules\input.h" />
     <ClInclude Include="src\modules\input\eventq.h" />
     <ClInclude Include="src\modules\input\joystick.h" />
@@ -644,6 +647,7 @@
     <ClCompile Include="src\modules\data.cpp" />
     <ClCompile Include="src\modules\effects.cpp" />
     <ClCompile Include="src\modules\gfx.cpp" />
+    <ClCompile Include="src\modules\gizmo.cpp" />
     <ClCompile Include="src\modules\input.cpp" />
     <ClCompile Include="src\modules\level.cpp" />
     <ClCompile Include="src\modules\lights.cpp" />

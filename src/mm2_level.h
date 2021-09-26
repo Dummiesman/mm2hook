@@ -2,6 +2,8 @@
 #include "mm2_common.h"
 #include "mm2_inst.h"
 
+#include <modules\gizmo.h>
+
 namespace MM2
 {
     template<>
@@ -9,6 +11,7 @@ namespace MM2
         luaBind<dgPathPoint>(L);
         luaBind<dgPath>(L);
         luaBind<dgPathSet>(L);
+        luaBind<gizPathsplineWrapper>(L);
         luaBind<lvlMaterial>(L);
         luaBind<lvlSky>(L);
         luaBind<lvlRoomInfo>(L);
