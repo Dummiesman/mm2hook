@@ -80,8 +80,8 @@ namespace MM2
         virtual AGE_API void Update(void)                       { hook::Thunk<0x5337F0>::Call<void>(this); };
     
         //Last arg is never used, so I've set it to nullptr. It's a Vector3 reference, which was meant for offset I guess.
-        AGE_API void SetShape(LPCSTR modelName, LPCSTR dirName, bool useLVertex)
-                                                                { hook::Thunk<0x533660>::Call<void>(this, modelName, dirName, useLVertex, nullptr); }
+        AGE_API void SetShape(LPCSTR modelName, LPCSTR dirName, bool useFullVertex = true)
+                                                                { hook::Thunk<0x533660>::Call<void>(this, modelName, dirName, useFullVertex, nullptr); }
         AGE_API void SetZRead(bool a1)                          { hook::Thunk<0x533770>::Call<void>(this, a1); }
         AGE_API void SetZWrite(bool a1)                         { hook::Thunk<0x533790>::Call<void>(this, a1); }
         AGE_API void EnableLighting(bool a1)                    { hook::Thunk<0x5337B0>::Call<void>(this, a1); }
@@ -90,12 +90,15 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<asMeshSetForm, asNode>("asMeshSetForm")
                 .addConstructor(LUA_ARGS())
-                .addProperty("Matrix", &getMatrix, &setMatrix)
-                .addProperty("Position", &getPosition, &setPosition)
+                .addFunction("GetMatrix", &getMatrix)
+                .addFunction("SetMatrix", &setMatrix)
+                .addFunction("GetPosition", &getPosition)
+                .addFunction("SetPosition", &setPosition)
+
                 .addProperty("Variant", &getVariant, &setVariant)
                 .addPropertyReadOnly("NumVariants", &getVariantCount)
 
-                .addFunction("SetShape", &SetShape)
+                .addFunction("SetShape", &SetShape, LUA_ARGS(LPCSTR, LPCSTR, _opt<bool>))
                 .addFunction("SetZRead", &SetZRead)
                 .addFunction("SetZWrite", &SetZWrite)
                 .addFunction("EnableLighting", &EnableLighting)
