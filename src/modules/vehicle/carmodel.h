@@ -386,7 +386,7 @@ namespace MM2
 
             if (lvlInstance::BeginGeomWithGroup(basename, "body", "player", 0xC)) 
             {
-                //gfxForceLVERTEX = 1;
+                gfxPacket::gfxForceLVERTEX = true;
                 lvlInstance::AddGeom(basename, "shadow", 0);
                 lvlInstance::AddGeom(basename, "hlight", 0);
                 lvlInstance::AddGeom(basename, "tlight", 0);
@@ -394,7 +394,7 @@ namespace MM2
                 lvlInstance::AddGeom(basename, "slight0", 0);
                 lvlInstance::AddGeom(basename, "slight1", 0);
                 lvlInstance::AddGeom(basename, "blight", 0);
-                //gfxForceLVERTEX = 0;
+                gfxPacket::gfxForceLVERTEX = false;
 
                 lvlInstance::AddGeom(basename, "bodydamage", 0);
                 lvlInstance::AddGeom(basename, "siren0", 0);
@@ -441,10 +441,10 @@ namespace MM2
                 lvlInstance::AddGeom(basename, "srn2", 0);
                 lvlInstance::AddGeom(basename, "srn3", 0);
 
-                //gfxForceLVERTEX = 1;
+                gfxPacket::gfxForceLVERTEX = true;
                 lvlInstance::AddGeom(basename, "headlight0", 0);
                 lvlInstance::AddGeom(basename, "headlight1", 0);
-                //gfxForceLVERTEX = 0;
+                gfxPacket::gfxForceLVERTEX = false;
 
                 lvlInstance::AddGeom(basename, "fndr0", 0);
                 lvlInstance::AddGeom(basename, "fndr1", 0);
@@ -478,14 +478,14 @@ namespace MM2
                 lvlInstance::AddGeom(basename, "shub4", 0);
                 lvlInstance::AddGeom(basename, "shub5", 0);
 
-                //gfxForceLVERTEX = 1;
+                gfxPacket::gfxForceLVERTEX = true;
                 lvlInstance::AddGeom(basename, "headlight2", 0);
                 lvlInstance::AddGeom(basename, "headlight3", 0);
                 lvlInstance::AddGeom(basename, "headlight4", 0);
                 lvlInstance::AddGeom(basename, "headlight5", 0);
                 lvlInstance::AddGeom(basename, "headlight6", 0);
                 lvlInstance::AddGeom(basename, "headlight7", 0);
-                //gfxForceLVERTEX = 0;
+                gfxPacket::gfxForceLVERTEX = false;
 
                 lvlInstance::AddGeom(basename, "srn4", 0);
                 lvlInstance::AddGeom(basename, "srn5", 0);
@@ -511,10 +511,10 @@ namespace MM2
                 lvlInstance::AddGeom(basename, "lightbar0", 0);
                 lvlInstance::AddGeom(basename, "lightbar1", 0);
 
-                //gfxForceLVERTEX = 1;
+                gfxPacket::gfxForceLVERTEX = true;
                 lvlInstance::AddGeom(basename, "tslight0", 0);
                 lvlInstance::AddGeom(basename, "tslight1", 0);
-                //gfxForceLVERTEX = 0;
+                gfxPacket::gfxForceLVERTEX = false;
 
                 //add variants
                 //supports up to 32 paintjobs

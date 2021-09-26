@@ -12,6 +12,8 @@ namespace MM2
     // Class definitions
     class gfxPacket {
     public:
+        static hook::Type<bool> gfxForceLVERTEX;
+
         gfxPacket *Next;
         IDirect3DVertexBuffer7 *VertexBuffer;
         int *Positions;

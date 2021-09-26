@@ -312,11 +312,14 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
 
 void vehTrailerInstanceFeatureHandler::AddGeomHook(const char* pkgName, const char* name, int flags) {
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, name, flags);
+    gfxPacket::gfxForceLVERTEX = true;
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "rlight", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "blight", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "hlight", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "slight0", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "slight1", flags);
+    gfxPacket::gfxForceLVERTEX = false;
+
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "siren0", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "siren1", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "twhl4", flags);
@@ -327,8 +330,11 @@ void vehTrailerInstanceFeatureHandler::AddGeomHook(const char* pkgName, const ch
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tswhl3", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tswhl4", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tswhl5", flags);
+
+    gfxPacket::gfxForceLVERTEX = true;
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tslight0", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tslight1", flags);
+    gfxPacket::gfxForceLVERTEX = false;
 }
 
 void vehTrailerInstanceFeatureHandler::Install() {
