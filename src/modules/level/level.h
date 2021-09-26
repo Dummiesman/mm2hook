@@ -100,6 +100,11 @@ namespace MM2
                 return nullptr;
             return this->RoomInfo[room];
         }
+
+        inline int GetRoomCount()
+        {
+            return this->RoomCount;
+        }
     public:
         static hook::Type<lvlLevel*> Singleton;
 
@@ -162,6 +167,9 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<lvlLevel, asCullable>("lvlLevel")
+                //properties
+                .addPropertyReadOnly("NumRooms", &GetRoomCount)
+
                 //virtual functions
                 .addFunction("FindRoomId", &FindRoomId)
                 .addFunction("GetNeighborCount", &GetNeighborCount)

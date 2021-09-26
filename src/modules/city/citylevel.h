@@ -17,8 +17,9 @@ namespace MM2
     class cityLevel : public lvlLevel {
     private:
         int unk28;
-    protected:
-        //helpers
+    private:
+        static hook::Type<unsigned char[512]> sm_PvsBuffer;
+        static hook::Type<bool> sm_EnablePVS;
     public:
         static hook::Type<lvlSky> Sky;
 
@@ -97,13 +98,28 @@ namespace MM2
             hook::Thunk<0x445820>::Call<void>(this, a1, a2, a3, a4);
         }
 
+        /*
+            Helpers
+        */
+        inline bool IsRoomVisible(int roomId)
+        {
+            if (!sm_EnablePVS.get())
+                return true;
+            if (roomId < 0 || roomId >= this->GetRoomCount())
+                return false;
+
+            auto buf = sm_PvsBuffer.ptr();
+            return  ((buf[roomId >> 2] >> (2 * (roomId & 3))) & 3) != 0;
+        }
+
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<cityLevel, lvlLevel>("cityLevel")
                 //functions
                 .addFunction("EnablePVS", &EnablePVS)
                 .addFunction("EnableSky", &EnableSky)
-                
+                .addFunction("IsRoomVisible", &IsRoomVisible)
+
                 .addStaticFunction("LoadPath", &LoadPath)
                 .addStaticFunction("LoadPathSet", &LoadPathSet)
                 .addStaticFunction("LoadProp", &LoadProp)
