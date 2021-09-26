@@ -22,7 +22,8 @@ namespace MM2
 
         }
 
-        dgPathPoint(float x, float y, float z) {
+        dgPathPoint(float x, float y, float z) 
+        {
             this->x = x;
             this->y = y;
             this->z = z;
@@ -36,7 +37,7 @@ namespace MM2
         
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<dgPathPoint>("dgPathPoint")
-                .addConstructor(LUA_ARGS(float, float, float))
+                .addConstructor(LUA_ARGS(_opt<float>, _opt<float>, _opt<float>))
                 .addVariableRef("x", &dgPathPoint::x)
                 .addVariableRef("y", &dgPathPoint::y)
                 .addVariableRef("z", &dgPathPoint::z)
@@ -55,8 +56,29 @@ namespace MM2
         dgPathType Type;
         float Spacing;
     private:
-        //lua helpers
-        inline LPCSTR getName()
+        //enumeration helpers
+        static LuaRef sm_LuaCurrentCallback;
+        static bool sm_LuaCallbackSet;
+
+        static void luaEnumerateCallback(const LPCSTR name, const Matrix34* matrix, bool a3) {
+            sm_LuaCurrentCallback.call(name, matrix, a3);
+        }
+
+        void luaEnumerate(LuaRef callback, float a3)
+        {
+            assert(!sm_LuaCallbackSet);
+            if (!callback.isValid() || !callback.isFunction()) {
+                Errorf("dgPath.luaEnumerate must take in a lua function as the first argument.");
+                return;
+            }
+
+            sm_LuaCurrentCallback = callback;
+            this->Enumerate(luaEnumerateCallback, a3, 0.f);
+            sm_LuaCurrentCallback.~LuaRef();
+        }
+    public:
+        //general api
+                inline LPCSTR getName()
         {
             return (LPCSTR)this->Name;
         }
@@ -78,33 +100,13 @@ namespace MM2
         }
 
         inline void setSpacing(float spacing) {
+            // disallow zero or less spacing
+            // based on Angels own check @ 466D08
+            if (spacing <= 0.0f)
+                spacing = 5.0f;
             Spacing = spacing;
         }
 
-        //enumeration helpers
-        static LuaRef sm_LuaCurrentCallback;
-        static bool sm_LuaCallbackSet;
-
-        static void luaEnumerateCallback(const LPCSTR name, const Matrix34* matrix, bool a3) {
-            sm_LuaCurrentCallback.call(name, matrix, a3);
-        }
-
-        void luaEnumerate(LuaRef callback, float a3)
-        {
-            assert(!sm_LuaCallbackSet);
-            if (callback.type() != LuaTypeID::FUNCTION) {
-                Errorf("dgPath.luaEnumerate must take in a lua function as the first argument.");
-                return;
-            }
-
-            sm_LuaCurrentCallback = callback;
-            sm_LuaCallbackSet = true;
-            this->Enumerate(luaEnumerateCallback, a3, 0.f);
-            sm_LuaCallbackSet = false;
-            sm_LuaCurrentCallback = nullptr;
-        }
-    public:
-        //general api
         void setPointCount(int count) {
             if (this->Points)
                 hook::StaticThunk<0x577380>::Call<void>(this->Points); //angel delete operator
@@ -163,13 +165,26 @@ namespace MM2
         }
     public:
         //general api
-        dgPath* getPath(int path) {
+        dgPath* findPath(LPCSTR name)
+        {
+            for (int i = 0; i < this->PathCount; i++) 
+            {
+                auto path = Paths[i];
+                if (!strcmp(path->getName(), name))
+                    return path;
+            }
+            return nullptr;
+        }
+            
+        dgPath* getPath(int path) 
+        {
             if (path >= this->PathCount || path >= 192)
                 return nullptr;
             return Paths[path];
         }
 
-        void addPath(dgPath* path) {
+        void addPath(dgPath* path) 
+        {
             if (this->PathCount >= 192) {
                 Errorf("dgPthSet.addPath: No more room!");
                 return;
@@ -203,6 +218,7 @@ namespace MM2
                 .addConstructor(LUA_ARGS())
 
                 .addPropertyReadOnly("NumPaths", &getPathCount)
+                .addFunction("FindPath", &findPath)
                 .addFunction("GetPath", &getPath)
                 .addFunction("AddPath", &addPath)
                 .addFunction("Load", &Load)
