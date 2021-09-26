@@ -221,6 +221,17 @@ namespace MM2
         AGE_API void Negate(const Vector3& vec) {
             $::Vector3::Negate(this, &vec);
         }
+        AGE_API void Normalize()
+        {
+            float len = this->Mag2();
+            float mul = 0.0f;
+            if (len != 0.0)
+                mul = 1.0f / sqrtf(len);
+            
+            this->X *= mul;
+            this->Y *= mul;
+            this->Z *= mul;
+        }
 
         AGE_API bool IsEqual(const Vector3& vec) const {
             return $::Vector3::IsEqual(this, &vec);
@@ -277,6 +288,8 @@ namespace MM2
                 .addFunction("__mul", &Vector3::operator*)
                 .addFunction("__eq", &Vector3::IsEqual)
 
+                .addFunction("Cross", static_cast<void(Vector3::*)(const Vector3&)>(&Vector3::Cross))
+                .addFunction("Normalize", &Normalize)
                 .addFunction("Mag", &Mag)
                 .addFunction("Mag2", &Mag2)
                 .addFunction("InvMag", &InvMag)
