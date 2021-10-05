@@ -93,9 +93,7 @@ float getSpeedLimit(vehCar *car) {
 
     if (veh != nullptr) {
         auto roadId = veh->CurrentRoadId();
-        auto path = AIMAP->paths[roadId];
-
-        return *getPtr<float>(path, 0x18);
+        return AIMAP->Path(roadId)->getBaseSpeedLimit();
     }
 
     return cfgDefaultSpeedLimit;

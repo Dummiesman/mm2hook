@@ -13,7 +13,8 @@ namespace MM2
 
     class aiPath {
     private:
-        byte _buffer[0x164];
+        byte _buffer[0x163];
+        hook::Field<0x18, float> _baseSpeedLimit;
     private:
         //lua helper
         std::tuple<int, float> luaIsPosOnRoad(Vector3* pos, float margin)
@@ -26,6 +27,11 @@ namespace MM2
     public:
         aiPath(void)                                        DONOTCALL;
         aiPath(const aiPath &&)                             DONOTCALL;
+
+        inline float getBaseSpeedLimit()
+        {
+            return _baseSpeedLimit.get(this);
+        }
 
         /*
             aiPath
