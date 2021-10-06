@@ -52,12 +52,6 @@ namespace MM2
         namespace aiPedestrian {
             declhook(0x54B9C0, _MemberFunc<void>, Update);
         }
-        namespace aiPoliceOfficer {
-            declhook(0x53DBF0, _MemberFunc<void>, StartSiren);
-            declhook(0x53DC40, _MemberFunc<void>, StopSiren);
-            declhook(0x53DFD0, _MemberFunc<void>, DetectPerpetrator);
-            declhook(0x53F170, _MemberFunc<void>, PerpEscapes);
-        }
         namespace aiVehicleManager {
             declhook(0x6B31AC, _Type<MM2::aiVehicleManager *>, Instance);
         }

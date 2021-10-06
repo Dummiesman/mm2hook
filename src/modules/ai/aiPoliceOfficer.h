@@ -58,6 +58,15 @@ namespace MM2
         //usually private
         AGE_API void DetectPerpetrator()                    { hook::Thunk<0x53DFD0>::Call<void>(this); }
         AGE_API void PerpEscapes()                          { hook::Thunk<0x53F170>::Call<void>(this); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<aiPoliceOfficer>("aiPoliceOfficer")
+                .addPropertyReadOnly("State", &getState)
+                .addPropertyReadOnly("PoliceState", &getPoliceState)
+                .addPropertyReadOnly("ApprehendState", &getApprehendState)
+                .addPropertyReadOnly("ID", &getId)
+                .endClass();
+        }
     };
 
     ASSERT_SIZEOF(aiPoliceOfficer, 0x9870);
