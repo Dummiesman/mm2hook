@@ -140,6 +140,7 @@
     <ClInclude Include="discord-rpc\gamesdk\types.h" />
     <ClInclude Include="discord-rpc\gamesdk\user_manager.h" />
     <ClInclude Include="discord-rpc\gamesdk\voice_manager.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\aiCTFRacerHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiPathHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiPedestrianHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.h" />
@@ -540,6 +541,7 @@
     <ClCompile Include="discord-rpc\gamesdk\types.cpp" />
     <ClCompile Include="discord-rpc\gamesdk\user_manager.cpp" />
     <ClCompile Include="discord-rpc\gamesdk\voice_manager.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\aiCTFRacerHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiPathHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiPedestrianHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.cpp" />

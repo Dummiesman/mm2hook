@@ -1488,6 +1488,9 @@
     <ClInclude Include="src\modules\gizmo\pathspline_wrapper.h">
       <Filter>Source Files\modules\gizmo</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\aiCTFRacerHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2119,6 +2122,9 @@
     </ClCompile>
     <ClCompile Include="src\modules\gizmo.cpp">
       <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\aiCTFRacerHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
