@@ -270,6 +270,7 @@ namespace MM2
         AGE_API void Dump(void)                              { hook::Thunk<0x538840>::Call<void>(this); }
         AGE_API void TestProbes(BOOL a2)                     { hook::Thunk<0x53B870>::Call<void>(this, a2); }
         AGE_API aiRouteRacer * Opponent(int num)             { return hook::Thunk<0x534940>::Call<aiRouteRacer *>(this, num); }
+        AGE_API aiCTFRacer * CTFOpponent(int num)            { return hook::Thunk<0x534990>::Call<aiCTFRacer *>(this, num); }
         AGE_API aiPoliceOfficer * Police(int num)            { return hook::Thunk<0x5348F0>::Call<aiPoliceOfficer *>(this, num); }
         AGE_API aiVehiclePlayer * Player(int num)            { return hook::Thunk<0x534AF0>::Call<aiVehiclePlayer *>(this, num); }
         AGE_API aiVehicleAmbient * Vehicle(int num)          { return hook::Thunk<0x5348B0>::Call<aiVehicleAmbient *>(this, num); }
@@ -295,8 +296,9 @@ namespace MM2
                 .addFunction("Police", &Police)
                 .addFunction("Player", &Player)
                 .addFunction("Opponent", &Opponent)
-                .addFunction("Intersection", &Intersection)
+                .addFunction("CTFOpponent", &CTFOpponent)
                 .addFunction("Vehicle", &Vehicle)
+                .addFunction("Intersection", &Intersection)
                 .addPropertyReadOnly("PoliceForce", &getPoliceForce)
                 .addPropertyReadOnly("Stats", &getStats)
                 .addPropertyReadOnly("NumAmbientVehicles", &getAmbientCount)

@@ -34,12 +34,19 @@ namespace MM2
         byte _buffer[0x976C];
     protected:
         static hook::Field<0x10, vehCar> _vehCar;
+        static hook::Field<0x27C, unsigned short> _state;
     public:
         aiVehiclePhysics(void)                              DONOTCALL;
         aiVehiclePhysics(const aiVehiclePhysics &&)         DONOTCALL;
 
-        inline vehCar * getCar() const {
+        inline vehCar * getCar() 
+        {
             return _vehCar.ptr(this);
+        }
+
+        inline unsigned short getState()
+        {
+            return _state.get(this);
         }
 
         void Position(Vector3 &a1) override                 FORWARD_THUNK;
@@ -64,6 +71,7 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<aiVehiclePhysics, aiVehicle>("aiVehiclePhysics")
                 .addPropertyReadOnly("Car", &getCar)
+                .addPropertyReadOnly("State", &getState)
                 .endClass();
         }
     };
