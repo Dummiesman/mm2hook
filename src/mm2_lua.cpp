@@ -75,6 +75,7 @@ void luaSetGlobals()
     Lua::setGlobal(L, "ROOT", &ROOT);
     Lua::setGlobal(L, "MMSTATE", &MMSTATE);
     Lua::setGlobal(L, "NETMGR", &NETMGR);
+    Lua::setGlobal(L, "AIMAP", &aiMap::Instance);
 
     LogFile::WriteLine("Done!");
 }

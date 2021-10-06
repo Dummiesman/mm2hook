@@ -197,6 +197,7 @@ namespace MM2 {
             .addVariableRef("PedestrianDensity", &dgStatePack::PedestrianDensity)
             .addVariableRef("CopDensity", &dgStatePack::CopDensity)
             .addVariableRef("OpponentDensity", &dgStatePack::OpponentDensity)
+            .addVariableRef("NumCTFRacers", &dgStatePack::NumberOfCTFRacers)
 
             .addVariableRef("MaxAmbientVehicles", &dgStatePack::MaxAmbientVehicles)
 
