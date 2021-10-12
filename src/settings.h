@@ -48,6 +48,8 @@ public:
     // reads from the config file (if open)
     static bool Read();
 
+    static bool HasProperty(const char* key);
+
     static bool GetProperty(const char *key, char *value, size_t buf_len);
     static bool GetProperty(const char *key, bool &value);
     static bool GetProperty(const char *key, int &value);

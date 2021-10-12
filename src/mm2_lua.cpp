@@ -52,22 +52,22 @@ void luaAddModule_HookConfig(lua_State* L)
 {
     LuaBinding(L).beginClass<HookConfig>("HookConfig")
         //functions
-        .addStaticFunction("Get", [](LPCSTR key)      { bool value = false;
-                                                        bool res = HookConfig::GetProperty(key, value);
-                                                        return value; })
-        .addStaticFunction("GetInt", [](LPCSTR key)   { int value = 0; 
-                                                        bool res = HookConfig::GetProperty(key, value); 
-                                                        return std::make_tuple(res, value); })
-        .addStaticFunction("GetFloat", [](LPCSTR key) { float value = 0.0f;
-                                                        bool res = HookConfig::GetProperty(key, value);
-                                                        return std::make_tuple(res, value); })
-        .addStaticFunction("GetString", [](LPCSTR key) { char buf[2048];
-                                                         memset(buf, 0x00, sizeof(buf));
-                                                         bool res = HookConfig::GetProperty(key, buf, sizeof(buf));
-                                                         return std::make_tuple(res, std::string(buf)); })
+        .addStaticFunction("Get", [](LPCSTR key) -> bool                  { bool value = false;
+                                                                            bool res = HookConfig::GetProperty(key, value);
+                                                                            return value; })
+        .addStaticFunction("GetInt", [](LPCSTR key, int def) -> int       { int value;
+                                                                            bool res = HookConfig::GetProperty(key, value);
+                                                                            return res ? value : def; }, LUA_ARGS(LPCSTR,_def<int, 0>))
+        .addStaticFunction("GetFloat", [](LPCSTR key, float def) -> float { float value;
+                                                                            bool res = HookConfig::GetProperty(key, value);
+                                                                            return res ? value : def; }, LUA_ARGS(LPCSTR, _def<float, 0>))
+        .addStaticFunction("GetString", [](LPCSTR key) -> LPCSTR          { char value[2048];
+                                                                            bool res = HookConfig::GetProperty(key, value, sizeof(value));
+                                                                            return res ? std::string(value).c_str() : nullptr; })
+        .addStaticFunction("HasProperty", &HookConfig::HasProperty)
         .endClass();
 }
-
+    
 // these need to be here due to header file placement
 // maybe this should be fixed...
 void luaAddModule_Vector(lua_State *L)

@@ -251,6 +251,13 @@ void HookConfig::Close() {
     }
 }
 
+bool HookConfig::HasProperty(const char* key)
+{
+    if (!isLoaded)
+        return false;
+    return properties.find(key) != properties.end();
+}
+
 bool HookConfig::GetProperty(const char *key, char *value, size_t buf_len) {
     if (!isLoaded)
         return false;
