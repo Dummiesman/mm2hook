@@ -63,7 +63,7 @@ void luaAddModule_HookConfig(lua_State* L)
                                                                             return res ? value : def; }, LUA_ARGS(LPCSTR, _def<float, 0>))
         .addStaticFunction("GetString", [](LPCSTR key) -> LPCSTR          { char value[2048];
                                                                             bool res = HookConfig::GetProperty(key, value, sizeof(value));
-                                                                            return res ? std::string(value).c_str() : nullptr; })
+                                                                            return res ? (LPCSTR)&value : nullptr; })
         .addStaticFunction("HasProperty", &HookConfig::HasProperty)
         .endClass();
 }
