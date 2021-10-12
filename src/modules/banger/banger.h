@@ -49,7 +49,7 @@ namespace MM2
         /*
             dgUnhitBangerInstance
         */
-        AGE_API static dgUnhitBangerInstance* RequestBanger(char* a1, BOOL a2)
+        AGE_API static dgUnhitBangerInstance* RequestBanger(const char* a1, BOOL a2)
                                                                    { return hook::StaticThunk<0x441D80>::Call<dgUnhitBangerInstance*>(a1, a2); }
 
         /*

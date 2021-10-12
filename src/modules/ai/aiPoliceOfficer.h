@@ -16,10 +16,11 @@ namespace MM2
     class aiPoliceOfficer {
     private:
         hook::Field<0x04, aiVehiclePhysics> _physics;
+        hook::Field<0x9774, vehCar*> _followedCar;
         hook::Field<0x9778, unsigned short> _id;
         hook::Field<0x977E, unsigned short> _apprehendState;
         hook::Field<0x977A, unsigned short> _policeState;
-        byte _buffer[0x986C];
+        byte _buffer[0x986B];
     public:
         aiPoliceOfficer(void)                               DONOTCALL;
         aiPoliceOfficer(const aiPoliceOfficer &&)           DONOTCALL;
@@ -42,6 +43,16 @@ namespace MM2
         inline int getApprehendState()
         {
             return _apprehendState.get(this);
+        }
+
+        inline vehCar* getFollowedCar()
+        {
+            return _followedCar.get(this);
+        }
+
+        inline vehCar* getCar()
+        {
+            return getVehiclePhysics()->getCar();
         }
 
         /// <summary>
