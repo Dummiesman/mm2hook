@@ -72,6 +72,8 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiPoliceOfficer>("aiPoliceOfficer")
+                .addPropertyReadOnly("Car", &getCar)
+                .addPropertyReadOnly("FollowedCar", &getFollowedCar)
                 .addPropertyReadOnly("State", &getState)
                 .addPropertyReadOnly("PoliceState", &getPoliceState)
                 .addPropertyReadOnly("ApprehendState", &getApprehendState)
