@@ -151,8 +151,8 @@ namespace MM2
                 .addFunction("Enable3DMode", &Enable3DMode)
                 .addFunction("Disable3DMode", &Disable3DMode)
 
-                .addFunction("PlayOnce", &PlayOnce)
-                .addFunction("PlayLoop", &PlayLoop)
+                .addFunction("PlayOnce", &PlayOnce, LUA_ARGS(_def<float, -1>, _def<float, -1>))
+                .addFunction("PlayLoop", &PlayLoop, LUA_ARGS(_def<float, -1>, _def<float, -1>))
                 .addFunction("SetFrequency", &SetFrequency)
                 .addFunction("SetPan", &SetPan)
                 .addFunction("SetVolume", &SetVolume)
