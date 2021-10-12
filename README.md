@@ -1,6 +1,9 @@
-MM2Hook
-=======
-[![Build Status](https://ci.appveyor.com/api/projects/status/github/Fireboyd78/mm2hook?branch=master&svg=true)](https://ci.appveyor.com/project/Fireboyd78/mm2hook)
+
+ **MM2Hook : Project NuHook**  
+ ![enter image description here](https://i.imgur.com/F9JrZvz.png)  
+A cleaned up fork of mm2hook, with a larger focus on the Lua modding API and capabilities.
+***
+[![Build status](https://ci.appveyor.com/api/projects/status/96k957iuc4l9susg?svg=true)](https://ci.appveyor.com/project/Dummiesman/mm2hook)
 
 A simple DLL-injection module for hooking into Midtown Madness 2, allowing for further control of the game.
 
