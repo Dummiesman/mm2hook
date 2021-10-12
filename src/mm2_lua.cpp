@@ -48,6 +48,26 @@ void luaAddModule_LogFile(lua_State * L)
         .endModule();
 }
 
+void luaAddModule_HookConfig(lua_State* L)
+{
+    LuaBinding(L).beginClass<HookConfig>("HookConfig")
+        //functions
+        .addStaticFunction("Get", [](LPCSTR key)      { bool value = false;
+                                                        bool res = HookConfig::GetProperty(key, value);
+                                                        return value; })
+        .addStaticFunction("GetInt", [](LPCSTR key)   { int value = 0; 
+                                                        bool res = HookConfig::GetProperty(key, value); 
+                                                        return std::make_tuple(res, value); })
+        .addStaticFunction("GetFloat", [](LPCSTR key) { float value = 0.0f;
+                                                        bool res = HookConfig::GetProperty(key, value);
+                                                        return std::make_tuple(res, value); })
+        .addStaticFunction("GetString", [](LPCSTR key) { char buf[2048];
+                                                         memset(buf, 0x00, sizeof(buf));
+                                                         bool res = HookConfig::GetProperty(key, buf, sizeof(buf));
+                                                         return std::make_tuple(res, std::string(buf)); })
+        .endClass();
+}
+
 // these need to be here due to header file placement
 // maybe this should be fixed...
 void luaAddModule_Vector(lua_State *L)
@@ -88,6 +108,7 @@ LUAMOD_API int luaopen_MM2(lua_State *L)
     auto modL = mod.state();
 
     luaAddModule_LogFile(modL);
+    luaAddModule_HookConfig(modL);
     luaAddModule_Vector(modL);
     
     // register all Lua modules
