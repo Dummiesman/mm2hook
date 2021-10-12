@@ -55,6 +55,5 @@ namespace MM2
                 .endClass();
         }
     };
-
-    declhook(0x6B1CA0, _Type<mmCityList *>, CityListPtr);
+    declhook(0x6B1CA0, _Type<mmCityList*>, CityListPtr);
 }

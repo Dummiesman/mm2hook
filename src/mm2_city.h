@@ -167,8 +167,9 @@ namespace MM2
 
     template<>
     void luaAddModule<module_city>(LuaState L) {
+        luaBind<cityLevel>(L);
+
         luaBind<mmCityInfo>(L);
         luaBind<mmCityList>(L);
-        luaBind<cityLevel>(L);
     }
 }

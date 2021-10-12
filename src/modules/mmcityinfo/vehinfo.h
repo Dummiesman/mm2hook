@@ -62,34 +62,21 @@ namespace MM2
             return tuningCrc;
         }
 
-        //helpers
-        void SetBaseName(LPCSTR basename) {
-            strcpy_s(this->baseName, 40, basename);
-        }
-
-        void SetDescription(LPCSTR description) {
-            strcpy_s(this->description, 80, description);
-        }
-
-        void SetColors(LPCSTR colors) {
-            strcpy_s(this->colors, 100, colors);
-        }
-
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<mmVehInfo>("mmVehInfo")
-                .addProperty("Colors", &GetColors, &SetColors)
-                .addProperty("Basename", &GetBaseName, &SetBaseName)
-                .addProperty("Description", &GetDescription, &SetDescription)
-                .addVariableRef("Flags", &mmVehInfo::flags)
-                .addVariableRef("Order", &mmVehInfo::order)
-                .addVariableRef("UnlockFlags", &mmVehInfo::unlockFlags)
-                .addVariableRef("UnlockScore", &mmVehInfo::unlockScore)
-                .addVariableRef("Horsepower", &mmVehInfo::horsepower)
-                .addVariableRef("TopSpeed", &mmVehInfo::topSpeed)
-                .addVariableRef("Durability", &mmVehInfo::durability)
-                .addVariableRef("Mass", &mmVehInfo::mass)
-                .addVariableRef("UIDist", &mmVehInfo::uiDist)
+                .addPropertyReadOnly("Colors", &GetColors)
+                .addPropertyReadOnly("Basename", &GetBaseName)
+                .addPropertyReadOnly("Description", &GetDescription)
+                .addVariableRef("Flags", &mmVehInfo::flags, false)
+                .addVariableRef("Order", &mmVehInfo::order, false)
+                .addVariableRef("UnlockFlags", &mmVehInfo::unlockFlags, false)
+                .addVariableRef("UnlockScore", &mmVehInfo::unlockScore, false)
+                .addVariableRef("Horsepower", &mmVehInfo::horsepower, false)
+                .addVariableRef("TopSpeed", &mmVehInfo::topSpeed, false)
+                .addVariableRef("Durability", &mmVehInfo::durability, false)
+                .addVariableRef("Mass", &mmVehInfo::mass, false)
+                .addVariableRef("UIDist", &mmVehInfo::uiDist, false)
                 .addPropertyReadOnly("TuningCRC", &GetTuningCRC)
                 .endClass();
         }

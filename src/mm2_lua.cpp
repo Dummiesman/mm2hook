@@ -96,6 +96,8 @@ void luaSetGlobals()
     Lua::setGlobal(L, "MMSTATE", &MMSTATE);
     Lua::setGlobal(L, "NETMGR", &NETMGR);
     Lua::setGlobal(L, "AIMAP", &aiMap::Instance);
+    Lua::setGlobal(L, "VehicleList", VehicleListPtr.get());
+    Lua::setGlobal(L, "CityList", CityListPtr.get());
 
     LogFile::WriteLine("Done!");
 }
@@ -305,6 +307,7 @@ void MM2Lua::OnGameEnd() {
 
 void MM2Lua::OnGamePreInit() {
     if (IsLoaded()) {
+        luaSetGlobals();
         LuaRef func(L, "onGamePreInit");
         tryCallFunction(func);
     }
@@ -312,7 +315,7 @@ void MM2Lua::OnGamePreInit() {
 
 void MM2Lua::OnGamePostInit() {
     if (IsLoaded()) {
-        luaSetGlobals(); //set globals so post init has access to things like Game
+        luaSetGlobals();
         LuaRef func(L, "onGamePostInit");
         tryCallFunction(func);
     }
