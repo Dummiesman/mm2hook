@@ -47,11 +47,11 @@ function shutdown()
 end
 
 local function onUpdate()
-  modsystem.onUpdate()
-end
-
-local function onUpdatePaused()
-  modsystem.onUpdatePaused()
+  if ROOT.IsPaused then
+    modsystem.onUpdatePaused()
+  else
+    modsystem.onUpdate()
+  end
 end
 
 local function onCull()
@@ -64,7 +64,6 @@ function init()
     ROOT:AddChild(node)
     
     node.Update = onUpdate
-    node.UpdatePaused = onUpdatePaused
     node.Cull = onCull
     node.AutoDeclareCullable = true
     
