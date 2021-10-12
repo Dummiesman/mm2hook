@@ -213,17 +213,19 @@ BOOL aiPoliceOfficerHandler::IsOppDrivingMadly(vehCar *perpCar) {
     return FALSE;
 }
 
-void aiPoliceOfficerHandler::PerpEscapes(bool a1) {
+void aiPoliceOfficerHandler::PerpEscapes(bool a1) 
+{
     auto carAudioContainer = *getPtr<vehCarAudioContainer*>(this, 0x268);
     auto policeCarAudio = carAudioContainer->GetPoliceCarAudioPtr();
     auto AIMAP = &aiMap::Instance;
+    auto policeOfficer = reinterpret_cast<aiPoliceOfficer*>(this);
 
-    $::aiPoliceOfficer::StopSiren(this);
+    policeOfficer->aiPoliceOfficer::StopSiren();
 
     if (policeCarAudio != nullptr && a1)
         policeCarAudio->PlayExplosion();
 
-    AIMAP->policeForce->UnRegisterCop(*getPtr<vehCar*>(this, 0x14), *getPtr<vehCar*>(this, 0x9774));
+    AIMAP->policeForce->UnRegisterCop(policeOfficer->getCar(), policeOfficer->getFollowedCar());
     *getPtr<WORD>(this, 0x977A) = 0;
     *getPtr<WORD>(this, 0x280) = 3;
 }
