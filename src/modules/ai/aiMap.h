@@ -173,6 +173,10 @@ namespace MM2
             return policeForce;
         }
 
+        inline int getPoliceCount() {
+            return numCops;
+        }
+
         inline int getHookmanCount() {
             return numHookmen;
         }
@@ -309,6 +313,7 @@ namespace MM2
                 .addPropertyReadOnly("NumOpponents", &getOpponentCount)
                 .addPropertyReadOnly("NumPlayers", &getPlayerCount)
                 .addPropertyReadOnly("NumCTFRacers", &getCtfRacerCount)
+                .addPropertyReadOnly("NumPolice", &getPoliceCount)
                 .addVariableRef("ShowHeadlights", &aiMap::showHeadlights)
                 .addStaticProperty("Instance", [] { return  &aiMap::Instance; })
             .endClass();
