@@ -11,6 +11,7 @@ namespace MM2
         luaBind<phMaterial>(L);
         luaBind<phPolygon>(L);
         luaBind<LuaRaycastResult>(L);
+        luaBind<PhysicsStats>(L);
         luaBind<phInertialCS>(L);
         luaBind<dgPhysManager::CollisionTableEntry>(L);
         luaBind<dgPhysManager>(L);

@@ -6,3 +6,10 @@ using namespace MM2;
 */
 declfield(dgPhysManager::Instance)(0x65D9DC);
 declfield(dgPhysManager::Gravity)(0x5C6C1C);
+
+declfield(dgPhysManager::perfObjPairCollecting)(0x660F08);
+declfield(dgPhysManager::perfPhysGathering)(0x660F0C);
+declfield(dgPhysManager::perfMoverUpdate)(0x655DAC);
+declfield(dgPhysManager::perfTotalCollisionTime)(0x655DA8);
+declfield(dgPhysManager::perfPostCollision)(0x65D9D8);
+declfield(dgPhysManager::perfPhysCollide)(0x655DB0);
