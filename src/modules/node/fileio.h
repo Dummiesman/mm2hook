@@ -46,6 +46,13 @@ namespace MM2
         
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<asFileIO, Base>("asFileIO")
+                .addFunction("FileIO", &FileIO)
+                .addFunction("AfterLoad", &AfterLoad)
+                .addFunction("BeforeSave", &BeforeSave)
+                .addFunction("Save", &Save)
+                .addFunction("Load", &Load)
+                .addFunction("GetClassName", &GetClassName)
+                .addFunction("GetDirName", &GetDirName)
                 .endClass();
         }
     };

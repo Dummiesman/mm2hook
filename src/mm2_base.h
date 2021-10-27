@@ -15,6 +15,7 @@ namespace MM2
         luaBind<asCullable>(L);
         luaBind<asNode>(L);
         luaBind<asRoot>(L);
+        luaBind<asFileIO>(L);
         luaBind<asCullManager>(L);
         luaBind<asLinearCS>(L);
         luaBind<luaNode>(L);
