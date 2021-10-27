@@ -12,17 +12,18 @@ namespace MM2
     // Class definitions
     class phBound {
     public:
-        enum BoundType
+        enum class BoundType
         {
             Sphere = 0,
             Geometry = 1,
             Box = 2,
+            ForceSphere = 3,
             Terrain = 4,
             TerrainLocal = 5,
             Hotdog = 6,
             Level = 7
         };
-    private:
+    protected:
         int MaterialCount;
         BoundType Type;
         Vector3 Min;
@@ -65,26 +66,36 @@ namespace MM2
         {
             return this->Offset;
         }
+
+        inline float getRadius()
+        {
+            return this->Radius;
+        }
     public:
-        void SetOffset(Vector3& offset) { hook::Thunk<0x4872C0>::Call<void>(this, &offset); }
+        phBound(BoundType type)
+        {
+            hook::Thunk<0x4871B0>::Call<void>(this, static_cast<int>(type));
+        }
+
+        void SetOffset(Vector3& offset)                 { hook::Thunk<0x4872C0>::Call<void>(this, &offset); }
 
         /*
             phBound virtuals
         */
-        AGE_API virtual void CenterBound() { hook::Thunk<0x4872A0>::Call<void>(this); }
+        AGE_API virtual void CenterBound()              { hook::Thunk<0x4872A0>::Call<void>(this); }
         AGE_API virtual phMaterial const * GetMaterial(int a1)     PURE;
-        AGE_API virtual int GetNumMaterials() { return hook::Thunk<0x45CF30>::Call<int>(this); }
-        AGE_API virtual float SetFriction() { return hook::Thunk<0x45CF60>::Call<float>(this); }
-        AGE_API virtual void SetFriction(float a1) { hook::Thunk<0x45CF40>::Call<void>(this, a1); }
-        AGE_API virtual float SetElasticity() { return hook::Thunk<0x45CF70>::Call<float>(this); }
-        AGE_API virtual void SetElasticity(float a1) { hook::Thunk<0x45CF50>::Call<void>(this, a1); }
+        AGE_API virtual int GetNumMaterials()           { return hook::Thunk<0x45CF30>::Call<int>(this); }
+        AGE_API virtual float SetFriction()             { return hook::Thunk<0x45CF60>::Call<float>(this); }
+        AGE_API virtual void SetFriction(float a1)      { hook::Thunk<0x45CF40>::Call<void>(this, a1); }
+        AGE_API virtual float SetElasticity()           { return hook::Thunk<0x45CF70>::Call<float>(this); }
+        AGE_API virtual void SetElasticity(float a1)    { hook::Thunk<0x45CF50>::Call<void>(this, a1); }
         AGE_API virtual bool TestProbePoint(phSegment& a1, phIntersectionPoint* a2, float a3)
             PURE;
         AGE_API virtual bool TestAIPoint(phSegment& a1, phIntersectionPoint* a2)
             PURE;
         AGE_API virtual int  TestEdge(phSegment& a1, phIntersection* a2, int a3)
             PURE;
-        AGE_API virtual int  TestProbe(phSegment& a1, phIntersection* a2, float a3)
+        AGE_API virtual bool  TestProbe(phSegment& a1, phIntersection* a2, float a3)
             PURE;
         AGE_API virtual bool TestSphere(Vector3 const& a1, float a2, phImpactBase& a3)
         {
@@ -114,6 +125,7 @@ namespace MM2
                 .addFunction("GetVertex", &GetVertex)
                 .addFunction("SetOffset", &SetOffset)
                 .addFunction("GetMaterial", &GetMaterial)
+                .addPropertyReadOnly("Radius", &getRadius)
                 .addPropertyReadOnly("Type", &getType)
                 .addPropertyReadOnly("NumMaterials", &getMaterialCount)
                 .addPropertyReadOnly("IsOffset", &getIsOffset)
