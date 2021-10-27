@@ -171,7 +171,7 @@ namespace MM2
                 .addPropertyReadOnly("NumRooms", &GetRoomCount)
 
                 //virtual functions
-                .addFunction("FindRoomId", &FindRoomId)
+                .addFunction("FindRoomId", &FindRoomId, LUA_ARGS(Vector3, _def<int, -1>))
                 .addFunction("GetNeighborCount", &GetNeighborCount)
                 .addFunction("SetObjectDetail", &SetObjectDetail)
                 .addFunction("GetWaterLevel", &GetWaterLevel)
