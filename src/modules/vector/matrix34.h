@@ -381,22 +381,22 @@ namespace MM2
                     float m10 = 0.0, float m11 = 1.0, float m12 = 0.0,
                     float m20 = 0.0, float m21 = 0.0, float m22 = 1.0,
                     float m30 = 0.0, float m31 = 0.0, float m32 = 0.0) {
-                auto mtx = new Matrix34();
-                mtx->m00 = m00;
-                mtx->m01 = m01;
-                mtx->m02 = m02;
+                auto mtx = Matrix34();
+                mtx.m00 = m00;
+                mtx.m01 = m01;
+                mtx.m02 = m02;
 
-                mtx->m10 = m10;
-                mtx->m11 = m11;
-                mtx->m12 = m12;
+                mtx.m10 = m10;
+                mtx.m11 = m11;
+                mtx.m12 = m12;
 
-                mtx->m20 = m20;
-                mtx->m21 = m21;
-                mtx->m22 = m22;
+                mtx.m20 = m20;
+                mtx.m21 = m21;
+                mtx.m22 = m22;
 
-                mtx->m30 = m30;
-                mtx->m31 = m31;
-                mtx->m32 = m32;
+                mtx.m30 = m30;
+                mtx.m31 = m31;
+                mtx.m32 = m32;
                 return mtx;
             }, LUA_ARGS(_opt<float>, _opt<float>, _opt<float>, _opt<float>,
                 _opt<float>, _opt<float>, _opt<float>, _opt<float>,

@@ -58,9 +58,9 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<Vector2>("Vector2")
                 .addFactory([](float x = 0.0, float y = 0.0) {
-                auto vec = new Vector2;
-                vec->X = x;
-                vec->Y = y;
+                auto vec = Vector2();
+                vec.X = x;
+                vec.Y = y;
                 return vec;
             }, LUA_ARGS(_opt<float>, _opt<float>))
                 .addVariableRef("x", &Vector2::X)

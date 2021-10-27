@@ -177,10 +177,10 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<Vector3>("Vector3")
                 .addFactory([](float x = 0.0, float y = 0.0, float z = 0.0) {
-                auto vec = new Vector3;
-                vec->X = x;
-                vec->Y = y;
-                vec->Z = z;
+                auto vec = Vector3();
+                vec.X = x;
+                vec.Y = y;
+                vec.Z = z;
                 return vec;
             }, LUA_ARGS(_opt<float>, _opt<float>, _opt<float>))
                 .addVariableRef("x", &Vector3::X)

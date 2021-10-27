@@ -153,26 +153,26 @@ namespace MM2
                     float m10 = 0.0, float m11 = 0.0, float m12 = 0.0, float m13 = 0.0,
                     float m20 = 0.0, float m21 = 0.0, float m22 = 0.0, float m23 = 0.0,
                     float m30 = 0.0, float m31 = 0.0, float m32 = 0.0, float m33 = 0.0) {
-                auto mtx = new Matrix44();
-                mtx->m00 = m00;
-                mtx->m01 = m01;
-                mtx->m02 = m02;
-                mtx->m03 = m03;
+                auto mtx = Matrix44();
+                mtx.m00 = m00;
+                mtx.m01 = m01;
+                mtx.m02 = m02;
+                mtx.m03 = m03;
 
-                mtx->m10 = m10;
-                mtx->m11 = m11;
-                mtx->m12 = m12;
-                mtx->m13 = m13;
+                mtx.m10 = m10;
+                mtx.m11 = m11;
+                mtx.m12 = m12;
+                mtx.m13 = m13;
 
-                mtx->m20 = m20;
-                mtx->m21 = m21;
-                mtx->m22 = m22;
-                mtx->m23 = m23;
+                mtx.m20 = m20;
+                mtx.m21 = m21;
+                mtx.m22 = m22;
+                mtx.m23 = m23;
 
-                mtx->m30 = m30;
-                mtx->m31 = m31;
-                mtx->m32 = m32;
-                mtx->m33 = m33;
+                mtx.m30 = m30;
+                mtx.m31 = m31;
+                mtx.m32 = m32;
+                mtx.m33 = m33;
                 return mtx;
             }, LUA_ARGS(_opt<float>, _opt<float>, _opt<float>, _opt<float>,
                 _opt<float>, _opt<float>, _opt<float>, _opt<float>,

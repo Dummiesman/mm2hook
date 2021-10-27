@@ -42,11 +42,11 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<Vector4>("Vector4")
                 .addFactory([](float x = 0.0, float y = 0.0, float z = 0.0, float w = 0.0) {
-                auto vec = new Vector4;
-                vec->X = x;
-                vec->Y = y;
-                vec->Z = z;
-                vec->W = w;
+                auto vec = Vector4();
+                vec.X = x;
+                vec.Y = y;
+                vec.Z = z;
+                vec.W = w;
                 return vec;
             }, LUA_ARGS(_opt<float>, _opt<float>, _opt<float>, _opt<float>))
                 .addVariableRef("x", &Vector4::X)
