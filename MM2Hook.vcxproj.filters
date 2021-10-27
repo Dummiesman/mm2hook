@@ -144,6 +144,9 @@
     <Filter Include="Source Files\modules\gizmo">
       <UniqueIdentifier>{71cf16f5-0be5-48fe-bbf4-239167d11daa}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\modules\vector">
+      <UniqueIdentifier>{456f9ef7-bfac-4158-bc3d-5e33ab39d76c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -1490,6 +1493,30 @@
     </ClInclude>
     <ClInclude Include="src\handlers\bugfix_handlers\aiCTFRacerHandler.h">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\vector.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\vector\vector3.h">
+      <Filter>Source Files\modules\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\vector\vector2.h">
+      <Filter>Source Files\modules\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\vector\vector4.h">
+      <Filter>Source Files\modules\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\vector\geometry.h">
+      <Filter>Source Files\modules\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\vector\matrix34.h">
+      <Filter>Source Files\modules\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\vector\matrix44.h">
+      <Filter>Source Files\modules\vector</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\vector\randmath.h">
+      <Filter>Source Files\modules\vector</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

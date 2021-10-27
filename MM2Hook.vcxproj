@@ -459,6 +459,14 @@
     <ClInclude Include="src\modules\phys\__template__.h" />
     <ClInclude Include="src\modules\rgl.h" />
     <ClInclude Include="src\modules\rgl\vgl.h" />
+    <ClInclude Include="src\modules\vector.h" />
+    <ClInclude Include="src\modules\vector\geometry.h" />
+    <ClInclude Include="src\modules\vector\matrix34.h" />
+    <ClInclude Include="src\modules\vector\matrix44.h" />
+    <ClInclude Include="src\modules\vector\randmath.h" />
+    <ClInclude Include="src\modules\vector\vector2.h" />
+    <ClInclude Include="src\modules\vector\vector3.h" />
+    <ClInclude Include="src\modules\vector\vector4.h" />
     <ClInclude Include="src\modules\vehicle.h" />
     <ClInclude Include="src\modules\vehicle\aero.h" />
     <ClInclude Include="src\modules\vehicle\aiambientvehicleaudio.h" />
@@ -664,6 +672,7 @@
     <ClCompile Include="src\modules\ped.cpp" />
     <ClCompile Include="src\modules\phys.cpp" />
     <ClCompile Include="src\modules\rgl.cpp" />
+    <ClCompile Include="src\modules\vector.cpp" />
     <ClCompile Include="src\modules\vehicle.cpp" />
     <ClCompile Include="src\settings.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers.cpp" />
