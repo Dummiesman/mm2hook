@@ -2153,6 +2153,9 @@
     <ClCompile Include="src\handlers\bugfix_handlers\aiCTFRacerHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\vector.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AGE.h">
