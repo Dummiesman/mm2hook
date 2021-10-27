@@ -45,7 +45,7 @@ namespace MM2
                                                                     { hook::Thunk<0x445400>::Call<void>(this, &a1, a2); }
 
         AGE_API virtual int FindRoomId(Vector3 const& a1, int a2) override
-                                                                    { return hook::Thunk<0x446A60>::Call<int>(this, a1, a2); }
+                                                                    { return hook::Thunk<0x446A60>::Call<int>(this, &a1, a2); }
         AGE_API virtual int GetNeighborCount(int a1) override       { return hook::Thunk<0x446C20>::Call<int>(this, a1); }
         AGE_API virtual int GetNeighbors(int* a1, int a2) override  { return hook::Thunk<0x446C40>::Call<int>(this, a1, a2); }
         AGE_API virtual int GetTouchedNeighbors(int* a1, int a2, int a3, const Vector4& a4) override
