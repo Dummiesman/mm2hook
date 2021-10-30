@@ -774,9 +774,8 @@ public:
         hook::StaticThunk<0x401AA0>::Call<void>(a1);
 
         //initialize lua
-        if (MM2Lua::IsEnabled()) {
-            MM2Lua::Initialize();
-        }
+        MM2Lua::Initialize();
+        
 
         //initialize imgui
         auto imguiNode = new mmImGuiManager();

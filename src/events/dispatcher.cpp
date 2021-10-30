@@ -26,8 +26,7 @@ void GameEventDispatcher::onGameEndHook(int a1)
 
 void GameEventDispatcher::onGameEnd(int a1)
 {
-    if (MM2Lua::IsEnabled())
-        MM2Lua::OnGameEnd();
+    MM2Lua::OnGameEnd();
     TextureVariantHandler::Reset();
     cityTimeWeatherLightingHandler::Reset();
     luaDrawableHandler::ResetLuaCallbacks();
@@ -35,50 +34,42 @@ void GameEventDispatcher::onGameEnd(int a1)
 
 void GameEventDispatcher::onGamePreInit()
 {
-    if (MM2Lua::IsEnabled())
-        MM2Lua::OnGamePreInit();
+    MM2Lua::OnGamePreInit();
 }
 
 void GameEventDispatcher::onGamePostInit()
 {
-    if (MM2Lua::IsEnabled()) 
-        MM2Lua::OnGamePostInit();
+    MM2Lua::OnGamePostInit();
     dgBangerInstanceHandler::Reset();
 }
 
 void GameEventDispatcher::onChatMessage(char * message)
 {
-    if (MM2Lua::IsEnabled())
-        MM2Lua::OnChatMessage(message);
+    MM2Lua::OnChatMessage(message);
 }
 
 void GameEventDispatcher::onTick()
 {
-    if(MM2Lua::IsEnabled())
-        MM2Lua::OnTick();
+    MM2Lua::OnTick();
 }
 
 void GameEventDispatcher::onSessionCreate(char *sessionName, char *sessionPassword, int sessionMaxPlayers, NETSESSION_DESC *sessionData) 
 {
-    if (MM2Lua::IsEnabled())
-        MM2Lua::OnSessionCreate(sessionName, sessionPassword, sessionMaxPlayers, sessionData);
+    MM2Lua::OnSessionCreate(sessionName, sessionPassword, sessionMaxPlayers, sessionData);
 }
 
 void GameEventDispatcher::onSessionJoin(char *a2, GUID *a3, char *a4) 
 {
-    if (MM2Lua::IsEnabled())
-     MM2Lua::OnSessionJoin(a2, a3, a4);
+    MM2Lua::OnSessionJoin(a2, a3, a4);
 }
 
 void GameEventDispatcher::onDisconnect()
 {
-    if (MM2Lua::IsEnabled())
-        MM2Lua::OnDisconnect();
+    MM2Lua::OnDisconnect();
 }
 
 void GameEventDispatcher::onReset() {
-    if (MM2Lua::IsEnabled())
-        MM2Lua::OnReset();
+    MM2Lua::OnReset();
 
     //do fade (maybe move this eventually)
     gfxPipeline::SetFade(0xFF000000);

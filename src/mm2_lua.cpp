@@ -217,6 +217,9 @@ void GC()
 
 void ReloadScript()
 {
+    // garbage collect
+    GC();
+
     // try reloading Lua
     LogFile::WriteLine("Reloading main script...");
     LoadMainScript();
@@ -234,9 +237,6 @@ void ReloadScript()
     {
         LogFile::WriteLine("Lua script reloaded.\n");
     }
-
-    // garbage collect
-    GC();
 }
 
 LuaState * MM2Lua::GetState() {
@@ -288,7 +288,8 @@ void MM2Lua::Initialize() {
 
 void MM2Lua::Reset()
 {
-    luaSetGlobals();
+    if(IsEnabled())
+        luaSetGlobals();
 }
 
 void MM2Lua::OnChatMessage(char* message) {
@@ -359,7 +360,8 @@ void MM2Lua::OnTick()
     }
 
     // reset lastKey
-    Lua::setGlobal(L, "lastKey", -1);
+    if (IsEnabled())
+        Lua::setGlobal(L, "lastKey", -1);
 }
 
 void MM2Lua::OnShutdown()
@@ -368,9 +370,12 @@ void MM2Lua::OnShutdown()
         LuaRef func(L, "shutdown");
         tryCallFunction(func);
     }
-    GC();
-    L.close();
-    isMainLuaLoaded = false;
+
+    if (IsEnabled()) {
+        GC();
+        L.close();
+        isMainLuaLoaded = false;
+    }
 }
 
 void MM2Lua::OnRenderUi()
@@ -383,26 +388,35 @@ void MM2Lua::OnRenderUi()
 
 void MM2Lua::OnKeyPress(DWORD vKey)
 {
-    Lua::setGlobal(L, "lastKey", vKey);
+    if (IsEnabled()) {
+        Lua::setGlobal(L, "lastKey", vKey);
 
-    switch (vKey)
-    {
+        switch (vKey)
+        {
         case VK_F5:
         {
             ReloadScript();
         } break;
+        }
     }
 }
 
 void MM2Lua::SendCommand(LPCSTR command)
 {
-    LogFile::Format("> [Lua]: %s\n", command);
-    try 
-    {
-        Lua::exec(L, command);
-    }
-    catch (LuaException le) 
-    {
-        mm2L_error(le.what());
+    if (IsEnabled()) {
+        LogFile::Format("> [Lua]: %s\n", command);
+        try
+        {
+            Lua::exec(L, command);
+        }
+        catch (LuaException le)
+        {
+            mm2L_error(le.what());
+        }
+        catch (const std::exception& ex)
+        {
+            std::string errMsg = "Non LuaException error:" + std::string(ex.what());
+            mm2L_error(errMsg.c_str());
+        }
     }
 }

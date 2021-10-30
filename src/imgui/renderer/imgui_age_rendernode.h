@@ -183,8 +183,7 @@ public:
         ImGui::NewFrame();
 
         // Lua
-        if(MM2Lua::IsEnabled())
-            MM2Lua::OnRenderUi();
+        MM2Lua::OnRenderUi();
 
         //
         ImGui::Render();

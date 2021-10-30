@@ -28,8 +28,7 @@ static bool lastHornButtonState = false;
 
 void mmGameHandler::SendChatMessage(char *message) {
     if (gfxPipelineHandler::g_bConsoleOpen) {
-        if (MM2Lua::IsEnabled())
-            MM2Lua::SendCommand(message);
+        MM2Lua::SendCommand(message);
 
         // return normal chatbox behavior
         gfxPipelineHandler::g_bConsoleOpen = false;

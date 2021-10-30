@@ -33,11 +33,9 @@ void gfxPipelineHandler::gfxApplySettings(void) {
 
 bool gfxPipelineHandler::HandleKeyPress(DWORD vKey)
 {
-    if (MM2Lua::IsEnabled())
-    {
-        // Inform Lua of any changes beforehand
-        MM2Lua::OnKeyPress(vKey);
-    }
+    // Inform Lua of any changes beforehand
+    MM2Lua::OnKeyPress(vKey);
+    
 
     switch (vKey) {
         // '~'
