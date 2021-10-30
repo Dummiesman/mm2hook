@@ -12,6 +12,7 @@ namespace MM2
     template<>
     void luaAddModule<module_rgl>(LuaState L) {
         LuaBinding(L)
+            .addFunction("vglVertex", [](float x, float y, float z) { vglVertex(x, y, z); })
             .addFunction("gfxDrawFont", &luaGfxDrawFont)
 
             .addFunction("vglTexCoord2f", &vglTexCoord2f)
