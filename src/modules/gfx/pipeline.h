@@ -129,6 +129,14 @@ namespace MM2
     */
     class gfxPipeline {
     public:
+        inline static float getWidth() {
+            return window_fWidth.get();
+        }
+
+        inline static float getHeight() {
+            return window_fHeight.get();
+        }
+
         static bool SetRenderTarget(gfxTexture const* target) {
             return hook::StaticThunk<0x4AB570>::Call<bool>(target);
         }
@@ -151,6 +159,13 @@ namespace MM2
 
         static void SetFade(uint color) {
             hook::StaticThunk<0x4B2D20>::Call<void>(color);
+        }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<gfxPipeline>("gfxPipeline")
+                .addStaticProperty("Width", &gfxPipeline::getWidth)
+                .addStaticProperty("Height", &gfxPipeline::getHeight)
+                .endClass();
         }
     };
 
