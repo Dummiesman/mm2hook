@@ -23,9 +23,9 @@ namespace MM2
         int ManualNumGears;
         int AutoNumGears;
         float AutoRatios[8];
-        float UpshiftBiases[8];
-        float DownshiftMinBiases[8];
-        float DownshiftMaxBiases[8];
+        float UpshiftRpms[8];
+        float DownshiftMinRpms[8];
+        float DownshiftMaxRpms[8];
         float ReverseSpeed;
         float FirstGearSpeed;
         float LastGearSpeed;
@@ -71,37 +71,37 @@ namespace MM2
             return ManualRatios[CLAMPINT(gear, 0, 7)];
         }
 
-        inline float getUpshiftBias(int gear) {
-            return UpshiftBiases[CLAMPINT(gear, 0, 7)];
+        inline float getUpshiftRpm(int gear) {
+            return UpshiftRpms[CLAMPINT(gear, 0, 7)];
         }
 
-        inline float getDownshiftMinBias(int gear) {
-            return DownshiftMinBiases[CLAMPINT(gear, 0, 7)];
+        inline float getDownshiftMinRpm(int gear) {
+            return DownshiftMinRpms[CLAMPINT(gear, 0, 7)];
         }
 
-        inline float getDownshiftMaxBias(int gear) {
-            return DownshiftMaxBiases[CLAMPINT(gear, 0, 7)];
+        inline float getDownshiftMaxRpm(int gear) {
+            return DownshiftMaxRpms[CLAMPINT(gear, 0, 7)];
         }
 
-        inline void setDownshiftMinBias(int gear, float bias)
+        inline void setDownshiftMinRpm(int gear, float rpm)
         {
             if (gear < 0 || gear > 7)
                 return;
-            DownshiftMinBiases[gear] = bias;
+            DownshiftMinRpms[gear] = rpm;
         }
 
-        inline void setDownshiftMaxBias(int gear, float bias)
+        inline void setDownshiftMaxRpm(int gear, float rpm)
         {
             if (gear < 0 || gear > 7)
                 return;
-            DownshiftMaxBiases[gear] = bias;
+            DownshiftMaxRpms[gear] = rpm;
         }
 
-        inline void setUpshiftBias(int gear, float bias)
+        inline void setUpshiftRpm(int gear, float rpm)
         {
             if (gear < 0 || gear > 7)
                 return;
-            UpshiftBiases[gear] = bias;
+            UpshiftRpms[gear] = rpm;
         }
 
         inline void setAutoGearRatio(int gear, float ratio)
@@ -125,12 +125,12 @@ namespace MM2
                 .addFunction("GetAutoGearRatio", &getAutoGearRatio)
                 .addFunction("SetManualGearRatio", &setManualGearRatio)
                 .addFunction("GetManualGearRatio", &getManualGearRatio)
-                .addFunction("GetUpshiftBias", &getUpshiftBias)
-                .addFunction("SetUpshiftBias", &setUpshiftBias)
-                .addFunction("GetDownshiftMinBias", &getDownshiftMinBias)
-                .addFunction("GetDownshiftMaxBias", &getDownshiftMaxBias)
-                .addFunction("SetDownshiftMinBias", &setDownshiftMinBias)
-                .addFunction("SetDownshiftMaxBias", &setDownshiftMaxBias)
+                .addFunction("GetUpshiftRpm", &getUpshiftRpm)
+                .addFunction("SetUpshiftRpm", &setUpshiftRpm)
+                .addFunction("GetDownshiftMinRpm", &getDownshiftMinRpm)
+                .addFunction("GetDownshiftMaxRpm", &getDownshiftMaxRpm)
+                .addFunction("SetDownshiftMinRpm", &setDownshiftMinRpm)
+                .addFunction("SetDownshiftMaxRpm", &setDownshiftMaxRpm)
                 .addVariableRef("GearChangeTime", &vehTransmission::GearChangeTime)
                 .addVariableRef("AutoNumGears", &vehTransmission::AutoNumGears)
                 .addVariableRef("ManualNumGears", &vehTransmission::ManualNumGears)
