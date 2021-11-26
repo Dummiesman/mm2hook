@@ -1518,6 +1518,9 @@
     <ClInclude Include="src\modules\vector\randmath.h">
       <Filter>Source Files\modules\vector</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\gfx\texmovie.h">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">

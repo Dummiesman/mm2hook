@@ -320,6 +320,7 @@
     <ClInclude Include="src\modules\gfx\material.h" />
     <ClInclude Include="src\modules\gfx\packet.h" />
     <ClInclude Include="src\modules\gfx\rstate.h" />
+    <ClInclude Include="src\modules\gfx\texmovie.h" />
     <ClInclude Include="src\modules\gfx\texture.h" />
     <ClInclude Include="src\modules\gfx\viewport.h" />
     <ClInclude Include="src\modules\gizmo.h" />
