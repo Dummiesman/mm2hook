@@ -42,9 +42,6 @@ static init_handler g_feature_handlers[] = {
     CreateHandler<Aud3DObjectManagerHandler>("Aud3DObjectManagerHandler"),
     CreateHandler<mmArrowHandler>("mmArrowHandler"),
     CreateHandler<mmSingleRaceHandler>("mmSingleRace"),
-    CreateHandler<mmSingleBlitzHandler>("mmSingleBlitz"),
-    CreateHandler<mmSingleCircuitHandler>("mmSingleCircuit"),
-    CreateHandler<mmSingleStuntHandler>("mmSingleStunt"),
     CreateHandler<mmSingleRoamHandler>("mmSingleRoam"),
 
     CreateHandler<dgBangerInstanceHandler>("dgBangerInstance"),
