@@ -142,22 +142,10 @@ void mmSingleRoamHandler::HitWaterHandler() {
     }
 }
 
-void mmSingleRoamHandler::SetPriority(int a1) {
-    auto soundBase = reinterpret_cast<AudSoundBase*>(this);
-    soundBase->Load("arrest", 1, false);
-    soundBase->SetPriority(a1);
-}
-
 void mmSingleRoamHandler::Install() {
     InstallVTableHook("mmSingleRoam::HitWaterHandler",
         &HitWaterHandler, {
             0x5B0828
-        }
-    );
-
-    InstallCallback("mmSingleRoam::InitGameObjects", "Implements arrest wav sound in cruise mode.",
-        &SetPriority, {
-            cb::call(0x41FBE6),
         }
     );
 }

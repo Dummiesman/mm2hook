@@ -1098,19 +1098,10 @@
     <ClInclude Include="src\handlers\feature_handlers\mmPlayerHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\mmSingleBlitzHandler.h">
-      <Filter>Source Files\handlers\feature_handlers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\mmSingleCircuitHandler.h">
-      <Filter>Source Files\handlers\feature_handlers</Filter>
-    </ClInclude>
     <ClInclude Include="src\handlers\feature_handlers\mmSingleRaceHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
     <ClInclude Include="src\handlers\feature_handlers\mmSingleRoamHandler.h">
-      <Filter>Source Files\handlers\feature_handlers</Filter>
-    </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\mmSingleStuntHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
     <ClInclude Include="src\handlers\feature_handlers\pedestrianInstanceHandler.h">
@@ -1952,19 +1943,10 @@
     <ClCompile Include="src\handlers\feature_handlers\mmPlayerHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\mmSingleBlitzHandler.cpp">
-      <Filter>Source Files\handlers\feature_handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\mmSingleCircuitHandler.cpp">
-      <Filter>Source Files\handlers\feature_handlers</Filter>
-    </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\mmSingleRaceHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\mmSingleRoamHandler.cpp">
-      <Filter>Source Files\handlers\feature_handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\mmSingleStuntHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\pedestrianInstanceHandler.cpp">

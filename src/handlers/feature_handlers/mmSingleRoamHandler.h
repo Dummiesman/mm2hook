@@ -8,7 +8,6 @@ public:
     void ResetToNearestLocation();
     void EscapeDeepWater();
     void HitWaterHandler();
-    void SetPriority(int a1);
     static void Install();
 };
 
