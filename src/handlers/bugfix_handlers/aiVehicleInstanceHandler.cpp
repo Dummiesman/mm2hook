@@ -2,6 +2,8 @@
 
 using namespace MM2;
 
+static ConfigValue<bool> cfgUseAllTrafficColors("UseAllTrafficColors", true);
+
 /*
     aiVehicleInstanceHandler
 */
@@ -20,4 +22,10 @@ void aiVehicleInstanceHandler::Install()
             0x5B590C,
         }
     );
+
+    if (cfgUseAllTrafficColors) {
+        InstallPatch("Allows traffic to use all color variants.", { 0x90 }, {
+            0x55213F,
+            });
+    }
 }

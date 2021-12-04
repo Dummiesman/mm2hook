@@ -635,7 +635,6 @@ public:
     }
 };
 
-static ConfigValue<bool> cfgUseAllTrafficColors ("UseAllTrafficColors", true);
 
 class HookSystemFramework
 {
@@ -684,12 +683,6 @@ private:
             0x5DBE71,
             0x5DBE81,
         });
-
-        if (cfgUseAllTrafficColors) {
-            InstallPatch("Allows traffic to use all color variants.", { 0x90 }, {
-                0x55213F,
-            });
-        }
 
         InstallPatch("Fixes AI shadows not being drawn sometimes.", { 0x90, 0x90, 0x90, 0x90, 0x90, 0x90 }, {
             0x552CD5, // aiVehicleInstance::DrawShadow
