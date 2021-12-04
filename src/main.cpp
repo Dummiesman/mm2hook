@@ -5,9 +5,9 @@
 #include "handlers\feature_handlers.h"
 
 #include "handlers\print_handler.h"
+#include "handlers\time_handler.h"
 
 #include <discord-presence.h>
-#include <events\dispatcher.h>
 
 #include <imgui\renderer\imgui_age_rendernode.h>
 
@@ -429,28 +429,6 @@ public:
                 }
             );
         }
-    }
-};
-
-class TimeHandler {
-public:
-    static void Reset(void) {
-        // TODO: reset tick stuff
-    }
-
-    static void Update(void) {
-        GameEventDispatcher::onTick();
-
-        // pass control back to MM2
-        datTimeManager::Update();
-    }
-
-    static void Install() {
-        InstallCallback("datTimeManager::Update", "Intercepts the call to update each tick.",
-            &Update, {
-                cb::call(0x401A2F),
-            }
-        );
     }
 };
 

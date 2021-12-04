@@ -1515,6 +1515,9 @@
     <ClInclude Include="src\handlers\print_handler.h">
       <Filter>Source Files\handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\time_handler.h">
+      <Filter>Source Files\handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2145,6 +2148,9 @@
       <Filter>Source Files\modules</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\print_handler.cpp">
+      <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\time_handler.cpp">
       <Filter>Source Files\handlers</Filter>
     </ClCompile>
   </ItemGroup>
