@@ -27,4 +27,5 @@ public:
     static void Printf(int level, LPCSTR format, ...);
 
     static HANDLE GetOutputHandle(void);
+    static bool IsEnabled();
 };

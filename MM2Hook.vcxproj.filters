@@ -1512,6 +1512,9 @@
     <ClInclude Include="src\modules\gfx\texmovie.h">
       <Filter>Source Files\modules\gfx</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\print_handler.h">
+      <Filter>Source Files\handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2140,6 +2143,9 @@
     </ClCompile>
     <ClCompile Include="src\modules\vector.cpp">
       <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\print_handler.cpp">
+      <Filter>Source Files\handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -111,3 +111,7 @@ void ConsoleLog::Printf(int level, LPCSTR format, ...) {
 HANDLE ConsoleLog::GetOutputHandle() {
     return (hConsole != nullptr) ? hConsole : GetStdHandle(STD_OUTPUT_HANDLE);
 }
+
+bool ConsoleLog::IsEnabled() {
+    return hConsole != nullptr;
+}
