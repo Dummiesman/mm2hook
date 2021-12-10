@@ -4,6 +4,7 @@
 #include "mm2.h"
 
 // Individual handlers
+#include "bugfix_handlers/aiCTFRacerHandler.h"
 #include "bugfix_handlers/aiPathHandler.h"
 #include "bugfix_handlers/aiPedestrianHandler.h"
 #include "bugfix_handlers/aiPoliceForceHandler.h"

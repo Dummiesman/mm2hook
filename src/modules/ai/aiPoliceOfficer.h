@@ -78,6 +78,10 @@ namespace MM2
                 .addPropertyReadOnly("PoliceState", &getPoliceState)
                 .addPropertyReadOnly("ApprehendState", &getApprehendState)
                 .addPropertyReadOnly("ID", &getId)
+
+                .addFunction("StartSiren", &StartSiren)
+                .addFunction("StopSiren", &StopSiren)
+
                 .endClass();
         }
     };

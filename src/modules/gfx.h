@@ -7,6 +7,7 @@
 
 #include "gfx\packet.h"
 #include "gfx\texture.h"
+#include "gfx\texmovie.h"
 #include "gfx\gettex.h"
 #include "gfx\image.h"
 #include "gfx\light.h"

@@ -7,6 +7,7 @@ static init_handler g_bugfix_handlers[] = {
     CreateHandler<aiPedestrianHandler>("aiPedestrian"),
     CreateHandler<aiPoliceForceHandler>("aiPoliceForce"),
     CreateHandler<aiPoliceOfficerHandler>("aiPoliceOfficer"),
+    CreateHandler<aiCTFRacerHandler>("aiCTFRacer"),
     CreateHandler<aiVehicleAmbientHandler>("aiVehicleAmbient"),
     CreateHandler<aiVehicleInstanceHandler>("aiVehicleInstance"),
     CreateHandler<aiGoalAvoidPlayerHandler>("aiGoalAvoidPlayer"),
