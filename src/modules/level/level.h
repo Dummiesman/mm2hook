@@ -2,6 +2,7 @@
 #include <handlers\lua_drawable.h>
 #include <modules\phys\segment.h>
 #include <modules\level\inst.h>
+#include <modules\rgl.h>
 
 namespace MM2
 {
@@ -76,7 +77,7 @@ namespace MM2
 
     class lvlLevel : public asCullable {
     private:
-        int unk4;
+        int InstanceLabelMask;
         lvlRoomInfo** RoomInfo;
         int RoomCount;
         lvlInstance* FirstLoadedInstance;
@@ -96,7 +97,7 @@ namespace MM2
     public:
         inline lvlRoomInfo* GetRoomInfo(int room) 
         {
-            if (this->RoomInfo == nullptr || room >= RoomCount)
+            if (this->RoomInfo == nullptr || room >= RoomCount || room < 0)
                 return nullptr;
             return this->RoomInfo[room];
         }
@@ -164,11 +165,32 @@ namespace MM2
             hook::Thunk<0x465E50>::Call<void>(this);
         }
 
+        AGE_API void LabelInstances(int room) {
+            auto roomInfo = this->GetRoomInfo(room);
+            if (roomInfo == nullptr)
+                return;
+
+            for (auto i = roomInfo->FirstInstance; i; i = i->getNext()) {
+                if ((i->getFlags() & this->InstanceLabelMask) != 0) {
+                    auto pos = i->GetPosition();
+                    const char* name;
+
+                    if (i->getGeomSetId() != 0)
+                        name = lvlInstance::GetGeomName(i->getGeomSetId() - 1);
+                    else
+                        name = "(none)";
+
+                    vglDrawLabelf(pos, "%s", name);
+                }
+            }
+        }
+
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<lvlLevel, asCullable>("lvlLevel")
                 //properties
                 .addPropertyReadOnly("NumRooms", &GetRoomCount)
+                .addVariableRef("InstanceLabelMask", &lvlLevel::InstanceLabelMask)
 
                 //virtual functions
                 .addFunction("FindRoomId", &FindRoomId, LUA_ARGS(Vector3, _def<int, -1>))
@@ -182,6 +204,7 @@ namespace MM2
                 .addFunction("GetRoomInfo", &GetRoomInfo)
                 .addFunction("MoveToRoom", &MoveToRoom)
                 .addFunction("ResetInstances", &ResetInstances)
+                .addFunction("LabelInstances", &LabelInstances)
 
                 //drawable
                 .addFunction("UnregisterDrawable", &UnregisterLuaDrawable)
