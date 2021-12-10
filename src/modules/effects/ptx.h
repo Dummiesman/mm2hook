@@ -21,13 +21,11 @@ namespace MM2
         uint32_t field_28;
         uint32_t field_2C;
         float dword30;
-        uint dword34;
+        uint SpewRate;
         uint dword38;
         asBirthRule *pBirthRule;
-        uint dword40;
-        uint dword44;
-        uint dword48;
-        uint dword4C;
+        Vector3 Wind;
+        float WindDensity;
         float Gravity;
     public:
         ANGEL_ALLOCATOR;
@@ -63,6 +61,15 @@ namespace MM2
             pBirthRule = rule;
         }
 
+        inline Vector3 getWind(void) {
+            return Wind;
+        }
+
+        inline void setWind(Vector3 wind)
+        {
+            Wind = wind;
+        }
+
         /*
             asParticles Virtuals
         */
@@ -79,6 +86,7 @@ namespace MM2
                 .addFunction("Cull", &Cull)
                 .addFunction<void (asParticles::*)(const char* a1)>("SetTexture", &SetTexture)
                 .addProperty("BirthRule", &getBirthRule, &setBirthRule)
+                .addProperty("Wind", &getWind, &setWind)
             .endClass();
         }
     };
