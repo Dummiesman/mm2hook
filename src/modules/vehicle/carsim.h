@@ -145,6 +145,14 @@ namespace MM2
             this->DrivetrainType = type;
         }
 
+        inline float getThrottle(void) {
+            return this->Engine.getThrottleInput();
+        }
+
+        inline void setThrottle(float throttle) {
+            this->Engine.setThrottleInput(throttle);
+        }
+
         inline float getSteering(void) {
             return this->SteeringInput;
         }
@@ -299,9 +307,11 @@ namespace MM2
                 .addProperty("BoundFriction", &getBoundFriction, &setBoundFriction)
                 .addProperty("BoundElasticity", &getBoundElasticity, &setBoundElasticity)
                 .addProperty("DrivetrainType", &getDrivetrainType, &setDrivetrainType)
+                
                 .addProperty("Steering", &getSteering, &setSteering)
                 .addProperty("Brake", &getBrake, &setBrake)
                 .addProperty("Handbrake", &getHandbrake, &setHandbrake)
+                .addProperty("Throttle", &getThrottle, &setThrottle)
 
                 .addFunction("GetWheel", &getWheel)
 

@@ -151,6 +151,11 @@ namespace MM2
             hook::Thunk<0x4BEE90>::Call<void>(this);
         }
 
+        void LookAt(const Vector3& from, const Vector3& to)
+        {
+            hook::Thunk<0x4BEB20>::Call<void>(this, &from, &to);
+        }
+
         void Zero() {
             this->m02 = 0.0;
             this->m01 = 0.0;
@@ -437,6 +442,7 @@ namespace MM2
                 .addFunction("RotateX", &Matrix34::RotateX)
                 .addFunction("RotateY", &Matrix34::RotateY)
                 .addFunction("RotateZ", &Matrix34::RotateZ)
+                .addFunction("LookAt", &Matrix34::LookAt)
 
                 .addFunction("Set", &Matrix34::Set)
                 .endClass();

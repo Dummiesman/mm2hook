@@ -128,8 +128,9 @@ namespace MM2
                 .addVariableRef("MaxRPM", &vehEngine::MaxRPM)
                 .addVariableRef("GCL", &vehEngine::GCL)
                 .addVariableRef("AngInertia", &vehEngine::AngInertia)
-                .addProperty("RPM", &getCurrentRPM, &setCurrentRPM)
                 .addPropertyReadOnly("WaitingOnGCL", &getWaitingOnGCL)
+                .addProperty("Throttle", &getThrottleInput, &setThrottleInput)
+                .addProperty("RPM", &getCurrentRPM, &setCurrentRPM)
 
                 //functions
                 .addFunction("ComputeConstants", &ComputeConstants)

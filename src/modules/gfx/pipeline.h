@@ -161,6 +161,14 @@ namespace MM2
             hook::StaticThunk<0x4B2D20>::Call<void>(color);
         }
 
+        static gfxImage* CreateReadbackImage() {
+            return hook::StaticThunk<0x4AAC90>::Call<gfxImage*>();
+        }
+
+        static void Readback(gfxImage* image, int a1 = 0, int a2 = 0, int a3 = 0, int a4 = 0) {
+            hook::StaticThunk<0x4AACC0>::Call<void>(image, a1, a2, a3, a4);
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<gfxPipeline>("gfxPipeline")
                 .addStaticProperty("Width", &gfxPipeline::getWidth)
