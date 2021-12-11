@@ -52,7 +52,7 @@ namespace MM2
         dgPathPoint* Points;
         int NumPoints;
         int NumPoints2;
-        int Unk1;
+        int CurrentVert;
         dgPathType Type;
         float Spacing;
     private:
@@ -116,7 +116,7 @@ namespace MM2
         }
 
         dgPathPoint* getPoint(int num) {
-            if (num >= this->NumPoints)
+            if (num >= this->NumPoints || num < 0)
                 return nullptr;
             return &this->Points[num];
         }
@@ -156,8 +156,8 @@ namespace MM2
     private:
         dgPath* Paths[192];
         int PathCount;
-        int unk0;
-        int unk1;
+        int CurrentPath;
+        int CurrentVert;
     private:
         //lua helpers
         inline int getPathCount() {
