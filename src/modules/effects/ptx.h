@@ -20,7 +20,7 @@ namespace MM2
         asMeshCardInfo MeshCardInfo;
         uint32_t field_28;
         uint32_t field_2C;
-        float dword30;
+        float Intensity;
         uint SpewRate;
         uint dword38;
         asBirthRule *pBirthRule;
@@ -62,12 +62,19 @@ namespace MM2
         }
 
         inline Vector3 getWind(void) {
-            return Wind;
+            return this->Wind;
         }
 
-        inline void setWind(Vector3 wind)
-        {
-            Wind = wind;
+        inline void setWind(Vector3 wind) {
+            this->Wind = wind;
+        }
+
+        inline float getIntensity(void) {
+            return this->Intensity;
+        }
+
+        inline void setIntensity(float intensity) {
+            this->Intensity = intensity;
         }
 
         /*
@@ -87,6 +94,7 @@ namespace MM2
                 .addFunction<void (asParticles::*)(const char* a1)>("SetTexture", &SetTexture)
                 .addProperty("BirthRule", &getBirthRule, &setBirthRule)
                 .addProperty("Wind", &getWind, &setWind)
+                .addProperty("Intensity", &getIntensity, &setIntensity)
             .endClass();
         }
     };
