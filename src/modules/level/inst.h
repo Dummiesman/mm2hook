@@ -33,6 +33,11 @@ namespace MM2
         int getBoundLua(lua_State* L, int a1)
         {
             auto bound = this->GetBound(a1);
+            if (bound == nullptr) {
+                LuaState(L).push(nullptr);
+                return 1;
+            }
+
             switch (bound->getType()) 
             {
             case phBound::BoundType::Box:
@@ -55,6 +60,9 @@ namespace MM2
                 break;
             case phBound::BoundType::TerrainLocal:
                 LuaState(L).push(reinterpret_cast<phBoundTerrainLocal*>(bound));
+                break;
+            default:
+                LuaState(L).push(bound);
                 break;
             }
             return 1;
