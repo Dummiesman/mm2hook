@@ -17,11 +17,11 @@ namespace MM2
 
             .addFunction("vglTexCoord2f", &vglTexCoord2f)
             .addFunction("vglVertex3f", static_cast<void(*)(Vector3 vector)>(&vglVertex3f))
-            .addFunction("vglBegin", &vglBegin)
+            .addFunction("vglBegin", &vglBegin, LUA_ARGS(MM2::gfxDrawMode, _def<int, 0>))
             .addFunction("vglEnd", &vglEnd)
             .addFunction("vglBeginBatch", &vglBeginBatch)
             .addFunction("vglEndBatch", &vglEndBatch)
-            .addFunction("vglBindTexture", &vglBindTexture)
+            .addFunction("vglBindTexture", &vglBindTexture, LUA_ARGS(_opt<gfxTexture *>))
             .addFunction("vglDrawLabel", &vglDrawLabel)
 
             .addFunction("mkfrgba", &mkfrgba)

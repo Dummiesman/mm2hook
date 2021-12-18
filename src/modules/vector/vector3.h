@@ -138,6 +138,14 @@ namespace MM2
             this->Z *= mul;
         }
 
+        AGE_API void HSVtoRGB() {
+            hook::Thunk<0x4C0270>::Call<void>(this);
+        }
+
+        AGE_API void RGBtoHSV() {
+            hook::Thunk<0x4C0160>::Call<void>(this);
+        }
+
         AGE_API bool IsEqual(const Vector3& vec) const {
             return vec.X == this->X && vec.Y == this->Y && vec.Z == this->Z;
         }
