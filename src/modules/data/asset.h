@@ -1,16 +1,26 @@
 #pragma once
+#include <tuple>
+#include <vector>
+#include <string>
+
 #include <modules\data.h>
 
 namespace MM2
 {
     // Forward declarations
     class datAssetManager;
+    class datAssetManagerLuaEnumerator;
 
     // External declarations
     extern class Stream;
 
     // Class definitions
     class datAssetManager {
+    private:
+        static int enumerateLua(lua_State* L, LPCSTR path, bool useCore)
+        {
+            return CppFunctor::make<datAssetManagerLuaEnumerator>(L, path, useCore);
+        }
     public:
         static hook::Type<char *> sm_Path;
 
@@ -33,16 +43,61 @@ namespace MM2
         AGE_API static bool Exists(LPCSTR directory, LPCSTR filename, LPCSTR extension) 
                                                                         { return hook::StaticThunk<0x4C59E0>::Call<bool>(directory, filename, extension); }
         
+        AGE_API static int Enumerate(LPCSTR path, void(* callback)(LPCSTR const, bool, void*), void* this_pointer, bool useCore)
+                                                                        { return hook::StaticThunk<0x4C5A80>::Call<int>(path, callback, this_pointer, useCore); }
 
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<datAssetManager>("datAssetManager")
                 .addStaticFunction("Open", static_cast<Stream* (*)(LPCSTR, LPCSTR, LPCSTR, bool, bool)>(&datAssetManager::Open))
                 .addStaticFunction("Exists", static_cast<bool (*)(LPCSTR, LPCSTR, LPCSTR)>(&datAssetManager::Exists))
+                .addStaticFunction("Enumerate", &enumerateLua)
                 .endClass();
         }
+    };
 
-    // Lua initialization
+    class datAssetManagerLuaEnumerator : public CppFunctor
+    {
+    private:
+        int enumerateProgress = 0;
+        int enumerateResultsCount = 0;
+        std::vector<std::tuple<std::string, bool>> enumerateResults;
+    private:
+        void EnumerateCallbackInstance(LPCSTR path, bool isDirectory)
+        {
+            enumerateResults.push_back(std::make_tuple(std::string(path), isDirectory));
+        }
 
+        static void EnumerateCallback(LPCSTR path, bool isDirectory, void* this_pointer)
+        {
+            reinterpret_cast<datAssetManagerLuaEnumerator*>(this_pointer)->EnumerateCallbackInstance(path, isDirectory);
+        }
+    public:
+        datAssetManagerLuaEnumerator(LPCSTR path, bool useCore)
+        {
+            this->enumerateResultsCount = datAssetManager::Enumerate(path, &datAssetManagerLuaEnumerator::EnumerateCallback, this, useCore);
+        }
+
+        virtual ~datAssetManagerLuaEnumerator()
+        {
+
+        }
+
+        virtual int run(lua_State* L) override
+        {
+            if (enumerateProgress >= enumerateResultsCount)
+                return 0;
+
+            auto tup = enumerateResults[enumerateProgress];
+            auto path = std::get<0>(tup);
+            auto isDir = std::get<1>(tup);
+
+            LuaState(L).push(path);
+            LuaState(L).push(isDir);
+
+            enumerateProgress++;
+
+            return 2;
+        }
     };
 }
