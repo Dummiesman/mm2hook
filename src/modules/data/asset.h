@@ -17,7 +17,7 @@ namespace MM2
     // Class definitions
     class datAssetManager {
     private:
-        static int enumerateLua(lua_State* L, LPCSTR path, bool useCore)
+        static int enumFilesLua(lua_State* L, LPCSTR path, bool useCore)
         {
             return CppFunctor::make<datAssetManagerLuaEnumerator>(L, path, useCore);
         }
@@ -43,7 +43,7 @@ namespace MM2
         AGE_API static bool Exists(LPCSTR directory, LPCSTR filename, LPCSTR extension) 
                                                                         { return hook::StaticThunk<0x4C59E0>::Call<bool>(directory, filename, extension); }
         
-        AGE_API static int Enumerate(LPCSTR path, void(* callback)(LPCSTR const, bool, void*), void* this_pointer, bool useCore)
+        AGE_API static int EnumFiles(LPCSTR path, void(* callback)(LPCSTR const, bool, void*), void* this_pointer, bool useCore)
                                                                         { return hook::StaticThunk<0x4C5A80>::Call<int>(path, callback, this_pointer, useCore); }
 
         //lua
@@ -51,7 +51,7 @@ namespace MM2
             LuaBinding(L).beginClass<datAssetManager>("datAssetManager")
                 .addStaticFunction("Open", static_cast<Stream* (*)(LPCSTR, LPCSTR, LPCSTR, bool, bool)>(&datAssetManager::Open))
                 .addStaticFunction("Exists", static_cast<bool (*)(LPCSTR, LPCSTR, LPCSTR)>(&datAssetManager::Exists))
-                .addStaticFunction("Enumerate", &enumerateLua)
+                .addStaticFunction("EnumFiles", &enumFilesLua)
                 .endClass();
         }
     };
@@ -75,7 +75,7 @@ namespace MM2
     public:
         datAssetManagerLuaEnumerator(LPCSTR path, bool useCore)
         {
-            this->enumerateResultsCount = datAssetManager::Enumerate(path, &datAssetManagerLuaEnumerator::EnumerateCallback, this, useCore);
+            this->enumerateResultsCount = datAssetManager::EnumFiles(path, &datAssetManagerLuaEnumerator::EnumerateCallback, this, useCore);
         }
 
         virtual ~datAssetManagerLuaEnumerator()
