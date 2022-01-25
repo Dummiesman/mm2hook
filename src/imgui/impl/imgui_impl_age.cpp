@@ -157,7 +157,7 @@ bool ImGui_ImplAGE_CreateDeviceObjects()
     io.Fonts->GetTexDataAsRGBA32(&pixels, &width, &height);
 
     // Create texture
-    auto img = gfxImage::Create(width, height, gfxImage::gfxImageFormat::ARGB_8888, gfxImage::gfxImageFormat::NONE, 0);
+    auto img = gfxImage::Create(width, height, gfxImage::gfxImageFormat::rif8888, gfxImage::gfxImageFormat::none, 0);
     memcpy(img->pImageData, pixels, sizeof(int) * width * height);
 
     // Convert software texture to hardware texture.
