@@ -23,7 +23,7 @@ namespace MM2
         byte byte4;
         byte byte5;
 
-        ushort room;
+        short room;
         ushort Flags;
 
         short GeomSet;
