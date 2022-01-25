@@ -206,27 +206,27 @@ namespace MM2
             hook::Thunk<0x463220>::Call<void>(this);
         }
 
-        inline lvlInstance* getNext() 
+        inline lvlInstance* getNext() const
         {
             return this->Next;
         }
 
-        inline lvlInstance* getPrevious() 
+        inline lvlInstance* getPrevious() const
         {
             return this->Previous;
         }
 
-        inline ushort getRoomId() 
+        inline short getRoomId() const
         {
             return room;
         }
 
-        inline short getGeomSetId() 
+        inline short getGeomSetId() const
         {
             return GeomSet;
         }
 
-        short getFlags() const 
+        inline short getFlags() const 
         {
             return this->Flags;
         }
