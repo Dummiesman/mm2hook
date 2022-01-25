@@ -1524,6 +1524,7 @@
     <ClInclude Include="src\handlers\time_handler.h">
       <Filter>Source Files\handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\gfx\loadimg.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">

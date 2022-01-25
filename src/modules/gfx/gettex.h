@@ -7,7 +7,6 @@ namespace MM2
     // External declarations
     
     // Statically available functions
-    declhook(0x5CD38C, _Type<gfxImage* (*)(const char*, bool)>, gfxLoadImage);
     declhook(0x5CD680, _Type<gfxImage* (*)(gfxImage*, const char*, bool)>, gfxPrepareImage);
 
     static gfxTexture * gfxGetTexture(const char* a1, bool a2 = true) {
