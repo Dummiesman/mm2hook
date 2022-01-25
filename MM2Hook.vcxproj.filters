@@ -1525,6 +1525,9 @@
       <Filter>Source Files\handlers</Filter>
     </ClInclude>
     <ClInclude Include="src\modules\gfx\loadimg.h" />
+    <ClInclude Include="src\handlers\feature_handlers\gettexHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2159,6 +2162,9 @@
     </ClCompile>
     <ClCompile Include="src\handlers\time_handler.cpp">
       <Filter>Source Files\handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\gettexHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

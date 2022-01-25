@@ -69,6 +69,8 @@ static init_handler g_feature_handlers[] = {
     CreateHandler<StreamHandler>("Stream"),
     CreateHandler<TextureVariantHandler>("Texture variants"),
 
+    CreateHandler<gettexHandler>("gettex"),
+
     CreateHandler<mmCityListHandler>("mmCityList"),
 
     CreateHandler<PUMainHandler>("PUMain"),

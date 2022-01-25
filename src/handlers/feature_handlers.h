@@ -19,6 +19,7 @@
 #include "feature_handlers/dgBangerInstanceHandler.h"
 #include "feature_handlers/Dialog_NewPlayerHandler.h"
 #include "feature_handlers/fxTexelDamageHandler.h"
+#include "feature_handlers/gettexHandler.h"
 #include "feature_handlers/gfxPipelineHandler.h"
 #include "feature_handlers/gizFerryHandler.h"
 #include "feature_handlers/gizParkedCarMgrHandler.h"

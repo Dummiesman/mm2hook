@@ -11,6 +11,8 @@ namespace MM2
     // Class definitions
     class gfxImage {
     public:
+        static hook::Type<unsigned char[768]> sm_CharSet;
+
         enum class gfxImageFormat : uint8_t {
             none = 0,
             rif8888 = 1,

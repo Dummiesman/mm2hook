@@ -179,6 +179,7 @@
     <ClInclude Include="src\handlers\feature_handlers\dgBangerInstanceHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\Dialog_NewPlayerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\fxTexelDamageHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\gettexHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gfxPipelineHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gizFerryHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.h" />
@@ -591,6 +592,7 @@
     <ClCompile Include="src\handlers\feature_handlers\dgBangerInstanceHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\Dialog_NewPlayerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\fxTexelDamageHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\gettexHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gfxPipelineHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gizFerryHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.cpp" />
