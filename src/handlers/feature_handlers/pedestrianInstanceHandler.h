@@ -7,6 +7,7 @@ class pedestrianInstanceHandler {
 public:
     void DrawRagdoll();
     void Draw(int a1);
+    void Detach();
     bool IsCollidable();
     MM2::phBound * GetBound(int a1);
 

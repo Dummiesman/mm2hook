@@ -37,11 +37,13 @@ phBound * pedestrianInstanceHandler::GetBound(int a1)
     return pedRagdollMgr::Instance->getBoundBox();
 }
 
-bool pedestrianInstanceHandler::IsCollidable() {
+bool pedestrianInstanceHandler::IsCollidable() 
+{
     return pedRagdollMgr::Instance->UnusedActive();
 }
 
-void pedestrianInstanceHandler::DrawRagdoll() {
+void pedestrianInstanceHandler::DrawRagdoll() 
+{
     auto inst = reinterpret_cast<aiPedestrianInstance*>(this);
 
     //matrices
@@ -65,7 +67,8 @@ void pedestrianInstanceHandler::DrawRagdoll() {
     anim->pModel->Draw(&pedestrianMatrixList[0], anim->ppShaders[animationInstance->getVariant()], 0xFFFFFFFF);
 }
 
-void pedestrianInstanceHandler::Draw(int a1) {
+void pedestrianInstanceHandler::Draw(int a1) 
+{
     auto inst = reinterpret_cast<aiPedestrianInstance*>(this);
 
     //if we have no ragdoll, call the original function
@@ -75,6 +78,16 @@ void pedestrianInstanceHandler::Draw(int a1) {
     }else{
         this->DrawRagdoll();
     }
+}
+
+void pedestrianInstanceHandler::Detach()
+{
+    auto inst = reinterpret_cast<aiPedestrianInstance*>(this);
+    auto entity = inst->GetEntity();
+
+    //call pedActive::Detach
+    if (entity == nullptr)
+        hook::Thunk<0x57C260>::ThisCall<void>(entity);
 }
 
 void pedestrianInstanceHandler::Install()
@@ -100,9 +113,16 @@ void pedestrianInstanceHandler::Install()
             0x5B631C
         }
     );
+
     InstallVTableHook("aiPedestrianInstance::GetBound",
         &GetBound, {
             0x5B6354
+        }
+    );
+
+    InstallVTableHook("aiPedestrianInstance::Detach",
+        &Detach, {
+            0x5B6318
         }
     );
 
