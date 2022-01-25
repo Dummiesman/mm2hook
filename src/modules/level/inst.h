@@ -75,12 +75,9 @@ namespace MM2
     public:
         struct GeomTableEntry
         {
-            modStatic *VeryLow;
-            modStatic *Low;
-            modStatic *Medium;
-            modStatic *High;
+            modStatic *LOD[4];
             modShader **pShaders;
-            phBoundGeometry *BoundGeom;
+            phBound *Bound;
             float Radius;
             char numShaders;
             char numShadersPerPaintjob;
@@ -89,61 +86,47 @@ namespace MM2
                 if (lod < 0 || lod > 3)
                     return nullptr;
 
-                switch (lod) {
-                case 0:
-                    return VeryLow;
-                case 1:
-                    return Low;
-                case 2:
-                    return Medium;
-                case 3:
-                    return High;
+                return this->LOD[lod];
+            }
+
+            inline modStatic * getHighestLOD() const {
+                for (int i = 3; i >= 0; i--) {
+                    if (this->LOD[i] != nullptr)
+                        return this->LOD[i];
                 }
                 return nullptr;
             }
 
-            inline modStatic * getHighestLOD() const {
-                if (High != nullptr)
-                    return High;
-                if (Medium != nullptr)
-                    return Medium;
-                if (Low != nullptr)
-                    return Low;
-                if (VeryLow != nullptr)
-                    return VeryLow;
-                return nullptr;
-            }
-
             inline modStatic * getLowestLOD() const {
-                if (VeryLow != nullptr)
-                    return VeryLow;
-                if (Low != nullptr)
-                    return Low;
-                if (Medium != nullptr)
-                    return Medium;
-                if (High != nullptr)
-                    return High;
+                for (int i = 0; i < 4; i++) {
+                    if (this->LOD[i] != nullptr)
+                        return this->LOD[i];
+                }
                 return nullptr;
             }
 
             inline modStatic * getVeryLowLOD() const {
-                return VeryLow;
+                return this->LOD[0];
             }
 
             inline modStatic * getLowLOD() const {
-                return Low;
+                return this->LOD[1];
             }
 
             inline modStatic * getMedLOD() const {
-                return Medium;
+                return this->LOD[2];
             }
 
             inline modStatic * getHighLOD() const {
-                return High;
+                return this->LOD[3];
             }
 
             inline float getRadius() const {
                 return Radius;
+            }
+
+            inline phBound* getBound() const {
+                return this->Bound;
             }
 
             static void BindLua(LuaState L) {
@@ -154,6 +137,8 @@ namespace MM2
                     .addPropertyReadOnly("M", &getMedLOD)
                     .addPropertyReadOnly("H", &getHighLOD)
                     .addPropertyReadOnly("Radius", &getRadius)
+                    .addPropertyReadOnly("Bound", &getBound)
+                    .addFunction("GetLOD", &getLOD)
                     .addFunction("GetHighestLOD", &getHighestLOD)
                     .addFunction("GetLowestLOD", &getLowestLOD)
                 .endClass();
