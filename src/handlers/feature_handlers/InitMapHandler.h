@@ -5,8 +5,8 @@
 
 class InitMapHandler {
 public:
-    void AllocMemory(int start, int count);
-    void LoadMapFile(LPCSTR file, int base, bool main);
+    void CopyToMM2();
+    void LoadMapFile(LPCSTR file, unsigned int base, bool main);
     void InitMap();
 
     static void Install();

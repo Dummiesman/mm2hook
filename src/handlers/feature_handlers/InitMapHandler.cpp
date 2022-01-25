@@ -1,4 +1,8 @@
 #include "InitMapHandler.h"
+#include <sstream>
+#include <fstream>
+#include <string>
+#include <vector>
 
 using namespace MM2;
 
@@ -7,127 +11,113 @@ using namespace MM2;
 */
 
 static bool mapInitialized = false;
+static std::vector<std::string> symbolNames;
+static std::vector<unsigned int> symbolAddresses;
 
 struct MapSymbol
 {
-    char* Name;
-    int Address;
+    const char* Name;
+    unsigned int Address;
 };
 
-void InitMapHandler::AllocMemory(int start, int count)
+void InitMapHandler::CopyToMM2()
 {
-    int total = start + count;
-    MapSymbol* newMemory = (MapSymbol*)GlobalAlloc(0x40, total * sizeof(MapSymbol));
     MapSymbol** symbols = (MapSymbol**)0x6A3CE4;
-
-    if (*symbols != nullptr) 
+    if (*symbols != nullptr)
     {
-        //copy 
-        for (int i = 0; i < start; i++) 
-            newMemory[i] = MapSymbol(*((*symbols) + i));
-
-        //free
         GlobalFree(*symbols);
     }
+    *symbols = (MapSymbol*)GlobalAlloc(0x40, symbolNames.size() * sizeof(MapSymbol));
 
-    *symbols = newMemory;
+
+    for(unsigned int i=0; i < symbolNames.size(); i++)
+    {
+        auto symbol = (*symbols) + i;
+        symbol->Address = symbolAddresses[i];
+        symbol->Name = symbolNames[i].c_str();
+    }
 }
 
-void InitMapHandler::LoadMapFile(LPCSTR filepath, int base, bool main)
+void InitMapHandler::LoadMapFile(LPCSTR filepath, unsigned int offset, bool main)
 {
     //our data
-    char buf[1024];
-    char currentLine[1024];
-    char symbolName[768];
-    char* allNames;
-    int symbolAddress = 0;
-
     char** timestamp = (char**)0x6A3C64;
-    int* symbolsCount = (int*)0x6A3CE8;
-    MapSymbol** symbols = (MapSymbol**)0x6A3CE4;
+    unsigned int* symbolsCount = (unsigned int*)0x6A3CE8;
 
-    int oldSymbolCount = *symbolsCount;
+    unsigned int temp = 0;
+    std::string line;
+    std::string symbolName;
+    bool foundCodeOffset = false;
 
+    int oldSymbolCount = symbolNames.size();
+    
     if (main)
         *timestamp = "NO TIMESTAMP";
 
     //read file
-    for (int stage = 1; stage <= 2; stage++) 
+    std::ifstream stream(filepath);
+    if (!stream.is_open()) 
     {
-        auto file = fopen(filepath, "r");
-        if (file == nullptr) {
-            string_buf<256> buf("Couldn't open '%s'", filepath);
-            OutputDebugStringA((LPCSTR)buf);
-            return;
-        }
-
-        int parsedSymbolCount = 0;
-        int parsedStringLength = 0;
-
-        //Get timestamp
-        while (true) 
-        {
-            fgets(buf, sizeof(buf), file);
-            auto newLinePos = strchr(buf, '\n');
-            if (newLinePos == nullptr)
-                break;
-
-            int lineLength = newLinePos - buf;
-            memcpy(currentLine, buf, lineLength);
-            currentLine[lineLength] = '\0';
-
-            if (strstr(currentLine, "Timestamp is") && main)
-                strcpy(*timestamp, currentLine);
-            if (strstr(currentLine, "Publics by Value"))
-                break;
-        }
-
-        //The rest
-        while (true)
-        {
-            fgets(buf, sizeof(buf), file);
-            auto newLinePos = strchr(buf, '\n');
-            if (newLinePos == nullptr) 
-                break;
-
-            int lineLength = newLinePos - buf;
-            memcpy(currentLine, buf, lineLength);
-            currentLine[lineLength] = '\0';
-
-            if (!strncmp(currentLine, " 0001:", 6u) && sscanf(currentLine, "%*s %s %x", &symbolName, &symbolAddress) == 2)
-            {
-                if (stage == 2)
-                {
-                    auto symbolNamePtr = &allNames[parsedStringLength];
-                    strcpy(&allNames[parsedStringLength], symbolName);
-
-                    auto symbol = (*symbols) + (parsedSymbolCount + oldSymbolCount);
-                    symbol->Name = symbolNamePtr;
-                    symbol->Address = symbolAddress + base;
-                }
-                else
-                {
-                    *symbolsCount = (*symbolsCount) + 1;
-                }
-                parsedStringLength += strlen(symbolName) + 1;
-                parsedSymbolCount++;
-            }
-            else if (!strncmp(currentLine, " 0002:", 6u))
-            {
-                break;
-            }
-        }
-
-        //allocate memory for symbols
-        if (stage == 1) 
-        {
-            AllocMemory(oldSymbolCount, parsedSymbolCount);
-            allNames = (char*)GlobalAlloc(64, parsedStringLength);
-            Errorf("%d symbols parsed from map file.", parsedSymbolCount);
-        }
-
-        fclose(file);
+        string_buf<256> buf("Couldn't open '%s'", filepath);
+        OutputDebugStringA((LPCSTR)buf);
+        return;
     }
+
+    int parsedSymbolCount = 0;
+    int parsedStringLength = 0;
+    int loadAddress = 0;
+
+    //Get header info
+    while (std::getline(stream, line))
+    {
+        if (main && line.find("Preferred load address") != std::string::npos) 
+        {
+            offset += std::stoi(line.substr(line.rfind(" ") + 1), 0, 16);
+        }
+        else if (main && line.find("Timestamp is") != std::string::npos)
+        {
+            strcpy(*timestamp, line.c_str());
+        }
+        else if (!foundCodeOffset && line.find("0001:") != std::string::npos)
+        {
+            line = line.substr(6);
+            std::istringstream iss(line);
+            
+            iss >> std::hex >> temp;
+            offset += temp;
+            foundCodeOffset = true;
+        }
+        else if (line.find("Publics by Value") != std::string::npos)
+        {
+            break;
+        }
+    }
+
+    //The rest
+    while (std::getline(stream, line))
+    {
+        if (line.find("0001:") != std::string::npos)
+        {
+            line = line.substr(6);
+            std::istringstream iss(line);
+
+            iss >> std::hex >> temp;
+            iss >> symbolName;
+
+            symbolNames.push_back(symbolName);
+            symbolAddresses.push_back(temp + offset);
+        }
+        else if (line.find("0002:") != std::string::npos)
+        {
+            break;
+        }
+    }
+
+    // format for MM2's structures
+    *symbolsCount = symbolNames.size();
+    CopyToMM2();
+    Errorf("%d symbols parsed from map file.", symbolNames.size() - oldSymbolCount);
+    stream.close();
 }
 
 void InitMapHandler::InitMap()
@@ -148,15 +138,15 @@ void InitMapHandler::InitMap()
         moduleMapFilename = moduleMapFilename.substr(0, dotPos);
     moduleMapFilename += ".map";
     
-    LoadMapFile(moduleMapFilename.c_str(), 0x00, true);
+    LoadMapFile(moduleMapFilename.c_str(), 0x00000000, true);
 
     //load hook map
-    //base is our handle - our image base
     int slashPos = moduleFilename.find_last_of('\\');
     if (slashPos != std::string::npos) 
     {
         std::string hookMapFilename = moduleFilename.substr(0, slashPos + 1) + "MM2Hook.map";
-        LoadMapFile(hookMapFilename.c_str(), (int)(GetModuleHandle("dinput.dll")) - 0x10000000, false);
+        Warningf("dinput entrypoint %x", GetModuleHandle("dinput.dll"));
+        LoadMapFile(hookMapFilename.c_str(), (unsigned int)GetModuleHandle("dinput.dll"), false);
     }
 }
 
