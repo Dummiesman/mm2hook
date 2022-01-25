@@ -313,6 +313,7 @@
     <ClInclude Include="src\modules\gfx.h" />
     <ClInclude Include="src\modules\gfx\font.h" />
     <ClInclude Include="src\modules\gfx\gettex.h" />
+    <ClInclude Include="src\modules\gfx\loadimg.h" />
     <ClInclude Include="src\modules\gfx\pipeline.h" />
     <ClInclude Include="src\modules\gfx\image.h" />
     <ClInclude Include="src\modules\gfx\light.h" />
@@ -422,6 +423,7 @@
     <ClInclude Include="src\modules\ped\__template__.h" />
     <ClInclude Include="src\modules\phys.h" />
     <ClInclude Include="src\modules\phys\bound.h" />
+    <ClInclude Include="src\modules\phys\explosion.h" />
     <ClInclude Include="src\modules\phys\impact.h" />
     <ClInclude Include="src\modules\phys\levelbound.h" />
     <ClInclude Include="src\modules\phys\phbound.h" />
@@ -441,6 +443,7 @@
     <ClInclude Include="src\modules\phys\phcontact.h" />
     <ClInclude Include="src\modules\phys\phcontactmgr.h" />
     <ClInclude Include="src\modules\phys\phconvexpoly.h" />
+    <ClInclude Include="src\modules\phys\phforcesphere.h" />
     <ClInclude Include="src\modules\phys\phimpact.h" />
     <ClInclude Include="src\modules\phys\phimpactbase.h" />
     <ClInclude Include="src\modules\phys\phinertia.h" />
