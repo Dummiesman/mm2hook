@@ -16,6 +16,23 @@ namespace MM2
     extern class modShader;
     extern class modPackage;
 
+    // External declarations for Lua casting
+    extern class dgBangerInstance;
+    extern class vehCarModel;
+    extern class vehTrailerInstance;
+    extern class lvlFixedAny;
+    extern class lvlFixedRotY;
+    extern class lvlFixedMatrix;
+    extern class lvlLandmark;
+    extern class dgUnhitYBangerInstance;
+    extern class phBoundBox;
+    extern class phBoundGeometry;
+    extern class phBoundHotdog;
+    extern class phBoundSphere;
+    extern class phBoundTerrain;
+    extern class phBoundTerrainLocal;
+    extern class phForceSphere;
+
     // Class definitions
     class lvlInstance
     {
@@ -30,6 +47,47 @@ namespace MM2
 
         lvlInstance* Previous;
         lvlInstance *Next;
+
+        int castLua(lua_State* L)
+        {
+            auto vtblPtr = *reinterpret_cast<uintptr_t*>(this);
+            switch (vtblPtr) {
+                case 0x5B150C: //dgUnhitYBangerInstance
+                    LuaState(L).push(reinterpret_cast<dgUnhitYBangerInstance*>(this));
+                    break;
+                case 0x5B1494: //dgUnhitMtxBangerInstance
+                case 0x5B54AC: //aiTrafficLightInstance
+                case 0x5B5F8C: //gizBridge
+                case 0x5B6180: //gizFerry
+                case 0x5B60D4: //gizTrainCar
+                case 0x5B15B8: //dgHitBangerInstance
+                    LuaState(L).push(reinterpret_cast<dgBangerInstance*>(this));
+                    break;
+                case 0x5B2CB0: //vehCarModel
+                    LuaState(L).push(reinterpret_cast<vehCarModel*>(this));
+                    break;
+                case 0x5B2F84: //vehTrailerInstance
+                    LuaState(L).push(reinterpret_cast<vehTrailerInstance*>(this));
+                    break;
+                case 0x5B1B10: //lvlFixedAny
+                    LuaState(L).push(reinterpret_cast<lvlFixedAny*>(this));
+                    break;
+                case 0x5B1B78: //lvlFixedRotY
+                    LuaState(L).push(reinterpret_cast<lvlFixedRotY*>(this));
+                    break;
+                case 0x5B1BE0: //lvlFixedMatrix
+                    LuaState(L).push(reinterpret_cast<lvlFixedMatrix*>(this));
+                    break;
+                case 0x5B1A88: //lvlLandmark
+                    LuaState(L).push(reinterpret_cast<lvlLandmark*>(this));
+                    break;
+                default:
+                    LuaState(L).push(this);
+                    break;
+            }
+            return 1;
+        }
+
         int getBoundLua(lua_State* L, int a1)
         {
             auto bound = this->GetBound(a1);
@@ -51,6 +109,9 @@ namespace MM2
                 break;
             case phBound::BoundType::Level:
                 LuaState(L).push(nullptr);
+                break;
+            case phBound::BoundType::ForceSphere:
+                LuaState(L).push(reinterpret_cast<phForceSphere*>(bound));
                 break;
             case phBound::BoundType::Sphere:
                 LuaState(L).push(reinterpret_cast<phBoundSphere*>(bound));
@@ -356,6 +417,7 @@ namespace MM2
         static void BindLuaLate(LuaState L) {
             LuaBinding(L).beginClass<lvlInstance>("lvlInstance")
                 .addFunction("GetBound", &getBoundLua)
+                .addFunction("Cast", &castLua)
             .endClass();
         }
 
