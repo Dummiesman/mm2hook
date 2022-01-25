@@ -27,6 +27,11 @@ namespace MM2
         short FogNearClip[16];
         short FogFarClip[16];
     public:
+        int getShaderSet()
+        {
+            return TimeWeatherType;
+        }
+
         std::tuple<byte, byte, byte, byte> getFogColor(int index) {
             if (index < 0 || index > 16)
                 return std::make_tuple((byte)0, (byte)0, (byte)0, (byte) 0);
