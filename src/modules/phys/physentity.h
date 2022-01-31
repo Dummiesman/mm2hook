@@ -12,6 +12,9 @@ namespace MM2
     // Class definitions
 
     class dgPhysEntity : public Base {
+    private:
+        byte buffer[0xB0]; // there's a phColliderJointed here but phCollider and phColliderBase 
+                           // aren't entirely known yet
     public:
         virtual AGE_API void PreUpdate()                    { hook::Thunk<0x42CBE0>::Call<void>(this); }
         virtual AGE_API void Update()                       { hook::Thunk<0x46A120>::Call<void>(this); }
@@ -24,7 +27,7 @@ namespace MM2
         virtual AGE_API void FirstImpactCallback()          { hook::Thunk<0x42CC20>::Call<void>(this); }
 
         static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<dgPhysEntity>("dgPhysEntity")
+            LuaBinding(L).beginExtendClass<dgPhysEntity, Base>("dgPhysEntity")
                 .addFunction("DetachMe", &DetachMe)
                 .addFunction("RequiresTerrainCollision", &RequiresTerrainCollision)
                 .addFunction("GetICS", &GetICS)
@@ -33,6 +36,8 @@ namespace MM2
             .endClass();
         }
     };
+
+    ASSERT_SIZEOF(dgPhysEntity, 0xB4);
 
     // Lua initialization
 
