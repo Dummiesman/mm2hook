@@ -11,18 +11,29 @@ local modsPath = "lua/mods"
 --mods table
 local mods = {}
 
---init!
+--helpers
+local function charCount(str, chr) 
+  local c = 0
+  for i = 1, #str do
+      if str:sub(i,i) == chr then c = c + 1 end
+  end
+  return c
+end
+
+local function startsWith(str,start)
+   return str:sub(1,string.len(start)):lower() == start:lower()
+end
+
+local function endsWith(str, ending)
+   return str:sub(-#ending):lower() == ending:lower()
+end
+
 local function fileExists(name)
    local f=io.open(name,"r")
    if f~=nil then io.close(f) return true else return false end
 end
 
-local function prequire(m) 
-  local ok, err = pcall(require, m) 
-  if not ok then return nil, err end
-  return err
-end
-
+--init!
 local function checkContext(ctx, ctxs)
   for _,ctx1 in pairs(ctx) do
     for __,ctx2 in pairs(ctxs) do
@@ -66,23 +77,8 @@ local function getContexts()
 end
 
 
-local function loadMod(path)
-    local mainPath = path .. "/main.lua"
-    if not fileExists(mainPath) then
-      Warningf("Can't load mod at " .. path .. " because main.lua doesn't exist.")
-      return
-    end
-    
-    local convertedPath = mainPath:gsub("%/", "\\"):sub(1,-5)
-    if M.useCache == false then
-        package.loaded[convertedPath] = nil
-    end
-
-    Displayf("Loading mod " .. path)
-    local loadedMod, err = prequire(convertedPath)
-    if loadedMod == nil then
-        Errorf("  " .. err .. ".")
-    elseif type(loadedMod) ~= "table" then
+local function processMod(loadedMod)
+    if type(loadedMod) ~= "table" then
         Errorf("  invalid return value.")
     else
         if not loadedMod.info or type(loadedMod.info) ~= 'table' then
@@ -126,46 +122,108 @@ local function loadMod(path)
     end
 end
 
-local function ends_with(str, ending)
-   return ending == "" or str:sub(-#ending) == ending
+local function loadModFromDisk(rootPath)
+    print("Loading mod: " .. rootPath)
+    
+    local mainPath = rootPath .. "/main.lua"
+    if not fileExists(mainPath) then
+      Warningf("Can't load mod at " .. rootPath .. " because main.lua doesn't exist.")
+      return
+    end
+    
+    local convertedPath = mainPath:gsub("%/", "\\"):sub(1,-5)
+    if M.useCache == false then
+        package.loaded[convertedPath] = nil
+    end
+
+    local ok, mod = pcall(require, convertedPath) 
+    if not ok then 
+      local err = mod
+      Errorf("An error occurred loading mod at " .. rootPath .. ": " .. err)
+      return
+    end
+
+    processMod(mod)
 end
 
-local function loadMods(path)
-    for file in lfs.dir(path) do
+local function loadModsFromDisk()
+    local attrib = lfs.attributes(modsPath)
+    if attrib == nil or attrib.mode ~= "directory" then
+        Errorf("modsystem: cannot load mods because mods isn't a directory??")
+        return
+    end
+        
+    for file in lfs.dir(modsPath) do
         if file ~= "." and file ~= ".." then
-            local fullPath = path..'/'..file
+            local fullPath = modsPath..'/'..file
             local attrib = lfs.attributes(fullPath)
 
             if attrib and attrib.mode == 'directory' then
-                loadMod(fullPath)
+                loadModFromDisk(fullPath)
             end
         end
     end
 end
 
-local function init()
+local function loadModFromArchive(path)
+    print("Loading script: " .. path)
+
+    local file = Stream.Open(path, true)
+    local text = file:ReadAll()
+    file:Close()
+
+    local ok, mod = pcall(load, text) 
+    if not ok then 
+      local err = mod
+      Errorf("An error occurred loading script at " .. path .. ": " .. err)
+      return
+    end
+
+    -- get return value from script and load
+    mod = mod()
+    processMod(mod)
+end
+
+local function loadModsFromArchives()
+    local loadCityScripts = checkContext({"game"}, getContexts())
+    local cityScriptPath = loadCityScripts and "city/" .. MMSTATE.CityName .. "/" or nil
+    
+    -- load scripts
+    for file, isDir in datAssetManager.EnumFiles("scripts", false) do
+      local slashCount = charCount(file, "/")
+      local isLuaFile = endsWith(file, ".lua")
+      
+      if isLuaFile then
+        if slashCount == 0 then
+          -- this file is directly in the scripts subfolder
+          loadModFromArchive("scripts/" .. file)
+        elseif loadCityScripts and slashCount == 2 and startsWith(file, cityScriptPath) then
+          -- city specific script
+          loadModFromArchive("scripts/" .. file)
+        end
+      end
+    end
+end
+
+local function createModsDirectory()
     local attrib = lfs.attributes(modsPath)
     if attrib == nil then
         lfs.mkdir("lua/mods")
-        attrib = lfs.attributes(modsPath)
-    end
-
-    if attrib == nil or attrib.mode ~= "directory" then
-        Errorf("modsystem: cannot load mods because mods isn't a directory??")
-    else
-        Warningf("modsystem.init: loading mods")
-        loadMods(modsPath)
-        Warningf("modsystem.init: loading mods complete")
     end
 end
 
---mods functions
-local function tick()
-    for _, mod in ipairs(mods) do
-        if mod.tick then mod.tick() end
-    end
+local function init()
+    createModsDirectory()
+    
+    Warningf("modsystem.init: loading mods")
+    loadModsFromDisk()
+    loadModsFromArchives()
+    Warningf("modsystem.init: loading mods complete")
 end
 
+------------------------
+------ MAIN HOOKS ------
+------------------------
 local function initMods()
     for _, mod in ipairs(mods) do
         if mod.init then mod.init() end
