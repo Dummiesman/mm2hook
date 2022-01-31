@@ -93,7 +93,6 @@ namespace MM2
                 .endClass();
         }
     };
-    
     ASSERT_SIZEOF(dgBangerData, 0x154);
 
     class dgBangerDataManager : public asNode 
@@ -115,9 +114,33 @@ namespace MM2
                 return nullptr;
             return &datas[id];
         }
+    protected:
+        static hook::Type<dgBangerDataManager*> Instance;
     public:
-    };
+        inline static dgBangerDataManager* GetInstance()
+        {
+            return Instance.get();
+        }
+    
+        /*
+            asNode virtuals
+        */
+        AGE_API char* GetClassName() override               { return hook::Thunk<0x4415B0>::Call<char*>(this); }
 
+        /*
+            dgBangerDataManager
+        */
+        int AddBangerDataEntry(char const* name, char const* partName)
+                                                            { return hook::Thunk<0x440940>::Call<int>(this, name, partName); }
+        void ChangeData()                                   { hook::Thunk<0x440A60>::Call<void>(this); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<dgBangerDataManager, asNode>("dgBangerDataManager")
+                .addStaticProperty("Instance", &dgBangerDataManager::GetInstance)
+                .addFunction("AddBangerDataEntry", &AddBangerDataEntry, LUA_ARGS(LPCSTR, _opt<LPCSTR>))
+                .endClass();
+        }
+    };
     ASSERT_SIZEOF(dgBangerDataManager, 0x2A8C4);
 
     // Lua initialization

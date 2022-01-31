@@ -19,6 +19,7 @@ namespace MM2
         luaBind<dgTrailerJoint>(L);
         luaBind<dgPhysEntity>(L);
         luaBind<dgBangerData>(L);
+        luaBind<dgBangerDataManager>(L);
         luaBind<dgBangerInstance>(L);
         luaBind<dgUnhitBangerInstance>(L);
         luaBind<dgBangerActive>(L);
