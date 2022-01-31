@@ -22,6 +22,8 @@ namespace MM2
         luaBind<dgBangerDataManager>(L);
         luaBind<dgBangerInstance>(L);
         luaBind<dgUnhitBangerInstance>(L);
+        luaBind<dgHitBangerInstance>(L);
         luaBind<dgBangerActive>(L);
+        luaBind<dgBangerManager>(L);
     }
 }

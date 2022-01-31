@@ -125,6 +125,11 @@ namespace MM2
         virtual AGE_API void Impact(lvlInstance* a1, Vector3* a2)  { hook::Thunk<0x442010>::Call<void>(this, a1, a2); };
         virtual AGE_API void ImpactCB(dgHitBangerInstance* a1)     { hook::Thunk<0x442AD0>::Call<void>(this, a1); };
 
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<dgHitBangerInstance, dgBangerInstance>("dgHitBangerInstance")
+                .endClass();
+        }
+
     };
     ASSERT_SIZEOF(dgHitBangerInstance, 0x58);
 
@@ -180,7 +185,7 @@ namespace MM2
     protected:
         static hook::Type<dgBangerManager*> Instance;
     public:
-        inline dgBangerManager * GetInstance()
+        inline static dgBangerManager * GetInstance()
         {
             return Instance.get();
         }
@@ -194,6 +199,13 @@ namespace MM2
             dgBangerManager
         */
         AGE_API dgHitBangerInstance * GetBanger()                  { return hook::Thunk<0x442780>::Call<dgHitBangerInstance*>(this); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<dgBangerManager, asNode>("dgBangerManager")
+                .addStaticProperty("Instance", &dgBangerManager::GetInstance)
+                .addFunction("GetBanger", &GetBanger)
+                .endClass();
+        }
     };
     ASSERT_SIZEOF(dgBangerManager, 0x24);
 }
