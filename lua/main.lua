@@ -5,7 +5,28 @@ local modsystem = require("modsystem")
 
 local node = nil -- main node to get cull/update from
 
---MODSYSTEM FORWARDERS
+-- first init
+if not gFirstInit then
+  -- print to console
+  print = function(x) Displayf(tostring(x)) end
+  
+  -- add searcher for zip files
+  local vfsSearcher = function(libraryname) 
+    local stream = Stream.Open(libraryname .. ".lua", true)
+    if stream then
+      local streamContent = stream:ReadAll()
+      stream:Close()
+      
+      return load(streamContent)
+    end
+  end
+  table.insert(package.searchers, 1, vfsSearcher)
+  
+  --
+  gFirstInit = true
+end
+
+-- modsystem forwaraders
 function onRenderUi()
   modsystem.onRenderUi()
 end

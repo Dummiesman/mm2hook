@@ -277,9 +277,6 @@ void MM2Lua::Initialize() {
 
         LuaRef(L, "lfs").get("chdir").call(execPath);
 
-        //override print function
-        SendCommand("print = function(x) Displayf(tostring(x)) end");
-
         //
         LogFile::WriteLine("Loading main script...");
         ReloadScript();
