@@ -98,6 +98,7 @@ namespace MM2
             .endClass();
         }
     };
+    ASSERT_SIZEOF(asParticles, 0x54);
 
     // Lua initialization
 
