@@ -14,48 +14,44 @@ namespace MM2
     {
         y += lineHeight * (x / image->Width);
         x &= image->Width - 1;
-        if (x >= 0 && y >= 0)
-        {
-            if (x < image->Width && y < image->Height)
-            {
-                switch (image->Type)
+
+        if (x >= 0 && y >= 0 && x < image->Width && y < image->Height) {
+            switch (image->Type) {
+                case gfxImage::gfxImageFormat::rif8888:
                 {
-                    case gfxImage::gfxImageFormat::rif8888:
-                    {
-                        *(DWORD*)((char*)image->pImageData + 4 * x + y * image->Stride) = color;
-                        break;
-                    }
-                    case gfxImage::gfxImageFormat::rif888:
-                    {
-                        auto pImageData = ((BYTE*)image->pImageData + y * image->Stride + (3 * x));
-                        pImageData[0] = color & 0xFF;
-                        pImageData[1] = (color >> 8) & 0xFF;
-                        pImageData[2] = (color >> 16) & 0xFF;
-                        break;
-                    }
-                    case gfxImage::gfxImageFormat::rif5551:
-                    case gfxImage::gfxImageFormat::rif555:
-                    {
-                        *(WORD*)((char*)image->pImageData + 2 * x + y * image->Stride) = color;
-                        break;
-                    }
-                    case gfxImage::gfxImageFormat::rif8:
-                    {
-                        *((BYTE*)image->pImageData + y * image->Stride + x) = color;
-                        break;
-                    }
-                    case gfxImage::gfxImageFormat::rif4:
-                    {
-                        auto pImageData = (char*)image->pImageData + y * image->Stride + (x >> 1);
-                        if ((x & 1) != 0)
-                            *pImageData = *pImageData & 0xF | (16 * color);
-                        else
-                            *pImageData ^= (color ^ *pImageData) & 0xF;
-                        break;
-                    }
-                    default:
-                        return;
+                    *(DWORD*)((char*)image->pImageData + 4 * x + y * image->Stride) = color;
+                    break;
                 }
+                case gfxImage::gfxImageFormat::rif888:
+                {
+                    auto pImageData = ((BYTE*)image->pImageData + y * image->Stride + (3 * x));
+                    pImageData[0] = color & 0xFF;
+                    pImageData[1] = (color >> 8) & 0xFF;
+                    pImageData[2] = (color >> 16) & 0xFF;
+                    break;
+                }
+                case gfxImage::gfxImageFormat::rif5551:
+                case gfxImage::gfxImageFormat::rif555:
+                {
+                    *(WORD*)((char*)image->pImageData + 2 * x + y * image->Stride) = color;
+                    break;
+                }
+                case gfxImage::gfxImageFormat::rif8:
+                {
+                    *((BYTE*)image->pImageData + y * image->Stride + x) = color;
+                    break;
+                }
+                case gfxImage::gfxImageFormat::rif4:
+                {
+                    auto pImageData = (char*)image->pImageData + y * image->Stride + (x >> 1);
+                    if ((x & 1) != 0)
+                        *pImageData = *pImageData & 0xF | (16 * color);
+                    else
+                        *pImageData ^= (color ^ *pImageData) & 0xF;
+                    break;
+                }
+                default:
+                    return;
             }
         }
     }
@@ -86,8 +82,7 @@ namespace MM2
         int xOffset = 0;
         while (char i = *text++) {
             auto charIndex = i - 32;
-            if (charIndex >= 0 && charIndex < 96)
-            {
+            if (charIndex >= 0 && charIndex < 96) {
                 for (int y = 0; y < 8; y++) {
                     for (int x = 0; x < 8; x++) {
                         auto charData = gfxImage::sm_CharSet[(8 * charIndex) + y];
