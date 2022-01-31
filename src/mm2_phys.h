@@ -20,5 +20,7 @@ namespace MM2
         luaBind<dgPhysEntity>(L);
         luaBind<dgBangerData>(L);
         luaBind<dgBangerInstance>(L);
+        luaBind<dgUnhitBangerInstance>(L);
+        luaBind<dgBangerActive>(L);
     }
 }

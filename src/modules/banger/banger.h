@@ -44,6 +44,11 @@ namespace MM2
     };
 
     class dgUnhitBangerInstance : public dgBangerInstance {
+    private:
+        static dgUnhitBangerInstance* requestBangerLua(LPCSTR a1, bool a2)
+        {
+            return dgUnhitBangerInstance::RequestBanger(a1, a2 ? TRUE : FALSE);
+        }
     public:
 
         /*
@@ -58,6 +63,11 @@ namespace MM2
         virtual AGE_API int Init(const char *a1, const Matrix34 &a2, int a3) override
                                                                    { return hook::Thunk<0x441C30>::Call<int>(this, a1, &a2, a3); }
         virtual AGE_API void Reset() override                      { hook::Thunk<0x441EE0>::Call<void>(this); }
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<dgUnhitBangerInstance, dgBangerInstance>("dgUnhitBangerInstance")
+                .addStaticFunction("RequestBanger", &requestBangerLua)
+                .endClass();
+        }
     };
 
     // Lua initialization
