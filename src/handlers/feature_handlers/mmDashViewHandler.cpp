@@ -36,10 +36,10 @@ void mmDashViewHandler::UpdateCS() {
     auto steering = *getPtr<float>(player, 0x2264);
     auto wheelFact = *getPtr<float>(this, 0x400);
 
-    auto velocity = carModel->GetVelocity();
+    Vector3 velocity = carModel->GetVelocity();
 
-    auto velY = (velocity->Y * cfgHeadBobVelocityScaleY);
-    auto velZ = (velocity->Z - (velocity->Y + velocity->X)) * -cfgHeadBobVelocityScaleZ;
+    auto velY = (velocity.Y * cfgHeadBobVelocityScaleY);
+    auto velZ = (velocity.Z - (velocity.Y + velocity.X)) * -cfgHeadBobVelocityScaleZ;
 
     auto bodyRoll = -(steering * wheelFact) * (cfgHeadBobSteeringFactor * (cfgHeadBobSteeringSpeedFactor * velZ));
 

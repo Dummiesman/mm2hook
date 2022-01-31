@@ -27,7 +27,7 @@ namespace MM2
         virtual AGE_API void SetVariant(int a1)       override     { hook::Thunk<0x442A10>::Call<void>(this); }
         virtual AGE_API dgPhysEntity* GetEntity()     override     { return hook::Thunk<0x441AD0>::Call<dgPhysEntity*>(this); }
         virtual AGE_API dgPhysEntity* AttachEntity()  override     { return hook::Thunk<0x441AE0>::Call<dgPhysEntity*>(this); }
-        virtual AGE_API Vector3 const * GetVelocity() override     { return hook::Thunk<0x441B20>::Call<Vector3 const *>(this); }
+        virtual AGE_API Vector3 const & GetVelocity() override     { return hook::Thunk<0x441B20>::Call<Vector3 const &>(this); }
         virtual AGE_API void Draw(int a1)             override     { hook::Thunk<0x4415E0>::Call<void>(this, a1); }
         virtual AGE_API void DrawShadow()             override     { hook::Thunk<0x441990>::Call<void>(this); }
         virtual AGE_API void DrawShadowMap()          override     { hook::Thunk<0x4419A0>::Call<void>(this); }

@@ -101,7 +101,7 @@ bool prevSplashState = false;
 void mmPlayerHandler::Splash() {
     auto player = reinterpret_cast<mmPlayer*>(this);
     auto car = player->getCar();
-    float vehicleMph = car->getModel()->GetVelocity()->Mag() * 2.23694f;
+    float vehicleMph = car->getModel()->GetVelocity().Mag() * 2.23694f;
 
     //trigger ColliderId 22 with velocity of vehicleMph
     auto impactAud = car->getAudio()->GetAudImpactPtr();
