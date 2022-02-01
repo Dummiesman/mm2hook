@@ -13,6 +13,8 @@ namespace MM2
     //Lua initialization
     template<>
     void luaAddModule<module_gfx>(LuaState L) {
+        luaBind<gfxRenderState>(L);
+
         luaBind<ltLight>(L);
         luaBind<ltLensFlare>(L);
         luaBind<gfxTexture>(L);

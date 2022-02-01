@@ -111,6 +111,7 @@ namespace MM2
         static void SetCamera(Matrix44 const & mtx)     { hook::StaticThunk<0x4B2A20>::Call<void>(&mtx); }
         static void SetCamera(Matrix34 const & mtx)     { hook::StaticThunk<0x4B2970>::Call<void>(&mtx); }
         static void SetCameraFull(Matrix34 const & mtx) { hook::StaticThunk<0x4B2B50>::Call<void>(&mtx); }
+        static void SetView(Matrix34 const & mtx)       { hook::StaticThunk<0x4B2A80>::Call<void>(&mtx); }
     public:
         inline static D3DCULL SetCullMode(D3DCULL cullMode)
         {
@@ -242,6 +243,25 @@ namespace MM2
             return original;
         }
 
+        inline static const Matrix44 & GetCameraMatrix()
+        {
+            return gfxRenderState::sm_Camera;
+        }
+
+        inline static Matrix34 GetViewMatrix()
+        {
+            Matrix44 fullView = gfxRenderState::sm_View;
+            Matrix34 converted = Matrix34();
+
+            fullView.ToMatrix34(converted);
+            return converted;
+        }
+
+        inline static const Matrix44 & GetWorldMatrix()
+        {
+            return gfxRenderState::sm_World;
+        }
+
         inline static void SetWorldMatrix(const Matrix44& matrix)
         {
             gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
@@ -252,6 +272,24 @@ namespace MM2
         {
             gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
             Matrix44::Convert(gfxRenderState::sm_World, &matrix);
+        }
+
+        inline static byte SetFillMode(byte fillMode)
+        {
+            auto original = (&RSTATE->Data)->FillMode;
+            if (original != fillMode) {
+                (&RSTATE->Data)->FillMode = fillMode;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
+            }
+            return original;
+        }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<gfxRenderState>("gfxRenderState")
+                .addStaticProperty("WorldMatrix", &GetWorldMatrix, static_cast<void(*)(const Matrix44 &)>(&gfxRenderState::SetWorldMatrix))
+                .addStaticProperty("ViewMatrix", &GetViewMatrix, &SetView)
+                .addStaticProperty("CameraMatrix", &GetCameraMatrix, static_cast<void(*)(const Matrix44&)>(&gfxRenderState::SetCamera))
+                .endClass();
         }
     };
     ASSERT_SIZEOF(gfxRenderState, 0x98);
