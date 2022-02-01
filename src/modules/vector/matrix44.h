@@ -12,6 +12,13 @@ namespace MM2
     // Class definitions
 
     class Matrix44 {
+    private:
+        Matrix34 toMatrix34Lua() const
+        {
+            Matrix34 returnMtx = Matrix34();
+            this->ToMatrix34(returnMtx);
+            return returnMtx;
+        }
     public:
         float m00;
         float m01;
@@ -33,7 +40,7 @@ namespace MM2
         float m32;
         float m33;
 
-        Vector4 GetColumn(int column)
+        Vector4 GetColumn(int column) const
         {
             switch (column)
             {
@@ -48,7 +55,7 @@ namespace MM2
             }
         }
 
-        Vector4 GetRow(int row)
+        Vector4 GetRow(int row) const
         {
             switch (row)
             {
@@ -137,7 +144,7 @@ namespace MM2
         AGE_API void MakeRotX(float a1)                                        { hook::Thunk<0x4C1C00>::Call<void>(this, a1); }
         AGE_API void MakeRotY(float a1)                                        { hook::Thunk<0x4C1C50>::Call<void>(this, a1); }
         AGE_API void MakeRotZ(float a1)                                        { hook::Thunk<0x4C1CA0>::Call<void>(this, a1); }
-        AGE_API void Print(LPCSTR name)                                        { hook::Thunk<0x4C1CF0>::Call<void>(this, name); }
+        AGE_API void Print(LPCSTR name) const                                  { hook::Thunk<0x4C1CF0>::Call<void>(this, name); }
         AGE_API void Set(const Matrix44* a1)                                   { hook::Thunk<0x4C07B0>::Call<void>(this, a1); }
         AGE_API void Subtract(const Matrix44* a1)                              { hook::Thunk<0x4C0B70>::Call<void>(this, a1); }
         AGE_API void ToMatrix34(Matrix34 & a1) const                           { hook::Thunk<0x4C09E0>::Call<void>(this, &a1); }
@@ -213,6 +220,7 @@ namespace MM2
                 .addFunction("Dot", &Dot)
                 .addFunction("FastInverse", &FastInverse)
                 .addFunction("FromMatrix34", &FromMatrix34)
+                .addFunction("ToMatrix34", &toMatrix34Lua)
                 .addFunction("InvertTo", &InvertTo)
                 .addFunction("MakeRotX", &MakeRotX)
                 .addFunction("MakeRotY", &MakeRotY)

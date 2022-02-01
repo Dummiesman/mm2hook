@@ -280,21 +280,21 @@ namespace MM2
             this->m22 = 1.0;
         }
 
-        void Transform(const Vector3& vector, Vector3& out)
+        void Transform(const Vector3& vector, Vector3& out) const
         {
             out.X = this->m00 * vector.X + this->m10 * vector.Y + this->m20 * vector.Z + this->m30;
             out.Y = this->m01 * vector.X + this->m11 * vector.Y + this->m21 * vector.Z + this->m31;
             out.Z = this->m02 * vector.X + this->m12 * vector.Y + this->m22 * vector.Z + this->m32;
         }
 
-        Vector3 Transform(const Vector3& vector)
+        Vector3 Transform(const Vector3& vector) const
         {
             Vector3 returnVec;
             Transform(vector, returnVec);
             return returnVec;
         }
 
-        Vector4 GetColumn(int column)
+        Vector4 GetColumn(int column) const
         {
             switch (column)
             {
@@ -309,7 +309,7 @@ namespace MM2
             }
         }
 
-        Vector3 GetRow(int row)
+        Vector3 GetRow(int row) const
         {
             switch (row)
             {
@@ -438,7 +438,7 @@ namespace MM2
                 .addFunction("MakeRotateZ", &Matrix34::MakeRotateZ)
                 .addFunction("MakeScale", static_cast<void(Matrix34::*)(float, float, float)>(&Matrix34::MakeScale))
                 .addFunction("MakeRotate", &Matrix34::MakeRotate)
-                .addFunction("Transform", static_cast<Vector3(Matrix34::*)(const Vector3&)>(&Matrix34::Transform))
+                .addFunction("Transform", static_cast<Vector3(Matrix34::*)(const Vector3&)const>(&Matrix34::Transform))
                 .addFunction("RotateX", &Matrix34::RotateX)
                 .addFunction("RotateY", &Matrix34::RotateY)
                 .addFunction("RotateZ", &Matrix34::RotateZ)
