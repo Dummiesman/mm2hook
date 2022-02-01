@@ -41,6 +41,16 @@ namespace MM2
             return this->DataPack >> 12;
         }
 
+        inline void SetBangerType(unsigned short type)
+        {
+            this->DataPack ^= (this->DataPack ^ type) & 0xFFF;
+        }
+
+        inline unsigned short GetBangerType()
+        {
+            return this->DataPack & 0xFFF;
+        }
+
         /*
             lvlInstance virtuals
         */
@@ -66,6 +76,7 @@ namespace MM2
             LuaBinding(L).beginExtendClass<dgBangerInstance, lvlInstance>("dgBangerInstance")
                 //functions
                 .addFunction("GetData", &GetData)
+                .addProperty("BangerType", &GetBangerType, &SetBangerType)
                 .endClass();
         }
     };
