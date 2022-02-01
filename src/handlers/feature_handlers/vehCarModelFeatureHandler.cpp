@@ -21,7 +21,7 @@ void vehCarModelFeatureHandler::ModStaticDraw(modShader* a1) {
     //convert world matrix for reflection drawing
     Matrix44* worldMatrix = gfxRenderState::sm_World;
     Matrix34 envInput = Matrix34();
-    worldMatrix->ToMatrix34(&envInput);
+    worldMatrix->ToMatrix34(envInput);
 
     //draw breakable
     mod->Draw(a1);

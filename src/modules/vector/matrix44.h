@@ -132,7 +132,7 @@ namespace MM2
         AGE_API void AddScaled(const Matrix44* a1, float a2)                   { hook::Thunk<0x4C0CB0>::Call<void>(this, a1, a2); }
         AGE_API void Dot(const Matrix44* a1)                                   { hook::Thunk<0x4C0D50>::Call<void>(this, a1); }
         AGE_API void FastInverse(const Matrix44* a1)                           { hook::Thunk<0x4C1260>::Call<void>(this, a1); }
-        AGE_API void FromMatrix34(const Matrix34* a1)                          { hook::Thunk<0x4C0970>::Call<void>(this, a1); }
+        AGE_API void FromMatrix34(const Matrix34 & a1)                         { hook::Thunk<0x4C0970>::Call<void>(this, &a1); }
         AGE_API void InvertTo(const Matrix44* a1)                              { hook::Thunk<0x4C1510>::Call<void>(this, a1); }
         AGE_API void MakeRotX(float a1)                                        { hook::Thunk<0x4C1C00>::Call<void>(this, a1); }
         AGE_API void MakeRotY(float a1)                                        { hook::Thunk<0x4C1C50>::Call<void>(this, a1); }
@@ -140,7 +140,7 @@ namespace MM2
         AGE_API void Print(LPCSTR name)                                        { hook::Thunk<0x4C1CF0>::Call<void>(this, name); }
         AGE_API void Set(const Matrix44* a1)                                   { hook::Thunk<0x4C07B0>::Call<void>(this, a1); }
         AGE_API void Subtract(const Matrix44* a1)                              { hook::Thunk<0x4C0B70>::Call<void>(this, a1); }
-        AGE_API void ToMatrix34(const Matrix34* a1)                            { hook::Thunk<0x4C09E0>::Call<void>(this, a1); }
+        AGE_API void ToMatrix34(Matrix34 & a1) const                           { hook::Thunk<0x4C09E0>::Call<void>(this, &a1); }
         AGE_API void Transform4(const Vector3* a1, const Vector4* a2, int a3)  { hook::Thunk<0x4C1D60>::Call<void>(this, a1, a2, a3); }
         AGE_API static void Convert(Matrix44* output, const Matrix34* input)
         {

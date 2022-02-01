@@ -43,7 +43,7 @@ void vehTrailerInstanceFeatureHandler::DrawPartReflections(modStatic* a1, Matrix
     //convert world matrix for reflection drawing
     Matrix44* worldMatrix = gfxRenderState::sm_World;
     Matrix34 envInput = Matrix34();
-    worldMatrix->ToMatrix34(&envInput);
+    worldMatrix->ToMatrix34(envInput);
 
     //draw trailer
     a1->Draw(a3);
