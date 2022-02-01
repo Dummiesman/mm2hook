@@ -134,7 +134,7 @@ BOOL aiPoliceOfficerHandler::OffRoad(vehCar *car) {
         auto roadId = veh->CurrentRoadId();
         auto path = AIMAP->paths[roadId];
 
-        if (path->IsPosOnRoad(&car->getCarSim()->getICS()->getPosition(), 0.f, &outVal) > 1 && roomId < 900)
+        if (path->IsPosOnRoad(&car->getCarSim()->getICS()->GetPosition(), 0.f, &outVal) > 1 && roomId < 900)
             return TRUE;
     }
 
