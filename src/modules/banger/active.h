@@ -52,7 +52,7 @@ namespace MM2
     protected:
         static hook::Type<dgBangerActiveManager*> Instance;
     public:
-        inline dgBangerActiveManager* GetInstance()
+        inline static dgBangerActiveManager* GetInstance()
         {
             return Instance.get();
         }
