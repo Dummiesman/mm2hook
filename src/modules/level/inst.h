@@ -287,6 +287,11 @@ namespace MM2
             return GeomSet;
         }
 
+        inline void setGeomSetId(short id)
+        {
+            GeomSet = id;
+        }
+
         inline short getFlags() const 
         {
             return this->Flags;
@@ -425,10 +430,11 @@ namespace MM2
             LuaBinding(L).beginClass<lvlInstance>("lvlInstance")
                 //fields
                 .addProperty("Flags", &getFlags, &setFlags)
+                .addProperty("GeometrySetIndex", &getGeomSetId, &setGeomSetId) //legacy
+                .addProperty("GeomIndex", &getGeomSetId, &setGeomSetId)
                 .addPropertyReadOnly("Previous", &getPrevious)
                 .addPropertyReadOnly("Next", &getNext)
                 .addPropertyReadOnly("CurrentRoom", &getRoomId)
-                .addPropertyReadOnly("GeometrySetIndex", &getGeomSetId)
 
                 //statics
                 .addStaticFunction("GetGeomName", &GetGeomName)
