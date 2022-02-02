@@ -175,8 +175,8 @@ namespace MM2
             if (this->Sphere.getIsRunning())
             {
                 auto position = this->GetPosition();
-                int room = lvlLevel::Singleton->FindRoomId(position, this->getRoomId());
-                if (room != this->getRoomId())
+                int room = lvlLevel::Singleton->FindRoomId(position, this->GetRoomId());
+                if (room != this->GetRoomId())
                     lvlLevel::Singleton->MoveToRoom(this, room);
 
                 dgPhysManager::Instance->DeclareMover(this, 3, 0x1A); // Verify flags, they're from Test Drive

@@ -139,8 +139,8 @@ void mmPlayerHandler::BustPerp() {
         auto playerPos = player->getCar()->getModel()->GetPosition();
 
         if (vehPoliceCarAudio::iNumCopsPursuingPlayer == 0) {
-            if (lvlLevel::Singleton->GetRoomInfo(car->getModel()->getRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
-                if (lvlLevel::Singleton->GetWaterLevel(car->getModel()->getRoomId()) > copCarSim->getWorldMatrix()->m31) {
+            if (lvlLevel::Singleton->GetRoomInfo(car->getModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
+                if (lvlLevel::Singleton->GetWaterLevel(car->getModel()->GetRoomId()) > copCarSim->getWorldMatrix()->m31) {
                     Wanted_Common::enableBustedTimer = false;
                     Wanted_Common::bustedTimer = 0.f;
                     Wanted_Common::enableResetTimer = false;
@@ -260,7 +260,7 @@ void mmPlayerHandler::Update() {
     auto AIMAP = &aiMap::Instance;
 
     //check if we're out of the level
-    int playerRoom = car->GetInst()->getRoomId();
+    int playerRoom = car->GetInst()->GetRoomId();
     if (playerRoom == 0 && cfgEnableOutOfMapFix.Get()) {
         Zoink();
     }

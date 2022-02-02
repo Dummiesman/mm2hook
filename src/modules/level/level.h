@@ -170,13 +170,13 @@ namespace MM2
             if (roomInfo == nullptr)
                 return;
 
-            for (auto i = roomInfo->FirstInstance; i; i = i->getNext()) {
-                if ((i->getFlags() & this->InstanceLabelMask) != 0) {
+            for (auto i = roomInfo->FirstInstance; i; i = i->GetNext()) {
+                if ((i->GetFlags() & this->InstanceLabelMask) != 0) {
                     auto pos = i->GetPosition();
                     const char* name;
 
-                    if (i->getGeomSetId() != 0)
-                        name = lvlInstance::GetGeomName(i->getGeomSetId() - 1);
+                    if (i->GetGeomIndex() != 0)
+                        name = lvlInstance::GetGeomName(i->GetGeomIndex() - 1);
                     else
                         name = "(none)";
 

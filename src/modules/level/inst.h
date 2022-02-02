@@ -37,13 +37,13 @@ namespace MM2
     class lvlInstance
     {
     private:
-        byte byte4;
-        byte byte5;
+        byte Owner;
+        byte Subtype;
 
         short room;
         ushort Flags;
 
-        short GeomSet;
+        ushort GeomIndex;
 
         lvlInstance* Previous;
         lvlInstance *Next;
@@ -143,14 +143,14 @@ namespace MM2
             char numShaders;
             char numShadersPerPaintjob;
 
-            inline modStatic * getLOD(int lod) const {
+            inline modStatic * GetLOD(int lod) const {
                 if (lod < 0 || lod > 3)
                     return nullptr;
 
                 return this->LOD[lod];
             }
 
-            inline modStatic * getHighestLOD() const {
+            inline modStatic * GetHighestLOD() const {
                 for (int i = 3; i >= 0; i--) {
                     if (this->LOD[i] != nullptr)
                         return this->LOD[i];
@@ -158,7 +158,7 @@ namespace MM2
                 return nullptr;
             }
 
-            inline modStatic * getLowestLOD() const {
+            inline modStatic * GetLowestLOD() const {
                 for (int i = 0; i < 4; i++) {
                     if (this->LOD[i] != nullptr)
                         return this->LOD[i];
@@ -166,42 +166,42 @@ namespace MM2
                 return nullptr;
             }
 
-            inline modStatic * getVeryLowLOD() const {
+            inline modStatic * GetVeryLowLOD() const {
                 return this->LOD[0];
             }
 
-            inline modStatic * getLowLOD() const {
+            inline modStatic * GetLowLOD() const {
                 return this->LOD[1];
             }
 
-            inline modStatic * getMedLOD() const {
+            inline modStatic * GetMedLOD() const {
                 return this->LOD[2];
             }
 
-            inline modStatic * getHighLOD() const {
+            inline modStatic * GetHighLOD() const {
                 return this->LOD[3];
             }
 
-            inline float getRadius() const {
+            inline float GetRadius() const {
                 return Radius;
             }
 
-            inline phBound* getBound() const {
+            inline phBound* GetBound() const {
                 return this->Bound;
             }
 
             static void BindLua(LuaState L) {
                 LuaBinding(L).beginClass<GeomTableEntry>("GeomTableEntry")
                     //fields
-                    .addPropertyReadOnly("VL", &getVeryLowLOD)
-                    .addPropertyReadOnly("L", &getLowLOD)
-                    .addPropertyReadOnly("M", &getMedLOD)
-                    .addPropertyReadOnly("H", &getHighLOD)
-                    .addPropertyReadOnly("Radius", &getRadius)
-                    .addPropertyReadOnly("Bound", &getBound)
-                    .addFunction("GetLOD", &getLOD)
-                    .addFunction("GetHighestLOD", &getHighestLOD)
-                    .addFunction("GetLowestLOD", &getLowestLOD)
+                    .addPropertyReadOnly("VL", &GetVeryLowLOD)
+                    .addPropertyReadOnly("L", &GetLowLOD)
+                    .addPropertyReadOnly("M", &GetMedLOD)
+                    .addPropertyReadOnly("H", &GetHighLOD)
+                    .addPropertyReadOnly("Radius", &GetRadius)
+                    .addPropertyReadOnly("Bound", &GetBound)
+                    .addFunction("GetLOD", &GetLOD)
+                    .addFunction("GetHighestLOD", &GetHighestLOD)
+                    .addFunction("GetLowestLOD", &GetLowestLOD)
                 .endClass();
             }
 
@@ -267,45 +267,62 @@ namespace MM2
             hook::Thunk<0x463220>::Call<void>(this);
         }
 
-        inline lvlInstance* getNext() const
+        inline lvlInstance* GetNext() const
         {
             return this->Next;
         }
 
-        inline lvlInstance* getPrevious() const
+        inline lvlInstance* GetPrevious() const
         {
             return this->Previous;
         }
 
-        inline short getRoomId() const
+        inline short GetRoomId() const
         {
             return room;
         }
 
-        inline short getGeomSetId() const
+        inline short GetGeomIndex() const
         {
-            return GeomSet;
+            return GeomIndex;
         }
 
-        inline void setGeomSetId(short id)
+        inline void SetGeomIndex(unsigned short id)
         {
-            GeomSet = id;
+            GeomIndex = id;
         }
 
-        inline short getFlags() const 
+        inline short GetFlags() const 
         {
             return this->Flags;
         }
 
-        inline void setFlags(ushort flags) 
+        inline void SetFlags(ushort flags) 
         {
             this->Flags = flags;
         }
 
-        inline void setFlag(ushort flag) 
+        inline void SetFlag(ushort flag) 
         {
             this->Flags |= flag;
         }
+
+        inline byte GetOwner(void) const {
+            return this->Owner;
+        }
+
+        inline void SetOwner(byte owner) {
+            this->Owner = owner;
+        }
+
+        inline byte GetSubType(void) const {
+            return this->Subtype;
+        }
+
+        inline void SetSubType(byte subtype) {
+            this->Subtype = subtype;
+        }
+
 
         static AGE_API bool ComputeShadowMatrix(Matrix34 *outMatrix, int room, Matrix34 const *inMatrix)
                                                             { return hook::StaticThunk<0x464430>::Call<bool>(outMatrix, room, inMatrix); }
@@ -353,7 +370,7 @@ namespace MM2
             int existingGeomSet;
             if (PackageHash->Access(groupedName, &existingGeomSet))
             {
-                this->GeomSet = existingGeomSet;
+                this->GeomIndex = existingGeomSet;
             }
             else
             {
@@ -362,8 +379,8 @@ namespace MM2
 
                 if (package->Open("geometry", a1))
                 {
-                    this->GeomSet = GetGeomSet(a1, a2, a3);
-                    PackageHash->Insert(groupedName, (void*)this->GeomSet);
+                    this->GeomIndex = GetGeomSet(a1, a2, a3);
+                    PackageHash->Insert(groupedName, (void*)this->GeomIndex);
                     return true;
                 }
 
@@ -429,12 +446,14 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<lvlInstance>("lvlInstance")
                 //fields
-                .addProperty("Flags", &getFlags, &setFlags)
-                .addProperty("GeometrySetIndex", &getGeomSetId, &setGeomSetId) //legacy
-                .addProperty("GeomIndex", &getGeomSetId, &setGeomSetId)
-                .addPropertyReadOnly("Previous", &getPrevious)
-                .addPropertyReadOnly("Next", &getNext)
-                .addPropertyReadOnly("CurrentRoom", &getRoomId)
+                .addProperty("Owner", &GetOwner, &SetOwner)
+                .addProperty("SubType", &GetSubType, &SetSubType)
+                .addProperty("Flags", &GetFlags, &SetFlags)
+                .addProperty("GeometrySetIndex", &GetGeomIndex, &SetGeomIndex) //legacy
+                .addProperty("GeomIndex", &GetGeomIndex, &SetGeomIndex)
+                .addPropertyReadOnly("Previous", &GetPrevious)
+                .addPropertyReadOnly("Next", &GetNext)
+                .addPropertyReadOnly("CurrentRoom", &GetRoomId)
 
                 //statics
                 .addStaticFunction("GetGeomName", &GetGeomName)
@@ -521,7 +540,7 @@ namespace MM2
             if (this->last)
             {
                 LuaState(L).push(this->last);
-                this->last = this->last->getNext();
+                this->last = this->last->GetNext();
                 if (this->last == this->end)
                     this->last = nullptr;
                 return 1;

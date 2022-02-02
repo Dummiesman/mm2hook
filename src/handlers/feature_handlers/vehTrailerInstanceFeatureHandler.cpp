@@ -59,14 +59,14 @@ void vehTrailerInstanceFeatureHandler::DrawPartReflections(modStatic* a1, Matrix
 
 void vehTrailerInstanceFeatureHandler::DrawPart(int a1, int a2, Matrix34* a3, modShader* a4) {
     auto inst = reinterpret_cast<vehTrailerInstance*>(this);
-    auto geomID = inst->getGeomSetId() - 1;
+    auto geomID = inst->GetGeomIndex() - 1;
     auto geomSet = lvlInstance::GetGeomTableEntry(geomID + a2);
 
     //setup renderer
     gfxRenderState::SetWorldMatrix(*a3);
 
     //get part
-    modStatic* part = geomSet->getLOD(a1); 
+    modStatic* part = geomSet->GetLOD(a1); 
 
     if (part != nullptr) {
         if (vehCarModel::PartReflections && a1 == 3)
@@ -78,7 +78,7 @@ void vehTrailerInstanceFeatureHandler::DrawPart(int a1, int a2, Matrix34* a3, mo
 
 void vehTrailerInstanceFeatureHandler::Draw(int a1) {
     auto inst = reinterpret_cast<vehTrailerInstance*>(this);
-    auto geomID = inst->getGeomSetId() - 1;
+    auto geomID = inst->GetGeomIndex() - 1;
     auto geomSet = lvlInstance::GetGeomTableEntry(geomID);
     auto trailer = inst->getTrailer();
     auto trailerMtx = inst->GetMatrix(&trailerMatrix);
@@ -179,7 +179,7 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
     auto carsim = inst->getTrailer()->getCarSim();
     float brakeInput = carsim->getBrake();
     int gear = carsim->getTransmission()->getGear();
-    int geomSet = inst->getGeomSetId() - 1;
+    int geomSet = inst->GetGeomIndex() - 1;
 
     //setup renderer
     inst->GetMatrix(&trailerMatrix);
@@ -190,16 +190,16 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
     auto shaders = lvlInstance::GetGeomTableEntry(geomSet)->pShaders[shaderSet];
 
     //get lights
-    modStatic* tlight = lvlInstance::GetGeomTableEntry(geomSet + TLIGHT_GEOM_ID)->getHighestLOD();
-    modStatic* rlight = lvlInstance::GetGeomTableEntry(geomSet + RLIGHT_GEOM_ID)->getHighestLOD();
-    modStatic* blight = lvlInstance::GetGeomTableEntry(geomSet + BLIGHT_GEOM_ID)->getHighestLOD();
-    modStatic* hlight = lvlInstance::GetGeomTableEntry(geomSet + HLIGHT_GEOM_ID)->getHighestLOD();
-    modStatic* slight0 = lvlInstance::GetGeomTableEntry(geomSet + SLIGHT0_GEOM_ID)->getHighestLOD();
-    modStatic* slight1 = lvlInstance::GetGeomTableEntry(geomSet + SLIGHT1_GEOM_ID)->getHighestLOD();
-    modStatic* siren0 = lvlInstance::GetGeomTableEntry(geomSet + SIREN0_GEOM_ID)->getHighestLOD();
-    modStatic* siren1 = lvlInstance::GetGeomTableEntry(geomSet + SIREN1_GEOM_ID)->getHighestLOD();
-    modStatic* tslight0 = lvlInstance::GetGeomTableEntry(geomSet + TSLIGHT0_GEOM_ID)->getHighestLOD();
-    modStatic* tslight1 = lvlInstance::GetGeomTableEntry(geomSet + TSLIGHT1_GEOM_ID)->getHighestLOD();
+    modStatic* tlight = lvlInstance::GetGeomTableEntry(geomSet + TLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* rlight = lvlInstance::GetGeomTableEntry(geomSet + RLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* blight = lvlInstance::GetGeomTableEntry(geomSet + BLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* hlight = lvlInstance::GetGeomTableEntry(geomSet + HLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* slight0 = lvlInstance::GetGeomTableEntry(geomSet + SLIGHT0_GEOM_ID)->GetHighestLOD();
+    modStatic* slight1 = lvlInstance::GetGeomTableEntry(geomSet + SLIGHT1_GEOM_ID)->GetHighestLOD();
+    modStatic* siren0 = lvlInstance::GetGeomTableEntry(geomSet + SIREN0_GEOM_ID)->GetHighestLOD();
+    modStatic* siren1 = lvlInstance::GetGeomTableEntry(geomSet + SIREN1_GEOM_ID)->GetHighestLOD();
+    modStatic* tslight0 = lvlInstance::GetGeomTableEntry(geomSet + TSLIGHT0_GEOM_ID)->GetHighestLOD();
+    modStatic* tslight1 = lvlInstance::GetGeomTableEntry(geomSet + TSLIGHT1_GEOM_ID)->GetHighestLOD();
 
     if (cfgMm1StyleTransmission.Get()) {
         auto throttle = carsim->getEngine()->getThrottleInput();

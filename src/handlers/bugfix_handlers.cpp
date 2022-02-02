@@ -130,7 +130,7 @@ BOOL aiPoliceOfficerHandler::OffRoad(vehCar *car) {
     float outVal = 0.f;
 
     if (veh != nullptr) {
-        auto roomId = car->getModel()->getRoomId();
+        auto roomId = car->getModel()->GetRoomId();
         auto roadId = veh->CurrentRoadId();
         auto path = AIMAP->paths[roadId];
 
@@ -240,8 +240,8 @@ void aiPoliceOfficerHandler::Update() {
     auto level = *lvlLevel::Singleton;
 
     if (*getPtr<WORD>(this, 0x977A) != 12) {
-        if (level->GetRoomInfo(car->getModel()->getRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
-            if (level->GetWaterLevel(car->getModel()->getRoomId()) > carsim->getWorldMatrix()->m31) {
+        if (level->GetRoomInfo(car->getModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
+            if (level->GetWaterLevel(car->getModel()->GetRoomId()) > carsim->getWorldMatrix()->m31) {
                 PerpEscapes(0);
                 *getPtr<WORD>(this, 0x977A) = 12;
             }

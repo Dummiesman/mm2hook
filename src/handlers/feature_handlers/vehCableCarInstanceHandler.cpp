@@ -19,7 +19,7 @@ void vehCableCarInstanceHandler::DrawShadow()
 {
     //get vars
     auto inst = reinterpret_cast<lvlInstance*>(this);
-    int geomSet = inst->getGeomSetId() - 1;
+    int geomSet = inst->GetGeomIndex() - 1;
 
     //get our shader set
     int shaderSet = 0;
@@ -29,13 +29,13 @@ void vehCableCarInstanceHandler::DrawShadow()
     Matrix34 shadowMatrix;
     Matrix34 dummyMatrix;
 
-    if (lvlInstance::ComputeShadowMatrix(&shadowMatrix, inst->getRoomId(), &inst->GetMatrix(&dummyMatrix)))
+    if (lvlInstance::ComputeShadowMatrix(&shadowMatrix, inst->GetRoomId(), &inst->GetMatrix(&dummyMatrix)))
     {
         //setup renderer
         gfxRenderState::SetWorldMatrix(shadowMatrix);
 
         //draw shadow
-        modStatic* shadow = lvlInstance::GetGeomTableEntry(geomSet + SHADOW_GEOM_ID)->getHighestLOD();
+        modStatic* shadow = lvlInstance::GetGeomTableEntry(geomSet + SHADOW_GEOM_ID)->GetHighestLOD();
         if (shadow != nullptr)
         {
             shadow->Draw(shaders);
@@ -51,7 +51,7 @@ void vehCableCarInstanceHandler::DrawGlow()
 
     //get vars
     auto inst = reinterpret_cast<lvlInstance*>(this);
-    int geomSet = inst->getGeomSetId() - 1;
+    int geomSet = inst->GetGeomIndex() - 1;
 
     //setup renderer
     Matrix34 instMtx = inst->GetMatrix(&cableCarMatrix);
@@ -63,7 +63,7 @@ void vehCableCarInstanceHandler::DrawGlow()
     auto shaders = lvlInstance::GetGeomTableEntry(geomSet)->pShaders[shaderSet];
 
     //get lights
-    modStatic* hlight = lvlInstance::GetGeomTableEntry(geomSet + HLIGHT_GEOM_ID)->getHighestLOD();
+    modStatic* hlight = lvlInstance::GetGeomTableEntry(geomSet + HLIGHT_GEOM_ID)->GetHighestLOD();
     if (hlight != nullptr)
     {
         hlight->Draw(shaders);
@@ -74,7 +74,7 @@ bool vehCableCarInstanceHandler::BeginGeom(const char* a1, const char* a2, int a
 {
     //We hook this to set flag 64 (shadow)
     auto inst = reinterpret_cast<lvlInstance*>(this);
-    inst->setFlag(64);
+    inst->SetFlag(64);
 
     //Call original
     return inst->BeginGeom(a1, a2, a3);

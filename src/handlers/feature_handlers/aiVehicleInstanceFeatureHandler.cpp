@@ -26,7 +26,7 @@ int ambientHeadlightStyle = 0;
 
 void aiVehicleInstanceFeatureHandler::Draw(int a1) {
     auto inst = reinterpret_cast<aiVehicleInstance*>(this);
-    auto geomID = inst->getGeomSetId() - 1;
+    auto geomID = inst->GetGeomIndex() - 1;
     auto geomSet = lvlInstance::GetGeomTableEntry(geomID);
 
     //setup renderer
@@ -38,8 +38,8 @@ void aiVehicleInstanceFeatureHandler::Draw(int a1) {
     auto shaders = geomSet->pShaders[shaderSet];
 
     //get objects
-    modStatic* plighton = lvlInstance::GetGeomTableEntry(geomID + PLIGHTOFF_GEOM_ID)->getHighLOD();
-    modStatic* plightoff = lvlInstance::GetGeomTableEntry(geomID + PLIGHTON_GEOM_ID)->getHighLOD();
+    modStatic* plighton = lvlInstance::GetGeomTableEntry(geomID + PLIGHTOFF_GEOM_ID)->GetHighLOD();
+    modStatic* plightoff = lvlInstance::GetGeomTableEntry(geomID + PLIGHTON_GEOM_ID)->GetHighLOD();
 
     if (plighton != nullptr) {
         if (aiMap::Instance->showHeadlights)
@@ -56,7 +56,7 @@ void aiVehicleInstanceFeatureHandler::Draw(int a1) {
 
 void aiVehicleInstanceFeatureHandler::DrawGlow() {
     auto inst = reinterpret_cast<aiVehicleInstance*>(this);
-    auto geomID = inst->getGeomSetId() - 1;
+    auto geomID = inst->GetGeomIndex() - 1;
     auto geomSet = lvlInstance::GetGeomTableEntry(geomID);
 
     //setup renderer
@@ -68,13 +68,13 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
     auto shaders = geomSet->pShaders[shaderSet];
 
     //get objects
-    modStatic* hlight = lvlInstance::GetGeomTableEntry(geomID + HLIGHT_GEOM_ID)->getHighestLOD();
-    modStatic* tlight = lvlInstance::GetGeomTableEntry(geomID + TLIGHT_GEOM_ID)->getHighestLOD();
-    modStatic* slight0 = lvlInstance::GetGeomTableEntry(geomID + SLIGHT0_GEOM_ID)->getHighestLOD();
-    modStatic* slight1 = lvlInstance::GetGeomTableEntry(geomID + SLIGHT1_GEOM_ID)->getHighestLOD();
-    modStatic* blight = lvlInstance::GetGeomTableEntry(geomID + BLIGHT_GEOM_ID)->getHighestLOD();
-    modStatic* tslight0 = lvlInstance::GetGeomTableEntry(geomID + TSLIGHT0_GEOM_ID)->getHighestLOD();
-    modStatic* tslight1 = lvlInstance::GetGeomTableEntry(geomID + TSLIGHT1_GEOM_ID)->getHighestLOD();
+    modStatic* hlight = lvlInstance::GetGeomTableEntry(geomID + HLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* tlight = lvlInstance::GetGeomTableEntry(geomID + TLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* slight0 = lvlInstance::GetGeomTableEntry(geomID + SLIGHT0_GEOM_ID)->GetHighestLOD();
+    modStatic* slight1 = lvlInstance::GetGeomTableEntry(geomID + SLIGHT1_GEOM_ID)->GetHighestLOD();
+    modStatic* blight = lvlInstance::GetGeomTableEntry(geomID + BLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* tslight0 = lvlInstance::GetGeomTableEntry(geomID + TSLIGHT0_GEOM_ID)->GetHighestLOD();
+    modStatic* tslight1 = lvlInstance::GetGeomTableEntry(geomID + TSLIGHT1_GEOM_ID)->GetHighestLOD();
 
     //get lights stuff
     float accel = inst->getSpline()->getRailSet()->getAccelFactor();
