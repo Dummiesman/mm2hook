@@ -49,9 +49,7 @@ void gizParkedCarMgrHandler::EnumeratePath(LPCSTR a1, Matrix34* a2, bool a3) {
 
                 banger->Init(carname, mtx, 0);
                 banger->SetVariant(irand());
-
-                auto bangerRoom = lvlLevel::Singleton->FindRoomId(a2->GetRow(3), 0);
-                lvlLevel::Singleton->MoveToRoom(banger, bangerRoom);
+                lvlLevel::GetSingleton()->Reparent(banger);
             }
         }
     }

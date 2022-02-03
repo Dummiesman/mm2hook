@@ -84,7 +84,7 @@ void mmSingleRoamHandler::EscapeDeepWater() {
     auto car = player->getCar();
     auto carsim = car->getCarSim();
     auto carPos = car->getModel()->GetPosition();
-    auto level = *lvlLevel::Singleton;
+    auto level = lvlLevel::GetSingleton();
 
     if (level->GetRoomInfo(car->getModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater) &&
         level->GetWaterLevel(car->getModel()->GetRoomId()) > carsim->getWorldMatrix()->m31) {

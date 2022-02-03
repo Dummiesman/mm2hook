@@ -107,8 +107,9 @@ namespace MM2
             return this->RoomCount;
         }
     public:
+    protected:
         static hook::Type<lvlLevel*> Singleton;
-
+    public:
         AGE_API lvlLevel() {
             scoped_vtable x(this);
             hook::Thunk<0x4653A0>::Call<void>(this);
@@ -185,6 +186,16 @@ namespace MM2
             }
         }
 
+        static lvlLevel* GetSingleton() {
+            return lvlLevel::Singleton.get();
+        }
+
+        void Reparent(lvlInstance* instance) {
+            auto &instancePos = instance->GetPosition();
+            int room = this->FindRoomId(instancePos, instance->GetRoomId());
+            if (room != instance->GetRoomId())
+                this->MoveToRoom(instance, room);
+        }
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<lvlLevel, asCullable>("lvlLevel")
@@ -202,6 +213,7 @@ namespace MM2
 
                 //functions
                 .addFunction("GetRoomInfo", &GetRoomInfo)
+                .addFunction("Reparent", &Reparent)
                 .addFunction("MoveToRoom", &MoveToRoom)
                 .addFunction("ResetInstances", &ResetInstances)
                 .addFunction("LabelInstances", &LabelInstances)
@@ -212,7 +224,7 @@ namespace MM2
                     LUA_ARGS(LuaRef, LuaRef, _opt<int>)) //register a LuaCallback
 
                 //singleton
-                .addStaticProperty("Singleton", [] { return Singleton.get(); })
+                .addStaticProperty("Singleton", &lvlLevel::GetSingleton)
                 .endClass();
         }
     };

@@ -128,7 +128,7 @@ namespace MM2
                 .addStaticProperty("Singleton", [] 
                 { 
                     //MM2 only uses cityLevel so this works
-                    auto level = lvlLevel::Singleton.get();
+                    auto level = lvlLevel::GetSingleton();
                     return reinterpret_cast<cityLevel*>(level);
                 })
 
