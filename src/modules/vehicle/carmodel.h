@@ -835,8 +835,8 @@ namespace MM2
 
             //draw reflection (only in H LOD)
             float reflectionIntensity = 1.f;
-            auto reflectionMap = lvlLevel::Singleton->GetEnvMap(this->GetRoomId(), this->GetPosition(), &reflectionIntensity);
             if (lod == 3 && reflectionMap != nullptr && bodyModel != nullptr)
+            auto reflectionMap = lvlLevel::GetSingleton()->GetEnvMap(this->GetRoomId(), this->GetPosition(), &reflectionIntensity);
             {
                 modShader::BeginEnvMap(reflectionMap, *this->carSim->getWorldMatrix());
                 bodyModel->DrawEnvMapped(shaders, reflectionMap, reflectionIntensity);
