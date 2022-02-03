@@ -111,7 +111,7 @@ namespace MM2
                 this->m10 = value.X;
                 this->m11 = value.Y;
                 this->m12 = value.Z;
-                this->m13 = value.Z;
+                this->m13 = value.W;
                 break;
             case 2:
                 this->m20 = value.X;
@@ -123,18 +123,18 @@ namespace MM2
                 this->m30 = value.X;
                 this->m31 = value.Y;
                 this->m32 = value.Z;
-                this->m33 = value.Z;
+                this->m33 = value.W;
                 break;
             }
         }
 
         AGE_API void Identity(void)                                            { hook::Thunk<0x4C0730>::Call<void>(this); }
-        AGE_API void Transpose(void)                                           { hook::Thunk<0x4C0929>::Call<void>(this); }
+        AGE_API void Transpose(void)                                           { hook::Thunk<0x4C0920>::Call<void>(this); }
         AGE_API void Zero(void)                                                { hook::Thunk<0x4C0770>::Call<void>(this); }
         AGE_API void Hermite(void)                                             { hook::Thunk<0x4C0870>::Call<void>(this); }
         AGE_API void Bezier(void)                                              { hook::Thunk<0x4C0820>::Call<void>(this); }
         AGE_API void CatmullRom(void)                                          { hook::Thunk<0x4C08C0>::Call<void>(this); }
-        AGE_API float Determinant(void)                                        { return hook::Thunk<0x4C134A>::Call<float>(this); }
+        AGE_API float Determinant(void) const                                  { return hook::Thunk<0x4C134A>::Call<float>(this); }
         AGE_API void Add(const Matrix44* a1)                                   { hook::Thunk<0x4C0A30>::Call<void>(this, a1); }
         AGE_API void AddScaled(const Matrix44* a1, float a2)                   { hook::Thunk<0x4C0CB0>::Call<void>(this, a1, a2); }
         AGE_API void Dot(const Matrix44* a1)                                   { hook::Thunk<0x4C0D50>::Call<void>(this, a1); }
