@@ -95,7 +95,7 @@ namespace MM2
         */
         static hook::Type<int> m_Touched;
 
-    public:
+    private:
         static hook::TypeProxy<Matrix44> sm_Camera;
         static hook::TypeProxy<Matrix44> sm_World;
 
@@ -241,6 +241,11 @@ namespace MM2
                 gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
             }
             return original;
+        }
+
+        inline static D3DCULL GetCullMode()
+        {
+            return static_cast<D3DCULL>((&RSTATE->Data)->CullMode);
         }
 
         inline static const Matrix44 & GetCameraMatrix()
