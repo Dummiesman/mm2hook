@@ -1,4 +1,5 @@
 #pragma once
+#include <common.h>
 
 namespace MM2
 {
@@ -23,26 +24,18 @@ namespace MM2
         gfxPacketList **ppPacketLists;
 
     public:
-        AGE_API int GetTriCount(void) const	                    { return hook::Thunk<0x4A4DE0>::Call<int>(this); }
-        AGE_API int GetAdjunctCount(void) const	                { return hook::Thunk<0x4A4DB0>::Call<int>(this); }
-        AGE_API void CopyFrom(const modStatic *mod)	            { return hook::Thunk<0x4A4D60>::Call<void>(this, mod); }
-        AGE_API modStatic * Clone(void) const	                { return hook::Thunk<0x4A4CA0>::Call<modStatic *>(this); }
-        AGE_API void Optimize(modShader *shader)	            { return hook::Thunk<0x4A49A0>::Call<void>(this, shader); }
-        AGE_API void Draw(modShader *shader) const	            { return hook::Thunk<0x4A4550>::Call<void>(this, shader); }
-        AGE_API void DrawNoAlpha(modShader *shader) const	    { return hook::Thunk<0x4A4A20>::Call<void>(this, shader); }
-        AGE_API void DrawEnvMapped(modShader *shader, gfxTexture *tex, float a3) const
-                                                                { return hook::Thunk<0x4A4A50>::Call<void>(this, shader, tex, a3); }
-        AGE_API void DrawOrthoMapped(modShader *shader, gfxTexture *tex, float a3, uint a4) const
-                                                                { return hook::Thunk<0x4A4B30>::Call<void>(this, shader, tex, a3, a4); }
-        AGE_API void DrawWithTexGenAndTexMatrix(void) const	    { return hook::Thunk<0x4A4C50>::Call<void>(this); }
+        AGE_API int GetTriCount(void) const;
+        AGE_API int GetAdjunctCount(void) const;
+        AGE_API void CopyFrom(const modStatic *mod);
+        AGE_API modStatic * Clone(void) const;
+        AGE_API void Optimize(modShader *shader);
+        AGE_API void Draw(modShader *shader) const;
+        AGE_API void DrawNoAlpha(modShader *shader) const;
+        AGE_API void DrawEnvMapped(modShader *shader, gfxTexture *tex, float a3) const;
+        AGE_API void DrawOrthoMapped(modShader *shader, gfxTexture *tex, float a3, uint a4) const;
+        AGE_API void DrawWithTexGenAndTexMatrix(void) const;
 
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<modStatic>("modStatic")
-                //functions
-                .addFunction("GetTriCount", &GetTriCount)
-                .addFunction("GetAdjunctCount", &GetAdjunctCount)
-                .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     // Lua initialization
