@@ -70,7 +70,7 @@ void ImGui_ImplAGE_RenderDrawData(ImDrawData* draw_data)
     {
         const ImDrawList* cmd_list = draw_data->CmdLists[n];
 
-        //Convert to D3D7 compatible
+        // Convert to D3D7 compatible
         static ImVector<ImDrawVertAGE> vertices;
         vertices.resize(cmd_list->VtxBuffer.Size);
         for (int i = 0; i < cmd_list->VtxBuffer.Size; i++)
@@ -149,7 +149,7 @@ void ImGui_ImplAGE_RenderDrawData(ImDrawData* draw_data)
 bool ImGui_ImplAGE_CreateDeviceObjects()
 {
     // Build texture atlas
-    Warningf("ImGui_ImplAGE_CreateDeviceObjects");
+    Displayf("ImGui_ImplAGE_CreateDeviceObjects");
 
     ImGuiIO& io = ImGui::GetIO();
     unsigned char* pixels;
@@ -172,7 +172,7 @@ bool ImGui_ImplAGE_CreateDeviceObjects()
 
 void ImGui_ImplAGE_InvalidateDeviceObjects()
 {
-    Warningf("ImGui_ImplAGE_InvalidateDeviceObjects");
+    Displayf("ImGui_ImplAGE_InvalidateDeviceObjects");
     /*
     * Will crash on gfxTextureCache::Evict.
     * TODO: Fix I guess?
