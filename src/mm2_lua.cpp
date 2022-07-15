@@ -61,9 +61,9 @@ void luaAddModule_HookConfig(lua_State* L)
         .addStaticFunction("GetFloat", [](LPCSTR key, float def) -> float { float value;
                                                                             bool res = HookConfig::GetProperty(key, value);
                                                                             return res ? value : def; }, LUA_ARGS(LPCSTR, _def<float, 0>))
-        .addStaticFunction("GetString", [](LPCSTR key) -> LPCSTR          { char value[2048];
+        .addStaticFunction("GetString", [](LPCSTR key, LPCSTR def) -> LPCSTR          { char value[2048];
                                                                             bool res = HookConfig::GetProperty(key, value, sizeof(value));
-                                                                            return res ? (LPCSTR)&value : nullptr; })
+                                                                            return res ? (LPCSTR)&value : def; })
         .addStaticFunction("HasProperty", &HookConfig::HasProperty)
         .endClass();
 }
