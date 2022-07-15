@@ -270,6 +270,20 @@ namespace MM2
         return returnVec;
     }
 
+    void Matrix34::Transform3x3(const Vector3& vector, Vector3& out) const
+    {
+        out.X = this->m00 * vector.X + this->m10 * vector.Y + this->m20 * vector.Z;
+        out.Y = this->m01 * vector.X + this->m11 * vector.Y + this->m21 * vector.Z;
+        out.Z = this->m02 * vector.X + this->m12 * vector.Y + this->m22 * vector.Z;
+    }
+
+    Vector3 Matrix34::Transform3x3(const Vector3& vector) const
+    {
+        Vector3 returnVec;
+        Transform3x3(vector, returnVec);
+        return returnVec;
+    }
+
     Vector4 Matrix34::GetColumn(int column) const
     {
         switch (column)
@@ -399,6 +413,7 @@ namespace MM2
             .addFunction("MakeScale", static_cast<void(Matrix34::*)(float, float, float)>(&Matrix34::MakeScale))
             .addFunction("MakeRotate", &Matrix34::MakeRotate)
             .addFunction("Transform", static_cast<Vector3(Matrix34::*)(const Vector3&)const>(&Matrix34::Transform))
+            .addFunction("Transform3x3", static_cast<Vector3(Matrix34::*)(const Vector3&)const>(&Matrix34::Transform3x3))
             .addFunction("RotateX", &Matrix34::RotateX)
             .addFunction("RotateY", &Matrix34::RotateY)
             .addFunction("RotateZ", &Matrix34::RotateZ)

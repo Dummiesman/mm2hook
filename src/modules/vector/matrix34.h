@@ -58,6 +58,8 @@ namespace MM2
         void Identity3x3();
         void Transform(const Vector3& vector, Vector3& out) const;
         Vector3 Transform(const Vector3& vector) const;
+        void Transform3x3(const Vector3& vector, Vector3& out) const;
+        Vector3 Transform3x3(const Vector3& vector) const;
         Vector4 GetColumn(int column) const;
         Vector3 GetRow(int row) const;
         void SetColumn(int column, const Vector4& value);
