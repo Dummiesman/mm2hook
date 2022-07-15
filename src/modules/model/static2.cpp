@@ -1,4 +1,4 @@
-#include "static2.h";
+#include "static2.h"
 using namespace MM2;
 
 AGE_API int modStatic::GetTriCount(void) const	                    
