@@ -69,6 +69,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<lvlFixedRotY, lvlFixedAny>("lvlFixedRotY")
+                .addConstructor(LUA_ARGS())
                 .endClass();
         }
     };
@@ -100,6 +101,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<lvlFixedMatrix, lvlFixedAny>("lvlFixedMatrix")
+                .addConstructor(LUA_ARGS())
                 .endClass();
         }
     };
