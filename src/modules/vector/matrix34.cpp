@@ -93,18 +93,39 @@ namespace MM2
     void Matrix34::RotateX(float angle) {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateX(angle);
-        this->Dot(rotMatrix);
+        this->Dot3x3(rotMatrix);
     }
 
     void Matrix34::RotateY(float angle) {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateY(angle);
-        this->Dot(rotMatrix);
+        this->Dot3x3(rotMatrix);
     }
 
     void Matrix34::RotateZ(float angle) {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateZ(angle);
+        this->Dot3x3(rotMatrix);
+    }
+
+    void Matrix34::RotateFullX(float angle) {
+        Matrix34 rotMatrix = Matrix34();
+        rotMatrix.MakeRotateX(angle);
+        rotMatrix.SetRow(3, Vector3::ORIGIN);
+        this->Dot(rotMatrix);
+    }
+
+    void Matrix34::RotateFullY(float angle) {
+        Matrix34 rotMatrix = Matrix34();
+        rotMatrix.MakeRotateY(angle);
+        rotMatrix.SetRow(3, Vector3::ORIGIN);
+        this->Dot(rotMatrix);
+    }
+
+    void Matrix34::RotateFullZ(float angle) {
+        Matrix34 rotMatrix = Matrix34();
+        rotMatrix.MakeRotateZ(angle);
+        rotMatrix.SetRow(3, Vector3::ORIGIN);
         this->Dot(rotMatrix);
     }
 
@@ -147,32 +168,11 @@ namespace MM2
         this->m30 = 0.0;
     }
 
+    void Matrix34::Dot3x3(const Matrix34& rhs) {
+        hook::Thunk<0x4BC970>::Call<void>(this, &rhs);
+    }
     void Matrix34::Dot(const Matrix34& rhs) {
-        float v3 = rhs.m11 * this->m01 + this->m02 * rhs.m21 + rhs.m01 * this->m00;
-        float v15 = rhs.m12 * this->m01 + rhs.m22 * this->m02 + rhs.m02 * this->m00;
-        float v14 = rhs.m10 * this->m11 + this->m12 * rhs.m20 + this->m10 * rhs.m00;
-        float v13 = rhs.m11 * this->m11 + this->m12 * rhs.m21 + rhs.m01 * this->m10;
-        float v12 = rhs.m12 * this->m11 + rhs.m02 * this->m10 + rhs.m22 * this->m12;
-        float v11 = rhs.m10 * this->m21 + this->m20 * rhs.m00 + rhs.m20 * this->m22;
-        float v10 = rhs.m11 * this->m21 + rhs.m01 * this->m20 + rhs.m21 * this->m22;
-        float v9 = rhs.m22 * this->m22 + rhs.m12 * this->m21 + rhs.m02 * this->m20;
-        float v8 = rhs.m10 * this->m31 + this->m30 * rhs.m00 + this->m32 * rhs.m20 + rhs.m30;
-        float v7 = rhs.m11 * this->m31 + rhs.m01 * this->m30 + this->m32 * rhs.m21 + rhs.m31;
-        float v6 = rhs.m22 * this->m32 + rhs.m12 * this->m31 + rhs.m02 * this->m30 + rhs.m32;
-        float v4 = rhs.m10 * this->m01 + rhs.m00 * this->m00;
-        float v5 = this->m02 * rhs.m20;
-        this->m02 = v15;
-        this->m00 = v4 + v5;
-        this->m01 = v3;
-        this->m10 = v14;
-        this->m11 = v13;
-        this->m12 = v12;
-        this->m20 = v11;
-        this->m21 = v10;
-        this->m22 = v9;
-        this->m30 = v8;
-        this->m31 = v7;
-        this->m32 = v6;
+        hook::Thunk<0x4BC400>::Call<void>(this, &rhs);
     }
 
     void Matrix34::Scale(float amount) {
@@ -417,6 +417,9 @@ namespace MM2
             .addFunction("RotateX", &Matrix34::RotateX)
             .addFunction("RotateY", &Matrix34::RotateY)
             .addFunction("RotateZ", &Matrix34::RotateZ)
+            .addFunction("RotateFullX", &Matrix34::RotateFullX)
+            .addFunction("RotateFullY", &Matrix34::RotateFullY)
+            .addFunction("RotateFullZ", &Matrix34::RotateFullZ)
             .addFunction("LookAt", &Matrix34::LookAt)
 
             .addFunction("Set", &Matrix34::Set)
