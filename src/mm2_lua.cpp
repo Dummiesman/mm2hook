@@ -217,12 +217,12 @@ void GC()
 
 void ReloadScript()
 {
-    // garbage collect
-    GC();
-
     // try reloading Lua
     LogFile::WriteLine("Reloading main script...");
     LoadMainScript();
+    
+    // garbage collect
+    GC();
 
     mmGameManager *mgr = mmGameManager::Instance;
     auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
