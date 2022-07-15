@@ -1,4 +1,5 @@
 #pragma once
+#include "..\data\base.h"
 
 namespace MM2
 {
