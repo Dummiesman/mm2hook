@@ -1,10 +1,11 @@
 #pragma once
-
+#include <mm2_common.h>
+#include <modules\node\node.h>
 
 namespace MM2
 {
     // Forward declarations
-    struct gfxLight;
+    class asMeshSetForm;
 
     // External declarations
     extern class modStatic;
@@ -21,90 +22,30 @@ namespace MM2
         int Flags;
         Matrix34 Matrix;
     public:
-        inline Matrix34 getMatrix() {
-            return this->Matrix;
-        }
-            
-        inline void setMatrix(Matrix34 a1) {
-            this->Matrix = a1;
-        }
-
-        inline void setVariant(int variant) {
-            if (this->Shaders == nullptr || variant >= this->VariantCount)
-                return;
-            this->ChosenShaderSet = Shaders[variant];
-        }
-
-        inline int getVariant() {
-            if (this->Shaders == nullptr)
-                return -1;
-            
-            //compare shader sets to our current
-            for (int i = 0; i < this->VariantCount; i++) {
-                if (this->ChosenShaderSet == this->Shaders[i])
-                    return i;
-            }
-
-            return -1;
-        }
-
-        inline int getVariantCount() {
-            return this->VariantCount;
-        }
-
-        inline Vector3 getPosition() {
-            return Vector3(this->Matrix.m30, this->Matrix.m31, this->Matrix.m32);
-        }
-
-        inline void setPosition(Vector3 position) {
-            this->Matrix.m30 = position.X;
-            this->Matrix.m31 = position.Y;
-            this->Matrix.m32 = position.Z;
-        }
+        Matrix34 GetMatrix();
+        void SetMatrix(Matrix34 matrix);
+        int GetVariant();
+        void SetVariant(int variant);
+        int GetVariantCount();
+        Vector3 GetPosition();
+        void SetPosition(Vector3 position);
     public:
-        AGE_API asMeshSetForm(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x533600>::Call<void>(this);
-        }
-
-        AGE_API ~asMeshSetForm(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x5339D0>::Call<void>(this);
-        }
+        AGE_API asMeshSetForm();
+        AGE_API ~asMeshSetForm();
 
         /*
             asNode virtuals
         */
-
-        virtual AGE_API void Cull(void)                         { hook::Thunk<0x533810>::Call<void>(this); };
-        virtual AGE_API void Update(void)                       { hook::Thunk<0x5337F0>::Call<void>(this); };
+        virtual AGE_API void Cull() override;
+        virtual AGE_API void Update() override;
     
-        //Last arg is never used, so I've set it to nullptr. It's a Vector3 reference, which was meant for offset I guess.
-        AGE_API void SetShape(LPCSTR modelName, LPCSTR dirName, bool useFullVertex = true)
-                                                                { hook::Thunk<0x533660>::Call<void>(this, modelName, dirName, useFullVertex, nullptr); }
-        AGE_API void SetZRead(bool a1)                          { hook::Thunk<0x533770>::Call<void>(this, a1); }
-        AGE_API void SetZWrite(bool a1)                         { hook::Thunk<0x533790>::Call<void>(this, a1); }
-        AGE_API void EnableLighting(bool a1)                    { hook::Thunk<0x5337B0>::Call<void>(this, a1); }
-        AGE_API void EnableAlpha(bool a1)                       { hook::Thunk<0x5337D0>::Call<void>(this, a1); }
+        AGE_API void SetShape(LPCSTR modelName, LPCSTR dirName, bool useFullVertex = true);
+        AGE_API void SetZRead(bool enable);
+        AGE_API void SetZWrite(bool enable);
+        AGE_API void EnableLighting(bool enable);
+        AGE_API void EnableAlpha(bool enable);
 
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<asMeshSetForm, asNode>("asMeshSetForm")
-                .addConstructor(LUA_ARGS())
-                .addFunction("GetMatrix", &getMatrix)
-                .addFunction("SetMatrix", &setMatrix)
-                .addFunction("GetPosition", &getPosition)
-                .addFunction("SetPosition", &setPosition)
-
-                .addProperty("Variant", &getVariant, &setVariant)
-                .addPropertyReadOnly("NumVariants", &getVariantCount)
-
-                .addFunction("SetShape", &SetShape, LUA_ARGS(LPCSTR, LPCSTR, _opt<bool>))
-                .addFunction("SetZRead", &SetZRead)
-                .addFunction("SetZWrite", &SetZWrite)
-                .addFunction("EnableLighting", &EnableLighting)
-                .addFunction("EnableAlpha", &EnableAlpha)
-            .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     // Lua initialization
