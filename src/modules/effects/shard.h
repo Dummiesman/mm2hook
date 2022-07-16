@@ -49,9 +49,6 @@ namespace MM2
             int shaderSkipAmount = 2;
             int maxShader = this->ShaderCount;
             
-            auto renderState = &RSTATE;
-            auto renderStateData = &renderState->Data;
-            
             //set cull mode
             auto oldCullMode = gfxRenderState::SetCullMode(D3DCULL_NONE);
             
@@ -67,11 +64,9 @@ namespace MM2
                     curShader = 0;
             }
 
-            //reset cull mode
-            gfxRenderState::SetCullMode(oldCullMode);
-
             //finish off
-            gfxRenderState::SetWorldMatrix(*(Matrix44*)0x6A3B48);
+            gfxRenderState::SetCullMode(oldCullMode);            
+            gfxRenderState::SetWorldMatrix(Matrix44::I);
         }
     };
 
