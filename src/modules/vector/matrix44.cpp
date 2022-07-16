@@ -2,6 +2,18 @@
 
 namespace MM2
 {
+    Matrix44::Matrix44() {};
+    Matrix44::Matrix44(float m00, float m01, float m02, float m03,
+                       float m10, float m11, float m12, float m13,
+                       float m20, float m21, float m22, float m23,
+                       float m30, float m31, float m32, float m33)
+        : m00(m00), m01(m01), m02(m02), m03(m03),
+          m10(m10), m11(m11), m12(m12), m13(m13),
+          m20(m20), m21(m21), m22(m22), m23(m23),
+          m30(m30), m31(m31), m32(m32), m33(m33) {}
+
+    const Matrix44 Matrix44::I = Matrix44(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0 ,0.0, 0.0, 0.0, 1.0);
+
     Matrix34 Matrix44::toMatrix34Lua() const
     {
         Matrix34 returnMtx = Matrix34();
