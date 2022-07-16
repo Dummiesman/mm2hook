@@ -45,11 +45,15 @@ namespace MM2
         void RotateX(float angle);
         void RotateY(float angle);
         void RotateZ(float angle);
+        void RotateFullX(float angle);
+        void RotateFullY(float angle);
+        void RotateFullZ(float angle);
         void Add(const Matrix34& values);
         void Normalize();
         void LookAt(const Vector3& from, const Vector3& to);
         void Zero();
         void Dot(const Matrix34& rhs);
+        void Dot3x3(const Matrix34& rhs);
         void Scale(float amount);
         void Scale(float xAmount, float yAmount, float zAmount);
         void ScaleFull(float amount);
