@@ -23,7 +23,7 @@ namespace MM2
     public:
         ANGEL_ALLOCATOR
 
-            luaNode(LPCSTR name) {
+        luaNode(LPCSTR name) {
             m_ClassName = "luaNode";
             m_UpdateFunction = getNil();
             m_UpdatePausedFunction = getNil();
