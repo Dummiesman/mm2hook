@@ -57,6 +57,11 @@ namespace MM2
             return this->Max;
         }
 
+        Vector3 getSize()
+        {
+            return getMax() - getMin();
+        }
+
         bool getIsOffset()
         {
             return this->IsOffset == TRUE;
@@ -132,6 +137,7 @@ namespace MM2
                 .addPropertyReadOnly("Offset", &getOffset)
                 .addPropertyReadOnly("Min", &getMin)
                 .addPropertyReadOnly("Max", &getMax)
+                .addPropertyReadOnly("Size", &getSize)
                 .endClass();
         }
     };
