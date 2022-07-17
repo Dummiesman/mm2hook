@@ -85,28 +85,15 @@ namespace MM2
         char* Name;
     private:
         //lua drawables!
-        inline int RegisterLuaDrawable(LuaRef self, LuaRef function, int phase = 1) 
+        int RegisterLuaDrawable(LuaRef self, LuaRef function, int phase = 1) 
         {
             return luaDrawableHandler::RegisterCallback(self, function, phase);
         }
 
-        inline void UnregisterLuaDrawable(int id)
+        void UnregisterLuaDrawable(int id)
         {
             luaDrawableHandler::UnregisterCallback(id);
         }
-    public:
-        inline lvlRoomInfo* GetRoomInfo(int room) 
-        {
-            if (this->RoomInfo == nullptr || room >= RoomCount || room < 0)
-                return nullptr;
-            return this->RoomInfo[room];
-        }
-
-        inline int GetRoomCount()
-        {
-            return this->RoomCount;
-        }
-    public:
     protected:
         static hook::Type<lvlLevel*> Singleton;
     public:
@@ -130,12 +117,13 @@ namespace MM2
         AGE_API virtual void PostDraw()                             PURE;
         AGE_API virtual void Draw(const gfxViewport& a1, uint a2)   PURE;
                                                                     
-        AGE_API virtual int FindRoomId(Vector3 const& a1, int a2)   PURE;
-        AGE_API virtual int GetNeighborCount(int a1)                PURE;
-        AGE_API virtual int GetNeighbors(int* a1, int a2)           PURE;
+        AGE_API virtual int FindRoomId(Vector3 const& a1, int a2) const
+                                                                    PURE;
+        AGE_API virtual int GetNeighborCount(int a1) const          PURE;
+        AGE_API virtual int GetNeighbors(int* a1, int a2) const     PURE;
         AGE_API virtual int GetTouchedNeighbors(int* a1, int a2, int a3, const Vector4& a4)   
                                                                     PURE;
-        AGE_API virtual int GetRoomPerimeter(int roomId, Vector3* out, int outSize)
+        AGE_API virtual int GetRoomPerimeter(int roomId, Vector3* out, int outSize) const
                                                                     PURE;
         AGE_API virtual int GetVisitList(int* a1, int a2, Vector3 const& a3, Vector3 const& a4, int a5, int a6)
                                                                     { return 0; }
@@ -144,11 +132,11 @@ namespace MM2
         AGE_API virtual bool GetBoundSphere(Vector4& a1, int a2)    { return false; }
         AGE_API virtual const class lvlLevelBound* GetBound()       PURE;
         AGE_API virtual void SetObjectDetail(int a1)                {}
-        AGE_API virtual float GetWaterLevel(int a1)                 PURE;
-        AGE_API virtual float GetLightingIntensity(Vector3 const& a1)
+        AGE_API virtual float GetWaterLevel(int a1) const           PURE;
+        AGE_API virtual float GetLightingIntensity(Vector3 const& a1) const
                                                                     PURE;
         AGE_API virtual void SetPtxHeight(asParticles& a1)          PURE;
-        AGE_API virtual bool ClampToWorld(Vector3& a1)              { return false; }
+        AGE_API virtual bool ClampToWorld(Vector3& a1) const        { return false; }
         AGE_API virtual bool LoadInstances(const char* a1, const char* a2)
                                                                     { return hook::Thunk<0x656F0>::Call<bool>(this, a1, a2); }
         AGE_API virtual gfxTexture* GetEnvMap(int a1, Vector3 const& a2, float* a3)
@@ -173,18 +161,14 @@ namespace MM2
 
             for (auto i = roomInfo->FirstInstance; i; i = i->GetNext()) {
                 if ((i->GetFlags() & this->InstanceLabelMask) != 0) {
-                    auto pos = i->GetPosition();
-                    const char* name;
-
-                    if (i->GetGeomIndex() != 0)
-                        name = lvlInstance::GetGeomName(i->GetGeomIndex() - 1);
-                    else
-                        name = "(none)";
-
-                    vglDrawLabelf(pos, "%s", name);
+                    vglDrawLabelf(i->GetPosition(), "%s", i->GetName());
                 }
             }
         }
+
+        /*
+            lvlLevel properties
+        */
 
         static lvlLevel* GetSingleton() {
             return lvlLevel::Singleton.get();
@@ -196,6 +180,25 @@ namespace MM2
             if (room != instance->GetRoomId())
                 this->MoveToRoom(instance, room);
         }
+
+        lvlRoomInfo* GetRoomInfo(int room) {
+            if (this->RoomInfo == nullptr || room >= RoomCount || room < 0)
+                return nullptr;
+            return this->RoomInfo[room];
+        }
+
+        int GetRoomCount() const {
+            return this->RoomCount;
+        }
+
+        void SetLevelName(char* name) {
+            this->Name = name;
+        }
+
+        const char* GetLevelName() const {
+            return this->Name;
+        }
+
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<lvlLevel, asCullable>("lvlLevel")
