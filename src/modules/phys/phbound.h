@@ -37,37 +37,37 @@ namespace MM2
         float Penetration;
         float PenetrationBarelyMoved;
     public:
-        inline BoundType getType() 
+        BoundType getType() 
         {
             return this->Type;
         }
 
-        inline int getMaterialCount() 
+        int getMaterialCount() 
         {
             return this->MaterialCount;
         }
 
-        inline Vector3 getMin()
+        Vector3 getMin()
         {
             return this->Min;
         }
 
-        inline Vector3 getMax()
+        Vector3 getMax()
         {
             return this->Max;
         }
 
-        inline bool getIsOffset()
+        bool getIsOffset()
         {
             return this->IsOffset == TRUE;
         }
 
-        inline Vector3 getOffset() 
+        Vector3 getOffset() 
         {
             return this->Offset;
         }
 
-        inline float getRadius()
+        float getRadius()
         {
             return this->Radius;
         }
