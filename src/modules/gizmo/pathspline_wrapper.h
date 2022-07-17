@@ -17,7 +17,7 @@ namespace MM2
     public:
         Matrix34 GetMatrix()
         {
-            Matrix34 mtx{};
+            Matrix34 mtx;
             mtx.Identity();
             mtx.SetRow(2, forward);
             mtx.SetRow(3, position);
@@ -43,6 +43,7 @@ namespace MM2
                 .addFunction("Update", &Update)
                 .addFunction("GetPosition", &GetPosition)
                 .addFunction("GetMatrix", &GetMatrix)
+                .addFunction("Reset", &Reset)
             .endClass();
         }
     };
