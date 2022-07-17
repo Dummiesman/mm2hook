@@ -1,4 +1,7 @@
 #pragma once
+#include <mm2_common.h>
+#include "texture.h"
+#include "material.h"
 
 namespace MM2
 {
@@ -248,6 +251,11 @@ namespace MM2
             return static_cast<D3DCULL>((&RSTATE->Data)->CullMode);
         }
 
+        inline static byte GetAlphaRef()
+        {
+            return (&RSTATE->Data)->AlphaRef;
+        }
+
         inline static const Matrix44 & GetCameraMatrix()
         {
             return gfxRenderState::sm_Camera;
@@ -276,7 +284,7 @@ namespace MM2
         inline static void SetWorldMatrix(const Matrix34& matrix)
         {
             gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
-            Matrix44::Convert(gfxRenderState::sm_World, &matrix);
+            Matrix44::Convert(gfxRenderState::sm_World, matrix);
         }
 
         inline static byte SetFillMode(byte fillMode)
