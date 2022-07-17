@@ -15,14 +15,21 @@ namespace MM2
 
     // Class definitions
     class mmArrow : public asNode {
-    private: 
-        byte _buffer[0x50];
-    public:
+    private:
+        static Vector3 m_LuaInterest;
+
         //lua helpers
-        inline void luaClearInterest(void) {
+        void luaClearInterest(void) {
             this->SetInterest(nullptr);
         }
 
+        void luaSetInterest(Vector3 interest) {
+            m_LuaInterest.Set(interest);
+            this->SetInterest(&m_LuaInterest);
+        }
+    private: 
+        byte _buffer[0x50];
+    public:
         /*
             asNode virtuals
         */
@@ -36,7 +43,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmArrow, asNode>("mmArrow")
-                .addFunction("SetInterest", &SetInterest)
+                .addFunction("SetInterest", &luaSetInterest)
                 .addFunction("ClearInterest", &luaClearInterest)
                 .endClass();
         }                                                      
@@ -56,17 +63,16 @@ namespace MM2
             this->Init(reverse ? TRUE : FALSE, startTime, ticksMode ? TRUE : FALSE);
         }
     public:
-        //api for running and reverse mode
-        inline bool getReverseMode() {
+        inline bool GetCountdownMode() {
             return this->ReverseMode == TRUE;
         }
 
-        inline void setReverseMode(bool mode) 
+        inline void SetCountdownMode(bool mode) 
         {
             this->ReverseMode = (mode) ? TRUE : FALSE;
         }
 
-        inline bool getRunning() {
+        inline bool GetRunning() {
             return this->Running == TRUE;
         }
     public:
@@ -107,8 +113,8 @@ namespace MM2
 
                 .addVariableRef("StartTime", &mmTimer::StartTime)
                 .addPropertyReadOnly("Time", &GetTime)
-                .addPropertyReadOnly("Running", &getRunning)
-                .addProperty("ReverseMode", &getReverseMode, &setReverseMode)
+                .addPropertyReadOnly("Running", &GetRunning)
+                .addProperty("CountdownMode", &GetCountdownMode, &SetCountdownMode)
                 .endClass();
         }
     };
@@ -118,27 +124,61 @@ namespace MM2
     private:
         byte _buffer[0xB9C]; // unconfirmed
     protected:
-        hook::Field<0x0B94, mmCDPlayer*> _cdplayer;
+        hook::Field<0xB94, mmCDPlayer*> _cdplayer;
         hook::Field<0xBA0, mmHudMap*> _hudmap;
         hook::Field<0xBA4, camViewCS*> _camview;
-        hook::Field<0x09BC, mmArrow> _arrow;
+        hook::Field<0x9BC, mmArrow> _arrow;
+        hook::Field<0x950, BOOL> _showTimer;
+        hook::Field<0x914, BOOL> _useCountdownTimer;
+        hook::Field<0xA54, mmTimer> _timer;
+        hook::Field<0xA84, mmTimer> _countdownTimer;
     public:
-        inline mmCDPlayer* getCdPlayer() 
+        mmTimer* GetTimer()
+        {
+            return _timer.ptr(this);
+        }
+
+        mmTimer* GetCountdownTimer()
+        {
+            return _countdownTimer.ptr(this);
+        }
+
+        bool GetUseCountdownTimer()
+        {
+            return _useCountdownTimer.get(this) == TRUE;
+        }
+
+        void SetUseCountdownTimer(bool value)
+        {
+            _useCountdownTimer.set(this, (value) ? TRUE : FALSE);
+        }
+
+        bool GetShowTimer()
+        {
+            return _showTimer.get(this) == TRUE;
+        }
+
+        void SetShowTimer(bool value)
+        {
+            _showTimer.set(this, (value) ? TRUE : FALSE);
+        }
+
+        mmCDPlayer* GetCDPlayer() 
         {
             return _cdplayer.get(this);
-        };
+        }
 
-        inline mmArrow* getArrow() 
+        mmArrow* GetArrow() 
         {
             return _arrow.ptr(this);
-        };
+        }
 
-        inline camViewCS* getCamView() 
+        camViewCS* GetCamView() 
         {
             return _camview.get(this);
         }
 
-        inline mmHudMap* getHudMap()
+        mmHudMap* GetHudMap()
         {
             return _hudmap.get(this);
         }
@@ -185,10 +225,16 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmHUD, asNode>("mmHUD")
-                .addPropertyReadOnly("CDPlayer", &getCdPlayer)
-                .addPropertyReadOnly("Arrow", &getArrow)
-                .addPropertyReadOnly("Map", &getHudMap)
-                .addPropertyReadOnly("CamView", &getCamView)
+                .addPropertyReadOnly("CDPlayer", &GetCDPlayer)
+                .addPropertyReadOnly("Arrow", &GetArrow)
+                .addPropertyReadOnly("Map", &GetHudMap)
+                .addPropertyReadOnly("CamView", &GetCamView)
+                
+                .addPropertyReadOnly("Timer", &GetTimer)
+                .addPropertyReadOnly("CountdownTimer", &GetCountdownTimer)
+
+                .addProperty("UseCountdownTimer", &GetUseCountdownTimer, &SetUseCountdownTimer)
+                .addProperty("ShowTimer", &GetShowTimer, &SetShowTimer)
 
                 .addFunction("Init", &Init, LUA_ARGS(LPCSTR, mmPlayer*, BOOL))
                 .addFunction("SetMessage", static_cast<void (mmHUD::*)(LPCSTR, float, int)>(&SetMessage), LUA_ARGS(LPCSTR, _def<float, 3>, _def<int, 0>))
