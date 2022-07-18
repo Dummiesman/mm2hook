@@ -1,4 +1,5 @@
 #pragma once
+#include <mm2_common.h>
 
 namespace MM2
 {
@@ -9,22 +10,9 @@ namespace MM2
 
 
     // Class definitions
-
     class Base {
     public:
-        virtual AGE_API ~Base() {
-            scoped_vtable x(this);
-            hook::Thunk<0x4C8200>::Call<void>(this);
-        };
-
-        //lua
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<Base>("Base")
-                .endClass();
-        }
-
+        virtual AGE_API ~Base();
+        static void BindLua(LuaState L);
     };
-
-    // Lua initialization
-
 }
