@@ -6,13 +6,20 @@ static ConfigValue<bool> cfgEnableLua   ("EnableLua", true);
 
 namespace MM2Lua
 {
+    //
     LuaState * GetState();
 
+    //
     bool IsEnabled();
     bool IsLoaded();
 
     void Initialize();
     void Reset();
+
+    //helper functions
+    template <class retType, typename... T>
+    retType TryCallFunction(LuaRef func, T&&... args);
+    void TryCallFunction(LuaRef func);
 
     //events
     void OnChatMessage(char* message);

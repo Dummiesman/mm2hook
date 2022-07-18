@@ -18,7 +18,7 @@ void mm2L_error(LPCSTR message)
 }
 
 template <class retType, typename... T>
-retType tryCallFunction(LuaRef func, T&&... args)
+retType MM2Lua::TryCallFunction(LuaRef func, T&&... args)
 {
     if (func.isValid() && func.isFunction()) 
     {
@@ -33,9 +33,9 @@ retType tryCallFunction(LuaRef func, T&&... args)
     }
 }
 
-void tryCallFunction(LuaRef func)
+void MM2Lua::TryCallFunction(LuaRef func)
 {
-    tryCallFunction<void>(func);
+    TryCallFunction<void>(func);
 }
 
 void luaAddModule_LogFile(lua_State * L)
@@ -95,7 +95,7 @@ void luaSetGlobals()
     Lua::setGlobal(L, "ROOT", &ROOT);
     Lua::setGlobal(L, "MMSTATE", &MMSTATE);
     Lua::setGlobal(L, "NETMGR", &NETMGR);
-    Lua::setGlobal(L, "AIMAP", &aiMap::Instance);
+    Lua::setGlobal(L, "AIMAP", aiMap::GetInstance());
     Lua::setGlobal(L, "VehicleList", VehicleListPtr.get());
     Lua::setGlobal(L, "CityList", CityListPtr.get());
 
@@ -199,7 +199,7 @@ void LoadMainScript() {
 
             //call init
             LuaRef func(L, "init");
-            tryCallFunction(func);
+            MM2Lua::TryCallFunction(func);
         }
 
         //mm2L_error(L.toString(-1));
@@ -292,14 +292,14 @@ void MM2Lua::Reset()
 void MM2Lua::OnChatMessage(char* message) {
     if (IsLoaded()) {
         LuaRef func(L, "onChatMessage");
-        tryCallFunction<void>(func, message);
+        TryCallFunction<void>(func, message);
     }
 }
 
 void MM2Lua::OnGameEnd() {
     if (IsLoaded()) {
         LuaRef func(L, "onGameEnd");
-        tryCallFunction(func);
+        TryCallFunction(func);
     }
 }
 
@@ -307,7 +307,7 @@ void MM2Lua::OnGamePreInit() {
     if (IsLoaded()) {
         luaSetGlobals();
         LuaRef func(L, "onGamePreInit");
-        tryCallFunction(func);
+        TryCallFunction(func);
     }
 }
 
@@ -315,7 +315,7 @@ void MM2Lua::OnGamePostInit() {
     if (IsLoaded()) {
         luaSetGlobals();
         LuaRef func(L, "onGamePostInit");
-        tryCallFunction(func);
+        TryCallFunction(func);
     }
 }
 
@@ -323,7 +323,7 @@ void MM2Lua::OnSessionCreate(char * sessionName, char * sessionPassword, int ses
 {
     if (IsLoaded()) {
         LuaRef func(L, "onSessionCreate");
-        tryCallFunction<void>(func, sessionName, sessionPassword, sessionMaxPlayers, sessionData);
+        TryCallFunction<void>(func, sessionName, sessionPassword, sessionMaxPlayers, sessionData);
     }
 }
 
@@ -331,21 +331,21 @@ void MM2Lua::OnSessionJoin(char * a2, GUID * a3, char * a4)
 {
     if (IsLoaded()) {
         LuaRef func(L, "onSessionJoin");
-        tryCallFunction<void>(func, a2, a3, a4);
+        TryCallFunction<void>(func, a2, a3, a4);
     }
 }
 
 void MM2Lua::OnDisconnect() {
     if (IsLoaded()) {
         LuaRef func(L, "onDisconnect");
-        tryCallFunction(func);
+        TryCallFunction(func);
     }
 }
 
 void MM2Lua::OnReset() {
     if (IsLoaded()) {
         LuaRef func(L, "onReset");
-        tryCallFunction(func);
+        TryCallFunction(func);
     }
 }
 
@@ -353,7 +353,7 @@ void MM2Lua::OnTick()
 {
     if (IsLoaded()) {
         LuaRef tickFunction(L, "tick");
-        tryCallFunction(tickFunction);
+        TryCallFunction(tickFunction);
     }
 
     // reset lastKey
@@ -365,7 +365,7 @@ void MM2Lua::OnShutdown()
 {
     if(IsLoaded()) {
         LuaRef func(L, "shutdown");
-        tryCallFunction(func);
+        TryCallFunction(func);
     }
 
     if (IsEnabled()) {
@@ -379,7 +379,7 @@ void MM2Lua::OnRenderUi()
 {
     if (IsLoaded()) {
         LuaRef func(L, "onRenderUi");
-        tryCallFunction(func);
+        TryCallFunction(func);
     }
 }
 
