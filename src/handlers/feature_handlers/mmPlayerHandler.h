@@ -5,8 +5,6 @@
 
 class mmPlayerHandler {
 public:
-    static bool playerCanFly;
-
     void Splash();
     void Zoink();
     void Update();

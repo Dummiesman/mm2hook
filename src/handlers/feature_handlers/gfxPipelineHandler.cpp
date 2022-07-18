@@ -12,13 +12,6 @@ using namespace MM2;
 bool gfxPipelineHandler::g_bConsoleOpen = false;
 bool sirenSoundState = false;
 
-int HeadlightsToggleKey = 76;
-int HazardLightsToggleKey = 189;
-int LeftTurnSignalToggleKey = 188;
-int RightTurnSignalToggleKey = 190;
-int SirenLightsToggleKey = 75;
-int SirenSoundsToggleKey = 74;
-
 void gfxPipelineHandler::gfxApplySettings(void) {
     gfxInterface *gfxInterface = gfxInterfaces[gfxInterfaceChoice];
 
@@ -70,30 +63,7 @@ bool gfxPipelineHandler::HandleKeyPress(DWORD vKey)
         } return true;
     }
 
-    if (vKey == SirenLightsToggleKey) {
-        mmGameManager *mgr = mmGameManager::Instance;
-        auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
-
-        if (gamePtr != NULL)
-        {
-            auto popup = gamePtr->getPopup();
-            auto siren = gamePtr->getPlayer()->getCar()->getSiren();
-            char *vehName = gamePtr->getPlayer()->getCar()->getCarDamage()->GetName();
-            int flagsId = VehicleListPtr->GetVehicleInfo(vehName)->GetFlags();
-
-            if (popup != NULL) {
-                if (!popup->IsEnabled()) {
-                    // toggle siren lights
-                    if (siren != nullptr && siren->HasLights || flagsId == 8) {
-                        siren->Active = !siren->Active;
-                    }
-                }
-            }
-        }
-        return true;
-    }
-
-    if (vKey == SirenSoundsToggleKey) {
+    if (vKey == 0xFFFFFFFF) { // siren sound toggle
         mmGameManager *mgr = mmGameManager::Instance;
         auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
 
@@ -421,19 +391,5 @@ void gfxPipelineHandler::Install() {
             cb::call(0x4AC4F9),
         }
     );
-
-    ConfigValue<int> cfgHeadlightsToggleKey("HeadlightsToggleKey", 76);
-    ConfigValue<int> cfgHazardLightsToggleKey("HazardLightsToggleKey", 189);
-    ConfigValue<int> cfgLeftTurnSignalToggleKey("LeftTurnSignalToggleKey", 188);
-    ConfigValue<int> cfgRightTurnSignalToggleKey("RightTurnSignalToggleKey", 190);
-    ConfigValue<int> cfgSirenLightsToggleKey("SirenLightsToggleKey", 75);
-    ConfigValue<int> cfgSirenSoundsToggleKey("SirenSoundsToggleKey", 74);
-
-    HeadlightsToggleKey = cfgHeadlightsToggleKey.Get();
-    HazardLightsToggleKey = cfgHazardLightsToggleKey.Get();
-    LeftTurnSignalToggleKey = cfgLeftTurnSignalToggleKey.Get();
-    RightTurnSignalToggleKey = cfgRightTurnSignalToggleKey.Get();
-    SirenLightsToggleKey = cfgSirenLightsToggleKey.Get();
-    SirenSoundsToggleKey = cfgSirenSoundsToggleKey.Get();
 }
 

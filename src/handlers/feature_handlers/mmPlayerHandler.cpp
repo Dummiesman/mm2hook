@@ -14,8 +14,6 @@ static ConfigValue<bool> cfgEnableMissingDashboardFix("MissingDashboardFix", tru
     mmPlayerHandler
 */
 
-bool mmPlayerHandler::playerCanFly = false;
-
 void mmPlayerHandler::Zoink() {
     Warningf("Player is out of the world, teleporting!");
 
@@ -346,15 +344,6 @@ void mmPlayerHandler::Update() {
                     }
                 }
             }
-        }
-    }
-
-    if (mmPlayerHandler::playerCanFly) {
-        auto ics = getPtr<Vector3>(carsim->getICS(), 0x3C);
-        if (engine->getThrottleInput() > 0.f && carsim->getSpeed() < 50.f && !player->IsMaxDamaged()) {
-            ics->X *= 1.03f;
-            ics->Y *= 1.03f;
-            ics->Z *= 1.03f;
         }
     }
 
