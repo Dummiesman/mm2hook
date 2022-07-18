@@ -49,33 +49,6 @@ void mmGameHandler::SendChatMessage(char *message) {
             bridgeSpeed.set(bridgeSpeed.get() == 0.05f ? 2.5f : 0.05f);
             bridgeAngle.set(bridgeAngle.get() == 0.471238941f ? 1.f : 0.471238941f);
         }
-        if (!strcmp(message, "/fly")) {
-           mmPlayerHandler::playerCanFly = !mmPlayerHandler::playerCanFly;
-        }
-        if (!strcmp(message, "/nodamage")) {
-            mmGameManager *mgr = mmGameManager::Instance;
-            auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
-            auto playerPtr = (gamePtr != NULL) ? gamePtr->getPlayer() : NULL;
-
-            if (gamePtr != NULL && playerPtr != NULL)
-            {
-                auto carDamage = playerPtr->getCar()->getCarDamage();
-                if (carDamage->getImpactThreshold() < 1001500.f)
-                    carDamage->setImpactThreshold(carDamage->getImpactThreshold() + 1001500.f);
-            }
-        }
-        if (!strcmp(message, "/damage")) {
-            mmGameManager *mgr = mmGameManager::Instance;
-            auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
-            auto playerPtr = (gamePtr != NULL) ? gamePtr->getPlayer() : NULL;
-
-            if (gamePtr != NULL && playerPtr != NULL)
-            {
-                auto carDamage = playerPtr->getCar()->getCarDamage();
-                if (carDamage->getImpactThreshold() >= 1001500.f)
-                    carDamage->setImpactThreshold(carDamage->getImpactThreshold() - 1001500.f);
-            }
-        }
 
         //send to dispatcher
         GameEventDispatcher::onChatMessage(message);
