@@ -1,5 +1,6 @@
 #pragma once
 #include <modules\node\cullmgr.h>
+#include <mm2_lua.h>
 
 namespace MM2
 {
@@ -72,39 +73,29 @@ namespace MM2
         }
 
         void Update() override {
-            //Warningf("luaNode::Update");
-            if (m_UpdateFunction.isValid() && m_UpdateFunction.isFunction())
-                m_UpdateFunction();
+            MM2Lua::TryCallFunction(m_UpdateFunction);
             if (m_AutoDeclareCullbale)
                 asCullManager::Instance->DeclareCullable(this);
             asNode::Update();
         }
 
         void UpdatePaused() override {
-            //Warningf("luaNode::UpdatePaused");
-            if (m_UpdatePausedFunction.isValid() && m_UpdatePausedFunction.isFunction())
-                m_UpdatePausedFunction();
+            MM2Lua::TryCallFunction(m_UpdatePausedFunction);
             asNode::UpdatePaused();
         }
 
         void Reset() override {
-            //Warningf("luaNode::Reset");
-            if (m_ResetFunction.isValid() && m_ResetFunction.isFunction())
-                m_ResetFunction();
+            MM2Lua::TryCallFunction(m_ResetFunction);
             asNode::Reset();
         }
 
         void ResChange(int width, int height) override {
-            //Warningf("luaNode::ResChange");
-            if (m_ResChangeFunction.isValid() && m_ResChangeFunction.isFunction())
-                m_ResChangeFunction(width, height);
+            MM2Lua::TryCallFunction<void>(m_ResChangeFunction, width, height);
             asNode::ResChange(width, height);
         }
 
         void Cull() override {
-            //Warningf("luaNode::Cull");
-            if (m_CullFunction.isValid() && m_CullFunction.isFunction())
-                m_CullFunction();
+            MM2Lua::TryCallFunction(m_CullFunction);
             //don't call base here because base does nothing
         }
 
