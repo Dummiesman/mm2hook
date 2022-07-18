@@ -17,8 +17,8 @@ namespace MM2
         bool IsHost;
         int PlayerCount;
         int MaxPlayerCount;
-        char SessionName[256];
-        char SessionPassword[256];
+        char SessionName[256] = { '\0' };
+        char SessionPassword[256] = { '\0' };
     public:
         LuaSessionInfo(IDirectPlay4A* DPLAY, bool isHost)
         {
@@ -40,7 +40,8 @@ namespace MM2
                     this->PlayerCount = desc->dwCurrentPlayers;
                     this->MaxPlayerCount = desc->dwMaxPlayers;
                     strncpy(SessionName, desc->lpszSessionNameA, sizeof(SessionName));
-                    strncpy(SessionPassword, desc->lpszPasswordA, sizeof(SessionPassword));
+                    if (desc->lpszPasswordA != nullptr)
+                        strncpy(SessionPassword, desc->lpszPasswordA, sizeof(SessionPassword));
                     populated = true;
                 }
                 if (data != nullptr)
