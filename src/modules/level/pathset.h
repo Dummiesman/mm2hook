@@ -165,7 +165,7 @@ namespace MM2
         }
     public:
         //general api
-        dgPath* findPath(LPCSTR name)
+        dgPath* findPath(LPCSTR name) const
         {
             for (int i = 0; i < this->PathCount; i++) 
             {
