@@ -266,6 +266,12 @@
     <ClInclude Include="src\modules\ai\ArrayList.h" />
     <ClInclude Include="src\modules\ai\mcHookman.h" />
     <ClInclude Include="src\modules\ai\__template__.h" />
+    <ClInclude Include="src\modules\audio.h" />
+    <ClInclude Include="src\modules\audio\aud3dambientobject.h" />
+    <ClInclude Include="src\modules\audio\aud3dambientobject_wrapper.h" />
+    <ClInclude Include="src\modules\audio\aud3dobject.h" />
+    <ClInclude Include="src\modules\audio\audcreaturecontainer.h" />
+    <ClInclude Include="src\modules\audio\sound.h" />
     <ClInclude Include="src\modules\banger.h" />
     <ClInclude Include="src\modules\banger\active.h" />
     <ClInclude Include="src\modules\banger\banger.h" />

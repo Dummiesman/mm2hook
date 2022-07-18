@@ -147,6 +147,9 @@
     <Filter Include="Source Files\modules\vector">
       <UniqueIdentifier>{456f9ef7-bfac-4158-bc3d-5e33ab39d76c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\modules\audio">
+      <UniqueIdentifier>{45b5a56b-9d87-4fad-9f19-f7b023180b24}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -1527,6 +1530,24 @@
     <ClInclude Include="src\modules\gfx\loadimg.h" />
     <ClInclude Include="src\handlers\feature_handlers\gettexHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\audio.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\audio\sound.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\audio\aud3dambientobject.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\audio\aud3dobject.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\audio\audcreaturecontainer.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\audio\aud3dambientobject_wrapper.h">
+      <Filter>Source Files\modules\audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
