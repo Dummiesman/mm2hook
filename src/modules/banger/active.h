@@ -18,7 +18,7 @@ namespace MM2
         int ID;
         phInertialCS ICS;
         phSleep Sleep;
-        lvlInstance* Instance;
+        lvlInstance* Target;
         asParticles Particles;
         float Timer;               
     protected:
