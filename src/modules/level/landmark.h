@@ -30,6 +30,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<lvlLandmark, lvlFixedRotY>("lvlLandmark")
+                .addConstructor(LUA_ARGS())
                 .endClass();
         }
     };
