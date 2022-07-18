@@ -138,6 +138,7 @@ namespace MM2
                 .addFunction("ClearDamage", &ClearDamage)
                 .addFunction("SetDrivable", &setDrivable, LUA_ARGS(bool, _def<int, 3>))
                 .addFunction("IsPlayer", &IsPlayer)
+                .addFunction("GetICS", &GetICS)
             .endClass();
         }
     };
