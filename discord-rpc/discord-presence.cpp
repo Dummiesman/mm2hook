@@ -246,11 +246,6 @@ void discordHandler::SetMaxPartySize(int size)
     activity.GetParty().GetSize().SetMaxSize(size);
 }
 
-static void test()
-{
- 
-}
-
 void discordHandler::BindLua(lua_State* L) {
     LuaBinding(L).beginModule("DiscordRichPresence")
         .addProperty("Initialized", &discordHandler::IsInitialized)
@@ -275,8 +270,6 @@ void discordHandler::BindLua(lua_State* L) {
 
 void discordHandler::Install() {
     /*TODO: REIMPLEMENT
-    bool discordLoaded = (cfgUseRichPresence && LoadDiscordModule());
-
     if (discordLoaded)
     {
         InstallCallback("asNetwork::CreateSession", "Update the multiplayer status to on when creating the lobby.",
@@ -310,15 +303,6 @@ void discordHandler::Install() {
                 cb::call(0x4111B1),     //mmInterface::RefreshPlayers
             }
         );
-
-        InitDiscord();
-        g_mm2Info.UpdatePresence(presence);
-
-        LogFile::WriteLine("[discord] Rich Presence initialized successfully.");
-    }
-    else if (cfgUseRichPresence)
-    {
-        Warningf("**** Discord Rich Presence was NOT loaded! ****");
     }
     */
 }
