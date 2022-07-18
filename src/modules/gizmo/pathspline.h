@@ -15,6 +15,8 @@ namespace MM2
     protected:
         hook::Field<0x04, float> _speed;
     public:
+        ANGEL_ALLOCATOR
+
         gizPathspline() {
             hook::Thunk<0x57A050>::Call<void>(this);
         }
@@ -32,5 +34,14 @@ namespace MM2
         AGE_API void SetSpeed(float speed)                  { hook::Thunk<0x57A760>::Call<void>(this, speed); }
         AGE_API void Update(Vector3& pos, Vector3& fwd, float t)
                                                             { hook::Thunk<0x57A410>::Call<void>(this, &pos, &fwd, t); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<gizPathspline>("gizPathspline")
+                .addProperty("Speed", &getSpeed, &SetSpeed)
+                .addFunction("Init", &Init)
+                .addFunction("Update", &Update)
+                .addFunction("Reset", &Reset)
+                .endClass();
+        }
     };
 }

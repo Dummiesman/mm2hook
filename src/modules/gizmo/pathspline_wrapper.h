@@ -36,14 +36,11 @@ namespace MM2
         }
 
         static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<gizPathsplineWrapper>("gizPathspline")
+            LuaBinding(L).beginExtendClass<gizPathsplineWrapper, gizPathspline>("gizPathsplineWrapper")
                 .addConstructor(LUA_ARGS())
-                .addProperty("Speed", &getSpeed, &SetSpeed)
-                .addFunction("Init", &Init)
                 .addFunction("Update", &Update)
                 .addFunction("GetPosition", &GetPosition)
                 .addFunction("GetMatrix", &GetMatrix)
-                .addFunction("Reset", &Reset)
             .endClass();
         }
     };

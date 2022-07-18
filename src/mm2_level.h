@@ -11,6 +11,7 @@ namespace MM2
         luaBind<dgPathPoint>(L);
         luaBind<dgPath>(L);
         luaBind<dgPathSet>(L);
+        luaBind<gizPathspline>(L);
         luaBind<gizPathsplineWrapper>(L);
         luaBind<lvlMaterial>(L);
         luaBind<lvlSky>(L);
