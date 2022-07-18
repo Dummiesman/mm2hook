@@ -1,5 +1,6 @@
 #pragma once
 #include <mm2_common.h>
+#include <mm2_lua.h>
 #include <modules/node.h>
 #include <map>
 
@@ -18,10 +19,7 @@ public:
 
     void Call()
     {
-        if (function.isValid()) 
-        {
-            function.call(self);
-        }
+        MM2Lua::TryCallFunction<void>(function, self);
     }
 
     void Release()
