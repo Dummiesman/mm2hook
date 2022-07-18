@@ -4,6 +4,19 @@
 
 static ConfigValue<bool> cfgEnableLua   ("EnableLua", true);
 
+//helper to get callbacks from lua
+class LuaCallback
+{
+private:
+    LuaRef self;
+    LuaRef function;
+public:
+    LuaCallback(LuaRef self, LuaRef function);
+    void Call();
+    void Release();
+    static void BindLua(LuaState L);
+};
+
 namespace MM2Lua
 {
     //

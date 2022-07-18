@@ -11,7 +11,7 @@ std::map<int, int> luaDrawableHandler::idToIndexMap = std::map<int, int>();
 std::map<int, int> luaDrawableHandler::idToListMap = std::map<int, int>();
 
 uint luaDrawableHandler::idProvider = 0;
-std::vector<luaCallback> luaDrawableHandler::callbackLists[2];
+std::vector<LuaCallback> luaDrawableHandler::callbackLists[2];
 
 void luaDrawableHandler::UnregisterCallback(int id)
 {
@@ -58,7 +58,7 @@ int luaDrawableHandler::RegisterCallback(LuaRef self, LuaRef function, int phase
 
     idToIndexMap.insert({ id, list.size() });
     idToListMap.insert({ id, phase });
-    list.push_back(luaCallback(self, function));
+    list.push_back(LuaCallback(self, function));
 
     return id;
 }

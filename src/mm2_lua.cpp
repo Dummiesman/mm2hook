@@ -9,9 +9,41 @@ using namespace LuaIntf;
 using namespace MM2;
 
 LuaState L;
-
 bool isMainLuaLoaded = false;
 
+/*
+    luaCallback
+*/
+LuaCallback::LuaCallback(LuaRef self, LuaRef function)
+{
+    this->self = self;
+    this->function = function;
+}
+
+void LuaCallback::Call()
+{
+    MM2Lua::TryCallFunction<void>(function, self);
+}
+
+void LuaCallback::Release()
+{
+    if (self.isValid())
+        self.~LuaRef();
+    if (function.isValid())
+        function.~LuaRef();
+}
+
+void LuaCallback::BindLua(LuaState L) {
+    LuaBinding(L).beginClass<LuaCallback>("LuaCallback")
+        .addFactory([](LuaRef self, LuaRef function = LuaRef()) {
+        auto callback = LuaCallback(self, function);
+    }, LUA_ARGS(LuaRef, _opt<LuaRef>))
+        .endClass();
+}
+
+/*
+    mm2_lua
+*/
 void mm2L_error(LPCSTR message)
 {
     MM2::Errorf("[Lua] Error -- %s", message);
