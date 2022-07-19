@@ -33,7 +33,12 @@ namespace MM2
             return _physics.ptr(this);
         }
 
-        inline int getId()
+        vehCar* getCar()
+        {
+            return getVehiclePhysics()->getCar();
+        }
+
+        int getId()
         {
             return _id.get(this);
         }
@@ -65,6 +70,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<aiCTFRacer, Base>("aiCTFRacer")
+                .addPropertyReadOnly("Car", &getCar)
                 .addPropertyReadOnly("State", &getState)
                 .addPropertyReadOnly("ID", &getId)
                 .addProperty("FlagPosition", &getFlagPosition, &setFlagPosition)
