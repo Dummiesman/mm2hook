@@ -28,42 +28,42 @@ namespace MM2
 
         AGE_API void Init(int id, char* basename)           { hook::Thunk<0x554470>::Call<void>(this, id, basename); }
 
-        inline aiVehiclePhysics* getVehiclePhysics()
+        aiVehiclePhysics* getVehiclePhysics() const
         {
             return _physics.ptr(this);
         }
 
-        vehCar* getCar()
+        vehCar* getCar() const
         {
             return getVehiclePhysics()->getCar();
         }
 
-        int getId()
+        int getId() const
         {
             return _id.get(this);
         }
 
-        inline int getState()
+        int getState() const
         {
             return getVehiclePhysics()->getState();
         }
 
-        inline Vector3 getFlagPosition()
+        Vector3 getFlagPosition() const
         {
             return _flagPosition.get(this);
         }
 
-        inline Vector3 getDeliverPosition()
+        Vector3 getDeliverPosition() const
         {
             return _deliverPosition.get(this);
         }
 
-        inline void setFlagPosition(Vector3 pos)
+        void setFlagPosition(Vector3 pos)
         {
             _flagPosition.set(this, pos);
         }
 
-        inline void setDeliverPosition(Vector3 pos)
+        void setDeliverPosition(Vector3 pos)
         {
             _deliverPosition.set(this, pos);
         }
