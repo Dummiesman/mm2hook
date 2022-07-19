@@ -10,7 +10,6 @@ using namespace MM2;
 */
 
 bool gfxPipelineHandler::g_bConsoleOpen = false;
-bool sirenSoundState = false;
 
 void gfxPipelineHandler::gfxApplySettings(void) {
     gfxInterface *gfxInterface = gfxInterfaces[gfxInterfaceChoice];
@@ -61,33 +60,6 @@ bool gfxPipelineHandler::HandleKeyPress(DWORD vKey)
                 LogFile::WriteLine("Configuration settings reloaded successfully.");
             }
         } return true;
-    }
-
-    if (vKey == 0xFFFFFFFF) { // siren sound toggle
-        mmGameManager *mgr = mmGameManager::Instance;
-        auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
-
-        if (gamePtr != NULL)
-        {
-            auto popup = gamePtr->getPopup();
-            auto audio = gamePtr->getPlayer()->getCar()->getAudio();
-            auto policeAudio = audio->GetPoliceCarAudioPtr();
-
-            if (popup != NULL) {
-                if (!popup->IsEnabled()) {
-                    if (policeAudio != nullptr) {
-                        // toggle siren sounds
-                        sirenSoundState = !sirenSoundState;
-
-                        if (sirenSoundState)
-                            policeAudio->StartSiren(0);
-                        else
-                            policeAudio->StopSiren();
-                    }
-                }
-            }
-        }
-        return true;
     }
 
     return false;
