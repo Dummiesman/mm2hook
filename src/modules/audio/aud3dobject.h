@@ -39,10 +39,27 @@ namespace MM2
         /*
             Aud3DObject
         */
-        AGE_API void SetPositionPtr(Vector3 * position)         { return hook::Thunk<0x511B80>::Call<void>(this, position); }
+        AGE_API void AddTo3DMgr()                               { hook::Thunk<0x512230>::Call<void>(this); }
+        AGE_API float CalculateAttenuation()                    { return hook::Thunk<0x512280>::Call<float>(this); }
+        AGE_API float CalculateDoppler(float speed)             { return hook::Thunk<0x512000>::Call<float>(this, speed); }
+        AGE_API float CalculatePan()                            { return hook::Thunk<0x5122C0>::Call<float>(this); }
+        AGE_API int GetPriority()                               { return hook::Thunk<0x512380>::Call<int>(this); }
+        AGE_API bool PastMaxDistance()                          { return hook::Thunk<0x512090>::Call<bool>(this); }
+        AGE_API void Reset()                                    { hook::Thunk<0x511BB0>::Call<void>(this); }
+        AGE_API void Set3D(bool threeD)                         { hook::Thunk<0x512320>::Call<void>(this, threeD); }
+        AGE_API void SetDropOffs(float min, float max)          { hook::Thunk<0x512060>::Call<void>(this, min, max); }
+        AGE_API void SetPositionPtr(Vector3 * position)         { hook::Thunk<0x511B80>::Call<void>(this, position); }
+        AGE_API bool WithinMaxDistance()                        { return hook::Thunk<0x512130>::Call<bool>(this); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<Aud3DObject>("Aud3DObject")
+                .addFunction("CalculateDoppler", &CalculateDoppler)
+                .addFunction("CalculatePan", &CalculatePan)
+                .addFunction("PastMaxDistance", &PastMaxDistance)
+                .addFunction("Reset", &Reset)
+                .addFunction("Set3D", &Set3D)
+                .addFunction("SetDropOffs", &SetDropOffs)
+                .addPropertyReadOnly("Priority", &GetPriority)
                 .endClass();
         }
     };
