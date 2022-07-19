@@ -12,7 +12,7 @@ namespace MM2
     // Class definitions
     class Aud3DObject {
     private:
-        byte _buffer[0x60];
+        byte _buffer[0x5C];
     public:
         ANGEL_ALLOCATOR
 
@@ -63,4 +63,6 @@ namespace MM2
                 .endClass();
         }
     };
+
+    ASSERT_SIZEOF(Aud3DObject, 0x60);
 }

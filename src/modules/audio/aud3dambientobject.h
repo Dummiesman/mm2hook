@@ -53,4 +53,6 @@ namespace MM2
                 .endClass();
         }
     };
+
+    ASSERT_SIZEOF(Aud3DAmbientObject, 0x80);
 }
