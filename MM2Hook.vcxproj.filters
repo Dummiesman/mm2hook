@@ -1549,6 +1549,9 @@
     <ClInclude Include="src\modules\audio\aud3dambientobject_wrapper.h">
       <Filter>Source Files\modules\audio</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\node\random.h">
+      <Filter>Source Files\modules\node</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">

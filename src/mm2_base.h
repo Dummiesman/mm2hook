@@ -19,5 +19,6 @@ namespace MM2
         luaBind<asCullManager>(L);
         luaBind<asLinearCS>(L);
         luaBind<luaNode>(L);
+        luaBind<Random>(L);
     }
 }
