@@ -18,7 +18,7 @@ namespace MM2
         float OptRPM;
         float MaxRPM;
         float GCL;
-        float unknown648;
+        float HPScale;
         int unknown652;
         float AngInertia;
         float MaxTorque;
@@ -58,56 +58,50 @@ namespace MM2
                                                             { hook::Thunk<0x4D9240>::Call<void>(this); }
         AGE_API char* GetClassName() override               { return hook::Thunk<0x4D9310>::Call<char*>(this); }
 
-        //lua ahelpers
+        //lua helpers
         bool GetWaitingOnGCL() const
         {
-            return WaitingOnGCL == TRUE;
+            return this->WaitingOnGCL == TRUE;
         }
 
-        float GetThrottleInput() const 
-        {
-            return ThrottleInput;
-        }
+        float GetThrottleInput() const { return this->ThrottleInput; }
+        void SetThrottleInput(float input) { this->ThrottleInput = input; }
 
-        void SetThrottleInput(float input) 
-        {
-            ThrottleInput = input;
-        }
+        float GetCurrentRPM() const { return this->CurrentRPM; }
+        void SetCurrentRPM(float rpm) { this->CurrentRPM = rpm; }
 
-        float GetCurrentRPM() const
-        {
-            return CurrentRPM;
-        }
+        float GetCurrentTorque() const { return this->CurrentTorque; }
+        void SetCurrentTorque(float torque) { this->CurrentTorque = torque; }
 
-        void SetCurrentRPM(float rpm) 
-        {
-            CurrentRPM = rpm;
-        }
-
-        float GetCurrentTorque() const
-        {
-            return CurrentTorque;
-        }
-
-        void SetCurrentTorque(float torque)
-        {
-            CurrentTorque = torque;
-        }
-
-        float GetMaxHorsePower() const
-        {
-            return MaxHorsePower;
-        }
-
-        void SetMaxHorsePower(float power) 
-        {
-            MaxHorsePower = power;
-        }
+        float GetMaxHorsePower() const { return this->MaxHorsePower;}
+        void SetMaxHorsePower(float power)  { this->MaxHorsePower = power; }
 
         void SetThrottleTorque(float torque) 
         {
-            ThrottleTorque = torque;
+            this->ThrottleTorque = torque;
         }
+
+        float GetIdleRPM() const { return this->IdleRPM; }
+        void SetIdleRPM(float rpm) { this->IdleRPM = rpm; }
+
+        float GetOptRPM() const {return this->OptRPM; }
+        void SetOptRPM(float rpm) { this->OptRPM = rpm; }
+
+        float GetMaxRPM() const { return this->MaxRPM; }
+        void SetMaxRPM(float rpm) { this->MaxRPM = rpm; }
+
+        float GetHPScale() const { return this->HPScale; }
+        void SetHPScale(float scale)
+        {
+            this->HPScale = scale;
+            ComputeConstants();
+        }
+
+        float GetGCL() const { return this->GCL; }
+        void SetGCL(float gcl) { this->GCL = gcl; }
+
+        float GetAngInertia() const { return this->AngInertia; }
+        void SetAngInertia(float inertia) { this->AngInertia = AngInertia; }
 
         Matrix34* GetVisualMatrixPtr()
         {
@@ -122,12 +116,13 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<vehEngine, asNode>("vehEngine")
                 //properties
-                .addVariableRef("MaxHorsePower", &vehEngine::MaxHorsePower)
-                .addVariableRef("IdleRPM", &vehEngine::IdleRPM)
-                .addVariableRef("OptRPM", &vehEngine::OptRPM)
-                .addVariableRef("MaxRPM", &vehEngine::MaxRPM)
-                .addVariableRef("GCL", &vehEngine::GCL)
-                .addVariableRef("AngInertia", &vehEngine::AngInertia)
+                .addProperty("MaxHorsePower", &GetMaxHorsePower, &SetMaxHorsePower)
+                .addProperty("IdleRPM", &GetIdleRPM, &SetIdleRPM)
+                .addProperty("OptRPM", &GetOptRPM, &SetOptRPM)
+                .addProperty("MaxRPM", &GetMaxRPM, &SetMaxRPM)
+                .addProperty("HPScale", &GetHPScale, &SetHPScale)
+                .addProperty("GCL", &GetGCL, &SetGCL)
+                .addProperty("AngInertia", &GetAngInertia, &SetAngInertia)
                 .addPropertyReadOnly("WaitingOnGCL", &GetWaitingOnGCL)
                 .addProperty("Throttle", &GetThrottleInput, &SetThrottleInput)
                 .addProperty("RPM", &GetCurrentRPM, &SetCurrentRPM)
