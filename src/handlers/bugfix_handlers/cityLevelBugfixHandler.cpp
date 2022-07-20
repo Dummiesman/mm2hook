@@ -33,7 +33,7 @@ void cityLevelBugfixHandler::UpdateRainParticles() {
         newParticlePosition.Dot(dotWith, gfxRenderState::GetCameraMatrix());
 
         auto rainRule = rainParticles->GetBirthRule();
-        rainRule->Position = Vector3(newParticlePosition.X, newParticlePosition.Y, newParticlePosition.Z);
+        rainRule->SetPosition(Vector3(newParticlePosition.X, newParticlePosition.Y, newParticlePosition.Z));
     }
 
     // render particles

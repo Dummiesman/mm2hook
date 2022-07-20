@@ -1,4 +1,4 @@
-#include "birth.h";
+#include "birth.h"
 using namespace MM2;
 
 // asMeshCardVertex
@@ -76,13 +76,106 @@ AGE_API void asBirthRule::FileIO(datParser& parser)
     hook::Thunk<0x45F900>::Call<void>(this, &parser); 
 }
 
+//properties
+Vector3 asBirthRule::GetPosition() const { return this->m_Position; }
+void asBirthRule::SetPosition(Vector3 position) { this->m_Position = position; }
+
+Vector3 asBirthRule::GetPositionVar() const { return this->m_PositionVar; }
+void asBirthRule::SetPositionVar(Vector3 positionVar) { this->m_PositionVar = positionVar; }
+
+Vector3 asBirthRule::GetVelocity() const { return this->m_Velocity; }
+void asBirthRule::SetVelocity(Vector3 velocity) { this->m_Velocity = velocity; }
+
+Vector3 asBirthRule::GetVelocityVar() const { return this->m_VelocityVar; }
+void asBirthRule::SetVelocityVar(Vector3 velocityVar) { this->m_VelocityVar = velocityVar; }
+
+float asBirthRule::GetLife() const { return this->m_Life; }
+void asBirthRule::SetLife(float life) { this->m_Life = life; }
+
+float asBirthRule::GetLifeVar() const { return this->m_LifeVar; }
+void asBirthRule::SetLifeVar(float lifeVar) { this->m_LifeVar = lifeVar; }
+
+float asBirthRule::GetMass() const { return this->m_Mass; }
+void asBirthRule::SetMass(float mass) { this->m_Mass = mass; }
+
+float asBirthRule::GetMassVar() const { return this->m_MassVar; }
+void asBirthRule::SetMassVar(float massVar) { this->m_MassVar = massVar; }
+
+float asBirthRule::GetRadius() const { return this->m_Radius; }
+void asBirthRule::SetRadius(float radius) { this->m_Radius = radius; }
+
+float asBirthRule::GetRadiusVar() const { return this->m_RadiusVar; }
+void asBirthRule::SetRadiusVar(float radiusVar) { this->m_RadiusVar = radiusVar; }
+
+float asBirthRule::GetDRadius() const { return this->m_DRadius; }
+void asBirthRule::SetDRadius(float dRadius) { this->m_DRadius = dRadius; }
+
+float asBirthRule::GetDRadiusVar() const { return this->m_DRadiusVar; }
+void asBirthRule::SetDRadiusVar(float dRadiusVar) { this->m_DRadiusVar = dRadiusVar; }
+
+float asBirthRule::GetDrag() const { return this->m_Drag; }
+void asBirthRule::SetDrag(float drag) { this->m_Drag = drag; }
+
+float asBirthRule::GetDragVar() const { return this->m_DragVar; }
+void asBirthRule::SetDragVar(float dragVar) { this->m_DragVar = dragVar; }
+
+float asBirthRule::GetDamp() const { return this->m_Damp; }
+void asBirthRule::SetDamp(float damp) { this->m_Damp = damp; }
+
+float asBirthRule::GetDampVar() const { return this->m_DampVar; }
+void asBirthRule::SetDampVar(float dampVar) { this->m_DampVar = dampVar; }
+
+int asBirthRule::GetDAlpha() const { return this->m_DAlpha; }
+void asBirthRule::SetDAlpha(int dAlpha) { this->m_DAlpha = dAlpha; }
+
+int asBirthRule::GetDAlphaVar() const { return this->m_DAlphaVar; }
+void asBirthRule::SetDAlphaVar(int dAlphaVar) { this->m_DAlphaVar = dAlphaVar; }
+
+int asBirthRule::GetDRotation() const { return this->m_DRotation; }
+void asBirthRule::SetDRotation(int dRotation) { this->m_DRotation = dRotation; }
+
+int asBirthRule::GetDRotationVar() const { return this->m_DRotationVar; }
+void asBirthRule::SetDRotationVar(int dRotationVar) { this->m_DRotationVar = dRotationVar; }
+
+void asBirthRule::SetTexFrame(int start, int end) {
+    this->m_TexFrameStart = start;
+    this->m_TexFrameEnd = end;
+}
+
+float asBirthRule::GetSpewRate() const { return this->m_SpewRate; }
+void asBirthRule::SetSpewRate(float rate) { this->m_SpewRate = rate; }
+
+float asBirthRule::GetSpewTimeLimit() const { return this->m_SpewTimeLimit; }
+void asBirthRule::SetSpewTimeLimit(float timeLimit) { this->m_SpewTimeLimit = timeLimit; }
+
+float asBirthRule::GetGravity() const { return this->m_Gravity; }
+void asBirthRule::SetGravity(float gravity) { this->m_Gravity = gravity; }
+
+float asBirthRule::GetHeight() const { return this->m_Height; }
+void asBirthRule::SetHeight(float height) { this->m_Height = height; }
+
+float asBirthRule::GetIntensity() const { return this->m_Intensity; }
+void asBirthRule::SetIntensity(float intensity) { this->m_Intensity = intensity; }
+
+int asBirthRule::GetTexFrameStart() const { return this->m_TexFrameStart; }
+void asBirthRule::SetTexFrameStart(int frame) { this->m_TexFrameStart = frame; }
+
+int asBirthRule::GetTexFrameEnd() const { return this->m_TexFrameEnd; }
+void asBirthRule::SetTexFrameEnd(int frame) { this->m_TexFrameEnd = frame; }
+
+int asBirthRule::GetBirthFlags() const { return this->m_BirthFlags; }
+void asBirthRule::SetBirthFlags(int flags) { this->m_BirthFlags = flags; }
+
+int asBirthRule::GetInitialBlast() const { return this->m_InitialBlast; }
+void asBirthRule::SetInitialBlast(int initialBlast) { this->m_InitialBlast = initialBlast; }
+
 //helpers
 inline std::tuple<byte, byte, byte, byte> asBirthRule::getColorTuple(void) {
-    return std::make_tuple(Color.r, Color.g, Color.b, Color.a);
+    return std::make_tuple(m_Color.r, m_Color.g, m_Color.b, m_Color.a);
 }
 
 inline void asBirthRule::setColorTuple(std::tuple<byte, byte, byte, byte> setColor) {
-    auto myColor = &this->Color;
+    auto myColor = &this->m_Color;
     myColor->a = std::get<3>(setColor);
     myColor->r = std::get<0>(setColor);
     myColor->g = std::get<1>(setColor);
@@ -93,36 +186,36 @@ inline void asBirthRule::setColorTuple(std::tuple<byte, byte, byte, byte> setCol
 void asBirthRule::BindLua(LuaState L) 
 {
     LuaBinding(L).beginExtendClass<asBirthRule, asNode>("asBirthRule")
-        .addConstructor(LUA_ARGS())
-        .addVariableRef("Position", &asBirthRule::Position)
-        .addVariableRef("PositionVar", &asBirthRule::PositionVar)
-        .addVariableRef("Velocity", &asBirthRule::Velocity)
-        .addVariableRef("VelocityVar", &asBirthRule::VelocityVar)
-        .addVariableRef("Life", &asBirthRule::Life)
-        .addVariableRef("LifeVar", &asBirthRule::LifeVar)
-        .addVariableRef("Mass", &asBirthRule::Mass)
-        .addVariableRef("MassVar", &asBirthRule::MassVar)
-        .addVariableRef("Radius", &asBirthRule::Radius)
-        .addVariableRef("RadiusVar", &asBirthRule::RadiusVar)
-        .addVariableRef("DRadius", &asBirthRule::DRadius)
-        .addVariableRef("DRadiusVar", &asBirthRule::DRadiusVar)
-        .addVariableRef("Drag", &asBirthRule::Drag)
-        .addVariableRef("DragVar", &asBirthRule::DragVar)
-        .addVariableRef("Damp", &asBirthRule::Damp)
-        .addVariableRef("DampVar", &asBirthRule::DampVar)
-        .addVariableRef("SpewRate", &asBirthRule::SpewRate)
-        .addVariableRef("SpewTimeLimit", &asBirthRule::SpewTimeLimit)
-        .addVariableRef("Gravity", &asBirthRule::Gravity)
-        .addVariableRef("Height", &asBirthRule::Height)
-        .addVariableRef("Intensity", &asBirthRule::Intensity)
+        .addFactory([]() { return new asBirthRule(); })
+        .addProperty("Position", &GetPosition, &SetPosition)
+        .addProperty("PositionVar", &GetPositionVar, &SetPositionVar)
+        .addProperty("Velocity", &GetVelocity, &SetVelocity)
+        .addProperty("VelocityVar", &GetVelocityVar, &SetVelocityVar)
+        .addProperty("Life", &GetLife, &SetLife)
+        .addProperty("LifeVar", &GetLifeVar, &SetLifeVar)
+        .addProperty("Mass", &GetMass, &SetMass)
+        .addProperty("MassVar", &GetMassVar, &SetMassVar)
+        .addProperty("Radius",  &GetRadius, &SetRadius)
+        .addProperty("RadiusVar", &GetRadiusVar, &SetRadiusVar)
+        .addProperty("DRadius", &GetDRadius, &SetDRadius)
+        .addProperty("DRadiusVar", &GetDRadiusVar, &SetDRadiusVar)
+        .addProperty("Drag", &GetDrag, &SetDrag)
+        .addProperty("DragVar", &GetDragVar, &SetDragVar)
+        .addProperty("Damp", &GetDamp, &SetDamp)
+        .addProperty("DampVar", &GetDampVar, &SetDampVar)
+        .addProperty("SpewRate", &GetSpewRate, &SetSpewRate)
+        .addProperty("SpewTimeLimit", &GetSpewTimeLimit, &SetSpewTimeLimit)
+        .addProperty("Gravity", &GetGravity, &SetGravity)
+        .addProperty("Height", &GetHeight, &SetHeight)
+        .addProperty("Intensity", &GetIntensity, &SetIntensity)
         .addProperty("Color", &getColorTuple, &setColorTuple)
-        .addVariableRef("DAlpha", &asBirthRule::DAlpha)
-        .addVariableRef("DAlphaVar", &asBirthRule::DAlphaVar)
-        .addVariableRef("DRotation", &asBirthRule::DRotation)
-        .addVariableRef("DRotationVar", &asBirthRule::DRotationVar)
-        .addVariableRef("TexFrameStart", &asBirthRule::TexFrameStart)
-        .addVariableRef("TexFrameEnd", &asBirthRule::TexFrameEnd)
-        .addVariableRef("InitialBlast", &asBirthRule::InitialBlast)
-        .addVariableRef("BirthFlags", &asBirthRule::BirthFlags)
+        .addProperty("DAlpha", &GetDAlpha, &SetDAlpha)
+        .addProperty("DAlphaVar", &GetDAlphaVar, &SetDAlphaVar)
+        .addProperty("DRotation", &GetDRotation, &SetDRotation)
+        .addProperty("DRotationVar", &GetDRotationVar, &SetDRotationVar)
+        .addProperty("TexFrameStart", &GetTexFrameStart, &SetTexFrameStart)
+        .addProperty("TexFrameEnd", &GetTexFrameEnd, &SetTexFrameEnd)
+        .addProperty("InitialBlast", &GetInitialBlast, &SetInitialBlast)
+        .addProperty("BirthFlags", &GetBirthFlags, &SetBirthFlags)
         .endClass();
 }
