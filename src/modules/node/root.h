@@ -37,11 +37,13 @@ namespace MM2
             memcpy(&matrix, &mtx, sizeof(Matrix34));
         }
 
-        AGE_API void Init(bool)                             { hook::Thunk<0x4A0BE0>::Call<void>(this);  }
+        AGE_API void Init(bool enableNan)                   { hook::Thunk<0x4A0BE0>::Call<void>(this, enableNan);  }
         AGE_API void Quit(void)                             { hook::Thunk<0x4A0C50>::Call<void>(this);  }
         AGE_API bool IsPaused(void)                         { return hook::Thunk<0x4A0C60>::Call<bool>(this); }
         AGE_API void TogglePause(void)                      { hook::Thunk<0x4A0C70>::Call<void>(this); }
         AGE_API void SetPause(bool paused)                  { hook::Thunk<0x4A0C80>::Call<void>(this, paused); }
+
+        AGE_API void RequestSingleStep()                    { isPaused = false; pauseNextFrame = true;}
 
         /*
             asNode virtuals
@@ -55,7 +57,7 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<asRoot, asNode>("asRoot")
                 .addProperty("Paused", &IsPaused, &SetPause)
-                .addVariableRef("PauseNextFrame", &asRoot::pauseNextFrame)
+                .addFunction("RequestSingleStep", &RequestSingleStep)
                 .addFunction("TogglePause", &TogglePause)
                 .endClass();
         }
