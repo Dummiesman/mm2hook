@@ -2,33 +2,6 @@
 
 using namespace MM2;
 
-/*
-    Model Index Constants
-*/
-const int TLIGHT_GEOM_ID = 2;
-const int TWHL0_GEOM_ID = 3;
-const int TWHL1_GEOM_ID = 4;
-const int TWHL2_GEOM_ID = 5;
-const int TWHL3_GEOM_ID = 6;
-const int TWHL4_GEOM_ID = 15; 
-const int TWHL5_GEOM_ID = 16;
-const int RLIGHT_GEOM_ID = 8;
-const int BLIGHT_GEOM_ID = 9;
-const int HLIGHT_GEOM_ID = 10;
-const int SLIGHT0_GEOM_ID = 11;
-const int SLIGHT1_GEOM_ID = 12;
-const int SIREN0_GEOM_ID = 13;
-const int SIREN1_GEOM_ID = 14;
-const int TSWHL0_GEOM_ID = 17;
-const int TSWHL1_GEOM_ID = 18;
-const int TSWHL2_GEOM_ID = 19;
-const int TSWHL3_GEOM_ID = 20;
-const int TSWHL4_GEOM_ID = 21;
-const int TSWHL5_GEOM_ID = 22;
-const int TSLIGHT0_GEOM_ID = 23;
-const int TSLIGHT1_GEOM_ID = 24;
-
-
 static ConfigValue<bool> cfgMm1StyleTransmission("MM1StyleTransmission", false);
 
 /*
@@ -41,9 +14,9 @@ void vehTrailerInstanceFeatureHandler::DrawPartReflections(modStatic* a1, Matrix
     bool isSoftware = *(bool*)0x6830D4;
 
     //convert world matrix for reflection drawing
-    Matrix44* worldMatrix = gfxRenderState::sm_World;
+    Matrix44 worldMatrix = gfxRenderState::GetWorldMatrix();
     Matrix34 envInput = Matrix34();
-    worldMatrix->ToMatrix34(envInput);
+    worldMatrix.ToMatrix34(envInput);
 
     //draw trailer
     a1->Draw(a3);
@@ -59,16 +32,13 @@ void vehTrailerInstanceFeatureHandler::DrawPartReflections(modStatic* a1, Matrix
 
 void vehTrailerInstanceFeatureHandler::DrawPart(int a1, int a2, Matrix34* a3, modShader* a4) {
     auto inst = reinterpret_cast<vehTrailerInstance*>(this);
-    auto geomID = inst->GetGeomIndex() - 1;
-    auto geomSet = lvlInstance::GetGeomTableEntry(geomID + a2);
 
-    //setup renderer
-    gfxRenderState::SetWorldMatrix(*a3);
-
-    //get part
-    modStatic* part = geomSet->GetLOD(a1); 
-
+    modStatic* part = inst->GetGeom(a1, a2);
     if (part != nullptr) {
+        //setup renderer
+        gfxRenderState::SetWorldMatrix(*a3);
+
+        //draw
         if (vehCarModel::PartReflections && a1 == 3)
             DrawPartReflections(part, a3, a4);
         else
@@ -78,27 +48,25 @@ void vehTrailerInstanceFeatureHandler::DrawPart(int a1, int a2, Matrix34* a3, mo
 
 void vehTrailerInstanceFeatureHandler::Draw(int a1) {
     auto inst = reinterpret_cast<vehTrailerInstance*>(this);
-    auto geomID = inst->GetGeomIndex() - 1;
-    auto geomSet = lvlInstance::GetGeomTableEntry(geomID);
     auto trailer = inst->getTrailer();
     auto trailerMtx = inst->GetMatrix(&trailerMatrix);
 
     //get our shader set
     int shaderSet = *getPtr<int>(this, 24);
-    auto shaders = geomSet->pShaders[shaderSet];
+    auto shaders = inst->GetShader(shaderSet);
 
     //get spinning wheels
-    modStatic* tswhl0 = *getPtr<modStatic*>((geomSet + TSWHL0_GEOM_ID), a1 * 4);
-    modStatic* tswhl1 = *getPtr<modStatic*>((geomSet + TSWHL1_GEOM_ID), a1 * 4);
-    modStatic* tswhl2 = *getPtr<modStatic*>((geomSet + TSWHL2_GEOM_ID), a1 * 4);
-    modStatic* tswhl3 = *getPtr<modStatic*>((geomSet + TSWHL3_GEOM_ID), a1 * 4);
-    modStatic* tswhl4 = *getPtr<modStatic*>((geomSet + TSWHL4_GEOM_ID), a1 * 4);
-    modStatic* tswhl5 = *getPtr<modStatic*>((geomSet + TSWHL5_GEOM_ID), a1 * 4);
+    modStatic* tswhl0 = inst->GetGeom(a1, vehTrailerInstance::TSWHL0_GEOM_ID);
+    modStatic* tswhl1 = inst->GetGeom(a1, vehTrailerInstance::TSWHL1_GEOM_ID);
+    modStatic* tswhl2 = inst->GetGeom(a1, vehTrailerInstance::TSWHL2_GEOM_ID);
+    modStatic* tswhl3 = inst->GetGeom(a1, vehTrailerInstance::TSWHL3_GEOM_ID);
+    modStatic* tswhl4 = inst->GetGeom(a1, vehTrailerInstance::TSWHL4_GEOM_ID);
+    modStatic* tswhl5 = inst->GetGeom(a1, vehTrailerInstance::TSWHL5_GEOM_ID);
 
     vehWheel* wheels[4] = { trailer->getWheel(0), trailer->getWheel(1), trailer->getWheel(2), trailer->getWheel(3) };
     modStatic* sWhlGeometries[4] = { tswhl0, tswhl1, tswhl2, tswhl3 };
-    int sWhlIds[4] = { TSWHL0_GEOM_ID, TSWHL1_GEOM_ID, TSWHL2_GEOM_ID, TSWHL3_GEOM_ID };
-    int whlIds[4] = { TWHL0_GEOM_ID, TWHL1_GEOM_ID, TWHL2_GEOM_ID, TWHL3_GEOM_ID };
+    int sWhlIds[4] = { vehTrailerInstance::TSWHL0_GEOM_ID, vehTrailerInstance::TSWHL1_GEOM_ID, vehTrailerInstance::TSWHL2_GEOM_ID, vehTrailerInstance::TSWHL3_GEOM_ID };
+    int whlIds[4] = { vehTrailerInstance::TWHL0_GEOM_ID, vehTrailerInstance::TWHL1_GEOM_ID, vehTrailerInstance::TWHL2_GEOM_ID, vehTrailerInstance::TWHL3_GEOM_ID };
 
     //draw trailer
     DrawPart(a1, 0, &trailerMtx, shaders);
@@ -106,30 +74,30 @@ void vehTrailerInstanceFeatureHandler::Draw(int a1) {
     //draw (s)whl0-4
     for (int i = 0; i < 4; i++) {
         auto wheel = wheels[i];
-        if (fabs(wheel->getRotationRate()) > 26.f && sWhlGeometries[i] != nullptr && vehCarModel::EnableSpinningWheels)
+        if (fabs(wheel->GetRotationRate()) > 26.f && sWhlGeometries[i] != nullptr && vehCarModel::EnableSpinningWheels)
         {
-            DrawPart(a1, sWhlIds[i], &wheel->getMatrix(), shaders);
+            DrawPart(a1, sWhlIds[i], &wheel->GetMatrix(), shaders);
         }
         else 
         {
-            DrawPart(a1, whlIds[i], &wheel->getMatrix(), shaders);
+            DrawPart(a1, whlIds[i], &wheel->GetMatrix(), shaders);
         }
     }
 
-    if (fabs(wheels[2]->getRotationRate()) > 26.f && tswhl4 != nullptr && vehCarModel::EnableSpinningWheels)
+    if (fabs(wheels[2]->GetRotationRate()) > 26.f && tswhl4 != nullptr && vehCarModel::EnableSpinningWheels)
     {
-        DrawTwhl4(a1, TSWHL4_GEOM_ID, &wheels[2]->getMatrix(), shaders);
+        DrawTwhl4(a1, vehTrailerInstance::TSWHL4_GEOM_ID, &wheels[2]->GetMatrix(), shaders);
     }
     else {
-        DrawTwhl4(a1, TWHL4_GEOM_ID, &wheels[2]->getMatrix(), shaders);
+        DrawTwhl4(a1, vehTrailerInstance::TWHL4_GEOM_ID, &wheels[2]->GetMatrix(), shaders);
     }
 
-    if (fabs(wheels[3]->getRotationRate()) > 26.f && tswhl5 != nullptr && vehCarModel::EnableSpinningWheels)
+    if (fabs(wheels[3]->GetRotationRate()) > 26.f && tswhl5 != nullptr && vehCarModel::EnableSpinningWheels)
     {
-        DrawTwhl5(a1, TSWHL5_GEOM_ID, &wheels[3]->getMatrix(), shaders);
+        DrawTwhl5(a1, vehTrailerInstance::TSWHL5_GEOM_ID, &wheels[3]->GetMatrix(), shaders);
     }
     else {
-        DrawTwhl5(a1, TWHL5_GEOM_ID, &wheels[3]->getMatrix(), shaders);
+        DrawTwhl5(a1, vehTrailerInstance::TWHL5_GEOM_ID, &wheels[3]->GetMatrix(), shaders);
     }
 }
 
@@ -138,7 +106,6 @@ void vehTrailerInstanceFeatureHandler::DrawTwhl4(int a1, int a2, Matrix34* a3, m
     auto trailer = inst->getTrailer();
     auto carsim = trailer->getCarSim();
 
-    a3->Set(&trailer->getWheel(2)->getMatrix());
     auto trailerMtx = inst->GetMatrix(&trailerMatrix);
 
     float offsetX = carsim->TrailerBackBackLeftWheelPosDiff.Y * trailerMtx.m10 + carsim->TrailerBackBackLeftWheelPosDiff.Z * trailerMtx.m20 + carsim->TrailerBackBackLeftWheelPosDiff.X * trailerMtx.m00;
@@ -156,7 +123,6 @@ void vehTrailerInstanceFeatureHandler::DrawTwhl5(int a1, int a2, Matrix34* a3, m
     auto trailer = inst->getTrailer();
     auto carsim = trailer->getCarSim();
 
-    a3->Set(&trailer->getWheel(3)->getMatrix());
     auto trailerMtx = inst->GetMatrix(&trailerMatrix);
 
     float offsetX = carsim->TrailerBackBackRightWheelPosDiff.Y * trailerMtx.m10 + carsim->TrailerBackBackRightWheelPosDiff.Z * trailerMtx.m20 + carsim->TrailerBackBackRightWheelPosDiff.X * trailerMtx.m00;
@@ -177,9 +143,8 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
 
     //get vars
     auto carsim = inst->getTrailer()->getCarSim();
-    float brakeInput = carsim->getBrake();
-    int gear = carsim->getTransmission()->getGear();
-    int geomSet = inst->GetGeomIndex() - 1;
+    float brakeInput = carsim->GetBrake();
+    int gear = carsim->GetTransmission()->GetGear();
 
     //setup renderer
     inst->GetMatrix(&trailerMatrix);
@@ -187,24 +152,24 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
 
     //get our shader set
     int shaderSet = *getPtr<int>(this, 24);
-    auto shaders = lvlInstance::GetGeomTableEntry(geomSet)->pShaders[shaderSet];
+    auto shaders = inst->GetShader(shaderSet);
 
     //get lights
-    modStatic* tlight = lvlInstance::GetGeomTableEntry(geomSet + TLIGHT_GEOM_ID)->GetHighestLOD();
-    modStatic* rlight = lvlInstance::GetGeomTableEntry(geomSet + RLIGHT_GEOM_ID)->GetHighestLOD();
-    modStatic* blight = lvlInstance::GetGeomTableEntry(geomSet + BLIGHT_GEOM_ID)->GetHighestLOD();
-    modStatic* hlight = lvlInstance::GetGeomTableEntry(geomSet + HLIGHT_GEOM_ID)->GetHighestLOD();
-    modStatic* slight0 = lvlInstance::GetGeomTableEntry(geomSet + SLIGHT0_GEOM_ID)->GetHighestLOD();
-    modStatic* slight1 = lvlInstance::GetGeomTableEntry(geomSet + SLIGHT1_GEOM_ID)->GetHighestLOD();
-    modStatic* siren0 = lvlInstance::GetGeomTableEntry(geomSet + SIREN0_GEOM_ID)->GetHighestLOD();
-    modStatic* siren1 = lvlInstance::GetGeomTableEntry(geomSet + SIREN1_GEOM_ID)->GetHighestLOD();
-    modStatic* tslight0 = lvlInstance::GetGeomTableEntry(geomSet + TSLIGHT0_GEOM_ID)->GetHighestLOD();
-    modStatic* tslight1 = lvlInstance::GetGeomTableEntry(geomSet + TSLIGHT1_GEOM_ID)->GetHighestLOD();
+    modStatic* tlight = inst->GetGeomBase(vehTrailerInstance::TLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* rlight = inst->GetGeomBase(vehTrailerInstance::RLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* blight = inst->GetGeomBase(vehTrailerInstance::BLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* hlight = inst->GetGeomBase(vehTrailerInstance::HLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* slight0 = inst->GetGeomBase(vehTrailerInstance::SLIGHT0_GEOM_ID)->GetHighestLOD();
+    modStatic* slight1 = inst->GetGeomBase(vehTrailerInstance::SLIGHT1_GEOM_ID)->GetHighestLOD();
+    modStatic* siren0 = inst->GetGeomBase(vehTrailerInstance::SIREN0_GEOM_ID)->GetHighestLOD();
+    modStatic* siren1 = inst->GetGeomBase(vehTrailerInstance::SIREN1_GEOM_ID)->GetHighestLOD();
+    modStatic* tslight0 = inst->GetGeomBase(vehTrailerInstance::TSLIGHT0_GEOM_ID)->GetHighestLOD();
+    modStatic* tslight1 = inst->GetGeomBase(vehTrailerInstance::TSLIGHT1_GEOM_ID)->GetHighestLOD();
 
     if (cfgMm1StyleTransmission.Get()) {
-        auto throttle = carsim->getEngine()->getThrottleInput();
-        auto speedMPH = carsim->getSpeedMPH();
-        auto transmission = carsim->getTransmission();
+        auto throttle = carsim->GetEngine()->GetThrottleInput();
+        auto speedMPH = carsim->GetSpeedMPH();
+        auto transmission = carsim->GetTransmission();
 
         //draw rlight
         if (rlight != nullptr && gear == 0) {

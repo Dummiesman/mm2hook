@@ -23,19 +23,36 @@ namespace MM2
         AGE_API static void SetRoad(lvlSDL const & sdl, int roadIndex, bool bevelMode) { hook::StaticThunk<0x45D700>::Call<void>(&sdl, roadIndex, bevelMode); }
         AGE_API static void SetRoad(lvlSDL const * sdl, int roadIndex, bool bevelMode) { hook::StaticThunk<0x45D720>::Call<void>(sdl, roadIndex, bevelMode); }
         AGE_API static lvlAiRoad* GetRoad(int a1) { return hook::StaticThunk<0x45D840>::Call<lvlAiRoad*>(a1); }
-        AGE_API static int GetRoom(int a1) { return hook::StaticThunk<0x45DA00>::Call<int>(a1); }
         AGE_API static int GetNumRoads() { return hook::StaticThunk<0x45D860>::Call<int>(); }
+        AGE_API static void Delete() { hook::StaticThunk<0x45D9C0>::Call<void>(); }
+        AGE_API static int GetRoom(int a1) { return hook::StaticThunk<0x45DA00>::Call<int>(a1); }
+        AGE_API static bool GetRoomChop(int a1) { return hook::StaticThunk<0x45DA20>::Call<bool>(a1); }
         AGE_API static int GetNumRooms() { return hook::StaticThunk<0x45DA58>::Call<int>(); }
-        AGE_API static int GetNumSubwayLanes(int roadSide) { return hook::StaticThunk<0x45DAB0>::Call<int>(roadSide); }
-        AGE_API static int GetNumLanes(int roadSide) { return hook::StaticThunk<0x45DA70>::Call<int>(roadSide); }
-        AGE_API static int GetIntersectionType(int roadSide) { return hook::StaticThunk<0x45E930>::Call<int>(roadSide); }
-        AGE_API static int GetStopLightType(int roadSide) { return hook::StaticThunk<0x45ECC0>::Call<int>(roadSide); }
-        AGE_API static char* GetStopLightName(int roadSide) { return hook::StaticThunk<0x45EC80>::Call<char*>(roadSide); }
-        AGE_API static int GetRoadIntersection(int roadSide) { return hook::StaticThunk<0x45E910>::Call<int>(roadSide); }
-        AGE_API static Vector3 GetVertex(int a1, int a2, int a3) { return hook::StaticThunk<0x45E2E0>::Call<Vector3>(a1, a2, a3); }
-        AGE_API static Vector3 GetSubwayVertex(int a1, int a2, int a3) { return hook::StaticThunk<0x45E2A0>::Call<Vector3>(a1, a2, a3); }
         AGE_API static int GetNumVertexs() { return hook::StaticThunk<0x45DA60>::Call<int>(); }
+        AGE_API static int GetNumLanes(int roadSide) { return hook::StaticThunk<0x45DA70>::Call<int>(roadSide); }
+        AGE_API static int GetNumCablecarLanes(int roadSide) { return hook::StaticThunk<0x45DAA0>::Call<int>(roadSide); }
+        AGE_API static int GetNumSubwayLanes(int roadSide) { return hook::StaticThunk<0x45DAB0>::Call<int>(roadSide); }
+        AGE_API static int GetNumSidewalks(int roadSide) { return hook::StaticThunk<0x45DAE0>::Call<int>(roadSide); }
+        AGE_API static Vector3 GetNormal(int a1) { return hook::StaticThunk<0x45DAF0>::Call<Vector3>(a1); }
+        AGE_API static Vector3 GetSidewalkVertex(int a1, int a2, int a3) { return hook::StaticThunk<0x45DC30>::Call<Vector3>(a1, a2, a3); }
+        AGE_API static Vector3 GetSidewalkVertexMulti(int a1, int a2, int a3) { return hook::StaticThunk<0x45DF60>::Call<Vector3>(a1, a2, a3); }
+        AGE_API static Vector3 GetSidewalkVertexSingle(int a1, int a2, int a3) { return hook::StaticThunk<0x45E130>::Call<Vector3>(a1, a2, a3); }
+        AGE_API static Vector3 GetCablecarVertex(int a1, int a2, int a3) { return hook::StaticThunk<0x45E260>::Call<Vector3>(a1, a2, a3); }
+        AGE_API static Vector3 GetSubwayVertex(int a1, int a2, int a3) { return hook::StaticThunk<0x45E2A0>::Call<Vector3>(a1, a2, a3); }
+        AGE_API static Vector3 GetVertex(int a1, int a2, int a3) { return hook::StaticThunk<0x45E2E0>::Call<Vector3>(a1, a2, a3); }
+        AGE_API static Vector3 GetVertexMulti(int a1, int a2, int a3) { return hook::StaticThunk<0x45E5F0>::Call<Vector3>(a1, a2, a3); }
+        AGE_API static Vector3 GetVertexSingle(int a1, int a2, int a3) { return hook::StaticThunk<0x45E710>::Call<Vector3>(a1, a2, a3); }
+        AGE_API static Vector3 GetVertexSingleCenter(int a1, int a2, int a3) { return hook::StaticThunk<0x45E7F0>::Call<Vector3>(a1, a2, a3); }
+        AGE_API static BOOL IsBlocked() { return hook::StaticThunk<0x45E8C0>::Call<BOOL>(); }
+        AGE_API static BOOL IsPedBlocked() { return hook::StaticThunk<0x45E8D0>::Call<BOOL>(); }
+        AGE_API static BOOL IsDivided() { return hook::StaticThunk<0x45E8E0>::Call<BOOL>(); }
+        AGE_API static BOOL IsAlley() { return hook::StaticThunk<0x45E8F0>::Call<BOOL>(); }
+        AGE_API static BOOL IsFreeway() { return hook::StaticThunk<0x45E900>::Call<BOOL>(); }
+        AGE_API static int GetRoadIntersection(int roadSide) { return hook::StaticThunk<0x45E910>::Call<int>(roadSide); }
+        AGE_API static int GetIntersectionType(int roadSide) { return hook::StaticThunk<0x45E930>::Call<int>(roadSide); }
         AGE_API static void GetStopLightPos(int a1, Vector3& a2, Vector3& a3, bool a4) { hook::StaticThunk<0x45E980>::Call<void>(a1, &a2, &a3, a4); }
+        AGE_API static char* GetStopLightName(int roadSide) { return hook::StaticThunk<0x45EC80>::Call<char*>(roadSide); }
+        AGE_API static int GetStopLightType(int roadSide) { return hook::StaticThunk<0x45ECC0>::Call<int>(roadSide); }
 
         AGE_API static void Draw(lvlSDL const & sdl) {
             for (int i = 0; i < GetNumRoads(); i++) {
@@ -82,12 +99,12 @@ namespace MM2
                     Vector3 endpoint = lightDir;
                     endpoint.Cross(Vector3::YAXIS);
                     endpoint.Scale(2.5f);
-                    endpoint += lightB;
+                    endpoint += lightA;
 
                     vglBegin(gfxDrawMode::DRAWMODE_TRIANGLELIST, 0);
-                    vglVertex3f(lightA.X, lightA.Y + 0.15f, lightA.Z);
-                    vglVertex3f(midpoint.X, midpoint.Y + 0.15f, midpoint.Z);
                     vglVertex3f(endpoint.X, endpoint.Y + 0.15f, endpoint.Z);
+                    vglVertex3f(midpoint.X, midpoint.Y + 0.15f, midpoint.Z);
+                    vglVertex3f(lightA.X, lightA.Y + 0.15f, lightA.Z);
                     vglEnd();
                 }
 
@@ -117,7 +134,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<lvlAiMap>("lvlAiMap")
-                //.addStaticFunction("SetRoad", static_cast<void(lvlAiMap::*)(lvlSDL const &, int, bool)>(&lvlAiMap::SetRoad))
+                .addStaticFunction("SetRoad", [](lvlSDL const& sdl, int roadIndex, bool bevelMode) -> void { SetRoad(sdl, roadIndex, bevelMode); })
                 .addStaticFunction("GetRoad", &GetRoad)
                 .addStaticFunction("GetRoom", &GetRoom)
                 .addStaticFunction("GetNumRoads", &GetNumRoads)
@@ -127,7 +144,7 @@ namespace MM2
                 .addStaticFunction("GetStopLightName", &GetStopLightName)
                 .addStaticFunction("GetStopLightPos", &getStopLightPosLua)
                 .addStaticFunction("GetVertex", &GetVertex)
-                .addStaticFunction("GetSubwayVertex", &GetSubwayVertex)   
+                .addStaticFunction("GetSubwayVertex", &GetSubwayVertex)
                 .addStaticFunction("Draw", &Draw)
             .endClass();
         }

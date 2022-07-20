@@ -25,20 +25,20 @@ void mmPlayerHandler::Zoink() {
     // tell the player "That didn't happen!"
     player->getHUD()->SetMessage(AngelReadString(29), 3.f, 0);
 
-    //if we're in CNR, drop the gold!
+    // if we're in CNR, drop the gold!
     if (dgStatePack::Instance->GameMode == dgGameMode::CnR) {
         auto game = mmGameManager::Instance->getGame();
         hook::Thunk<0x425460>::ThisCall<void>(game); // mmMultiCR::DropThruCityHandler
     }
 
-    // if the aimap doesn't exist, reset back to spawn
+    // early exit
     auto AIMAP = aiMap::GetInstance();
     if (AIMAP == nullptr || AIMAP->GetIntersectionCount() == 0) {
         car->Reset();
         return;
     }
 
-    //search for an intersection to teleport to
+    // search for an intersection to teleport to
     float shortestDistance = 99999;
     int closestIntersection = -1;
 
@@ -51,48 +51,32 @@ void mmPlayerHandler::Zoink() {
 
         // check roads to see if this is a valid spawn point
         // valid == (!freeway && !alley)
-        bool isInvalid = false;
+        bool isValid = true;
         for (int i = 0; i < intersection->pathCount; i++) {
-            auto path = intersection->paths[i];
+            auto path = intersection->paths[i];            
             ushort pathFlags = *getPtr<ushort>(path, 12);
 
             if (pathFlags & 4 || pathFlags & 2) {
-                isInvalid = true;
+                isValid = false;
+                break;
             }
         }
 
-        if (isInvalid)
-            continue;
-
-        // this is a valid intersection
-        float pDist = intersection->center.Dist(carPos);
-        if (pDist < shortestDistance) {
-            shortestDistance = pDist;
-            closestIntersection = is;
+        if (isValid) {
+            float pDist = intersection->center.Dist(carPos);
+            if (pDist < shortestDistance) {
+                shortestDistance = pDist;
+                closestIntersection = is;
+            }
         }
     }
 
     // move player to the closest intersection if we can
-    auto carsim = car->getCarSim();
+    car->Reset();
     if (closestIntersection >= 0) {
-        auto oldResetPos = carsim->getResetPosition();
-
-        // set to closest intersection
-        carsim->SetResetPos(&AIMAP->intersections[closestIntersection]->center);
-
-        // reset vehicle
-        car->Reset();
-
-        // set back
-        carsim->SetResetPos(&oldResetPos);
+        auto ics = car->GetICS();
+        ics->SetPosition(AIMAP->Intersection(closestIntersection)->center);
     }
-    else
-    {
-        // reset vehicle to original spawn
-        // no intersection found to teleport to
-        car->Reset();
-    }
-
 }
 
 bool prevSplashState = false;
@@ -138,7 +122,7 @@ void mmPlayerHandler::BustPerp() {
 
         if (vehPoliceCarAudio::iNumCopsPursuingPlayer == 0) {
             if (lvlLevel::GetSingleton()->GetRoomInfo(car->getModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
-                if (lvlLevel::GetSingleton()->GetWaterLevel(car->getModel()->GetRoomId()) > copCarSim->getWorldMatrix()->m31) {
+                if (lvlLevel::GetSingleton()->GetWaterLevel(car->getModel()->GetRoomId()) > copCarSim->GetWorldMatrix()->m31) {
                     Wanted_Common::enableBustedTimer = false;
                     Wanted_Common::bustedTimer = 0.f;
                     Wanted_Common::enableResetTimer = false;
@@ -159,7 +143,7 @@ void mmPlayerHandler::BustPerp() {
         if (*getPtr<WORD>(police, 0x977A) != 0 && *getPtr<WORD>(police, 0x977A) != 12) {
             if (*getPtr<vehCar*>(police, 0x9774) == player->getCar()) {
                 if (playerPos.Dist(policePos) <= 12.5f) {
-                    if (carsim->getSpeedMPH() <= Wanted_Common::bustedMaxSpeed && copCarSim->getSpeed() <= Wanted_Common::bustedMaxSpeed) {
+                    if (carsim->GetSpeedMPH() <= Wanted_Common::bustedMaxSpeed && copCarSim->GetSpeed() <= Wanted_Common::bustedMaxSpeed) {
                         Wanted_Common::enableBustedTimer = true;
                     }
                     else {
@@ -227,7 +211,7 @@ void mmPlayerHandler::BustOpp() {
 
         if (*getPtr<int>(opponent, 0x27C) != 3) {
             if (opponentPos.Dist(playerPos) <= 12.5f) {
-                if (carsim->getSpeedMPH() <= Wanted_Common::bustedMaxSpeed) {
+                if (carsim->GetSpeedMPH() <= Wanted_Common::bustedMaxSpeed) {
                     Wanted_Common::enableOppBustedTimer = true;
                     if (Wanted_Common::oppBustedTimer > Wanted_Common::bustedTimeout) {
                         *getPtr<int>(opponent, 0x27C) = 3;
@@ -252,7 +236,7 @@ void mmPlayerHandler::Update() {
     auto audio = car->getAudio();
     auto siren = car->getSiren();
     auto carsim = car->getCarSim();
-    auto engine = carsim->getEngine();
+    auto engine = carsim->GetEngine();
     auto basename = player->getCar()->getCarDamage()->GetName();
     auto flagsId = VehicleListPtr->GetVehicleInfo(basename)->GetFlags();
     auto AIMAP = aiMap::GetInstance();
@@ -277,7 +261,7 @@ void mmPlayerHandler::Update() {
         if (player->IsMaxDamaged()) {
             //turn off engine
             audio->SilenceEngine(1);
-            engine->setCurrentTorque(0.f);
+            engine->SetCurrentTorque(0.f);
             //play explosion sound if siren is activated
             if (siren != nullptr && siren->Active) {
                 siren->Active = false;
@@ -311,8 +295,8 @@ void mmPlayerHandler::Update() {
             if (!audio->IsPolice(basename)) {
                 BustPerp();
                 if (Wanted_Common::bustedTimer > Wanted_Common::bustedTimeout) {
-                    carsim->setBrake(1.f);
-                    engine->setThrottleInput(0.f);
+                    carsim->SetBrake(1.f);
+                    engine->SetThrottleInput(0.f);
                 }
             }
 
@@ -347,7 +331,7 @@ void mmPlayerHandler::Update() {
         }
     }
 
-    if (carsim->getWorldMatrix()->m11 <= 0.f)
+    if (carsim->GetWorldMatrix()->m11 <= 0.f)
         car->getStuck()->setStuckTime(0.f);
 
     //call original
@@ -372,6 +356,26 @@ void mmPlayerHandler::Reset() {
     hook::Thunk<0x404A60>::Call<void>(this);
 }
 
+Matrix34 leftMatrix;
+Matrix34 rightMatrix;
+
+void mmPlayerHandler::SetHeadPtr(Matrix34* ptr, int a3) 
+{
+    Matrix34 camMatrix = *ptr;
+
+    Vector3 left = camMatrix.Transform(Vector3(-1, 0, 0));
+    Vector3 right = camMatrix.Transform(Vector3(1, 0, 0));
+    
+
+    leftMatrix.Set(&camMatrix);
+    rightMatrix.Set(&camMatrix);
+    leftMatrix.SetRow(3, left);
+    rightMatrix.SetRow(3, right);
+
+    hook::Thunk<0x510020>::Call<void>(this, &leftMatrix, 0);
+    hook::Thunk<0x510040>::Call<void>(this, &rightMatrix, 0);
+}
+
 void mmPlayerHandler::Install() {
     static ConfigValue<int> cfgBustedTarget("BustedTarget", 3);
     static ConfigValue<float> cfgBustedMaxSpeed("BustedMaxSpeed", 20.f);
@@ -380,6 +384,12 @@ void mmPlayerHandler::Install() {
     Wanted_Common::bustedTarget = cfgBustedTarget.Get();
     Wanted_Common::bustedMaxSpeed = cfgBustedMaxSpeed.Get();
     Wanted_Common::bustedTimeout = cfgBustedTimeout.Get();
+
+    //InstallCallback("Double head OWO", "3D audio test.",
+    //    &SetHeadPtr, {
+    //        cb::call(0x4057A0),
+    //    }
+    //);
 
     InstallVTableHook("mmPlayer::Update",
         &Update, {

@@ -1,8 +1,7 @@
 #pragma once
-#include <modules\ai.h>
-
-#include "aiPath.h"
 #include "aiVehicle.h"
+#include "aiPath.h"
+
 
 namespace MM2
 {
@@ -12,6 +11,7 @@ namespace MM2
 
     // External declarations
     extern class vehCar;
+    extern class aiVehicle;
 
     // Class definitions
     struct  aiRouteNode

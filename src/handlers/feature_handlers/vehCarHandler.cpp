@@ -59,39 +59,39 @@ void vehCarHandler::InitCarAudio(LPCSTR a1, BOOL a2) {
 void vehCarHandler::Mm1StyleTransmission() {
     auto car = reinterpret_cast<vehCar*>(this);
     auto carsim = car->getCarSim();
-    auto engine = carsim->getEngine();
-    auto drivetrain = carsim->getDrivetrain();
-    auto transmission = carsim->getTransmission();
+    auto engine = carsim->GetEngine();
+    auto drivetrain = carsim->GetDrivetrain();
+    auto transmission = carsim->GetTransmission();
     auto curDamage = car->getCarDamage()->getCurDamage();
     auto maxDamage = car->getCarDamage()->getMaxDamage();
 
     if (curDamage < maxDamage) {
         if (transmission->IsAuto()) {
-            if (carsim->getSpeedMPH() >= 1.f && carsim->OnGround()) {
-                if (engine->getThrottleInput() < 0.1f && transmission->getGear() != 1)
-                    engine->setThrottleInput(0.1f);
+            if (carsim->GetSpeedMPH() >= 1.f && carsim->OnGround()) {
+                if (engine->GetThrottleInput() < 0.1f && transmission->GetGear() != 1)
+                    engine->SetThrottleInput(0.1f);
             }
             // activate Handbrake if car goes under 1mph (P gear)
-            if (carsim->getSpeedMPH() < 1.f && engine->getThrottleInput() < 0.1f) {
-                carsim->setHandbrake(1.f);
+            if (carsim->GetSpeedMPH() < 1.f && engine->GetThrottleInput() < 0.1f) {
+                carsim->SetHandbrake(1.f);
             }
         }
         else {
-            if (carsim->getBrake() < 0.1f && carsim->getHandbrake() < 0.1f) {
-                if (engine->getThrottleInput() < 0.1f && transmission->getGear() != 1)
-                    engine->setThrottleInput(0.1f);
+            if (carsim->GetBrake() < 0.1f && carsim->GetHandbrake() < 0.1f) {
+                if (engine->GetThrottleInput() < 0.1f && transmission->GetGear() != 1)
+                    engine->SetThrottleInput(0.1f);
             }
         }
     }
     // setting up this case for crash course
     // fixes ai cops and opponents have no brakes if they're damaged out
     if (curDamage >= maxDamage) {
-        carsim->setBrake(1.f);
+        carsim->SetBrake(1.f);
     }
 
     // attach drive train if we just hit throttle
     // fixes the short delay that happens before the car moves
-    if (engine->getThrottleInput() > 0.f) {
+    if (engine->GetThrottleInput() > 0.f) {
         drivetrain->Attach();
     }
 }
@@ -102,9 +102,9 @@ void vehCarHandler::Update() {
     auto audio = car->getAudio();
     auto model = car->getModel();
     auto damage = car->getCarDamage();
-    auto engine = car->getCarSim()->getEngine();
-    auto lightbar0 = model->getGenBreakableMgr()->Get(1);
-    auto lightbar1 = model->getGenBreakableMgr()->Get(2);
+    auto engine = car->getCarSim()->GetEngine();
+    auto lightbar0 = model->GetGenBreakableMgr()->Get(1);
+    auto lightbar1 = model->GetGenBreakableMgr()->Get(2);
 
     if ((lightbar0 != nullptr && !lightbar0->isAttached) ||
         (lightbar1 != nullptr && !lightbar1->isAttached)) {

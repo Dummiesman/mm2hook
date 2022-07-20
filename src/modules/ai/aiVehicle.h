@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\ai.h>
+#include <mm2_common.h>
+#include <modules\level\inst.h>
 
 namespace MM2
 {
@@ -11,6 +12,8 @@ namespace MM2
     class aiVehicleInstance;
 
     // External declarations
+    extern class aiPath;
+    extern class aiMap;
     extern class aiVehicleInstance;
     extern class dgPhysEntity;
     extern class phBound;
@@ -22,81 +25,76 @@ namespace MM2
         hook::Field<0x98, float> _speed;
         hook::Field<0x44, float> _accelFactor;
     public:
-        inline float getSpeed()
-        {
-            return _speed.get(this);
-        }
-
-        inline float getAccelFactor()
-        {
-            return _accelFactor.get(this);
-        }
+        float GetSpeed();
+        float GetAccelFactor();
     };
 
     class aiVehicleInstance : public lvlInstance {
+    public:
+        static const int HLIGHT_GEOM_ID = 2;
+        static const int TLIGHT_GEOM_ID = 3;
+        static const int SLIGHT0_GEOM_ID = 4;
+        static const int SLIGHT1_GEOM_ID = 5;
+        static const int BLIGHT_GEOM_ID = 18;
+        static const int PLIGHTON_GEOM_ID = 19;
+        static const int PLIGHTOFF_GEOM_ID = 20;
+        static const int TSLIGHT0_GEOM_ID = 21;
+        static const int TSLIGHT1_GEOM_ID = 22;
+    public:
+        static int AmbientHeadlightStyle;
     private:
         hook::Field<0x14, aiVehicleSpline*> _spline;
     public:
-        aiVehicleInstance(void)                                    DONOTCALL;
+        aiVehicleInstance(void)             DONOTCALL;
 
         //properties
-        inline aiVehicleSpline* getSpline() 
-        {
-            return _spline.get(this);
-        }
+        aiVehicleSpline* GetSpline();
         
         //overrides
-        AGE_API Vector3 const& GetPosition() override              { return hook::Thunk<0x553030>::Call<Vector3 const&>(this); };
-        AGE_API Matrix34 const& GetMatrix(Matrix34* a1) override   { return hook::Thunk<0x553020>::Call<Matrix34 const&>(this, a1); };
-        AGE_API void SetMatrix(Matrix34 const & a1) override       { hook::Thunk<0x553010>::Call<void>(this, a1); }
-        AGE_API dgPhysEntity* GetEntity() override                 { return hook::Thunk<0x52F50>::Call<dgPhysEntity*>(this); };
-        AGE_API dgPhysEntity* AttachEntity() override              { return hook::Thunk<0x552FBD>::Call<dgPhysEntity*>(this); };
-        AGE_API void Detach() override                             { hook::Thunk<0x552F80>::Call<void>(this); }
-        AGE_API void Draw(int a1) override                         { hook::Thunk<0x5521600>::Call<void>(this, a1); }
-        AGE_API void DrawShadow() override                         { hook::Thunk<0x552CC0>::Call<void>(this); }
-        AGE_API void DrawShadowMap() override                      { hook::Thunk<0x552F30>::Call<void>(this); }
-        AGE_API void DrawGlow() override                           { hook::Thunk<0x552930>::Call<void>(this); }
-        AGE_API void DrawReflected(float a1) override              { hook::Thunk<0x552CB0>::Call<void>(this, a1); }
-        AGE_API unsigned int SizeOf() override                     { return hook::Thunk<0x553060>::Call<int>(this); };
-        AGE_API phBound* GetBound(int a1) override                 { return hook::Thunk<0x552F40>::Call<phBound*>(this, a1); };
+        AGE_API Vector3 const& GetPosition() override;
+        AGE_API Matrix34 const& GetMatrix(Matrix34* a1) override;
+        AGE_API void SetMatrix(Matrix34 const& a1) override;
+        AGE_API dgPhysEntity* GetEntity() override;
+        AGE_API dgPhysEntity* AttachEntity() override;
+        AGE_API void Detach() override;
+        AGE_API void DrawShadow() override;
+        AGE_API void DrawShadowMap() override;
+        
+        AGE_API void Draw(int a1) override;
+
+        AGE_API void DrawReflected(float a1) override;
+        AGE_API unsigned int SizeOf() override;
+        AGE_API phBound* GetBound(int a1) override;
         
         //members
-        aiVehicleData* GetData()                                   { return hook::Thunk<0x553F80>::Call<aiVehicleData*>(this); }
-        AGE_API void DrawPart(modStatic* a1, const Matrix34* a2, modShader* a3, int a4)
-                                                                   { hook::Thunk<0x552870>::Call<void>(this, a1, a2, a3, a4); }
+        aiVehicleData* GetData();
+        AGE_API void DrawPart(modStatic* a1, const Matrix34* a2, modShader* a3, int a4);
 
         //lua
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<aiVehicleInstance, lvlInstance>("aiVehicleInstance")
-                //members
-                .addFunction("GetData", &GetData)
-                .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     class aiObstacle {
     public:
         aiObstacle(void)                                    DONOTCALL;
-        aiObstacle(const aiObstacle &&)                     DONOTCALL;
+        aiObstacle(const aiObstacle&&)                      DONOTCALL;
 
-        virtual BOOL InAccident(void)                       { return hook::Thunk<0x53F5D0>::Call<BOOL>(this); }
-        virtual void Position(Vector3 &a1)                  PURE;
+        virtual BOOL InAccident(void);
+        virtual void Position(Vector3& a1)                  PURE;
         virtual float Speed(void)                           PURE;
-        virtual float BreakThreshold(void)                  { return hook::Thunk<0x53F5E0>::Call<float>(this); }
-        virtual BOOL Drivable(void)                         { return hook::Thunk<0x53F5F0>::Call<BOOL>(this); }
-        virtual int CurrentRoadIdx(aiPath **a1, const bool *a2,int *a3)
+        virtual float BreakThreshold(void);
+        virtual BOOL Drivable(void);
+        virtual int CurrentRoadIdx(aiPath** a1, const bool* a2, int* a3)    
                                                             PURE;
-        virtual int CurrentRdVert(void)                     PURE;
-        virtual void PreAvoid(const Vector3 &a1, const Vector3 &a2, float a3, Vector3 &a4, Vector3 &a5)
+        virtual int CurrentRdVert(void)                     
                                                             PURE;
-        virtual float IsBlockingTarget(const Vector3 &a1, const Vector3 &a2, float a3, float a4)
+        virtual void PreAvoid(const Vector3& a1, const Vector3& a2, float a3, Vector3& a4, Vector3& a5)
+                                                            PURE;
+        virtual float IsBlockingTarget(const Vector3& a1, const Vector3& a2, float a3, float a4)  
                                                             PURE;
 
         //lua
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<aiObstacle>("aiObstacle")
-                .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     class aiVehicle : public aiObstacle {
@@ -104,13 +102,11 @@ namespace MM2
         aiVehicle(void)                                     DONOTCALL;
         aiVehicle(const aiVehicle &&)                       DONOTCALL;
 
-        void PreAvoid(const Vector3 &a1, const Vector3 &a2, float a3, Vector3 &a4, Vector3 &a5) override
-                                                            FORWARD_THUNK;
-        float IsBlockingTarget(const Vector3 &a1, const Vector3 &a2, float a3, float a4) override
-                                                            FORWARD_THUNK;
+        void PreAvoid(const Vector3& a1, const Vector3& a2, float a3, Vector3& a4, Vector3& a5) override;
+        float IsBlockingTarget(const Vector3& a1, const Vector3& a2, float a3, float a4) override;
         
-        virtual void Update(void)                           { return hook::Thunk<0x556230>::Call<void>(this); };
-        virtual void Reset(void)                            { return hook::Thunk<0x556210>::Call<void>(this); };
+        virtual void Update(void);
+        virtual void Reset(void);
         virtual int Type(void)                              PURE;
         virtual Matrix34 & GetMatrix(void)                  PURE;
         virtual float FrontBumperDistance(void)             PURE;
@@ -120,13 +116,10 @@ namespace MM2
         virtual int CurrentLane(void)                       PURE;
         virtual int CurrentRoadId(void)                     PURE;
         virtual void DrawId(void)                           PURE;
-        virtual void ReplayDebug(void)                      { return hook::Thunk<0x556D00>::Call<void>(this); }
+        virtual void ReplayDebug(void);
 
         //lua
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<aiVehicle, aiObstacle>("aiVehicle")
-                .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     // Lua initialization

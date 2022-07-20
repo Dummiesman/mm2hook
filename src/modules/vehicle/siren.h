@@ -1,6 +1,5 @@
 #pragma once
-#include <modules\vehicle.h>
-#include <mm2_gfx.h>
+#include <mm2_common.h>
 
 namespace MM2
 {

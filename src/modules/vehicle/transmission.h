@@ -15,7 +15,7 @@ namespace MM2
     private:
         vehCarSim *VehCarSimPtr;
         int GearChanged;
-        int IsAutomatic;
+        BOOL IsAutomatic;
         int CurrentGear;
         float GearChangeTimer;
         float GearChangeTime;
@@ -55,63 +55,63 @@ namespace MM2
         AGE_API char* GetClassName() override               { return hook::Thunk<0x4CF880>::Call<char*>(this); }
 
         //lua helpres
-        inline int getGear(void) {
+        int GetGear() const {
             return this->CurrentGear;
         };
 
-        inline int IsAuto(void) {
-            return this->IsAutomatic;
+        bool IsAuto() const {
+            return this->IsAutomatic == TRUE;
         };
 
-        inline float getAutoGearRatio(int gear) {
+        float GetAutoGearRatio(int gear) const {
             return AutoRatios[CLAMPINT(gear, 0, 7)];
         }
 
-        inline float getManualGearRatio(int gear) {
+        float GetManualGearRatio(int gear) const {
             return ManualRatios[CLAMPINT(gear, 0, 7)];
         }
 
-        inline float getUpshiftRpm(int gear) {
+        float GetUpshiftRpm(int gear) const {
             return UpshiftRpms[CLAMPINT(gear, 0, 7)];
         }
 
-        inline float getDownshiftMinRpm(int gear) {
+        float GetDownshiftMinRpm(int gear) const {
             return DownshiftMinRpms[CLAMPINT(gear, 0, 7)];
         }
 
-        inline float getDownshiftMaxRpm(int gear) {
+        float GetDownshiftMaxRpm(int gear) const {
             return DownshiftMaxRpms[CLAMPINT(gear, 0, 7)];
         }
 
-        inline void setDownshiftMinRpm(int gear, float rpm)
+        void SetDownshiftMinRpm(int gear, float rpm)
         {
             if (gear < 0 || gear > 7)
                 return;
             DownshiftMinRpms[gear] = rpm;
         }
 
-        inline void setDownshiftMaxRpm(int gear, float rpm)
+        void SetDownshiftMaxRpm(int gear, float rpm)
         {
             if (gear < 0 || gear > 7)
                 return;
             DownshiftMaxRpms[gear] = rpm;
         }
 
-        inline void setUpshiftRpm(int gear, float rpm)
+        void SetUpshiftRpm(int gear, float rpm)
         {
             if (gear < 0 || gear > 7)
                 return;
             UpshiftRpms[gear] = rpm;
         }
 
-        inline void setAutoGearRatio(int gear, float ratio)
+        void SetAutoGearRatio(int gear, float ratio)
         {
             if (gear < 0 || gear > 7)
                 return;
             AutoRatios[gear] = ratio;
         }
 
-        inline void setManualGearRatio(int gear, float ratio)
+        void SetManualGearRatio(int gear, float ratio)
         {
             if (gear < 0 || gear > 7)
                 return;
@@ -121,16 +121,16 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<vehTransmission, asNode>("vehTransmission")
                 //properties / lua functions
-                .addFunction("SetAutoGearRatio", &setAutoGearRatio)
-                .addFunction("GetAutoGearRatio", &getAutoGearRatio)
-                .addFunction("SetManualGearRatio", &setManualGearRatio)
-                .addFunction("GetManualGearRatio", &getManualGearRatio)
-                .addFunction("GetUpshiftRpm", &getUpshiftRpm)
-                .addFunction("SetUpshiftRpm", &setUpshiftRpm)
-                .addFunction("GetDownshiftMinRpm", &getDownshiftMinRpm)
-                .addFunction("GetDownshiftMaxRpm", &getDownshiftMaxRpm)
-                .addFunction("SetDownshiftMinRpm", &setDownshiftMinRpm)
-                .addFunction("SetDownshiftMaxRpm", &setDownshiftMaxRpm)
+                .addFunction("SetAutoGearRatio", &SetAutoGearRatio)
+                .addFunction("GetAutoGearRatio", &GetAutoGearRatio)
+                .addFunction("SetManualGearRatio", &SetManualGearRatio)
+                .addFunction("GetManualGearRatio", &GetManualGearRatio)
+                .addFunction("GetUpshiftRpm", &GetUpshiftRpm)
+                .addFunction("SetUpshiftRpm", &SetUpshiftRpm)
+                .addFunction("GetDownshiftMinRpm", &GetDownshiftMinRpm)
+                .addFunction("GetDownshiftMaxRpm", &GetDownshiftMaxRpm)
+                .addFunction("SetDownshiftMinRpm", &SetDownshiftMinRpm)
+                .addFunction("SetDownshiftMaxRpm", &SetDownshiftMaxRpm)
                 .addVariableRef("GearChangeTime", &vehTransmission::GearChangeTime)
                 .addVariableRef("AutoNumGears", &vehTransmission::AutoNumGears)
                 .addVariableRef("ManualNumGears", &vehTransmission::ManualNumGears)
@@ -141,7 +141,7 @@ namespace MM2
                 .addVariableRef("DownshiftBiasMax", &vehTransmission::DownshiftBiasMax)
                 .addVariableRef("DownshiftBiasMin", &vehTransmission::DownshiftBiasMin)
                 .addVariableRef("UpshiftBias", &vehTransmission::UpshiftBias)
-                .addProperty("Gear", &getGear, &SetCurrentGear)
+                .addProperty("Gear", &GetGear, &SetCurrentGear)
 
                 //functions
                 .addFunction("Automatic", &Automatic, LUA_ARGS(bool))

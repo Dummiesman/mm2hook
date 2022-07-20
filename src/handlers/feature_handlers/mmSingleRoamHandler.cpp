@@ -9,6 +9,7 @@ using namespace MM2;
 static ConfigValue<bool> cfgEscapeDeepWater("EscapeDeepWater", true);
 static ConfigValue<bool> cfgResetToNearestLocation("ResetToNearestLocation", false);
 
+//TODO: This is a 1:1 copy of out of world handler, lets fix that
 void mmSingleRoamHandler::ResetToNearestLocation() {
     auto singleRoam = reinterpret_cast<mmSingleRoam*>(this);
     auto player = singleRoam->getPlayer();
@@ -59,7 +60,7 @@ void mmSingleRoamHandler::ResetToNearestLocation() {
 
     // move player to the closest intersection if we can
     if (closestIntersection >= 0) {
-        auto oldResetPos = carsim->getResetPosition();
+        auto oldResetPos = carsim->GetResetPosition();
 
         // set to closest intersection
         carsim->SetResetPos(&AIMAP->intersections[closestIntersection]->center);
@@ -87,7 +88,7 @@ void mmSingleRoamHandler::EscapeDeepWater() {
     auto level = lvlLevel::GetSingleton();
 
     if (level->GetRoomInfo(car->getModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater) &&
-        level->GetWaterLevel(car->getModel()->GetRoomId()) > carsim->getWorldMatrix()->m31) {
+        level->GetWaterLevel(car->getModel()->GetRoomId()) > carsim->GetWorldMatrix()->m31) {
         if (cfgResetToNearestLocation.Get()) {
             ResetToNearestLocation();
         }

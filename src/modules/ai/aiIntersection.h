@@ -1,10 +1,9 @@
 #pragma once
+#include "aiVehicle.h"
+#include "aiPath.h"
+#include "aiTrafficLight.h"
 #include <modules\ai.h>
 
-#include "aiPath.h"
-#include "aiVehicle.h"
-#include "aiTrafficLight.h"
-#include "aiVehicle.h"
 
 namespace MM2
 {

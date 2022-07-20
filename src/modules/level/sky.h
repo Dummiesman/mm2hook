@@ -4,7 +4,7 @@
 namespace MM2
 {
     // Forward declarations
-
+    class lvlSky;
 
     // External declarations
     extern class modStatic;
@@ -41,11 +41,11 @@ namespace MM2
         }
 
         inline short getFogNearClip(int index) {
-            return (index < 0 || index > 16) ? 0 : this->FogNearClip[index];
+            return (index < 0 || index >= 16) ? 0 : this->FogNearClip[index];
         }
 
         inline short getFogFarClip(int index) {
-            return (index < 0 || index > 16) ? 0 : this->FogFarClip[index];
+            return (index < 0 || index >= 16) ? 0 : this->FogFarClip[index];
         }
 
         inline float getRotation() {
@@ -53,19 +53,19 @@ namespace MM2
         }
 
         void setFogNearClip(int index, short clip) {
-            if (index < 0 || index > 16)
+            if (index < 0 || index >= 16)
                 return;
             this->FogNearClip[index] = clip;
         }
 
         void setFogFarClip(int index, short clip) {
-            if (index < 0 || index > 16)
+            if (index < 0 || index >= 16)
                 return;
             this->FogFarClip[index] = clip;
         }
 
         void setFogColor(int index, byte r, byte g, byte b, byte a) {
-            if (index < 0 || index > 16)
+            if (index < 0 || index >= 16)
                 return;
 
             auto myColor = &this->FogColors[index];

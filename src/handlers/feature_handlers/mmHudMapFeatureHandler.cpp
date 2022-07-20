@@ -23,13 +23,11 @@ static ConfigValue<int> cfgOpponentTriColor("OpponentTriColor", 7);
 static ConfigValue<int> cfgOpponentTriOutlineColor("OpponentTriOutlineColor", 0);
 
 hook::Type<unsigned int> HudmapIconColors(0x5C4740);
-hook::Type<Vector3> YAXIS(0x6A3B28);
 Matrix34 mtx;
 
 void mmHudMapFeatureHandler::DrawColoredTri(unsigned int color, const Matrix34 *a2) {
     rglEnableDisable(RGL_DEPTH_TEST, false);
-    Matrix44::Convert(gfxRenderState::sm_World, a2);
-    *(int*)0x685778 |= 0x88;
+    gfxRenderState::SetWorldMatrix(*a2);
     vglBindTexture(0);
     vglBegin(DRAWMODE_TRIANGLELIST, 0);
     vglCurrentColor = color;
@@ -42,8 +40,7 @@ void mmHudMapFeatureHandler::DrawColoredTri(unsigned int color, const Matrix34 *
 
 void mmHudMapFeatureHandler::DrawWhiteTri(const Matrix34 *a1) {
     rglEnableDisable(RGL_DEPTH_TEST, false);
-    Matrix44::Convert(gfxRenderState::sm_World, a1);
-    *(int*)0x685778 |= 0x88;
+    gfxRenderState::SetWorldMatrix(*a1);
     vglBindTexture(0);
     vglBegin(DRAWMODE_TRIANGLELIST, 0);
     vglCurrentColor = 0xFFFFFFFF;
@@ -56,8 +53,7 @@ void mmHudMapFeatureHandler::DrawWhiteTri(const Matrix34 *a1) {
 
 void mmHudMapFeatureHandler::DrawLightOrangeTri(const Matrix34 *a1) {
     rglEnableDisable(RGL_DEPTH_TEST, false);
-    Matrix44::Convert(gfxRenderState::sm_World, a1);
-    *(int*)0x685778 |= 0x88;
+    gfxRenderState::SetWorldMatrix(*a1);
     vglBindTexture(0);
     vglBegin(DRAWMODE_TRIANGLELIST, 0);
     vglCurrentColor = 0xFFFDBF72;
@@ -70,8 +66,7 @@ void mmHudMapFeatureHandler::DrawLightOrangeTri(const Matrix34 *a1) {
 
 void mmHudMapFeatureHandler::DrawLightGreenTri(const Matrix34 *a1) {
     rglEnableDisable(RGL_DEPTH_TEST, false);
-    Matrix44::Convert(gfxRenderState::sm_World, a1);
-    *(int*)0x685778 |= 0x88;
+    gfxRenderState::SetWorldMatrix(*a1);
     vglBindTexture(0);
     vglBegin(DRAWMODE_TRIANGLELIST, 0);
     vglCurrentColor = 0xFFC0EC42;
@@ -85,9 +80,7 @@ void mmHudMapFeatureHandler::DrawLightGreenTri(const Matrix34 *a1) {
 void mmHudMapFeatureHandler::DrawIcon(int iconType, const Matrix34 *matrix) {
     mtx.Set(matrix);
 
-    mtx.m10 = YAXIS->X;
-    mtx.m11 = YAXIS->Y;
-    mtx.m12 = YAXIS->Z;
+    mtx.SetRow(1, Vector3::YAXIS);
     mtx.Normalize();
 
     mtx.m31 += 15.f;
@@ -104,9 +97,7 @@ void mmHudMapFeatureHandler::DrawIcon(int iconType, const Matrix34 *matrix) {
 void mmHudMapFeatureHandler::DrawNfsMwPlayerIcon(const Matrix34 *matrix) {
     mtx.Set(matrix);
 
-    mtx.m10 = YAXIS->X;
-    mtx.m11 = YAXIS->Y;
-    mtx.m12 = YAXIS->Z;
+    mtx.SetRow(1, Vector3::YAXIS);
     mtx.Normalize();
 
     mtx.m31 += 15.f;
@@ -118,9 +109,7 @@ void mmHudMapFeatureHandler::DrawNfsMwPlayerIcon(const Matrix34 *matrix) {
 void mmHudMapFeatureHandler::DrawNfsMwOpponentIcon(const Matrix34 *matrix) {
     mtx.Set(matrix);
 
-    mtx.m10 = YAXIS->X;
-    mtx.m11 = YAXIS->Y;
-    mtx.m12 = YAXIS->Z;
+    mtx.SetRow(1, Vector3::YAXIS);
     mtx.Normalize();
 
     mtx.m31 += 15.f;
@@ -224,7 +213,7 @@ void mmHudMapFeatureHandler::DrawPlayer() {
 }
 
 void mmHudMapFeatureHandler::DrawCops() {
-    auto AIMAP = &aiMap::Instance;
+    auto AIMAP = aiMap::GetInstance();
     bool elapsedTime1 = fmod(datTimeManager::ElapsedTime, 0.15f) > 0.1f;
     bool elapsedTime2 = fmod(datTimeManager::ElapsedTime, 0.125f) > 0.1f;
     bool elapsedTime3 = fmod(datTimeManager::ElapsedTime, 0.5f) > 0.25f;
@@ -293,7 +282,7 @@ void mmHudMapFeatureHandler::DrawCops() {
 }
 
 void mmHudMapFeatureHandler::DrawOpponents() {
-    auto AIMAP = &aiMap::Instance;
+    auto AIMAP = aiMap::GetInstance();
 
     for (int i = 0; i < *getPtr<__int16>(this, 0xBC); i++) {
         int v2 = *getPtr<int>(this, 0x34) + (i * 0x28);

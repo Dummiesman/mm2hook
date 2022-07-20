@@ -1,7 +1,6 @@
 #pragma once
-#include <modules\ai.h>
-
 #include "aiVehicle.h"
+#include <modules\ai.h>
 
 namespace MM2
 {

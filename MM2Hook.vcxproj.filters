@@ -2196,6 +2196,63 @@
     <ClCompile Include="src\handlers\feature_handlers\gettexHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\model\static2.cpp">
+      <Filter>Source Files\modules\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\effects\birth.cpp">
+      <Filter>Source Files\modules\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\effects\ptx.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\vehicle\carmodel.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\ai\aiMap.cpp">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\ai\aiVehicle.cpp">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\gfx\rstate.cpp">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\vector\matrix34.cpp">
+      <Filter>Source Files\modules\vector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\vector\vector3.cpp">
+      <Filter>Source Files\modules\vector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\vector\matrix44.cpp">
+      <Filter>Source Files\modules\vector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\vector\vector4.cpp">
+      <Filter>Source Files\modules\vector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\vector\vector2.cpp">
+      <Filter>Source Files\modules\vector</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mmeffects\meshform.cpp">
+      <Filter>Source Files\modules\mmeffects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\city\citylevel.cpp">
+      <Filter>Source Files\modules\city</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\data\timemgr.cpp">
+      <Filter>Source Files\modules\data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\phys\phinertia.cpp">
+      <Filter>Source Files\modules\phys</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\data\base.cpp">
+      <Filter>Source Files\modules\data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\audio.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\aud3DObjectHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AGE.h">

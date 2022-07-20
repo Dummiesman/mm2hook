@@ -5,41 +5,26 @@ using namespace MM2;
 /*
     Model Index Constants
 */
-const int HLIGHT_GEOM_ID = 2;
-const int TLIGHT_GEOM_ID = 3;
-const int SLIGHT0_GEOM_ID = 4;
-const int SLIGHT1_GEOM_ID = 5;
-const int BLIGHT_GEOM_ID = 18;
-const int PLIGHTON_GEOM_ID = 19;
-const int PLIGHTOFF_GEOM_ID = 20;
-const int TSLIGHT0_GEOM_ID = 21;
-const int TSLIGHT1_GEOM_ID = 22;
-
-
 static ConfigValue<int> cfgAmbientHeadlightStyle("AmbientHeadlightStyle", 0);
 
 /*
     aiVehicleInstanceFeatureHandler
 */
 Matrix34 aiVehicleMatrix = Matrix34();
-int ambientHeadlightStyle = 0;
 
 void aiVehicleInstanceFeatureHandler::Draw(int a1) {
     auto inst = reinterpret_cast<aiVehicleInstance*>(this);
-    auto geomID = inst->GetGeomIndex() - 1;
-    auto geomSet = lvlInstance::GetGeomTableEntry(geomID);
+    if (inst->GetGeomIndex() == 0)
+        return;
 
     //setup renderer
-    Matrix34 carMatrix = inst->GetMatrix(&aiVehicleMatrix);
+    Matrix34 GARBAGE;
+    Matrix34 carMatrix = inst->GetMatrix(&GARBAGE);
     gfxRenderState::SetWorldMatrix(carMatrix);
 
     //get our shader set
     auto shaderSet = *getPtr<signed short>(this, 0x1E);
-    auto shaders = geomSet->pShaders[shaderSet];
-
-    //get objects
-    modStatic* plighton = lvlInstance::GetGeomTableEntry(geomID + PLIGHTOFF_GEOM_ID)->GetHighLOD();
-    modStatic* plightoff = lvlInstance::GetGeomTableEntry(geomID + PLIGHTON_GEOM_ID)->GetHighLOD();
+    auto shaders = inst->GetShader(shaderSet);
 
     //draw plight
     if (aiMap::GetInstance()->showHeadlights) {
@@ -53,14 +38,15 @@ void aiVehicleInstanceFeatureHandler::Draw(int a1) {
             inst->DrawPart(plightoff, &carMatrix, shaders, inst->GetRoomId());
     }
 
+
     //call original
     hook::Thunk<0x552160>::Call<void>(this, a1);
 }
 
 void aiVehicleInstanceFeatureHandler::DrawGlow() {
     auto inst = reinterpret_cast<aiVehicleInstance*>(this);
-    auto geomID = inst->GetGeomIndex() - 1;
-    auto geomSet = lvlInstance::GetGeomTableEntry(geomID);
+    if (inst->GetGeomIndex() == 0)
+        return;
 
     //setup renderer
     Matrix34 carMatrix = inst->GetMatrix(&aiVehicleMatrix);
@@ -68,20 +54,20 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
 
     //get our shader set
     auto shaderSet = *getPtr<signed short>(this, 0x1E);
-    auto shaders = geomSet->pShaders[shaderSet];
+    auto shaders = inst->GetShader(shaderSet);
 
     //get objects
-    modStatic* hlight = lvlInstance::GetGeomTableEntry(geomID + HLIGHT_GEOM_ID)->GetHighestLOD();
-    modStatic* tlight = lvlInstance::GetGeomTableEntry(geomID + TLIGHT_GEOM_ID)->GetHighestLOD();
-    modStatic* slight0 = lvlInstance::GetGeomTableEntry(geomID + SLIGHT0_GEOM_ID)->GetHighestLOD();
-    modStatic* slight1 = lvlInstance::GetGeomTableEntry(geomID + SLIGHT1_GEOM_ID)->GetHighestLOD();
-    modStatic* blight = lvlInstance::GetGeomTableEntry(geomID + BLIGHT_GEOM_ID)->GetHighestLOD();
-    modStatic* tslight0 = lvlInstance::GetGeomTableEntry(geomID + TSLIGHT0_GEOM_ID)->GetHighestLOD();
-    modStatic* tslight1 = lvlInstance::GetGeomTableEntry(geomID + TSLIGHT1_GEOM_ID)->GetHighestLOD();
+    modStatic* hlight = inst->GetGeomBase(aiVehicleInstance::HLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* tlight = inst->GetGeomBase(aiVehicleInstance::TLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* slight0 = inst->GetGeomBase(aiVehicleInstance::SLIGHT0_GEOM_ID)->GetHighestLOD();
+    modStatic* slight1 = inst->GetGeomBase(aiVehicleInstance::SLIGHT1_GEOM_ID)->GetHighestLOD();
+    modStatic* blight = inst->GetGeomBase(aiVehicleInstance::BLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* tslight0 = inst->GetGeomBase(aiVehicleInstance::TSLIGHT0_GEOM_ID)->GetHighestLOD();
+    modStatic* tslight1 = inst->GetGeomBase(aiVehicleInstance::TSLIGHT1_GEOM_ID)->GetHighestLOD();
 
     //get lights stuff
-    float accel = inst->getSpline()->getRailSet()->getAccelFactor();
-    float speed = inst->getSpline()->getCurSpeed();
+    float accel = inst->GetSpline()->getRailSet()->GetAccelFactor();
+    float speed = inst->GetSpline()->getCurSpeed();
 
     byte toggleSignal = *getPtr<byte>(this, 0x1A);
     int signalDelayTime = *getPtr<int>(this, 0x18); // adjusts the delay time for signal lights among traffic vehicles
@@ -142,19 +128,19 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
     }
 
     //draw headlights
-    if (ambientHeadlightStyle < 3) {
-        if (ambientHeadlightStyle == 0 || ambientHeadlightStyle == 2) {
+    if (aiVehicleInstance::AmbientHeadlightStyle < 3) {
+        if (aiVehicleInstance::AmbientHeadlightStyle == 0 || aiVehicleInstance::AmbientHeadlightStyle == 2) {
             //MM2 headlights
             if (aiMap::GetInstance()->showHeadlights) {
                 //call original
                 hook::Thunk<0x552930>::Call<void>(this);
             }
         }
-        if (ambientHeadlightStyle == 1 || ambientHeadlightStyle == 2) {
+        if (aiVehicleInstance::AmbientHeadlightStyle == 1 || aiVehicleInstance::AmbientHeadlightStyle == 2) {
             //MM1 headlights
             gfxRenderState::SetWorldMatrix(carMatrix);
 
-            if (hlight != nullptr && aiMap::Instance->showHeadlights) {
+            if (hlight != nullptr && aiMap::GetInstance()->showHeadlights) {
                 hlight->Draw(shaders);
             }
         }
@@ -167,9 +153,9 @@ void aiVehicleInstanceFeatureHandler::ModStaticDraw(modShader* a1) {
     bool isSoftware = *(bool*)0x6830D4;
 
     //convert world matrix for reflection drawing
-    Matrix44* worldMatrix = gfxRenderState::sm_World;
+    auto& worldMatrix = gfxRenderState::GetWorldMatrix();
     Matrix34 envInput = Matrix34();
-    worldMatrix->ToMatrix34(envInput);
+    worldMatrix.ToMatrix34(envInput);
 
     //draw car part
     mod->Draw(a1);
@@ -214,7 +200,7 @@ void aiVehicleInstanceFeatureHandler::Install() {
         }
     );
 
-    ambientHeadlightStyle = cfgAmbientHeadlightStyle.Get();
+    aiVehicleInstance::AmbientHeadlightStyle = cfgAmbientHeadlightStyle.Get();
     InstallVTableHook("aiVehicleInstance::DrawGlow",
         &DrawGlow, {
             0x5B5944

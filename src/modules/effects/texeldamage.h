@@ -1,5 +1,10 @@
 #pragma once
 #include <algorithm>
+#include <modules\gfx\texture.h>
+#include <modules\gfx\gettex.h>
+#include <modules\gfx\packet.h>
+#include <modules\model\shader.h>
+#include <modules\model\static2.h>
 
 namespace MM2
 {

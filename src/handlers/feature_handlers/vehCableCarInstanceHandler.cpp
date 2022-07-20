@@ -3,11 +3,10 @@
 using namespace MM2;
 
 /*
-    Model Index Constants
+    Model Index Constants (TODO: Define aiCableCarInstance class)
 */
-const int SHADOW_GEOM_ID = 1;
-const int HLIGHT_GEOM_ID = 2;
-
+static const int AI_CCI_SHADOW_GEOM_ID = 1;
+static const int AI_CCI_HLIGHT_GEOM_ID = 2;
 
 /*
     vehCableCarInstanceHandler
@@ -17,13 +16,13 @@ Matrix34 cableCarMatrix = Matrix34();
 
 void vehCableCarInstanceHandler::DrawShadow()
 {
-    //get vars
     auto inst = reinterpret_cast<lvlInstance*>(this);
-    int geomSet = inst->GetGeomIndex() - 1;
+    if (inst->GetGeomIndex() == 0)
+        return;
 
     //get our shader set
     int shaderSet = 0;
-    auto shaders = lvlInstance::GetGeomTableEntry(geomSet)->pShaders[shaderSet];
+    auto shaders = inst->GetShader(shaderSet);
 
     //
     Matrix34 shadowMatrix;
@@ -35,7 +34,7 @@ void vehCableCarInstanceHandler::DrawShadow()
         gfxRenderState::SetWorldMatrix(shadowMatrix);
 
         //draw shadow
-        modStatic* shadow = lvlInstance::GetGeomTableEntry(geomSet + SHADOW_GEOM_ID)->GetHighestLOD();
+        modStatic* shadow = inst->GetGeomBase(AI_CCI_SHADOW_GEOM_ID)->GetHighestLOD();
         if (shadow != nullptr)
         {
             shadow->Draw(shaders);
@@ -49,9 +48,9 @@ void vehCableCarInstanceHandler::DrawGlow()
     if (!aiMap::GetInstance()->showHeadlights)
         return;
 
-    //get vars
     auto inst = reinterpret_cast<lvlInstance*>(this);
-    int geomSet = inst->GetGeomIndex() - 1;
+    if (inst->GetGeomIndex() == 0)
+        return;
 
     //setup renderer
     Matrix34 instMtx = inst->GetMatrix(&cableCarMatrix);
@@ -60,10 +59,10 @@ void vehCableCarInstanceHandler::DrawGlow()
 
     //get our shader set
     int shaderSet = 0;
-    auto shaders = lvlInstance::GetGeomTableEntry(geomSet)->pShaders[shaderSet];
+    auto shaders = inst->GetShader(shaderSet);
 
     //get lights
-    modStatic* hlight = lvlInstance::GetGeomTableEntry(geomSet + HLIGHT_GEOM_ID)->GetHighestLOD();
+    modStatic* hlight = inst->GetGeomBase(AI_CCI_HLIGHT_GEOM_ID)->GetHighestLOD();
     if (hlight != nullptr)
     {
         hlight->Draw(shaders);

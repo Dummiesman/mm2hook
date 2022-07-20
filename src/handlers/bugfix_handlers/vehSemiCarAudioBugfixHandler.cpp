@@ -24,8 +24,8 @@ void vehSemiCarAudioBugfixHandler::UpdateAirBlow()
     if (player->getCar()->getCarSim() != carsim)
         return;
 
-    float speed = carsim->getSpeedMPH();
-    bool isBraking = carsim->getBrake() > 0.1f;
+    float speed = carsim->GetSpeedMPH();
+    bool isBraking = carsim->GetBrake() > 0.1f;
 
     //if we're going >5mph, set the sound flag
     if (speed > 5.f) {
@@ -48,12 +48,12 @@ void vehSemiCarAudioBugfixHandler::UpdateReverse()
     auto carAudio = reinterpret_cast<vehCarAudio*>(this);
     auto carsim = carAudio->getCarSim();
     auto reverseSound = *getPtr<AudSoundBase*>(this, 0x138);
-    auto transmission = carsim->getTransmission();
-    float throttle = carsim->getEngine()->getThrottleInput();
-    float speed = carsim->getSpeedMPH();
+    auto transmission = carsim->GetTransmission();
+    float throttle = carsim->GetEngine()->GetThrottleInput();
+    float speed = carsim->GetSpeedMPH();
 
     if (transmission->IsAuto() && reverseSound != nullptr) {
-        if (transmission->getGear() == 0) {
+        if (transmission->GetGear() == 0) {
             if (throttle > 0.f || speed >= 1.f) {
                 if (!reverseSound->IsPlaying())
                     reverseSound->PlayLoop(-1.f, -1.f);
@@ -69,7 +69,7 @@ void vehSemiCarAudioBugfixHandler::UpdateReverse()
         }
     }
     if (!transmission->IsAuto() && reverseSound != nullptr) {
-        if (transmission->getGear() == 0) {
+        if (transmission->GetGear() == 0) {
             if (!reverseSound->IsPlaying())
                 reverseSound->PlayLoop(-1.f, -1.f);
         }
@@ -96,11 +96,11 @@ void vehSemiCarAudioBugfixHandler::Init(MM2::vehCarSim* carsim, MM2::vehCarDamag
 
     //if custom semi data exists, load that. Otherwise load default.
     if (semiDataExists) {
-        Warningf("Loading custom semi data: %s", (LPCSTR)semiDataName);
+        Displayf("Loading custom semi data: %s", (LPCSTR)semiDataName);
         hook::Thunk<0x4DCD70>::Call<void>(this, (LPCSTR)semiDataName);
     }
     else {
-        Warningf("Loading DEFAULT semi data, can't find custom semi data: %s", (LPCSTR)semiDataName);
+        Displayf("Loading DEFAULT semi data, can't find custom semi data: %s", (LPCSTR)semiDataName);
         hook::Thunk<0x4DCD70>::Call<void>(this, "semidata");
     }
 

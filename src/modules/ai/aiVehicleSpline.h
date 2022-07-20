@@ -1,8 +1,7 @@
 #pragma once
+#include "aiVehicle.h"
 #include <modules\ai.h>
 #include <mm2_audio.h>
-
-#include "aiVehicle.h"
 
 namespace MM2
 {
@@ -11,6 +10,8 @@ namespace MM2
 
     // External declarations
     extern class AudImpact;
+    extern class aiVehicleInstance;
+    extern class aiRailSet;
 
     // Class definitions
 
@@ -58,7 +59,7 @@ namespace MM2
             return _railSet.ptr(this);
         }
 
-        inline aiVehicleInstance * getVehicleInstance(void) const {
+        aiVehicleInstance * getVehicleInstance(void) const {
             return *getPtr<aiVehicleInstance*>(this, 0xD4);
         }
 

@@ -58,7 +58,7 @@ void pedestrianInstanceHandler::DrawRagdoll()
     gfxRenderState::SetWorldMatrix(identityMatrix);
 
     //attach skeleton
-    auto ragdollSkel = active->getSkeleton();
+    auto ragdollSkel = active->GetSkeleton();
     ragdollSkel->Attach(&pedestrianMatrixList[0]);
 
     //get animationInstance and draw it

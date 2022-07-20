@@ -208,24 +208,13 @@ namespace MM2
         };
         ASSERT_SIZEOF(GeomTableEntry, 32);
 
-        static char* GetGeomName(int id) {
-            if (id >= GetGeomSetCount())
-                return nullptr;
-            return GetGeomNameTablePtr()[id];
-        }
-
-        static GeomTableEntry* GetGeomTableEntry(int id) {
-            if (id >= GetGeomSetCount())
-                return nullptr;
-            return &GetGeomTablePtr()[id];
-        }
-
+    protected:
         static GeomTableEntry* GetGeomTablePtr() {
             return reinterpret_cast<GeomTableEntry*>(0x6316D8);
         }
 
-        static char** GetGeomNameTablePtr() {
-            return reinterpret_cast<char**>(0x651760);
+        static const char** GetGeomNameTablePtr() {
+            return reinterpret_cast<const char**>(0x651760);
         }
 
         static int GetGeomSetCount() {
@@ -323,6 +312,31 @@ namespace MM2
             this->Subtype = subtype;
         }
 
+        GeomTableEntry* GetGeomBase(int geom = 0) const {
+            return this->GeomIndex == 0 ? nullptr : &lvlInstance::GetGeomTablePtr()[GeomIndex - 1 + geom];
+        }
+
+        modStatic* GetGeom(int lod, int geom) const {
+            return this->GeomIndex == 0 ? nullptr : (&lvlInstance::GetGeomTablePtr()[GeomIndex - 1 + geom])->GetLOD(lod);
+        }
+
+        const char* GetName() const {
+            return this->GeomIndex == 0 ? "(none)" : lvlInstance::GetGeomNameTablePtr()[GeomIndex - 1];
+        }
+
+        modShader* GetShader(int index) const {
+            if (GeomIndex == 0 || index >= this->GetShaderCount())
+                return nullptr;
+            return (&lvlInstance::GetGeomTablePtr()[GeomIndex - 1])->pShaders[index];
+        }
+
+        int GetShaderCount() const {
+            return this->GeomIndex == 0 ? 0 : (&lvlInstance::GetGeomTablePtr()[GeomIndex - 1])->numShaders;
+        }
+
+        int GetVariantCount() const {
+            return this->GeomIndex == 0 ? 1 : (&lvlInstance::GetGeomTablePtr()[GeomIndex - 1])->numShadersPerPaintjob;
+        }
 
         static AGE_API bool ComputeShadowMatrix(Matrix34 *outMatrix, int room, Matrix34 const *inMatrix)
                                                             { return hook::StaticThunk<0x464430>::Call<bool>(outMatrix, room, inMatrix); }
@@ -456,16 +470,14 @@ namespace MM2
                 .addPropertyReadOnly("CurrentRoom", &GetRoomId)
 
                 //statics
-                .addStaticFunction("GetGeomName", &GetGeomName)
-                .addStaticFunction("GetGeomTableEntry", &GetGeomTableEntry)
                 .addStaticProperty("GeomTableSize", &GetGeomSetCount)
-
                 .addStaticFunction("ResetInstanceHeap", &ResetInstanceHeap)
                 .addStaticFunction("ResetAll", &ResetAll)
                 .addStaticFunction("SetShadowBillboardMtx", &SetShadowBillboardMtx)
                 .addStaticFunction("GetGeomSet", &GetGeomSet)
 
                 //functions
+                .addFunction("GetName", &GetName)
                 .addFunction("LoadBoundOnLastEntry", &LoadBoundOnLastEntry)
                 .addFunction("GetBoundSphere", &GetBoundSphere)
                 .addFunction("BeginGeom", &BeginGeom)

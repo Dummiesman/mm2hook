@@ -93,7 +93,7 @@ namespace MM2
 
             .addFunction("AddChild", &AddChild)
             .addFunction("InsertChild", &InsertChild)
-            .addFunction("RemoveChild", static_cast<int(asNode::*)(asNode* child)>(&RemoveChild))
+            .addFunction("RemoveChild", static_cast<int(asNode::*)(asNode*)>(&RemoveChild))
             .addFunction("RemoveAllChildren", &RemoveAllChildren)
             .addFunction("GetChild", &GetChild)
             .addFunction("GetNext", &GetNext)

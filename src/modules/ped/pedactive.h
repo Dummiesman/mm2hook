@@ -22,11 +22,11 @@ namespace MM2
         hook::Field<0x104, crSkeleton *> _skeleton;
         hook::Field<0x108, dgRagdoll *> _ragdoll;
     public:
-        inline crSkeleton * getSkeleton() const {
+        inline crSkeleton * GetSkeleton() const {
             return _skeleton.get(this);
         }
 
-        inline dgRagdoll * getRagdoll() {
+        inline dgRagdoll * GetRagdoll() const {
             return _ragdoll.get(this);
         }
     };

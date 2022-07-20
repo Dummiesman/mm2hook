@@ -19,9 +19,9 @@ void vehCarModelFeatureHandler::ModStaticDraw(modShader* a1) {
     bool isSoftware = *(bool*)0x6830D4;
 
     //convert world matrix for reflection drawing
-    Matrix44* worldMatrix = gfxRenderState::sm_World;
+    Matrix44 worldMatrix = gfxRenderState::GetWorldMatrix();
     Matrix34 envInput = Matrix34();
-    worldMatrix->ToMatrix34(envInput);
+    worldMatrix.ToMatrix34(envInput);
 
     //draw breakable
     mod->Draw(a1);

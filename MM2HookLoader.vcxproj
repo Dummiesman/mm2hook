@@ -14,7 +14,7 @@
     <ProjectGuid>{A761F34D-8443-47AA-BE6A-7CE244AED3DC}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>MM2HookLoader</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Label="Configuration">

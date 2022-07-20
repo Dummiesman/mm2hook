@@ -59,62 +59,62 @@ namespace MM2
         AGE_API char* GetClassName() override               { return hook::Thunk<0x4D9310>::Call<char*>(this); }
 
         //lua ahelpers
-        inline bool getWaitingOnGCL() 
+        bool GetWaitingOnGCL() const
         {
             return WaitingOnGCL == TRUE;
         }
 
-        inline float getThrottleInput() 
+        float GetThrottleInput() const 
         {
             return ThrottleInput;
         }
 
-        inline void setThrottleInput(float input) 
+        void SetThrottleInput(float input) 
         {
             ThrottleInput = input;
         }
 
-        inline float getCurrentRPM() 
+        float GetCurrentRPM() const
         {
             return CurrentRPM;
         }
 
-        inline void setCurrentRPM(float rpm) 
+        void SetCurrentRPM(float rpm) 
         {
             CurrentRPM = rpm;
         }
 
-        inline float getCurrentTorque() 
+        float GetCurrentTorque() const
         {
             return CurrentTorque;
         }
 
-        inline void setCurrentTorque(float torque) 
+        void SetCurrentTorque(float torque)
         {
             CurrentTorque = torque;
         }
 
-        inline float getMaxHorsePower() 
+        float GetMaxHorsePower() const
         {
             return MaxHorsePower;
         }
 
-        inline void setMaxHorsePower(float power) 
+        void SetMaxHorsePower(float power) 
         {
             MaxHorsePower = power;
         }
 
-        inline void setThrottleTorque(float torque) 
+        void SetThrottleTorque(float torque) 
         {
             ThrottleTorque = torque;
         }
 
-        inline Matrix34* getVisualMatrixPtr()
+        Matrix34* GetVisualMatrixPtr()
         {
             return this->EngineVisualMatrixPtr;
         }
 
-        inline vehCarSim* getCarSim()
+        vehCarSim* GetCarSim()
         {
             return this->VehCarSimPtr;
         }
@@ -128,9 +128,9 @@ namespace MM2
                 .addVariableRef("MaxRPM", &vehEngine::MaxRPM)
                 .addVariableRef("GCL", &vehEngine::GCL)
                 .addVariableRef("AngInertia", &vehEngine::AngInertia)
-                .addPropertyReadOnly("WaitingOnGCL", &getWaitingOnGCL)
-                .addProperty("Throttle", &getThrottleInput, &setThrottleInput)
-                .addProperty("RPM", &getCurrentRPM, &setCurrentRPM)
+                .addPropertyReadOnly("WaitingOnGCL", &GetWaitingOnGCL)
+                .addProperty("Throttle", &GetThrottleInput, &SetThrottleInput)
+                .addProperty("RPM", &GetCurrentRPM, &SetCurrentRPM)
 
                 //functions
                 .addFunction("ComputeConstants", &ComputeConstants)

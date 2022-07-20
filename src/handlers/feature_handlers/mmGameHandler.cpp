@@ -68,8 +68,8 @@ void mmGameHandler::UpdateSteeringBrakes(void) {
     auto player = game->getPlayer();
     auto car = player->getCar();
     auto carsim = car->getCarSim();
-    auto engine = carsim->getEngine();
-    auto transmission = carsim->getTransmission();
+    auto engine = carsim->GetEngine();
+    auto transmission = carsim->GetTransmission();
     auto curDamage = car->getCarDamage()->getCurDamage();
     auto maxDamage = car->getCarDamage()->getMaxDamage();
     auto inst = mmReplayManager::Instance;
@@ -84,28 +84,28 @@ void mmGameHandler::UpdateSteeringBrakes(void) {
     float v1 = *getPtr<float>(this, 0x40C);
     float v2 = *getPtr<float>(this, 0x68);
     float v3 = *getPtr<float>(this, 0x6C);
-    float speedMPH = carsim->getSpeedMPH();
+    float speedMPH = carsim->GetSpeedMPH();
     float brakes = inst->GetBrakes();
     float throttle = inst->GetThrottle();
     float steering = inst->GetSteering();
     float handbrakes = inst->GetHandBrakes();
 
-    carsim->setBrake(brakes);
-    carsim->setHandbrake(handbrakes);
+    carsim->SetBrake(brakes);
+    carsim->SetHandbrake(handbrakes);
     player->SetSteering(steering);
 
     if (NETMGR->getInSession() && reverse >= 2) {
         if (throttle >= 0.f) {
             if (throttle > v1)
                 throttle = v1;
-            engine->setThrottleInput(throttle);
+            engine->SetThrottleInput(throttle);
         }
         else {
-            engine->setThrottleInput(0.f);
+            engine->SetThrottleInput(0.f);
         }
     }
     else {
-        engine->setThrottleInput(throttle);
+        engine->SetThrottleInput(throttle);
     }
 
     if (transmission->IsAuto() && autoReverse) {
@@ -139,8 +139,8 @@ void mmGameHandler::UpdateHorn(bool a1) {
     auto siren = car->getSiren();
     auto audio = car->getAudio();
     auto model = car->getModel();
-    auto lightbar0 = model->getGenBreakableMgr()->Get(1);
-    auto lightbar1 = model->getGenBreakableMgr()->Get(2);
+    auto lightbar0 = model->GetGenBreakableMgr()->Get(1);
+    auto lightbar1 = model->GetGenBreakableMgr()->Get(2);
 
     auto policeAudio = audio->GetPoliceCarAudioPtr();
     char* vehName = car->getCarDamage()->GetName();

@@ -101,13 +101,13 @@ float getSpeedLimit(vehCar *car) {
 }
 
 float burnoutTime(vehCar *car) {
-    float speed = car->getCarSim()->getSpeedMPH();
+    float speed = car->getCarSim()->GetSpeedMPH();
 
     for (int i = 0; i < 4; i++)
     {
-        auto wheel = car->getCarSim()->getWheel(i);
+        auto wheel = car->getCarSim()->GetWheel(i);
 
-        if (fabs(wheel->getRotationRate()) > 26.f && speed < 10.f)
+        if (fabs(wheel->GetRotationRate()) > 26.f && speed < 10.f)
             return burnoutTimer += datTimeManager::Seconds;
     }
 
@@ -134,15 +134,15 @@ BOOL aiPoliceOfficerHandler::OffRoad(vehCar *car) {
         auto roadId = veh->CurrentRoadId();
         auto path = AIMAP->paths[roadId];
 
-        if (path->IsPosOnRoad(&car->getCarSim()->getICS()->GetPosition(), 0.f, &outVal) > 1 && roomId < 900)
+        if (path->IsPosOnRoad(&car->getCarSim()->GetICS()->GetPosition(), 0.f, &outVal) > 1 && roomId < 900)
             return TRUE;
     }
 
     for (int i = 0; i < 4; i++)
     {
-        auto wheel = car->getCarSim()->getWheel(i);
+        auto wheel = car->getCarSim()->GetWheel(i);
 
-        if (!strcmp(wheel->getCurrentPhysicsMaterial()->getName(), "grass"))
+        if (!strcmp(wheel->GetCurrentPhysicsMaterial()->getName(), "grass"))
             return TRUE;
     }
 
@@ -157,7 +157,7 @@ BOOL aiPoliceOfficerHandler::IsPerpDrivingMadly(vehCar *perpCar) {
         if (vehPoliceCarAudio::iNumCopsPursuingPlayer < maximumNumCops || maximumNumCops <= 0) {
             if (hook::Thunk<0x53E2A0>::Call<BOOL>(this, perpCar))
             {
-                float speed = perpCar->getCarSim()->getSpeedMPH();
+                float speed = perpCar->getCarSim()->GetSpeedMPH();
                 float speedLimit = getSpeedLimit(perpCar) * 2.857142857142857f;
 
                 if (speed > (speedLimit * cfgSpeedLimitTolerance)) {
@@ -194,7 +194,7 @@ BOOL aiPoliceOfficerHandler::IsPerpDrivingMadly(vehCar *perpCar) {
 BOOL aiPoliceOfficerHandler::IsOppDrivingMadly(vehCar *perpCar) {
     if (hook::Thunk<0x53E2A0>::Call<BOOL>(this, perpCar))
     {
-        float speed = perpCar->getCarSim()->getSpeedMPH();
+        float speed = perpCar->getCarSim()->GetSpeedMPH();
         float speedLimit = getSpeedLimit(perpCar) * 2.857142857142857f;
 
         if (speed > (speedLimit * cfgSpeedLimitTolerance)) {
@@ -237,11 +237,11 @@ void aiPoliceOfficerHandler::Update() {
     auto car = vehiclePhysics->getCar();
     auto carsim = car->getCarSim();
     auto carPos = car->getModel()->GetPosition();
-    auto level = *lvlLevel::Singleton;
+    auto level = lvlLevel::GetSingleton();
 
     if (*getPtr<WORD>(this, 0x977A) != 12) {
         if (level->GetRoomInfo(car->getModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
-            if (level->GetWaterLevel(car->getModel()->GetRoomId()) > carsim->getWorldMatrix()->m31) {
+            if (level->GetWaterLevel(car->getModel()->GetRoomId()) > carsim->GetWorldMatrix()->m31) {
                 PerpEscapes(0);
                 *getPtr<WORD>(this, 0x977A) = 12;
             }
@@ -333,7 +333,7 @@ void vehCarAudioHandler::Update() {
     auto carSim = carAudio->getCarSim();
     
     // grab only forward/sideways velocity, ignore vertical
-    Vector3 vehicleVelo = carSim->getInstance()->GetVelocity();
+    Vector3 vehicleVelo = carSim->GetInstance()->GetVelocity();
     float vehicleMph = sqrtf((vehicleVelo.X * vehicleVelo.X) + (vehicleVelo.Z * vehicleVelo.Z)) * 2.23694f;
 
     //update timer
@@ -401,22 +401,22 @@ void vehCarDamageHandler::Update() {
 
     for (int i = 0; i < 4; i++)
     {
-        auto wheel = carsim->getWheel(i);
+        auto wheel = carsim->GetWheel(i);
 
         int wheelStatusFlag = 1 << (i * 3);
 
-        if ((model->getWheelBrokenStatus() & wheelStatusFlag) != 0) {
-            if (wheel->getRadius() < 0.f) { // Check if the wheel radius is < 0, if so, it's probably done by us, and we need to reset it
+        if ((model->GetWheelBrokenStatus() & wheelStatusFlag) != 0) {
+            if (wheel->GetRadius() < 0.f) { // Check if the wheel radius is < 0, if so, it's probably done by us, and we need to reset it
                 string_buf<16> buffer("whl%d", i);
                 Matrix34 outMatrix;
                 if (GetPivot(outMatrix, carDamage->GetName(), buffer)) {
                     float halfHeight = (outMatrix.m11 - outMatrix.m01) * 0.5f;
-                    wheel->setRadius(fabs(halfHeight));
+                    wheel->SetRadius(fabs(halfHeight));
                 }
             }
         }
         else {
-            wheel->setRadius(-1.f);
+            wheel->SetRadius(-1.f);
             car->getStuck()->setStuckTime(0.f);
         }
     }
@@ -648,7 +648,7 @@ void aiRouteRacerHandler::Update() {
                 if (*getPtr<vehCar*>(police, 0x9774) == opponent->getCar()) {
                     if (*getPtr<int>(this, 0x27C) != 3) {
                         if (opponentPos.Dist(policePos) <= 12.5f) {
-                            if (carsim->getSpeedMPH() <= aiOppBustedMaxSpeed) {
+                            if (carsim->GetSpeedMPH() <= aiOppBustedMaxSpeed) {
                                 aiOppBustedTimer += datTimeManager::Seconds;
                                 if (aiOppBustedTimer > aiOppBustedTimeout) {
                                     *getPtr<int>(this, 0x27C) = 3;

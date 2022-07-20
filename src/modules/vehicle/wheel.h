@@ -35,7 +35,7 @@ namespace MM2
         float SuspensionFactor;
         float SuspensionDampCoef;
         byte _buffer0[0xD8];
-        BOOL IsGrounded;
+        BOOL m_IsGrounded;
         byte _buffer1[0x34];
         Vector3 LastHitPosition;
         Vector3 Center;
@@ -94,51 +94,51 @@ namespace MM2
             return std::make_tuple(functionalFriction, visualFriction);
         }
 
-        inline Matrix34 getMatrix() {
+        Matrix34 GetMatrix() const {
             return this->WheelMatrix;
         }
 
-        inline bool isGrounded() {
-            return this->IsGrounded == TRUE;
+        bool IsGrounded() const {
+            return this->m_IsGrounded == TRUE;
         }
 
-        inline lvlMaterial * getCurrentPhysicsMaterial() {
+        inline lvlMaterial * GetCurrentPhysicsMaterial() {
             return this->CurrentPhysicsMaterial;
         }
 
-        inline float getRadius(void) {
+        inline float GetRadius() const {
             return this->Radius;
         }
 
-        inline void setRadius(float radius) {
+        void SetRadius(float radius) {
             this->Radius = radius;
         }
         
-        inline float getWidth(void) {
+        float GetWidth() const {
             return this->Width;
         }
 
-        inline void setWidth(float width) {
+        void SetWidth(float width) {
             this->Width = width;
         }
 
-        inline Vector3 getCenter(void) {
+        Vector3 GetCenter() const {
             return this->Center;
         }
 
-        inline void setCenter(Vector3 center) {
+        void SetCenter(Vector3 const & center) {
             this->Center = center;
         }
         
-        inline float getLatSlipPercent(void) {
+        float GetLatSlipPercent() const {
             return this->LatSlipPercent;
         }
 
-        inline float getLongSlipPercent(void) {
+        float GetLongSlipPercent() const {
             return this->LongSlipPercent;
         }
 
-        inline float getRotationRate(void) {
+        float GetRotationRate() const {
             return this->RotationRate;
         }
     public:
@@ -212,12 +212,12 @@ namespace MM2
                 .addVariableRef("StaticFric", &vehWheel::StaticFric)
                 .addVariableRef("SlidingFric", &vehWheel::SlidingFric)
 
-                .addProperty("Radius", &getRadius, &setRadius)
-                .addProperty("Width", &getWidth, &setWidth)
+                .addProperty("Radius", &GetRadius, &SetRadius)
+                .addProperty("Width", &GetWidth, &SetWidth)
                 
-                .addPropertyReadOnly("CurrentPhysicsMaterial", &getCurrentPhysicsMaterial)
-                .addPropertyReadOnly("LatSlipPercent", &getLatSlipPercent)
-                .addPropertyReadOnly("LongSlipPercent", &getLongSlipPercent)
+                .addPropertyReadOnly("CurrentPhysicsMaterial", &GetCurrentPhysicsMaterial)
+                .addPropertyReadOnly("LatSlipPercent", &GetLatSlipPercent)
+                .addPropertyReadOnly("LongSlipPercent", &GetLongSlipPercent)
                 
                 //functions
                 .addFunction("CopyVars", &CopyVars)

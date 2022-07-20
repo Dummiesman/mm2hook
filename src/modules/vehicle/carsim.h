@@ -78,142 +78,144 @@ namespace MM2
         Vector3 TrailerBackBackLeftWheelPosDiff;
         Vector3 TrailerBackBackRightWheelPosDiff;
     public:
-        inline float getBoundFriction(void) {
+        float GetBoundFriction() const {
             return this->BoundFriction;
         }
 
-        inline void setBoundFriction(float friction) {
+        void SetBoundFriction(float friction) {
             this->BoundFriction = friction;
             this->RestoreImpactParams(); //apply
         }
 
-        inline float getBoundElasticity(void) {
+        float GetBoundElasticity() const {
             return this->BoundElasticity;
         }
 
-        inline void setBoundElasticity(float elasticity) {
+        void SetBoundElasticity(float elasticity) {
             this->BoundElasticity = elasticity;
             this->RestoreImpactParams(); //apply
         }
 
-        inline Vector3 getInertiaBox(void) {
+        Vector3 GetInertiaBox() const {
             return this->InertiaBox;
         }
 
-        inline void setInertiaBox(Vector3 inertiaBox) {
+        void SetInertiaBox(Vector3 const & inertiaBox) {
             this->InertiaBox = inertiaBox;
             this->InertiaBoxCopy = inertiaBox;
         }
 
-        inline void setAndApplyInertiaBox(Vector3 inertiaBox) {
-            this->setInertiaBox(inertiaBox);
-            
-            auto box = this->getInertiaBox();
-            this->getICS()->InitBoxMass(this->getMass(), box.X, box.Y, box.Z);
+        void SetAndApplyInertiaBox(Vector3 const & inertiaBox) {
+            this->SetInertiaBox(inertiaBox);
+            this->GetICS()->InitBoxMass(this->GetMass(), inertiaBox.X, inertiaBox.Y, inertiaBox.Z);
         }
 
-        inline phInertialCS * getICS(void) {
+        phInertialCS * GetICS() {
             return &this->InertialCS;
         }
 
-        inline Matrix34 * getWorldMatrix(void) {
+        Matrix34 * GetWorldMatrix(void) {
             return &this->WorldMatrix;
         }
 
-        inline float getMass(void) {
+        float GetMass() const {
             return this->Mass;
         }
 
-        inline void setMass(float mass) {
+        void SetMass(float mass) {
             this->Mass = mass;
         }
 
-        inline void setAndApplyMass(float mass) {
-            this->setMass(mass);
+        void SetAndApplyMass(float mass) {
+            this->SetMass(mass);
             
-            auto box = this->getInertiaBox();
-            this->getICS()->InitBoxMass(this->getMass(), box.X, box.Y, box.Z);
+            auto box = this->GetInertiaBox();
+            this->GetICS()->InitBoxMass(mass, box.X, box.Y, box.Z);
         }
 
-        inline int getDrivetrainType(void) {
+        int GetDrivetrainType() const {
             return this->DrivetrainType;
         }
 
-        inline void setDrivetrainType(int type) {
+        void SetDrivetrainType(int type) {
             if (type < 0 || type > 2) //0 = RWD, 1 = FWD, 2 = 4WD
                 return;
             this->DrivetrainType = type;
         }
 
-        inline float getThrottle(void) {
-            return this->Engine.getThrottleInput();
+        float GetThrottle() const {
+            return this->Engine.GetThrottleInput();
         }
 
-        inline void setThrottle(float throttle) {
-            this->Engine.setThrottleInput(throttle);
+        void SetThrottle(float throttle) {
+            this->Engine.SetThrottleInput(throttle);
         }
 
-        inline float getSteering(void) {
+        float GetSteering() const {
             return this->SteeringInput;
         }
 
-        inline void setSteering(float steering) {
+        void SetSteering(float steering) {
             this->SteeringInput = steering;
         }
 
-        inline float getBrake(void) {
+        float GetBrake() const {
             return this->BrakeInput;
         }
 
-        inline void setBrake(float brake) {
+        void SetBrake(float brake) {
             this->BrakeInput = brake;
         }
 
-        inline float getHandbrake(void) {
+        float GetHandbrake() const {
             return this->HandBrakeInput;
         }
 
-        inline void setHandbrake(float handBrake) {
+        void SetHandbrake(float handBrake) {
             this->HandBrakeInput = handBrake;
         }
 
-        inline float getSpeed(void) {
+        float GetSpeed() const {
             return this->Speed;
         }
 
-        inline float getSpeedMPH(void) {
+        float GetSpeedMPH() const {
             return this->SpeedInMph;
         };
 
-        inline Vector3 getResetPosition(void) {
+        Vector3 GetResetPosition() const {
             return this->ResetPosition;
         }
 
-        inline lvlInstance * getInstance(void) {
+        float GetResetRotation() const {
+            return this->ResetRotation;
+        }
+
+        lvlInstance * GetInstance() {
             return this->LvlInstancePtr;
         }
 
-        inline vehTransmission * getTransmission(void) {
+        vehTransmission * GetTransmission() {
             return &this->Transmission;
         }
 
-        inline vehEngine * getEngine(void) {
+        vehEngine * GetEngine() {
             return &this->Engine;
         }
 
-        inline vehDrivetrain * getDrivetrain(void) {
+        vehDrivetrain * GetDrivetrain() {
             return &this->PrimaryDrivetrain;
         }
 
-        inline vehDrivetrain * getLeftFreetrain(void) {
+        vehDrivetrain * GetLeftFreetrain() {
             return &this->FreetrainLeft;
         }
 
-        inline vehDrivetrain * getRightFreetrain(void) {
+        vehDrivetrain * GetRightFreetrain() {
             return &this->FreetrainRight;
         }
 
-        inline vehWheel * getWheel(int num) {
+        vehWheel * GetWheel(int num) {
             switch (num) {
             case 0:
                 return &WheelFrontLeft;
@@ -227,15 +229,15 @@ namespace MM2
             return nullptr;
         }
 
-        inline vehAero * getAero(void) {
+        vehAero * GetAero() {
             return &this->Aero;
         }
 
-        inline vehAxle * getFrontAxle(void) {
+        vehAxle * GetFrontAxle() {
             return &this->AxleFront;
         }
 
-        inline vehAxle * getRearAxle(void) {
+        vehAxle * GetRearAxle() {
             return &this->AxleRear;
         }
 
@@ -251,15 +253,11 @@ namespace MM2
             Matrix34 diffMatrix;
             
             if (GetPivot(diffMatrix, basename, "whl4")) {
-                BackBackLeftWheelPosDiff.X = diffMatrix.m30 - getWheel(2)->getCenter().X;
-                BackBackLeftWheelPosDiff.Y = diffMatrix.m31 - getWheel(2)->getCenter().Y;
-                BackBackLeftWheelPosDiff.Z = diffMatrix.m32 - getWheel(2)->getCenter().Z;
+                BackBackLeftWheelPosDiff = diffMatrix.GetRow(3) - GetWheel(2)->GetCenter();
             }
 
             if (GetPivot(diffMatrix, basename, "whl5")) {
-                BackBackRightWheelPosDiff.X = diffMatrix.m30 - getWheel(3)->getCenter().X;
-                BackBackRightWheelPosDiff.Y = diffMatrix.m31 - getWheel(3)->getCenter().Y;
-                BackBackRightWheelPosDiff.Z = diffMatrix.m32 - getWheel(3)->getCenter().Z;
+                BackBackRightWheelPosDiff = diffMatrix.GetRow(3) - GetWheel(3)->GetCenter();
             }
         }
 
@@ -283,37 +281,37 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<vehCarSim, asNode>("vehCarSim")
-                .addPropertyReadOnly("Drivetrain", &getDrivetrain)
-                .addPropertyReadOnly("LeftFreetrain", &getLeftFreetrain)
-                .addPropertyReadOnly("RightFreetrain", &getRightFreetrain)
+                .addPropertyReadOnly("Drivetrain", &GetDrivetrain)
+                .addPropertyReadOnly("LeftFreetrain", &GetLeftFreetrain)
+                .addPropertyReadOnly("RightFreetrain", &GetRightFreetrain)
 
-                .addPropertyReadOnly("Aero", &getAero)
-                .addPropertyReadOnly("FrontAxle", &getFrontAxle)
-                .addPropertyReadOnly("RearAxle", &getRearAxle)
-                .addPropertyReadOnly("Transmission", &getTransmission)
-                .addPropertyReadOnly("ResetPosition", &getResetPosition)
-                .addPropertyReadOnly("Engine", &getEngine)
-                .addPropertyReadOnly("Speed", &getSpeedMPH)
+                .addPropertyReadOnly("Aero", &GetAero)
+                .addPropertyReadOnly("FrontAxle", &GetFrontAxle)
+                .addPropertyReadOnly("RearAxle", &GetRearAxle)
+                .addPropertyReadOnly("Transmission", &GetTransmission)
+                .addPropertyReadOnly("ResetPosition", &GetResetPosition)
+                .addPropertyReadOnly("Engine", &GetEngine)
+                .addPropertyReadOnly("Speed", &GetSpeedMPH)
 
-                .addPropertyReadOnly("WorldMatrix", &getWorldMatrix)
+                .addPropertyReadOnly("WorldMatrix", &GetWorldMatrix)
 
                 .addVariableRef("CenterOfGravity", &vehCarSim::CenterOfGravity)
                 .addVariableRef("SSSValue", &vehCarSim::SSSValue)
                 .addVariableRef("SSSThreshold", &vehCarSim::SSSThreshold)
                 .addVariableRef("CarFrictionHandling", &vehCarSim::CarFrictionHandling)
 
-                .addProperty("Mass", &getMass, &setAndApplyMass)
-                .addProperty("InertiaBox", &getInertiaBox, &setAndApplyInertiaBox)
-                .addProperty("BoundFriction", &getBoundFriction, &setBoundFriction)
-                .addProperty("BoundElasticity", &getBoundElasticity, &setBoundElasticity)
-                .addProperty("DrivetrainType", &getDrivetrainType, &setDrivetrainType)
+                .addProperty("Mass", &GetMass, &SetAndApplyMass)
+                .addProperty("InertiaBox", &GetInertiaBox, &SetAndApplyInertiaBox)
+                .addProperty("BoundFriction", &GetBoundFriction, &SetBoundFriction)
+                .addProperty("BoundElasticity", &GetBoundElasticity, &SetBoundElasticity)
+                .addProperty("DrivetrainType", &GetDrivetrainType, &SetDrivetrainType)
                 
-                .addProperty("Steering", &getSteering, &setSteering)
-                .addProperty("Brake", &getBrake, &setBrake)
-                .addProperty("Handbrake", &getHandbrake, &setHandbrake)
-                .addProperty("Throttle", &getThrottle, &setThrottle)
+                .addProperty("Steering", &GetSteering, &SetSteering)
+                .addProperty("Brake", &GetBrake, &SetBrake)
+                .addProperty("Handbrake", &GetHandbrake, &SetHandbrake)
+                .addProperty("Throttle", &GetThrottle, &SetThrottle)
 
-                .addFunction("GetWheel", &getWheel)
+                .addFunction("GetWheel", &GetWheel)
 
                 .addFunction("BottomedOut", &BottomedOut)
                 .addFunction("OnGround", &OnGround)
@@ -321,6 +319,7 @@ namespace MM2
                 .addFunction("SetHackedImpactParams", &SetHackedImpactParams)
                 .addFunction("RestoreImpactParams", &RestoreImpactParams)
                 .addFunction("SetResetPos", &SetResetPos)
+                .addFunction("GetICS", &GetICS)
             .endClass();
         }
     };
