@@ -167,85 +167,28 @@ namespace MM2
         short unk_1C8;
 
         short numAmbients;
-    public:
-        //helpers
-        inline aiPoliceForce* getPoliceForce() {
-            return policeForce;
-        }
-
-        inline int getPoliceCount() {
-            return numCops;
-        }
-
-        inline int getHookmanCount() {
-            return numHookmen;
-        }
-
-        inline int getPedestrianCount() {
-            return numPedestrians;
-        }
-
-        inline int getCtfRacerCount() {
-            return numCTFRacers;
-        }
-
-        inline int getPlayerCount() {
-            return numPlayers;
-        }
-
-        inline int getOpponentCount() {
-            return numOpponents;
-        }
-
-        inline int getAmbientCount() {
-            return numAmbientVehicles;
-        }
-
-        inline int getPathsCount() {
-            return numPaths;
-        }
-
-        inline int getIntersectionCount() {
-            return numIntersections;
-        }
-
-        inline std::tuple<int, int> mapComponentTypeLua(int room) {
-            int outId;
-            int componentType = static_cast<int>(this->MapComponentType(room, &outId));
-            return std::make_tuple(componentType, outId);
-        }
-
-        inline std::tuple<int, int> mapComponentLua(const Vector3& position, int room) {
-            short outId, outType;
-            this->MapComponent(position, &outId, &outType, room);
-            return std::make_tuple((int)outType, (int)outId);
-        }
-
-        inline std::tuple<int, int, int> positionToAIMapCompLua(const Vector3& position) {
-            short outId, outType, outRoom;
-            auto res = this->PositionToAIMapComp(position, &outId, &outType, &outRoom, -1);
-
-            if (res == FALSE)
-                return std::make_tuple((int)aiMapComponentType::None, 0, 0);
-            return std::make_tuple((int)outType, (int)outId, (int)outRoom);
-        }
-
-        aiMapStats getStats() {
-            aiMapStats stats;
-            stats._fSubwayUpdate = *this->_fSubwayUpdate;
-            stats._fCableCarUpdate = *this->_fCableCarUpdate;
-            stats._fCTFOppUpdate = *this->_fCTFOppUpdate;
-            stats._fPedUpdate = *this->_fPedUpdate;
-            stats._fAmbientUpdate = *this->_fAmbientUpdate;
-            stats._fCopUpdate = *this->_fCopUpdate;
-            stats._nPedQty = *this->_nPedQty;
-            stats._fOppUpdate = *this->_fOppUpdate;
-            stats._nAmbientQty = *this->_nAmbientQty;
-            stats._fTotUpdate = *this->_fTotUpdate;
-            return stats;
-        }
     private:
-        //profiling hooks
+        std::vector<int> calcRouteLua(const Matrix34& srcMatrix, const Vector3& destPosition, bool shortestPath);
+        std::tuple<int, int> mapComponentTypeLua(int room);
+        std::tuple<int, int> mapComponentLua(const Vector3& position, int room);
+        std::tuple<int, int, int> positionToAIMapCompLua(const Vector3& position);
+    public:
+        aiPoliceForce* GetPoliceForce();
+        int GetPoliceCount();
+        int GetHookmanCount();
+        int GetPedestrianCount();
+        int GetCtfRacerCount();
+        int GetPlayerCount();
+        int GetOpponentCount();
+        int GetAmbientCount();
+        int GetPathsCount();
+        int GetIntersectionCount();
+
+        aiMapStats GetStats() const;
+    protected:
+        static hook::Type<aiMap> Instance;
+    private:
+        // Profiling Stats
         static hook::Type<float> _fSubwayUpdate;
         static hook::Type<float> _fCableCarUpdate;
         static hook::Type<float> _fCTFOppUpdate;
@@ -257,67 +200,37 @@ namespace MM2
         static hook::Type<int>   _nAmbientQty;
         static hook::Type<float> _fTotUpdate;
     public:
-        static hook::Type<aiMap> Instance;
+        static aiMap* GetInstance();
 
         /*
             asNode virtuals
         */
 
-        AGE_API void Cull() override                { hook::Thunk<0x5374F0>::Call<void>(this); }
-        AGE_API void Update() override              { hook::Thunk<0x536E50>::Call<void>(this); }
-        AGE_API void UpdatePaused() override        { hook::Thunk<0x5374E0>::Call<void>(this); }
-        AGE_API void Reset() override               { hook::Thunk<0x536A30>::Call<void>(this); }
+        AGE_API void Cull() override;
+        AGE_API void Update() override;
+        AGE_API void UpdatePaused() override;
+        AGE_API void Reset() override;
         
         /*
             aiMap
         */
-        AGE_API void Dump(void)                              { hook::Thunk<0x538840>::Call<void>(this); }
-        AGE_API void TestProbes(BOOL a2)                     { hook::Thunk<0x53B870>::Call<void>(this, a2); }
-        AGE_API aiRouteRacer * Opponent(int num)             { return hook::Thunk<0x534940>::Call<aiRouteRacer *>(this, num); }
-        AGE_API aiCTFRacer * CTFOpponent(int num)            { return hook::Thunk<0x534990>::Call<aiCTFRacer *>(this, num); }
-        AGE_API aiPoliceOfficer * Police(int num)            { return hook::Thunk<0x5348F0>::Call<aiPoliceOfficer *>(this, num); }
-        AGE_API aiVehiclePlayer * Player(int num)            { return hook::Thunk<0x534AF0>::Call<aiVehiclePlayer *>(this, num); }
-        AGE_API aiVehicleAmbient * Vehicle(int num)          { return hook::Thunk<0x5348B0>::Call<aiVehicleAmbient *>(this, num); }
-        AGE_API aiPedestrian * Pedestrian(int num)           { return hook::Thunk<0x534AB0>::Call<aiPedestrian *>(this, num); }
-        AGE_API aiIntersection* Intersection(int num)        { return hook::Thunk<0x534880>::Call<aiIntersection*>(this, num); }
-        AGE_API aiPath* Path(int num)                        { return hook::Thunk<0x534850>::Call<aiPath*>(this, num); }
+        AGE_API void Dump(void);
+        AGE_API void TestProbes(BOOL a2);
+        AGE_API aiRouteRacer* Opponent(int num) const;
+        AGE_API aiCTFRacer* CTFOpponent(int num) const;
+        AGE_API aiPoliceOfficer* Police(int num) const;
+        AGE_API aiVehiclePlayer* Player(int num) const;
+        AGE_API aiVehicleAmbient* Vehicle(int num) const;
+        AGE_API aiPedestrian* Pedestrian(int num) const;
+        AGE_API aiIntersection* Intersection(int num) const;
+        AGE_API aiPath* Path(int num) const;
+        aiMapComponentType MapComponentType(int room, int* outId);
+        int MapComponent(const Vector3& position, short* outId, short* outType, int room);
+        BOOL PositionToAIMapComp(const Vector3& position, short* outId, short* outType, short* outRoom, short wantedRoadId);
+        void CalcRoute(const Matrix34& srcMatrix, const Vector3& destPosition, const Vector3& unused, short* outIntersectionIds,
+                       short* outIntersectionCount, short sourceRoom, short destRoom, BOOL shortestPath);
 
-        aiMapComponentType MapComponentType(int room, int* outId)
-                                                             { return hook::Thunk<0x537600>::Call<aiMapComponentType>(this, room, outId); }
-        int MapComponent(const Vector3& position, short* outId, short* outType, int room)
-                                                             { return hook::Thunk<0x537680>::Call<int>(this, &position, outId, outType, room); }
-        BOOL PositionToAIMapComp(const Vector3& position, short* outId, short* outType, short* outRoom, short wantedRoadId)
-                                                             { return hook::Thunk<0x5377B0>::Call<BOOL>(this, &position, outId, outType, outRoom, wantedRoadId); }
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<aiMap, asNode>("aiMap")
-                .addFunction("MapComponentType", &mapComponentTypeLua)
-                .addFunction("MapComponent", &mapComponentLua)
-                .addFunction("PositionToAIMapComp", &positionToAIMapCompLua)
-                .addFunction("Dump", &Dump)
-                .addFunction("TestProbes", &TestProbes, LUA_ARGS(bool))
-                .addFunction("Pedestrian", &Pedestrian)
-                .addFunction("Path", &Path)
-                .addFunction("Police", &Police)
-                .addFunction("Player", &Player)
-                .addFunction("Opponent", &Opponent)
-                .addFunction("CTFOpponent", &CTFOpponent)
-                .addFunction("Vehicle", &Vehicle)
-                .addFunction("Intersection", &Intersection)
-                .addPropertyReadOnly("PoliceForce", &getPoliceForce)
-                .addPropertyReadOnly("Stats", &getStats)
-                .addPropertyReadOnly("NumAmbientVehicles", &getAmbientCount)
-                .addPropertyReadOnly("NumPaths", &getPathsCount)
-                .addPropertyReadOnly("NumIntersections", &getIntersectionCount)
-                .addPropertyReadOnly("NumPedestrians", &getPedestrianCount)
-                .addPropertyReadOnly("NumHookmen", &getHookmanCount)
-                .addPropertyReadOnly("NumOpponents", &getOpponentCount)
-                .addPropertyReadOnly("NumPlayers", &getPlayerCount)
-                .addPropertyReadOnly("NumCTFRacers", &getCtfRacerCount)
-                .addPropertyReadOnly("NumPolice", &getPoliceCount)
-                .addVariableRef("ShowHeadlights", &aiMap::showHeadlights)
-                .addStaticProperty("Instance", [] { return  &aiMap::Instance; })
-            .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     ASSERT_SIZEOF(aiMap, 0x1CC);

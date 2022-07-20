@@ -66,7 +66,7 @@ float burnoutTimer = 0.f;
 float soundPlayTime = 0.f;
 
 aiVehicle* findVehicle(vehCar *car) {
-    auto AIMAP = &aiMap::Instance;
+    auto AIMAP = aiMap::GetInstance();
 
     // check players
     for (int i = 0; i < 4; i++) {
@@ -89,7 +89,7 @@ aiVehicle* findVehicle(vehCar *car) {
 }
 
 float getSpeedLimit(vehCar *car) {
-    auto AIMAP = &aiMap::Instance;
+    auto AIMAP = aiMap::GetInstance();
     auto veh = findVehicle(car);
 
     if (veh != nullptr) {
@@ -125,7 +125,7 @@ float hornPlayTime(vehCar *car) {
 }
 
 BOOL aiPoliceOfficerHandler::OffRoad(vehCar *car) {
-    auto AIMAP = &aiMap::Instance;
+    auto AIMAP = aiMap::GetInstance();
     auto veh = findVehicle(car);
     float outVal = 0.f;
 
@@ -218,7 +218,7 @@ void aiPoliceOfficerHandler::PerpEscapes(bool a1)
 {
     auto carAudioContainer = *getPtr<vehCarAudioContainer*>(this, 0x268);
     auto policeCarAudio = carAudioContainer->GetPoliceCarAudioPtr();
-    auto AIMAP = &aiMap::Instance;
+    auto AIMAP = aiMap::GetInstance();
     auto policeOfficer = reinterpret_cast<aiPoliceOfficer*>(this);
 
     policeOfficer->aiPoliceOfficer::StopSiren();
@@ -629,7 +629,7 @@ void aiRouteRacerHandler::Update() {
     if (aiOppBustedTarget >= 2) {
         auto car = opponent->getCar();
         auto carsim = car->getCarSim();
-        auto AIMAP = &aiMap::Instance;
+        auto AIMAP = aiMap::GetInstance();
 
         for (int i = 0; i < AIMAP->numCops; i++)
         {

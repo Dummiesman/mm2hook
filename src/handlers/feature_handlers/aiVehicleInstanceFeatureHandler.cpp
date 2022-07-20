@@ -41,13 +41,16 @@ void aiVehicleInstanceFeatureHandler::Draw(int a1) {
     modStatic* plighton = lvlInstance::GetGeomTableEntry(geomID + PLIGHTOFF_GEOM_ID)->GetHighLOD();
     modStatic* plightoff = lvlInstance::GetGeomTableEntry(geomID + PLIGHTON_GEOM_ID)->GetHighLOD();
 
-    if (plighton != nullptr) {
-        if (aiMap::Instance->showHeadlights)
-            inst->DrawPart(plighton, &carMatrix, shaders, *getPtr<int>(this, 6));
+    //draw plight
+    if (aiMap::GetInstance()->showHeadlights) {
+        modStatic* plighton = inst->GetGeomBase(aiVehicleInstance::PLIGHTOFF_GEOM_ID)->GetHighLOD();
+        if (plighton != nullptr)
+            inst->DrawPart(plighton, &carMatrix, shaders, inst->GetRoomId());
     }
-    if (plightoff != nullptr) {
-        if (!aiMap::Instance->showHeadlights)
-            inst->DrawPart(plightoff, &carMatrix, shaders, *getPtr<int>(this, 6));
+    else {
+        modStatic* plightoff = inst->GetGeomBase(aiVehicleInstance::PLIGHTON_GEOM_ID)->GetHighLOD();
+        if (plightoff != nullptr)
+            inst->DrawPart(plightoff, &carMatrix, shaders, inst->GetRoomId());
     }
 
     //call original
@@ -95,7 +98,7 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
         if (accel < 0.f || speed == 0.f)
             tlight->Draw(shaders);
         //draw headlight copy
-        if (aiMap::Instance->showHeadlights)
+        if (aiMap::GetInstance()->showHeadlights)
             tlight->Draw(shaders);
     }
 
@@ -114,7 +117,7 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
             if (accel < 0.f || speed == 0.f)
                 tslight0->Draw(shaders);
             //draw headlight copy
-            if (aiMap::Instance->showHeadlights)
+            if (aiMap::GetInstance()->showHeadlights)
                 tslight0->Draw(shaders);
         }
     }
@@ -133,7 +136,7 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
             if (accel < 0.f || speed == 0.f)
                 tslight1->Draw(shaders);
             //draw headlight copy
-            if (aiMap::Instance->showHeadlights)
+            if (aiMap::GetInstance()->showHeadlights)
                 tslight1->Draw(shaders);
         }
     }
@@ -142,7 +145,7 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
     if (ambientHeadlightStyle < 3) {
         if (ambientHeadlightStyle == 0 || ambientHeadlightStyle == 2) {
             //MM2 headlights
-            if (aiMap::Instance->showHeadlights) {
+            if (aiMap::GetInstance()->showHeadlights) {
                 //call original
                 hook::Thunk<0x552930>::Call<void>(this);
             }

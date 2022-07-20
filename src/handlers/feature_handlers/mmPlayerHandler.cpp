@@ -32,8 +32,8 @@ void mmPlayerHandler::Zoink() {
     }
 
     // if the aimap doesn't exist, reset back to spawn
-    auto AIMAP = &aiMap::Instance;
-    if (AIMAP == NULL) {
+    auto AIMAP = aiMap::GetInstance();
+    if (AIMAP == nullptr || AIMAP->GetIntersectionCount() == 0) {
         car->Reset();
         return;
     }
@@ -120,7 +120,7 @@ void mmPlayerHandler::PlayExplosion() {
 void mmPlayerHandler::BustPerp() {
     auto player = reinterpret_cast<mmPlayer*>(this);
     auto carsim = player->getCar()->getCarSim();
-    auto AIMAP = &aiMap::Instance;
+    auto AIMAP = aiMap::GetInstance();
 
     if (Wanted_Common::enableBustedTimer)
         Wanted_Common::bustedTimer += datTimeManager::Seconds;
@@ -207,7 +207,7 @@ void mmPlayerHandler::BustOpp() {
     auto car = player->getCar();
     auto audio = car->getAudio();
     auto siren = car->getSiren();
-    auto AIMAP = &aiMap::Instance;
+    auto AIMAP = aiMap::GetInstance();
 
     if (Wanted_Common::enableOppBustedTimer)
         Wanted_Common::oppBustedTimer += datTimeManager::Seconds;
@@ -255,7 +255,7 @@ void mmPlayerHandler::Update() {
     auto engine = carsim->getEngine();
     auto basename = player->getCar()->getCarDamage()->GetName();
     auto flagsId = VehicleListPtr->GetVehicleInfo(basename)->GetFlags();
-    auto AIMAP = &aiMap::Instance;
+    auto AIMAP = aiMap::GetInstance();
 
     //check if we're out of the level
     int playerRoom = car->GetInst()->GetRoomId();

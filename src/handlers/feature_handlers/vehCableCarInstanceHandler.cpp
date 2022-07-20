@@ -46,7 +46,7 @@ void vehCableCarInstanceHandler::DrawShadow()
 void vehCableCarInstanceHandler::DrawGlow()
 {
     //We only draw a headlight glow here. Bail immediately if we can
-    if (!aiMap::Instance->showHeadlights)
+    if (!aiMap::GetInstance()->showHeadlights)
         return;
 
     //get vars

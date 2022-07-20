@@ -17,7 +17,7 @@ void mmSingleRoamHandler::ResetToNearestLocation() {
     auto carPos = car->getModel()->GetPosition();
 
     // if the aimap doesn't exist, reset back to spawn
-    auto AIMAP = &aiMap::Instance;
+    auto AIMAP = aiMap::GetInstance();
     if (AIMAP == NULL) {
         player->Reset();
         return;

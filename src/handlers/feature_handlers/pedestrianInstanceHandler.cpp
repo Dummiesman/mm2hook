@@ -29,7 +29,7 @@ void pedestrianInstanceHandler::aiMapInit(char * a1, char * a2, char * a3, const
     char* values[2] = { "pedmodel_man", "pedmodel_woman" };
     pedRagdollMgr::Instance->Init(2, values);
 
-    aiMap::Instance->AddChild(pedRagdollMgr::Instance);
+    aiMap::GetInstance()->AddChild(pedRagdollMgr::Instance);
 }
 
 phBound * pedestrianInstanceHandler::GetBound(int a1)
