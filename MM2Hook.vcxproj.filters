@@ -1552,6 +1552,12 @@
     <ClInclude Include="src\modules\node\random.h">
       <Filter>Source Files\modules\node</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\audio\aud3dobjectmanager.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\aud3DObjectHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">

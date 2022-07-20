@@ -171,6 +171,7 @@
     <ClInclude Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\aiVehicleInstanceFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\asCullManagerHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\aud3DObjectHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\BridgeFerryHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\cityLevelHandler.h" />
@@ -591,6 +592,7 @@
     <ClCompile Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\aiVehicleInstanceFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\asCullManagerHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\aud3DObjectHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\BridgeFerryHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\cityLevelHandler.cpp" />
