@@ -11,7 +11,7 @@ namespace MM2
 
     // Class definitions
     class asParticles {
-    public:
+    private:
         uint dword4;
         int SparkCount;
         uint dwordC;
@@ -27,6 +27,10 @@ namespace MM2
         Vector3 Wind;
         float WindDensity;
         float Gravity;
+    private:
+        void initLua(int count, int wt, int ht) {
+            Init(count, wt, ht, 4, nullptr);
+        }
     public:
         ANGEL_ALLOCATOR;
 
@@ -40,10 +44,6 @@ namespace MM2
             hook::Thunk<0x460F20>::Call<void>(this);
         }
 
-        void InitLua(int count, int wt, int ht) {
-            Init(count, wt, ht, 4, nullptr);
-        }
-
         AGE_API void Init(int nParticles, int nTilesW, int nTilesH, int nVertices, asMeshCardVertex *mesh)
                                                             { hook::Thunk<0x460FB0>::Call<void>(this, nParticles, nTilesW, nTilesH, nVertices, mesh); }
         AGE_API void Blast(int a1, asBirthRule *rule)       { hook::Thunk<0x461490>::Call<void>(this, a1, rule); }
@@ -53,27 +53,31 @@ namespace MM2
         AGE_API void SetTexture(gfxTexture *tex)            { hook::Thunk<0x461050>::Call<void>(this, tex); }
 
         //member hlepers
-        inline asBirthRule * getBirthRule(void) {
+        int GetSparkCount() const {
+            return this->SparkCount;
+        }
+
+        asBirthRule * GetBirthRule() const {
             return pBirthRule;
         }
 
-        inline void setBirthRule(asBirthRule *rule) {
+        void SetBirthRule(asBirthRule *rule) {
             pBirthRule = rule;
         }
 
-        inline Vector3 getWind(void) {
+        Vector3 GetWind() const {
             return this->Wind;
         }
 
-        inline void setWind(Vector3 wind) {
+        void SetWind(Vector3 wind) {
             this->Wind = wind;
         }
 
-        inline float getIntensity(void) {
+        float GetIntensity() const {
             return this->Intensity;
         }
 
-        inline void setIntensity(float intensity) {
+        void SetIntensity(float intensity) {
             this->Intensity = intensity;
         }
 
@@ -88,13 +92,14 @@ namespace MM2
                 .addConstructor(LUA_ARGS())
                 .addFunction("Blast", &Blast)
                 .addFunction("Update", &Update)
-                .addFunction("Init", &InitLua)
+                .addFunction("Init", &initLua)
                 .addFunction("Reset", &Reset)
                 .addFunction("Cull", &Cull)
                 .addFunction<void (asParticles::*)(const char* a1)>("SetTexture", &SetTexture)
-                .addProperty("BirthRule", &getBirthRule, &setBirthRule)
-                .addProperty("Wind", &getWind, &setWind)
-                .addProperty("Intensity", &getIntensity, &setIntensity)
+                .addProperty("BirthRule", &GetBirthRule, &SetBirthRule)
+                .addProperty("Wind", &GetWind, &SetWind)
+                .addProperty("Intensity", &GetIntensity, &SetIntensity)
+                .addPropertyReadOnly("SparkCount", &GetSparkCount)
             .endClass();
         }
     };
