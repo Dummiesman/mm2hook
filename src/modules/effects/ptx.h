@@ -13,7 +13,7 @@ namespace MM2
     class asParticles {
     private:
         uint dword4;
-        int SparkCount;
+        int NumActive;
         uint dwordC;
         struct asSparkPos *pSparks;
         gfxTexture *Texture;
@@ -53,8 +53,8 @@ namespace MM2
         AGE_API void SetTexture(gfxTexture *tex)            { hook::Thunk<0x461050>::Call<void>(this, tex); }
 
         //member hlepers
-        int GetSparkCount() const {
-            return this->SparkCount;
+        int GetNumActive() const {
+            return this->NumActive;
         }
 
         asBirthRule * GetBirthRule() const {
@@ -99,7 +99,7 @@ namespace MM2
                 .addProperty("BirthRule", &GetBirthRule, &SetBirthRule)
                 .addProperty("Wind", &GetWind, &SetWind)
                 .addProperty("Intensity", &GetIntensity, &SetIntensity)
-                .addPropertyReadOnly("SparkCount", &GetSparkCount)
+                .addPropertyReadOnly("NumActive", &GetNumActive)
             .endClass();
         }
     };
