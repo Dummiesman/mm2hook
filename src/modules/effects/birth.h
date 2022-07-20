@@ -125,9 +125,9 @@ namespace MM2
         int GetDAlphaVar() const;
         void SetDAlphaVar(int dAlphaVar);
         int GetDRotation() const;
-        void SetDRotation(float dRotation);
+        void SetDRotation(int dRotation);
         int GetDRotationVar() const;
-        void SetDRotationVar(float dRotationVar);
+        void SetDRotationVar(int dRotationVar);
         float GetSpewRate() const;
         void SetSpewRate(float rate);
         float GetSpewTimeLimit() const;
