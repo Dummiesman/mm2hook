@@ -80,7 +80,7 @@ aiVehicle* findVehicle(vehCar *car) {
     for (int i = 0; i < AIMAP->numOpponents; i++) {
         auto opponent = AIMAP->opponents[i];
 
-        if (opponent->getCar() == car)
+        if (opponent->GetCar() == car)
             return opponent;
     }
 
@@ -226,7 +226,7 @@ void aiPoliceOfficerHandler::PerpEscapes(bool a1)
     if (policeCarAudio != nullptr && a1)
         policeCarAudio->PlayExplosion();
 
-    AIMAP->policeForce->UnRegisterCop(policeOfficer->getCar(), policeOfficer->getFollowedCar());
+    AIMAP->policeForce->UnRegisterCop(policeOfficer->GetCar(), policeOfficer->GetFollowedCar());
     *getPtr<WORD>(this, 0x977A) = 0;
     *getPtr<WORD>(this, 0x280) = 3;
 }
@@ -627,14 +627,14 @@ void aiRouteRacerHandler::Update() {
         *getPtr<int>(this, 0x27C) = 3;
 
     if (aiOppBustedTarget >= 2) {
-        auto car = opponent->getCar();
+        auto car = opponent->GetCar();
         auto carsim = car->getCarSim();
         auto AIMAP = aiMap::GetInstance();
 
         for (int i = 0; i < AIMAP->numCops; i++)
         {
             auto police = AIMAP->Police(i);
-            auto copCar = police->getVehiclePhysics()->getCar();
+            auto copCar = police->GetCar();
             auto curDamage = car->getCarDamage()->getCurDamage();
             auto maxDamage = car->getCarDamage()->getMaxDamage();
             auto opponentPos = car->getModel()->GetPosition();
@@ -645,7 +645,7 @@ void aiRouteRacerHandler::Update() {
                 continue;
 
             if (*getPtr<WORD>(police, 0x977A) != 0 && *getPtr<WORD>(police, 0x977A) != 12) {
-                if (*getPtr<vehCar*>(police, 0x9774) == opponent->getCar()) {
+                if (*getPtr<vehCar*>(police, 0x9774) == opponent->GetCar()) {
                     if (*getPtr<int>(this, 0x27C) != 3) {
                         if (opponentPos.Dist(policePos) <= 12.5f) {
                             if (carsim->GetSpeedMPH() <= aiOppBustedMaxSpeed) {

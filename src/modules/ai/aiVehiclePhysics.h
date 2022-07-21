@@ -39,12 +39,12 @@ namespace MM2
         aiVehiclePhysics(void)                              DONOTCALL;
         aiVehiclePhysics(const aiVehiclePhysics &&)         DONOTCALL;
 
-        inline vehCar * getCar() 
+        vehCar * GetCar() const
         {
             return _vehCar.ptr(this);
         }
 
-        inline unsigned short getState()
+        unsigned short GetState() const
         {
             return _state.get(this);
         }
@@ -70,8 +70,8 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<aiVehiclePhysics, aiVehicle>("aiVehiclePhysics")
-                .addPropertyReadOnly("Car", &getCar)
-                .addPropertyReadOnly("State", &getState)
+                .addPropertyReadOnly("Car", &GetCar)
+                .addPropertyReadOnly("State", &GetState)
                 .endClass();
         }
     };

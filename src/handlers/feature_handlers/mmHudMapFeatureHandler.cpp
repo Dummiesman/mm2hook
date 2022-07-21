@@ -302,7 +302,7 @@ void mmHudMapFeatureHandler::DrawOpponents() {
             } 
             else {
                 auto opponent = AIMAP->Opponent(i);
-                auto car = opponent->getCar();
+                auto car = opponent->GetCar();
                 auto curDamage = car->getCarDamage()->getCurDamage();
                 auto maxDamage = car->getCarDamage()->getMaxDamage();
 

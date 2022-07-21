@@ -112,7 +112,7 @@ void mmPlayerHandler::BustPerp() {
     for (int i = 0; i < AIMAP->numCops; i++)
     {
         auto police = AIMAP->Police(i);
-        auto car = police->getVehiclePhysics()->getCar();
+        auto car = police->GetCar();
         auto curDamage = car->getCarDamage()->getCurDamage();
         auto maxDamage = car->getCarDamage()->getMaxDamage();
         auto copCarSim = car->getCarSim();
@@ -199,7 +199,7 @@ void mmPlayerHandler::BustOpp() {
     for (int i = 0; i < AIMAP->numOpponents; i++)
     {
         auto opponent = AIMAP->Opponent(i);
-        auto oppCar = opponent->getCar();
+        auto oppCar = opponent->GetCar();
         auto carsim = oppCar->getCarSim();
         auto curDamage = oppCar->getCarDamage()->getCurDamage();
         auto maxDamage = oppCar->getCarDamage()->getMaxDamage();
