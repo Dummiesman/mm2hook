@@ -28,7 +28,7 @@ namespace MM2
         aiPath(void)                                        DONOTCALL;
         aiPath(const aiPath &&)                             DONOTCALL;
 
-        inline float getBaseSpeedLimit()
+        float GetBaseSpeedLimit() const
         {
             return _baseSpeedLimit.get(this);
         }

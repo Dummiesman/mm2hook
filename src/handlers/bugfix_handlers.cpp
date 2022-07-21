@@ -94,7 +94,7 @@ float getSpeedLimit(vehCar *car) {
 
     if (veh != nullptr) {
         auto roadId = veh->CurrentRoadId();
-        return AIMAP->Path(roadId)->getBaseSpeedLimit();
+        return AIMAP->Path(roadId)->GetBaseSpeedLimit();
     }
 
     return cfgDefaultSpeedLimit;
@@ -134,7 +134,7 @@ BOOL aiPoliceOfficerHandler::OffRoad(vehCar *car) {
         auto roadId = veh->CurrentRoadId();
         auto path = AIMAP->paths[roadId];
 
-        if (path->IsPosOnRoad(&car->getCarSim()->GetICS()->GetPosition(), 0.f, &outVal) > 1 && roomId < 900)
+        if (path->IsPosOnRoad(car->getCarSim()->GetICS()->GetPosition(), 0.f, &outVal) > 1 && roomId < 900)
             return TRUE;
     }
 
