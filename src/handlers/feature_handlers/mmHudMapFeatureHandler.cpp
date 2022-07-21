@@ -121,7 +121,7 @@ void mmHudMapFeatureHandler::DrawNfsMwOpponentIcon(const Matrix34 *matrix) {
 void mmHudMapFeatureHandler::DrawPlayer() {
     auto mgr = *mmGameManager::Instance;
     auto game = mgr->getGame();
-    auto player = game->getPlayer();
+    auto player = game->GetPlayer();
     auto car = player->getCar();
     auto audio = car->GetCarAudioContainerPtr();
     auto siren = car->GetSiren();

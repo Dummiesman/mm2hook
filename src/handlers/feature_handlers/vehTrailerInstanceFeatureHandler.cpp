@@ -259,7 +259,7 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
     //get vehSiren since vehTrailer doesn't have one by default
     auto mgr = *mmGameManager::Instance;
     auto game = mgr->getGame();
-    auto player = game->getPlayer();
+    auto player = game->GetPlayer();
     auto car = player->getCar();
     auto siren = car->GetSiren();
 

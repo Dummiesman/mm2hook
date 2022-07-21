@@ -9,7 +9,7 @@ using namespace MM2;
 
 void aiPoliceOfficerFeatureHandler::DetectPerpetrator() {
     mmGameManager *mgr = mmGameManager::Instance;
-    auto player = mgr->getGame()->getPlayer();
+    auto player = mgr->getGame()->GetPlayer();
 
     if (*getPtr<int>(player, 0x2258) || Wanted_Common::bustedTimer > 4.f)
         return;

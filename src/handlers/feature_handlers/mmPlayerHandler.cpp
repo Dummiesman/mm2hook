@@ -321,7 +321,7 @@ void mmPlayerHandler::Update() {
                         if (MMSTATE->GameMode == 3)
                             soundBase->SetSoundHandleIndex(5);
                         soundBase->PlayOnce(-1.f, -1.f);
-                        game->getPopup()->ProcessEscape(0);
+                        game->GetPopup()->ProcessEscape(0);
                         player->getHUD()->StopTimers();
                         Wanted_Common::enableResetTimer = false;
                         Wanted_Common::resetTimer = 0.f;

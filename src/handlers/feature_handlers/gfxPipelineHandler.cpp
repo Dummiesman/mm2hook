@@ -42,7 +42,7 @@ bool gfxPipelineHandler::HandleKeyPress(DWORD vKey)
 
             if (gamePtr != NULL)
             {
-                auto popup = gamePtr->getPopup();
+                auto popup = gamePtr->GetPopup();
 
                 if (popup != NULL) {
                     // don't try opening it again if it's already open

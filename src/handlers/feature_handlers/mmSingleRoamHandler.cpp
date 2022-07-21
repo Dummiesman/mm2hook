@@ -12,7 +12,7 @@ static ConfigValue<bool> cfgResetToNearestLocation("ResetToNearestLocation", fal
 //TODO: This is a 1:1 copy of out of world handler, lets fix that
 void mmSingleRoamHandler::ResetToNearestLocation() {
     auto singleRoam = reinterpret_cast<mmSingleRoam*>(this);
-    auto player = singleRoam->getPlayer();
+    auto player = singleRoam->GetPlayer();
     auto car = player->getCar();
     auto carsim = car->GetCarSim();
     auto carPos = car->GetModel()->GetPosition();
@@ -81,7 +81,7 @@ void mmSingleRoamHandler::ResetToNearestLocation() {
 
 void mmSingleRoamHandler::EscapeDeepWater() {
     auto singleRoam = reinterpret_cast<mmSingleRoam*>(this);
-    auto player = singleRoam->getPlayer();
+    auto player = singleRoam->GetPlayer();
     auto car = player->getCar();
     auto carsim = car->GetCarSim();
     auto carPos = car->GetModel()->GetPosition();
@@ -130,7 +130,7 @@ void mmSingleRoamHandler::EscapeDeepWater() {
 
 void mmSingleRoamHandler::HitWaterHandler() {
     auto singleRoam = reinterpret_cast<mmSingleRoam*>(this);
-    auto player = singleRoam->getPlayer();
+    auto player = singleRoam->GetPlayer();
 
     if (cfgEscapeDeepWater.Get()) {
         EscapeDeepWater();

@@ -28,11 +28,11 @@ namespace MM2
             hook::Thunk<0x413940>::Call<void>(this);
         };
 
-        inline mmPlayer * getPlayer(void) const {
+        mmPlayer * GetPlayer(void) const {
             return _player.get(this);
         };
 
-        inline mmPopup* getPopup(void) const {
+        mmPopup* GetPopup(void) const {
             return _popup.get(this);
         };
 
@@ -71,8 +71,8 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmGame, asNode>("mmGame")
                 //properties
-                .addPropertyReadOnly("Player", &getPlayer)
-                .addPropertyReadOnly("Popup", &getPopup)
+                .addPropertyReadOnly("Player", &GetPlayer)
+                .addPropertyReadOnly("Popup", &GetPopup)
             .endClass();
         }
     };

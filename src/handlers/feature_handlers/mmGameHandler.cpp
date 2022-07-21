@@ -65,7 +65,7 @@ void mmGameHandler::InitWeather(void) {
 
 void mmGameHandler::UpdateSteeringBrakes(void) {
     auto game = reinterpret_cast<mmGame*>(this);
-    auto player = game->getPlayer();
+    auto player = game->GetPlayer();
     auto car = player->getCar();
     auto carsim = car->GetCarSim();
     auto engine = carsim->GetEngine();
@@ -134,7 +134,7 @@ void mmGameHandler::UpdateSteeringBrakes(void) {
 
 void mmGameHandler::UpdateHorn(bool a1) {
     auto game = reinterpret_cast<mmGame*>(this);
-    auto player = game->getPlayer();
+    auto player = game->GetPlayer();
     auto car = player->getCar();
     auto siren = car->GetSiren();
     auto audio = car->GetCarAudioContainerPtr();
