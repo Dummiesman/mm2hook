@@ -28,53 +28,39 @@ namespace MM2
 
         AGE_API void Init(int id, char* basename)           { hook::Thunk<0x554470>::Call<void>(this, id, basename); }
 
-        aiVehiclePhysics* getVehiclePhysics() const
+        aiVehiclePhysics* GetVehiclePhysics() const
         {
             return _physics.ptr(this);
         }
 
-        vehCar* getCar() const
+        vehCar* GetCar() const
         {
-            return getVehiclePhysics()->getCar();
+            return GetVehiclePhysics()->GetCar();
         }
 
-        int getId() const
+        int GetId() const
         {
             return _id.get(this);
         }
 
-        int getState() const
+        int GetState() const
         {
-            return getVehiclePhysics()->getState();
+            return GetVehiclePhysics()->GetState();
         }
 
-        Vector3 getFlagPosition() const
-        {
-            return _flagPosition.get(this);
-        }
+        Vector3 GetFlagPosition() const { return _flagPosition.get(this); }
+        void SetFlagPosition(Vector3 pos) { _flagPosition.set(this, pos); }
 
-        Vector3 getDeliverPosition() const
-        {
-            return _deliverPosition.get(this);
-        }
-
-        void setFlagPosition(Vector3 pos)
-        {
-            _flagPosition.set(this, pos);
-        }
-
-        void setDeliverPosition(Vector3 pos)
-        {
-            _deliverPosition.set(this, pos);
-        }
+        Vector3 GetDeliverPosition() const { return _deliverPosition.get(this); }
+        void SetDeliverPosition(Vector3 pos) { _deliverPosition.set(this, pos); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<aiCTFRacer, Base>("aiCTFRacer")
-                .addPropertyReadOnly("Car", &getCar)
-                .addPropertyReadOnly("State", &getState)
-                .addPropertyReadOnly("ID", &getId)
-                .addProperty("FlagPosition", &getFlagPosition, &setFlagPosition)
-                .addProperty("DeliverPosition", &getDeliverPosition, &setDeliverPosition)
+                .addPropertyReadOnly("Car", &GetCar)
+                .addPropertyReadOnly("State", &GetState)
+                .addPropertyReadOnly("ID", &GetId)
+                .addProperty("FlagPosition", &GetFlagPosition, &SetFlagPosition)
+                .addProperty("DeliverPosition", &GetDeliverPosition, &SetDeliverPosition)
                 .endClass();
         }
 
