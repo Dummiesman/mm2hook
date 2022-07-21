@@ -142,7 +142,7 @@ BOOL aiPoliceOfficerHandler::OffRoad(vehCar *car) {
     {
         auto wheel = car->getCarSim()->GetWheel(i);
 
-        if (!strcmp(wheel->GetCurrentPhysicsMaterial()->getName(), "grass"))
+        if (!strcmp(wheel->GetCurrentPhysicsMaterial()->GetName(), "grass"))
             return TRUE;
     }
 
