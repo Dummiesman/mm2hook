@@ -32,14 +32,14 @@ void mmSingleRoamHandler::ResetToNearestLocation() {
         auto intersection = AIMAP->intersections[is];
 
         // avoid dummy intersections
-        if (intersection->pathCount == 0)
+        if (intersection->GetPathCount() == 0)
             continue;
 
         // check roads to see if this is a valid spawn point
         // valid == (!freeway && !alley)
         bool isInvalid = false;
-        for (int i = 0; i < intersection->pathCount; i++) {
-            auto path = intersection->paths[i];
+        for (int i = 0; i < intersection->GetPathCount(); i++) {
+            auto path = intersection->GetPath(i);
             ushort pathFlags = *getPtr<ushort>(path, 12);
 
             if (pathFlags & 4 || pathFlags & 2) {
@@ -51,7 +51,7 @@ void mmSingleRoamHandler::ResetToNearestLocation() {
             continue;
 
         // this is a valid intersection
-        float pDist = intersection->center.Dist(carPos);
+        float pDist = intersection->GetCenter().Dist(carPos);
         if (pDist < shortestDistance) {
             shortestDistance = pDist;
             closestIntersection = is;
@@ -63,7 +63,7 @@ void mmSingleRoamHandler::ResetToNearestLocation() {
         auto oldResetPos = carsim->GetResetPosition();
 
         // set to closest intersection
-        carsim->SetResetPos(&AIMAP->intersections[closestIntersection]->center);
+        carsim->SetResetPos(&AIMAP->intersections[closestIntersection]->GetCenter());
 
         // reset vehicle
         player->Reset();

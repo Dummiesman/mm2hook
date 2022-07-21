@@ -16,7 +16,7 @@ namespace MM2
     // Class definitions
 
     class aiIntersection {
-    public:
+    private:
         aiPath * *paths;
         int16_t pathCount;
         aiVehicle *prevVeh;
@@ -27,46 +27,42 @@ namespace MM2
         aiTrafficLightSet *trafficLights;
         aiObstacle *vehicles;
         aiObstacle *bangers;
-    private:
-        //helpers
-        inline int getPathCount() {
+    public:
+        aiIntersection(void)                                DONOTCALL;
+        aiIntersection(const aiIntersection &&)             DONOTCALL;
+
+        int GetPathCount() const {
             return pathCount;
         }
 
-        inline aiPath* getPath(int id) {
+        inline aiPath* GetPath(int id) const {
             if (id >= pathCount)
                 return nullptr;
             return paths[id];
         }
 
-        inline int getId() {
+        int GetId() const {
             return id;
         }
 
-        inline int getRoomId() {
+        int GetRoomId() const {
             return roomId;
         }
 
-        inline Vector3 getCenter() {
+        Vector3 GetCenter() const {
             return center;
         }
-    public:
-        aiIntersection(void)                                DONOTCALL;
-        aiIntersection(const aiIntersection &&)             DONOTCALL;
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiIntersection>("aiIntersection")
-                .addFunction("GetPath", &getPath)
-                .addPropertyReadOnly("Id", &getId)
-                .addPropertyReadOnly("RoomId", &getRoomId)
-                .addPropertyReadOnly("Center", &getCenter)
-                .addPropertyReadOnly("NumPaths", &getPathCount)
+                .addFunction("GetPath", &GetPath)
+                .addPropertyReadOnly("Id", &GetId)
+                .addPropertyReadOnly("RoomId", &GetRoomId)
+                .addPropertyReadOnly("Center", &GetCenter)
+                .addPropertyReadOnly("NumPaths", &GetPathCount)
                 .endClass();
         }
     };
 
     ASSERT_SIZEOF(aiIntersection, 0x2C);
-
-    // Lua initialization
-
 }

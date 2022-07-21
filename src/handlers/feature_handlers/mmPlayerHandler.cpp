@@ -46,14 +46,14 @@ void mmPlayerHandler::Zoink() {
         auto intersection = AIMAP->intersections[is];
 
         // avoid dummy intersections
-        if (intersection->pathCount == 0)
+        if (intersection->GetPathCount() == 0)
             continue;
 
         // check roads to see if this is a valid spawn point
         // valid == (!freeway && !alley)
         bool isValid = true;
-        for (int i = 0; i < intersection->pathCount; i++) {
-            auto path = intersection->paths[i];            
+        for (int i = 0; i < intersection->GetPathCount(); i++) {
+            auto path = intersection->GetPath(i);
             ushort pathFlags = *getPtr<ushort>(path, 12);
 
             if (pathFlags & 4 || pathFlags & 2) {
@@ -63,7 +63,7 @@ void mmPlayerHandler::Zoink() {
         }
 
         if (isValid) {
-            float pDist = intersection->center.Dist(carPos);
+            float pDist = intersection->GetCenter().Dist(carPos);
             if (pDist < shortestDistance) {
                 shortestDistance = pDist;
                 closestIntersection = is;
@@ -75,7 +75,7 @@ void mmPlayerHandler::Zoink() {
     car->Reset();
     if (closestIntersection >= 0) {
         auto ics = car->GetICS();
-        ics->SetPosition(AIMAP->Intersection(closestIntersection)->center);
+        ics->SetPosition(AIMAP->Intersection(closestIntersection)->GetCenter());
     }
 }
 
