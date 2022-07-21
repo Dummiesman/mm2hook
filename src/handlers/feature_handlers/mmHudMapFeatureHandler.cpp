@@ -123,9 +123,9 @@ void mmHudMapFeatureHandler::DrawPlayer() {
     auto game = mgr->getGame();
     auto player = game->getPlayer();
     auto car = player->getCar();
-    auto audio = car->getAudio();
-    auto siren = car->getSiren();
-    char *vehName = car->getCarDamage()->GetName();
+    auto audio = car->GetCarAudioContainerPtr();
+    auto siren = car->GetSiren();
+    char *vehName = car->GetCarDamage()->GetName();
     bool elapsedTime1 = fmod(datTimeManager::ElapsedTime, 0.15f) > 0.1f;
     bool elapsedTime2 = fmod(datTimeManager::ElapsedTime, 0.125f) > 0.1f;
     bool elapsedTime3 = fmod(datTimeManager::ElapsedTime, 0.5f) > 0.25f;
@@ -303,8 +303,8 @@ void mmHudMapFeatureHandler::DrawOpponents() {
             else {
                 auto opponent = AIMAP->Opponent(i);
                 auto car = opponent->GetCar();
-                auto curDamage = car->getCarDamage()->getCurDamage();
-                auto maxDamage = car->getCarDamage()->getMaxDamage();
+                auto curDamage = car->GetCarDamage()->getCurDamage();
+                auto maxDamage = car->GetCarDamage()->getMaxDamage();
 
                 if (curDamage < maxDamage) {
                     if (hudMapColorStyle == 0) {

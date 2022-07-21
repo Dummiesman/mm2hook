@@ -74,7 +74,7 @@ namespace MM2
         auto sirenGeom = this->GetGeom(3, geomId);
         if (sirenGeom != nullptr)
         {
-            auto siren = this->car->getSiren();
+            auto siren = this->car->GetSiren();
             Matrix34 outMatrix;
 
             GetPivot(outMatrix, basename, mtxName);
@@ -289,7 +289,7 @@ namespace MM2
     void vehCarModel::Init(vehCar* car, const char* basename, int variant)
     {
         this->car = car;
-        this->carSim = car->getCarSim();
+        this->carSim = car->GetCarSim();
         this->variant = (variant > 255) ? 0 : variant;
         bool hasGeometry = false;
 
@@ -470,7 +470,7 @@ namespace MM2
             lvlInstance::Optimize(this->variant);
 
         //init siren lights
-        auto siren = this->car->getSiren();
+        auto siren = this->car->GetSiren();
         if (siren != nullptr) 
         {
             siren->Init();
@@ -1038,9 +1038,9 @@ namespace MM2
         //get car stuff we use to determine what to darw
         auto car = this->GetCar();
         auto carsim = this->carSim;
-        auto siren = car->getSiren();
-        auto curDamage = car->getCarDamage()->getCurDamage();
-        auto maxDamage = car->getCarDamage()->getMaxDamage();
+        auto siren = car->GetSiren();
+        auto curDamage = car->GetCarDamage()->getCurDamage();
+        auto maxDamage = car->GetCarDamage()->getMaxDamage();
         int gear = carsim->GetTransmission()->GetGear();
         if (curDamage >= maxDamage && vehCarModel::MWStyleTotaledCar)
             return;

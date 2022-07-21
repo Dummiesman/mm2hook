@@ -67,11 +67,11 @@ void mmGameHandler::UpdateSteeringBrakes(void) {
     auto game = reinterpret_cast<mmGame*>(this);
     auto player = game->getPlayer();
     auto car = player->getCar();
-    auto carsim = car->getCarSim();
+    auto carsim = car->GetCarSim();
     auto engine = carsim->GetEngine();
     auto transmission = carsim->GetTransmission();
-    auto curDamage = car->getCarDamage()->getCurDamage();
-    auto maxDamage = car->getCarDamage()->getMaxDamage();
+    auto curDamage = car->GetCarDamage()->getCurDamage();
+    auto maxDamage = car->GetCarDamage()->getMaxDamage();
     auto inst = mmReplayManager::Instance;
 
     void *gameInputPtr = *reinterpret_cast<void **>(0x6B1CF0); // pointer to mmInput
@@ -136,14 +136,14 @@ void mmGameHandler::UpdateHorn(bool a1) {
     auto game = reinterpret_cast<mmGame*>(this);
     auto player = game->getPlayer();
     auto car = player->getCar();
-    auto siren = car->getSiren();
-    auto audio = car->getAudio();
-    auto model = car->getModel();
+    auto siren = car->GetSiren();
+    auto audio = car->GetCarAudioContainerPtr();
+    auto model = car->GetModel();
     auto lightbar0 = model->GetGenBreakableMgr()->Get(1);
     auto lightbar1 = model->GetGenBreakableMgr()->Get(2);
 
     auto policeAudio = audio->GetPoliceCarAudioPtr();
-    char* vehName = car->getCarDamage()->GetName();
+    char* vehName = car->GetCarDamage()->GetName();
 
     bool isSirenActive = siren->Active;
     bool isVehiclePolice = audio->IsPolice(vehName);

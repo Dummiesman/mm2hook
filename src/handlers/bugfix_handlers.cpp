@@ -101,11 +101,11 @@ float getSpeedLimit(vehCar *car) {
 }
 
 float burnoutTime(vehCar *car) {
-    float speed = car->getCarSim()->GetSpeedMPH();
+    float speed = car->GetCarSim()->GetSpeedMPH();
 
     for (int i = 0; i < 4; i++)
     {
-        auto wheel = car->getCarSim()->GetWheel(i);
+        auto wheel = car->GetCarSim()->GetWheel(i);
 
         if (fabs(wheel->GetRotationRate()) > 26.f && speed < 10.f)
             return burnoutTimer += datTimeManager::Seconds;
@@ -115,7 +115,7 @@ float burnoutTime(vehCar *car) {
 }
 
 float hornPlayTime(vehCar *car) {
-    auto carAudio = car->getAudio()->GetCarAudioPtr();
+    auto carAudio = car->GetCarAudioContainerPtr()->GetCarAudioPtr();
     auto hornSound = *getPtr<AudSoundBase*>(carAudio, 0x10C);
 
     if (hornSound->IsPlaying())
@@ -130,17 +130,17 @@ BOOL aiPoliceOfficerHandler::OffRoad(vehCar *car) {
     float outVal = 0.f;
 
     if (veh != nullptr) {
-        auto roomId = car->getModel()->GetRoomId();
+        auto roomId = car->GetModel()->GetRoomId();
         auto roadId = veh->CurrentRoadId();
         auto path = AIMAP->paths[roadId];
 
-        if (path->IsPosOnRoad(car->getCarSim()->GetICS()->GetPosition(), 0.f, &outVal) > 1 && roomId < 900)
+        if (path->IsPosOnRoad(car->GetCarSim()->GetICS()->GetPosition(), 0.f, &outVal) > 1 && roomId < 900)
             return TRUE;
     }
 
     for (int i = 0; i < 4; i++)
     {
-        auto wheel = car->getCarSim()->GetWheel(i);
+        auto wheel = car->GetCarSim()->GetWheel(i);
 
         if (!strcmp(wheel->GetCurrentPhysicsMaterial()->GetName(), "grass"))
             return TRUE;
@@ -150,14 +150,14 @@ BOOL aiPoliceOfficerHandler::OffRoad(vehCar *car) {
 }
 
 BOOL aiPoliceOfficerHandler::IsPerpDrivingMadly(vehCar *perpCar) {
-    char *vehName = perpCar->getCarDamage()->GetName(); // we can't use vehCarSim because the game forces vpcop to vpmustang99...
+    char *vehName = perpCar->GetCarDamage()->GetName(); // we can't use vehCarSim because the game forces vpcop to vpmustang99...
 
     // ignore perp if they're a cop
     if (!hook::StaticThunk<0x4D1A70>::Call<bool>(vehName)) {
         if (vehPoliceCarAudio::iNumCopsPursuingPlayer < maximumNumCops || maximumNumCops <= 0) {
             if (hook::Thunk<0x53E2A0>::Call<BOOL>(this, perpCar))
             {
-                float speed = perpCar->getCarSim()->GetSpeedMPH();
+                float speed = perpCar->GetCarSim()->GetSpeedMPH();
                 float speedLimit = getSpeedLimit(perpCar) * 2.857142857142857f;
 
                 if (speed > (speedLimit * cfgSpeedLimitTolerance)) {
@@ -194,7 +194,7 @@ BOOL aiPoliceOfficerHandler::IsPerpDrivingMadly(vehCar *perpCar) {
 BOOL aiPoliceOfficerHandler::IsOppDrivingMadly(vehCar *perpCar) {
     if (hook::Thunk<0x53E2A0>::Call<BOOL>(this, perpCar))
     {
-        float speed = perpCar->getCarSim()->GetSpeedMPH();
+        float speed = perpCar->GetCarSim()->GetSpeedMPH();
         float speedLimit = getSpeedLimit(perpCar) * 2.857142857142857f;
 
         if (speed > (speedLimit * cfgSpeedLimitTolerance)) {
@@ -234,13 +234,13 @@ void aiPoliceOfficerHandler::PerpEscapes(bool a1)
 void aiPoliceOfficerHandler::Update() {
     auto policeOfficer = reinterpret_cast<aiPoliceOfficer*>(this);
     auto car = policeOfficer->GetCar();
-    auto carsim = car->getCarSim();
-    auto carPos = car->getModel()->GetPosition();
+    auto carsim = car->GetCarSim();
+    auto carPos = car->GetModel()->GetPosition();
     auto level = lvlLevel::GetSingleton();
 
     if (*getPtr<WORD>(this, 0x977A) != 12) {
-        if (level->GetRoomInfo(car->getModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
-            if (level->GetWaterLevel(car->getModel()->GetRoomId()) > carsim->GetWorldMatrix()->m31) {
+        if (level->GetRoomInfo(car->GetModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
+            if (level->GetWaterLevel(car->GetModel()->GetRoomId()) > carsim->GetWorldMatrix()->m31) {
                 PerpEscapes(0);
                 *getPtr<WORD>(this, 0x977A) = 12;
             }
@@ -395,8 +395,8 @@ static ConfigValue<bool> cfgBrokenWheels("PhysicalBrokenWheels", true);
 void vehCarDamageHandler::Update() {
     auto carDamage = reinterpret_cast<vehCarDamage*>(this);
     auto car = carDamage->getCar();
-    auto carsim = car->getCarSim();
-    auto model = car->getModel();
+    auto carsim = car->GetCarSim();
+    auto model = car->GetModel();
 
     for (int i = 0; i < 4; i++)
     {
@@ -416,7 +416,7 @@ void vehCarDamageHandler::Update() {
         }
         else {
             wheel->SetRadius(-1.f);
-            car->getStuck()->setStuckTime(0.f);
+            car->GetStuck()->setStuckTime(0.f);
         }
     }
 
@@ -627,18 +627,18 @@ void aiRouteRacerHandler::Update() {
 
     if (aiOppBustedTarget >= 2) {
         auto car = opponent->GetCar();
-        auto carsim = car->getCarSim();
+        auto carsim = car->GetCarSim();
         auto AIMAP = aiMap::GetInstance();
 
         for (int i = 0; i < AIMAP->numCops; i++)
         {
             auto police = AIMAP->Police(i);
             auto copCar = police->GetCar();
-            auto curDamage = car->getCarDamage()->getCurDamage();
-            auto maxDamage = car->getCarDamage()->getMaxDamage();
-            auto opponentPos = car->getModel()->GetPosition();
-            auto policePos = copCar->getModel()->GetPosition();
-            auto policeAud = copCar->getAudio()->GetPoliceCarAudioPtr();
+            auto curDamage = car->GetCarDamage()->getCurDamage();
+            auto maxDamage = car->GetCarDamage()->getMaxDamage();
+            auto opponentPos = car->GetModel()->GetPosition();
+            auto policePos = copCar->GetModel()->GetPosition();
+            auto policeAud = copCar->GetCarAudioContainerPtr()->GetPoliceCarAudioPtr();
 
             if (*getPtr<int>(car, 0xEC) != 0 && curDamage < maxDamage)
                 continue;

@@ -29,7 +29,7 @@ void mmDashViewHandler::UpdateCS() {
     auto player = *getPtr<mmPlayer*>(this, 0x80);
 
     auto car = player->getCar();
-    auto carModel = car->getModel();
+    auto carModel = car->GetModel();
 
     sm_DashOffset = carModel->GetMatrix(&sm_DashOffset);
 

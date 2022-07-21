@@ -20,7 +20,7 @@ void mmPlayerHandler::Zoink() {
     //get required vars
     auto player = reinterpret_cast<mmPlayer*>(this);
     auto car = player->getCar();
-    auto carPos = car->getModel()->GetPosition();
+    auto carPos = car->GetModel()->GetPosition();
 
     // tell the player "That didn't happen!"
     player->getHUD()->SetMessage(AngelReadString(29), 3.f, 0);
@@ -83,17 +83,17 @@ bool prevSplashState = false;
 void mmPlayerHandler::Splash() {
     auto player = reinterpret_cast<mmPlayer*>(this);
     auto car = player->getCar();
-    float vehicleMph = car->getModel()->GetVelocity().Mag() * 2.23694f;
+    float vehicleMph = car->GetModel()->GetVelocity().Mag() * 2.23694f;
 
     //trigger ColliderId 22 with velocity of vehicleMph
-    auto impactAud = car->getAudio()->GetAudImpactPtr();
+    auto impactAud = car->GetCarAudioContainerPtr()->GetAudImpactPtr();
     impactAud->Play(vehicleMph, 22);
 }
 
 void mmPlayerHandler::PlayExplosion() {
     auto player = reinterpret_cast<mmPlayer*>(this);
     auto car = player->getCar();
-    auto policeAudio = car->getAudio()->GetPoliceCarAudioPtr();
+    auto policeAudio = car->GetCarAudioContainerPtr()->GetPoliceCarAudioPtr();
     auto explosionSound = *getPtr<AudSoundBase*>(policeAudio, 0x138);
     if (explosionSound != nullptr) {
         if (!explosionSound->IsPlaying())
@@ -103,7 +103,7 @@ void mmPlayerHandler::PlayExplosion() {
 
 void mmPlayerHandler::BustPerp() {
     auto player = reinterpret_cast<mmPlayer*>(this);
-    auto carsim = player->getCar()->getCarSim();
+    auto carsim = player->getCar()->GetCarSim();
     auto AIMAP = aiMap::GetInstance();
 
     if (Wanted_Common::enableBustedTimer)
@@ -113,16 +113,16 @@ void mmPlayerHandler::BustPerp() {
     {
         auto police = AIMAP->Police(i);
         auto car = police->GetCar();
-        auto curDamage = car->getCarDamage()->getCurDamage();
-        auto maxDamage = car->getCarDamage()->getMaxDamage();
-        auto copCarSim = car->getCarSim();
-        auto policePos = car->getModel()->GetPosition();
-        auto policeAud = car->getAudio()->GetPoliceCarAudioPtr();
-        auto playerPos = player->getCar()->getModel()->GetPosition();
+        auto curDamage = car->GetCarDamage()->getCurDamage();
+        auto maxDamage = car->GetCarDamage()->getMaxDamage();
+        auto copCarSim = car->GetCarSim();
+        auto policePos = car->GetModel()->GetPosition();
+        auto policeAud = car->GetCarAudioContainerPtr()->GetPoliceCarAudioPtr();
+        auto playerPos = player->getCar()->GetModel()->GetPosition();
 
         if (vehPoliceCarAudio::iNumCopsPursuingPlayer == 0) {
-            if (lvlLevel::GetSingleton()->GetRoomInfo(car->getModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
-                if (lvlLevel::GetSingleton()->GetWaterLevel(car->getModel()->GetRoomId()) > copCarSim->GetWorldMatrix()->m31) {
+            if (lvlLevel::GetSingleton()->GetRoomInfo(car->GetModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
+                if (lvlLevel::GetSingleton()->GetWaterLevel(car->GetModel()->GetRoomId()) > copCarSim->GetWorldMatrix()->m31) {
                     Wanted_Common::enableBustedTimer = false;
                     Wanted_Common::bustedTimer = 0.f;
                     Wanted_Common::enableResetTimer = false;
@@ -189,8 +189,8 @@ void mmPlayerHandler::BustPerp() {
 void mmPlayerHandler::BustOpp() {
     auto player = reinterpret_cast<mmPlayer*>(this);
     auto car = player->getCar();
-    auto audio = car->getAudio();
-    auto siren = car->getSiren();
+    auto audio = car->GetCarAudioContainerPtr();
+    auto siren = car->GetSiren();
     auto AIMAP = aiMap::GetInstance();
 
     if (Wanted_Common::enableOppBustedTimer)
@@ -200,11 +200,11 @@ void mmPlayerHandler::BustOpp() {
     {
         auto opponent = AIMAP->Opponent(i);
         auto oppCar = opponent->GetCar();
-        auto carsim = oppCar->getCarSim();
-        auto curDamage = oppCar->getCarDamage()->getCurDamage();
-        auto maxDamage = oppCar->getCarDamage()->getMaxDamage();
-        auto opponentPos = oppCar->getModel()->GetPosition();
-        auto playerPos = car->getModel()->GetPosition();
+        auto carsim = oppCar->GetCarSim();
+        auto curDamage = oppCar->GetCarDamage()->getCurDamage();
+        auto maxDamage = oppCar->GetCarDamage()->getMaxDamage();
+        auto opponentPos = oppCar->GetModel()->GetPosition();
+        auto playerPos = car->GetModel()->GetPosition();
 
         if (*getPtr<int>(oppCar, 0xEC) != 0 && curDamage < maxDamage)
             continue;
@@ -233,11 +233,11 @@ void mmPlayerHandler::BustOpp() {
 void mmPlayerHandler::Update() {
     auto player = reinterpret_cast<mmPlayer*>(this);
     auto car = player->getCar();
-    auto audio = car->getAudio();
-    auto siren = car->getSiren();
-    auto carsim = car->getCarSim();
+    auto audio = car->GetCarAudioContainerPtr();
+    auto siren = car->GetSiren();
+    auto carsim = car->GetCarSim();
     auto engine = carsim->GetEngine();
-    auto basename = player->getCar()->getCarDamage()->GetName();
+    auto basename = player->getCar()->GetCarDamage()->GetName();
     auto flagsId = VehicleListPtr->GetVehicleInfo(basename)->GetFlags();
     auto AIMAP = aiMap::GetInstance();
 
@@ -249,7 +249,7 @@ void mmPlayerHandler::Update() {
 
     //play splash sound if we just hit the water
     if (cfgEnableWaterSplashSound.Get()) {
-        bool splashState = car->getSplash()->isActive();
+        bool splashState = car->GetSplash()->isActive();
         if (splashState && splashState != prevSplashState) {
             Splash();
         }
@@ -332,7 +332,7 @@ void mmPlayerHandler::Update() {
     }
 
     if (carsim->GetWorldMatrix()->m11 <= 0.f)
-        car->getStuck()->setStuckTime(0.f);
+        car->GetStuck()->setStuckTime(0.f);
 
     //call original
     hook::Thunk<0x405760>::Call<void>(this);

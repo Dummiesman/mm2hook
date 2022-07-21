@@ -261,7 +261,7 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
     auto game = mgr->getGame();
     auto player = game->getPlayer();
     auto car = player->getCar();
-    auto siren = car->getSiren();
+    auto siren = car->GetSiren();
 
     //draw siren
     if (siren != nullptr && siren->Active) {

@@ -11,7 +11,7 @@ static ConfigValue<bool> cfgPhysicalEngineDamage("PhysicalEngineDamage", false);
 float vehEngineFeatureHandler::CalcTorque(float a1) {
     auto engine = reinterpret_cast<vehEngine*>(this);
 
-    auto carDamage = reinterpret_cast<vehCarModel*>(engine->GetCarSim()->GetInstance())->GetCar()->getCarDamage();
+    auto carDamage = reinterpret_cast<vehCarModel*>(engine->GetCarSim()->GetInstance())->GetCar()->GetCarDamage();
     float damagePercent = (carDamage->getCurDamage() - carDamage->getMedDamage()) / (carDamage->getMaxDamage() - carDamage->getMedDamage());
     
     //clamp from 0-70%

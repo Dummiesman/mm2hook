@@ -54,43 +54,43 @@ namespace MM2
 
         static hook::Type<bool> sm_DrawHeadlights;
 
-        inline vehCarDamage * getCarDamage(void) const {
+        vehCarDamage * GetCarDamage(void) const {
             return _damage.get(this);
         };
 
-        inline vehCarSim * getCarSim(void) const {
+        vehCarSim * GetCarSim() const {
             return _sim.get(this);
         }
 
-        inline vehCarModel * getModel(void) const {
+        vehCarModel * GetModel() const {
             return _model.get(this);
         }
 
-        inline vehSplash * getSplash(void) const {
+        vehSplash * GetSplash() const {
             return _splash.get(this);
         }
 
-        inline vehCarAudioContainer * getAudio(void) const {
+        vehCarAudioContainer * GetCarAudioContainerPtr() const {
             return _audio.get(this);
         }
 
-        inline vehTrailer * getTrailer(void) const {
+        vehTrailer * GetTrailer() const {
             return _trailer.get(this);
         }
 
-        inline vehSiren * getSiren(void) const {
+        vehSiren * GetSiren() const {
             return _siren.get(this);
         }
 
-        inline vehWheelPtx * getWheelPtx(void) const {
+        vehWheelPtx * GetWheelPtx() const {
             return _wheelPtx.get(this);
         }
 
-        inline vehGyro * getGyro(void) const {
+        vehGyro * GetGyro() const {
             return _gyro.get(this);
         }
 
-        inline vehStuck* getStuck(void) const {
+        vehStuck * GetStuck() const {
             return _stuck.get(this);
         }
 
@@ -119,17 +119,17 @@ namespace MM2
             LuaBinding(L).beginExtendClass<vehCar, dgPhysEntity>("vehCar")
                 .addConstructor(LUA_ARGS(bool))
                 //properties
-                .addPropertyReadOnly("CarDamage", &getCarDamage)
-                .addPropertyReadOnly("CarSim", &getCarSim)
-                .addPropertyReadOnly("Splash", &getSplash)
-                .addPropertyReadOnly("Audio", &getAudio)
-                .addPropertyReadOnly("Trailer", &getTrailer)
-                .addPropertyReadOnly("Siren", &getSiren)
-                .addPropertyReadOnly("WheelPtx", &getWheelPtx)
-                .addPropertyReadOnly("Gyro", &getGyro)
-                .addPropertyReadOnly("Stuck", &getStuck)
+                .addPropertyReadOnly("CarDamage", &GetCarDamage)
+                .addPropertyReadOnly("CarSim", &GetCarSim)
+                .addPropertyReadOnly("Splash", &GetSplash)
+                .addPropertyReadOnly("Audio", &GetCarAudioContainerPtr)
+                .addPropertyReadOnly("Trailer", &GetTrailer)
+                .addPropertyReadOnly("Siren", &GetSiren)
+                .addPropertyReadOnly("WheelPtx", &GetWheelPtx)
+                .addPropertyReadOnly("Gyro", &GetGyro)
+                .addPropertyReadOnly("Stuck", &GetStuck)
 
-                .addPropertyReadOnly("Instance", &getModel)
+                .addPropertyReadOnly("Instance", &GetModel)
 
                 //functions
                 .addFunction("Init", &Init)

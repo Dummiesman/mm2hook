@@ -24,7 +24,7 @@ const phBound * vehCarHandler::GetModelBound(int a1) {
 
 void vehCarHandler::InitCarAudio(LPCSTR a1, BOOL a2) {
     auto car = reinterpret_cast<vehCar*>(this);
-    char *vehName = car->getCarDamage()->GetName();
+    char *vehName = car->GetCarDamage()->GetName();
     int flagsId = VehicleListPtr->GetVehicleInfo(vehName)->GetFlags();
 
     // debug if enabled
@@ -34,8 +34,8 @@ void vehCarHandler::InitCarAudio(LPCSTR a1, BOOL a2) {
 
     //Automatic vehtypes system
     bool vehicleHasSiren = false;
-    if (car->getSiren() != nullptr) {
-        vehicleHasSiren = car->getSiren()->HasLights && car->getSiren()->LightCount > 0;
+    if (car->GetSiren() != nullptr) {
+        vehicleHasSiren = car->GetSiren()->HasLights && car->GetSiren()->LightCount > 0;
     }
 
     if (vehicleHasSiren || flagsId == 8 && !vehCarAudioContainer::IsPolice(a1)) {
@@ -58,12 +58,12 @@ void vehCarHandler::InitCarAudio(LPCSTR a1, BOOL a2) {
 
 void vehCarHandler::Mm1StyleTransmission() {
     auto car = reinterpret_cast<vehCar*>(this);
-    auto carsim = car->getCarSim();
+    auto carsim = car->GetCarSim();
     auto engine = carsim->GetEngine();
     auto drivetrain = carsim->GetDrivetrain();
     auto transmission = carsim->GetTransmission();
-    auto curDamage = car->getCarDamage()->getCurDamage();
-    auto maxDamage = car->getCarDamage()->getMaxDamage();
+    auto curDamage = car->GetCarDamage()->getCurDamage();
+    auto maxDamage = car->GetCarDamage()->getMaxDamage();
 
     if (curDamage < maxDamage) {
         if (transmission->IsAuto()) {
@@ -98,11 +98,11 @@ void vehCarHandler::Mm1StyleTransmission() {
 
 void vehCarHandler::Update() {
     auto car = reinterpret_cast<vehCar*>(this);
-    auto siren = car->getSiren();
-    auto audio = car->getAudio();
-    auto model = car->getModel();
-    auto damage = car->getCarDamage();
-    auto engine = car->getCarSim()->GetEngine();
+    auto siren = car->GetSiren();
+    auto audio = car->GetCarAudioContainerPtr();
+    auto model = car->GetModel();
+    auto damage = car->GetCarDamage();
+    auto engine = car->GetCarSim()->GetEngine();
     auto lightbar0 = model->GetGenBreakableMgr()->Get(1);
     auto lightbar1 = model->GetGenBreakableMgr()->Get(2);
 

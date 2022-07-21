@@ -14,8 +14,8 @@ void mmSingleRoamHandler::ResetToNearestLocation() {
     auto singleRoam = reinterpret_cast<mmSingleRoam*>(this);
     auto player = singleRoam->getPlayer();
     auto car = player->getCar();
-    auto carsim = car->getCarSim();
-    auto carPos = car->getModel()->GetPosition();
+    auto carsim = car->GetCarSim();
+    auto carPos = car->GetModel()->GetPosition();
 
     // if the aimap doesn't exist, reset back to spawn
     auto AIMAP = aiMap::GetInstance();
@@ -83,12 +83,12 @@ void mmSingleRoamHandler::EscapeDeepWater() {
     auto singleRoam = reinterpret_cast<mmSingleRoam*>(this);
     auto player = singleRoam->getPlayer();
     auto car = player->getCar();
-    auto carsim = car->getCarSim();
-    auto carPos = car->getModel()->GetPosition();
+    auto carsim = car->GetCarSim();
+    auto carPos = car->GetModel()->GetPosition();
     auto level = lvlLevel::GetSingleton();
 
-    if (level->GetRoomInfo(car->getModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater) &&
-        level->GetWaterLevel(car->getModel()->GetRoomId()) > carsim->GetWorldMatrix()->m31) {
+    if (level->GetRoomInfo(car->GetModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater) &&
+        level->GetWaterLevel(car->GetModel()->GetRoomId()) > carsim->GetWorldMatrix()->m31) {
         if (cfgResetToNearestLocation.Get()) {
             ResetToNearestLocation();
         }
@@ -106,7 +106,7 @@ void mmSingleRoamHandler::EscapeDeepWater() {
         //enable camera controls
         *getPtr<byte>(player, 0xE59) = 0;
 
-        car->getSplash()->setActive(false);
+        car->GetSplash()->setActive(false);
         player->getCamView()->SetCam(player->getCurrentCameraPtr());
 
         if (MMSTATE->ShowDash || *getPtr<int>(player, 0x880)) {
