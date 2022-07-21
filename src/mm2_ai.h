@@ -23,6 +23,7 @@ namespace MM2
         luaBind<aiRouteRacer>(L);
         luaBind<aiCTFRacer>(L);
         luaBind<aiPoliceOfficer>(L);
+        luaBind<mcHookman>(L);
         luaBind<lvlAiMap>(L);
         luaBind<lvlAiRoad>(L);
         luaBind<aiVehicleInstance>(L);

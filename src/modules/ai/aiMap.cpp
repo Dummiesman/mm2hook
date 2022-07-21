@@ -125,6 +125,7 @@ namespace MM2
     // aiMap
     AGE_API void aiMap::Dump(void)                              { hook::Thunk<0x538840>::Call<void>(this); }
     AGE_API void aiMap::TestProbes(BOOL a2)                     { hook::Thunk<0x53B870>::Call<void>(this, a2); }
+    AGE_API mcHookman * aiMap::Hookman(int num) const           { return hook::Thunk<0x5349E0>::Call<mcHookman *>(this, num); }
     AGE_API aiRouteRacer * aiMap::Opponent(int num) const       { return hook::Thunk<0x534940>::Call<aiRouteRacer *>(this, num); }
     AGE_API aiCTFRacer * aiMap::CTFOpponent(int num) const      { return hook::Thunk<0x534990>::Call<aiCTFRacer *>(this, num); }
     AGE_API aiPoliceOfficer * aiMap::Police(int num) const      { return hook::Thunk<0x5348F0>::Call<aiPoliceOfficer *>(this, num); }
@@ -156,6 +157,7 @@ namespace MM2
             .addFunction("Path", &Path)
             .addFunction("Police", &Police)
             .addFunction("Player", &Player)
+            .addFunction("Hookman", &Hookman)
             .addFunction("Opponent", &Opponent)
             .addFunction("CTFOpponent", &CTFOpponent)
             .addFunction("Vehicle", &Vehicle)

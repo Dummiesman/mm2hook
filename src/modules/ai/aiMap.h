@@ -216,6 +216,7 @@ namespace MM2
         */
         AGE_API void Dump(void);
         AGE_API void TestProbes(BOOL a2);
+        AGE_API mcHookman* Hookman(int num) const;
         AGE_API aiRouteRacer* Opponent(int num) const;
         AGE_API aiCTFRacer* CTFOpponent(int num) const;
         AGE_API aiPoliceOfficer* Police(int num) const;
