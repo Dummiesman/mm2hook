@@ -13,52 +13,36 @@ namespace MM2
 
     // Class definitions
 
-    class aiPoliceOfficer {
+    class aiPoliceOfficer : public aiVehiclePhysics {
     private:
-        hook::Field<0x04, aiVehiclePhysics> _physics;
         hook::Field<0x9774, vehCar*> _followedCar;
         hook::Field<0x9778, unsigned short> _id;
         hook::Field<0x977E, unsigned short> _apprehendState;
         hook::Field<0x977A, unsigned short> _policeState;
-        byte _buffer[0x986B];
+        byte _buffer[0x100-4];
     public:
         aiPoliceOfficer(void)                               DONOTCALL;
         aiPoliceOfficer(const aiPoliceOfficer &&)           DONOTCALL;
 
-        inline aiVehiclePhysics * getVehiclePhysics() 
-        {
-            return _physics.ptr(this);
-        }
-
-        inline int getId()
+        int GetId() const
         {
             return _id.get(this);
         }
 
-        inline int getState()
-        {
-            return getVehiclePhysics()->getState();
-        }
-
-        inline int getApprehendState()
+        int GetApprehendState() const
         {
             return _apprehendState.get(this);
         }
 
-        inline vehCar* getFollowedCar()
+        vehCar* GetFollowedCar() const
         {
             return _followedCar.get(this);
-        }
-
-        inline vehCar* getCar()
-        {
-            return getVehiclePhysics()->getCar();
         }
 
         /// <summary>
         /// The state from aiPoliceForce::State
         /// </summary>        
-        inline int getPoliceState()
+        int GetPoliceState() const
         {
             return _policeState.get(this);
         }
@@ -71,13 +55,11 @@ namespace MM2
         AGE_API void PerpEscapes()                          { hook::Thunk<0x53F170>::Call<void>(this); }
 
         static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<aiPoliceOfficer>("aiPoliceOfficer")
-                .addPropertyReadOnly("Car", &getCar)
-                .addPropertyReadOnly("FollowedCar", &getFollowedCar)
-                .addPropertyReadOnly("State", &getState)
-                .addPropertyReadOnly("PoliceState", &getPoliceState)
-                .addPropertyReadOnly("ApprehendState", &getApprehendState)
-                .addPropertyReadOnly("ID", &getId)
+            LuaBinding(L).beginExtendClass<aiPoliceOfficer, aiVehiclePhysics>("aiPoliceOfficer")
+                .addPropertyReadOnly("FollowedCar", &GetFollowedCar)
+                .addPropertyReadOnly("PoliceState", &GetPoliceState)
+                .addPropertyReadOnly("ApprehendState", &GetApprehendState)
+                .addPropertyReadOnly("ID", &GetId)
 
                 .addFunction("StartSiren", &StartSiren)
                 .addFunction("StopSiren", &StopSiren)

@@ -24,7 +24,6 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<aiRouteRacer, aiVehiclePhysics>("aiRouteRacer")
-                .addPropertyReadOnly("Car", &getCar)
                 .addFunction("Finished", &Finished)
             .endClass();
         }

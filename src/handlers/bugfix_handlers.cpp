@@ -233,8 +233,7 @@ void aiPoliceOfficerHandler::PerpEscapes(bool a1)
 
 void aiPoliceOfficerHandler::Update() {
     auto policeOfficer = reinterpret_cast<aiPoliceOfficer*>(this);
-    auto vehiclePhysics = policeOfficer->getVehiclePhysics();
-    auto car = vehiclePhysics->getCar();
+    auto car = policeOfficer->GetCar();
     auto carsim = car->getCarSim();
     auto carPos = car->getModel()->GetPosition();
     auto level = lvlLevel::GetSingleton();
