@@ -101,135 +101,6 @@ void mmPlayerHandler::PlayExplosion() {
     }
 }
 
-void mmPlayerHandler::BustPerp() {
-    auto player = reinterpret_cast<mmPlayer*>(this);
-    auto carsim = player->GetCar()->GetCarSim();
-    auto AIMAP = aiMap::GetInstance();
-
-    if (Wanted_Common::enableBustedTimer)
-        Wanted_Common::bustedTimer += datTimeManager::Seconds;
-
-    for (int i = 0; i < AIMAP->numCops; i++)
-    {
-        auto police = AIMAP->Police(i);
-        auto car = police->GetCar();
-        auto curDamage = car->GetCarDamage()->getCurDamage();
-        auto maxDamage = car->GetCarDamage()->getMaxDamage();
-        auto copCarSim = car->GetCarSim();
-        auto policePos = car->GetModel()->GetPosition();
-        auto policeAud = car->GetCarAudioContainerPtr()->GetPoliceCarAudioPtr();
-        auto playerPos = player->GetCar()->GetModel()->GetPosition();
-
-        if (vehPoliceCarAudio::iNumCopsPursuingPlayer == 0) {
-            if (lvlLevel::GetSingleton()->GetRoomInfo(car->GetModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
-                if (lvlLevel::GetSingleton()->GetWaterLevel(car->GetModel()->GetRoomId()) > copCarSim->GetWorldMatrix()->m31) {
-                    Wanted_Common::enableBustedTimer = false;
-                    Wanted_Common::bustedTimer = 0.f;
-                    Wanted_Common::enableResetTimer = false;
-                    Wanted_Common::resetTimer = 0.f;
-                }
-            }
-            if (curDamage >= maxDamage) {
-                Wanted_Common::enableBustedTimer = false;
-                Wanted_Common::bustedTimer = 0.f;
-                Wanted_Common::enableResetTimer = false;
-                Wanted_Common::resetTimer = 0.f;
-            }
-        }
-
-        if (*getPtr<int>(player->GetCar(), 0xEC) != 0 && !player->IsMaxDamaged())
-            continue;
-
-        if (*getPtr<WORD>(police, 0x977A) != 0 && *getPtr<WORD>(police, 0x977A) != 12) {
-            if (*getPtr<vehCar*>(police, 0x9774) == player->GetCar()) {
-                if (playerPos.Dist(policePos) <= 12.5f) {
-                    if (carsim->GetSpeedMPH() <= Wanted_Common::bustedMaxSpeed && copCarSim->GetSpeed() <= Wanted_Common::bustedMaxSpeed) {
-                        Wanted_Common::enableBustedTimer = true;
-                    }
-                    else {
-                        Wanted_Common::enableBustedTimer = false;
-                        Wanted_Common::bustedTimer = 0.f;
-                    }
-                }
-                if (Wanted_Common::bustedTimer > Wanted_Common::bustedTimeout) {
-                    mmGameManager *mgr = mmGameManager::Instance;
-                    auto game = mgr->getGame();
-                    auto soundBase = *getPtr<AudSoundBase*>(game, 0x8C);
-                    if (!soundBase->IsPlaying()) {
-                        int i = rand() % 20 + 1;
-                        string_buf<80> buffer("ACOPAPP%02d%s", i, MMSTATE->CityName);
-                        if (soundBase->Load(buffer, i + 7, false)) {
-                            soundBase->SetSoundHandleIndex(i + 7);
-                            soundBase->PlayOnce(-1.f, -1.f);
-                        }
-                    }
-                    if (policeAud != nullptr) {
-                        policeAud->StopSiren();
-                    }
-                    player->GetHUD()->SetMessage("Busted!", 4.f, 0);
-                    AIMAP->policeForce->UnRegisterCop(*getPtr<vehCar*>(police, 0x14), *getPtr<vehCar*>(police, 0x9774));
-                    *getPtr<WORD>(police, 0x977A) = 12;
-                    *getPtr<WORD>(police, 0x280) = 3;
-                    Wanted_Common::enableBustedTimer = false;
-                    Wanted_Common::enableResetTimer = true;
-                }
-                if (MMSTATE->GameMode != 6) {
-                    if (*getPtr<int>(player, 0x2258)) {
-                        police->StopSiren();
-                        AIMAP->policeForce->UnRegisterCop(*getPtr<vehCar*>(police, 0x14), *getPtr<vehCar*>(police, 0x9774));
-                        *getPtr<WORD>(police, 0x977A) = 0;
-                        *getPtr<WORD>(police, 0x280) = 3;
-                    }
-                }
-            }
-        }
-    }
-}
-
-void mmPlayerHandler::BustOpp() {
-    auto player = reinterpret_cast<mmPlayer*>(this);
-    auto car = player->GetCar();
-    auto audio = car->GetCarAudioContainerPtr();
-    auto siren = car->GetSiren();
-    auto AIMAP = aiMap::GetInstance();
-
-    if (Wanted_Common::enableOppBustedTimer)
-        Wanted_Common::oppBustedTimer += datTimeManager::Seconds;
-
-    for (int i = 0; i < AIMAP->numOpponents; i++)
-    {
-        auto opponent = AIMAP->Opponent(i);
-        auto oppCar = opponent->GetCar();
-        auto carsim = oppCar->GetCarSim();
-        auto curDamage = oppCar->GetCarDamage()->getCurDamage();
-        auto maxDamage = oppCar->GetCarDamage()->getMaxDamage();
-        auto opponentPos = oppCar->GetModel()->GetPosition();
-        auto playerPos = car->GetModel()->GetPosition();
-
-        if (*getPtr<int>(oppCar, 0xEC) != 0 && curDamage < maxDamage)
-            continue;
-
-        if (*getPtr<int>(opponent, 0x27C) != 3) {
-            if (opponentPos.Dist(playerPos) <= 12.5f) {
-                if (carsim->GetSpeedMPH() <= Wanted_Common::bustedMaxSpeed) {
-                    Wanted_Common::enableOppBustedTimer = true;
-                    if (Wanted_Common::oppBustedTimer > Wanted_Common::bustedTimeout) {
-                        *getPtr<int>(opponent, 0x27C) = 3;
-                        siren->Active = false;
-                        audio->StopSiren();
-                        Wanted_Common::enableOppBustedTimer = false;
-                        Wanted_Common::oppBustedTimer = 0.f;
-                    }
-                }
-                else {
-                    Wanted_Common::enableOppBustedTimer = false;
-                    Wanted_Common::oppBustedTimer = 0.f;
-                }
-            }
-        }
-    }
-}
-
 void mmPlayerHandler::Update() {
     auto player = reinterpret_cast<mmPlayer*>(this);
     auto car = player->GetCar();
@@ -285,51 +156,6 @@ void mmPlayerHandler::Update() {
         }
     }
 
-    if (Wanted_Common::bustedTarget != 0) {
-        if (audio->IsPolice(basename) && flagsId == 8) {
-            if (siren != nullptr && siren->Active)
-                BustOpp();
-        }
-
-        if (Wanted_Common::bustedTarget == 1 || Wanted_Common::bustedTarget >= 3) {
-            if (!audio->IsPolice(basename)) {
-                BustPerp();
-                if (Wanted_Common::bustedTimer > Wanted_Common::bustedTimeout) {
-                    carsim->SetBrake(1.f);
-                    engine->SetThrottleInput(0.f);
-                }
-            }
-
-            if (Wanted_Common::enableResetTimer) {
-                Wanted_Common::resetTimer += datTimeManager::Seconds;
-                if (Wanted_Common::resetTimer > 4.f) {
-                    mmGameManager *mgr = mmGameManager::Instance;
-                    auto game = mgr->getGame();
-                    auto soundBase = *getPtr<AudSoundBase*>(game, 0x8C);
-                    if (MMSTATE->GameMode == 0) {
-                        *getPtr<byte>(mmReplayManager::Instance, 0x19) = 1;
-                        soundBase->SetSoundHandleIndex(1);
-                        soundBase->PlayOnce(-1.f, -1.f);
-                    }
-                    else {
-                        if (MMSTATE->GameMode == 1)
-                            soundBase->SetSoundHandleIndex(6);
-                        if (MMSTATE->GameMode == 4 || MMSTATE->GameMode == 6) {
-                            soundBase->SetSoundHandleIndex(7);
-                        }
-                        if (MMSTATE->GameMode == 3)
-                            soundBase->SetSoundHandleIndex(5);
-                        soundBase->PlayOnce(-1.f, -1.f);
-                        game->GetPopup()->ProcessEscape(0);
-                        player->GetHUD()->StopTimers();
-                        Wanted_Common::enableResetTimer = false;
-                        Wanted_Common::resetTimer = 0.f;
-                    }
-                }
-            }
-        }
-    }
-
     if (carsim->GetWorldMatrix()->m11 <= 0.f)
         car->GetStuck()->setStuckTime(0.f);
 
@@ -344,11 +170,7 @@ void mmPlayerHandler::Reset() {
     vehCarModel::RightSignalLightState = false;
 
     // disable and reset timers
-    Wanted_Common::enableBustedTimer = false;
-    Wanted_Common::enableOppBustedTimer = false;
     Wanted_Common::enableResetTimer = false;
-    Wanted_Common::bustedTimer = 0.f;
-    Wanted_Common::oppBustedTimer = 0.f;
     Wanted_Common::resetTimer = 0.f;
 
     // call original
@@ -376,14 +198,6 @@ void mmPlayerHandler::SetHeadPtr(Matrix34* ptr, int a3)
 }
 
 void mmPlayerHandler::Install() {
-    static ConfigValue<int> cfgBustedTarget("BustedTarget", 3);
-    static ConfigValue<float> cfgBustedMaxSpeed("BustedMaxSpeed", 20.f);
-    static ConfigValue<float> cfgBustedTimeout("BustedTimeout", 4.f);
-
-    Wanted_Common::bustedTarget = cfgBustedTarget.Get();
-    Wanted_Common::bustedMaxSpeed = cfgBustedMaxSpeed.Get();
-    Wanted_Common::bustedTimeout = cfgBustedTimeout.Get();
-
     //InstallCallback("Double head OWO", "3D audio test.",
     //    &SetHeadPtr, {
     //        cb::call(0x4057A0),

@@ -93,6 +93,5 @@ public:
 class aiRouteRacerHandler {
 public:
     void Update();
-    void Reset();
     static void Install();
 };

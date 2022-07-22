@@ -10,8 +10,6 @@ public:
     void Update();
     void Reset();
     void PlayExplosion();
-    void BustPerp();
-    void BustOpp();
     static void Install();
 };
 

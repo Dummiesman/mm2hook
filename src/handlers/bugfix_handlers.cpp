@@ -560,8 +560,7 @@ void pedAnimationInstanceHandler::PreUpdate(float seconds) {
 void pedAnimationInstanceHandler::aiMapUpdate()
 {
     //call preupdate
-    if (!ioKeyboard::GetKey(DIK_0))
-        pedAnimationInstanceHandler::PreUpdate(datTimeManager::ActualSeconds);
+    pedAnimationInstanceHandler::PreUpdate(datTimeManager::ActualSeconds);
 
     //call aimap update
     hook::Thunk<0x536E50>::Call<void>(this);
@@ -611,95 +610,20 @@ void aiGoalAvoidPlayerHandler::Install() {
     aiRouteRacerHandler
 */
 
-static ConfigValue<int> cfgBustedTarget("BustedTarget", 3);
-static ConfigValue<float> cfgBustedMaxSpeed("BustedMaxSpeed", 20.f);
-static ConfigValue<float> cfgBustedTimeout("BustedTimeout", 4.f);
-int aiOppBustedTarget = 3;
-float aiOppBustedMaxSpeed = 20.f;
-float aiOppBustedTimeout = 4.f;
-float aiOppBustedTimer = 0.f;
-
 void aiRouteRacerHandler::Update() {
     auto opponent = reinterpret_cast<aiRouteRacer*>(this);
 
     if (opponent->Finished())
         *getPtr<int>(this, 0x27C) = 3;
 
-    if (aiOppBustedTarget >= 2) {
-        auto car = opponent->GetCar();
-        auto carsim = car->GetCarSim();
-        auto AIMAP = aiMap::GetInstance();
-
-        for (int i = 0; i < AIMAP->numCops; i++)
-        {
-            auto police = AIMAP->Police(i);
-            auto copCar = police->GetCar();
-            auto curDamage = car->GetCarDamage()->getCurDamage();
-            auto maxDamage = car->GetCarDamage()->getMaxDamage();
-            auto opponentPos = car->GetModel()->GetPosition();
-            auto policePos = copCar->GetModel()->GetPosition();
-            auto policeAud = copCar->GetCarAudioContainerPtr()->GetPoliceCarAudioPtr();
-
-            if (*getPtr<int>(car, 0xEC) != 0 && curDamage < maxDamage)
-                continue;
-
-            if (*getPtr<WORD>(police, 0x977A) != 0 && *getPtr<WORD>(police, 0x977A) != 12) {
-                if (*getPtr<vehCar*>(police, 0x9774) == opponent->GetCar()) {
-                    if (*getPtr<int>(this, 0x27C) != 3) {
-                        if (opponentPos.Dist(policePos) <= 12.5f) {
-                            if (carsim->GetSpeedMPH() <= aiOppBustedMaxSpeed) {
-                                aiOppBustedTimer += datTimeManager::Seconds;
-                                if (aiOppBustedTimer > aiOppBustedTimeout) {
-                                    *getPtr<int>(this, 0x27C) = 3;
-                                }
-                            }
-                            else {
-                                aiOppBustedTimer = 0.f;
-                            }
-                        }
-                    }
-                    if (*getPtr<int>(this, 0x27C) == 3) {
-                        if (opponent->Finished()) {
-                            police->StopSiren();
-                        }
-                        else {
-                            if (policeAud != nullptr)
-                                policeAud->StopSiren();
-                        }
-                        AIMAP->policeForce->UnRegisterCop(*getPtr<vehCar*>(police, 0x14), *getPtr<vehCar*>(police, 0x9774));
-                        *getPtr<WORD>(police, 0x977A) = 0;
-                        *getPtr<WORD>(police, 0x280) = 3;
-                    }
-                }
-            }
-        }
-    }
-
     //call original
     hook::Thunk<0x53D3B0>::Call<void>(this);
 }
 
-void aiRouteRacerHandler::Reset() {
-    //reset busted timer
-    aiOppBustedTimer = 0.f;
-
-    //call original
-    hook::Thunk<0x53D390>::Call<void>(this);
-}
-
 void aiRouteRacerHandler::Install() {
-    aiOppBustedTarget = cfgBustedTarget.Get();
-    aiOppBustedMaxSpeed = cfgBustedMaxSpeed.Get();
-    aiOppBustedTimeout = cfgBustedTimeout.Get();
     InstallCallback("aiRouteRacer::Update", "Fixes opponents fight each other for their spots at the finish line.",
         &Update, {
             cb::call(0x53705B), // aiMap::Update
-        }
-    );
-
-    InstallCallback("aiRouteRacer::Reset", "Resets opponent busted timer upon reset.",
-        &Reset, {
-            cb::call(0x536B4D), // aiMap::Reset
         }
     );
 }

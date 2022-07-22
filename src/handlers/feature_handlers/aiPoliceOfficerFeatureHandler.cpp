@@ -11,7 +11,7 @@ void aiPoliceOfficerFeatureHandler::DetectPerpetrator() {
     mmGameManager *mgr = mmGameManager::Instance;
     auto player = mgr->getGame()->GetPlayer();
 
-    if (*getPtr<int>(player, 0x2258) || Wanted_Common::bustedTimer > 4.f)
+    if (*getPtr<int>(player, 0x2258))
         return;
 
     //call original
