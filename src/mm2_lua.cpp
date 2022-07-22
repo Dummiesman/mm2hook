@@ -119,7 +119,7 @@ void luaSetGlobals()
 
     auto pGame = (gameMgr != NULL) ? gameMgr->getGame() : NULL;
     auto pPlayer = (pGame != NULL) ? pGame->GetPlayer() : NULL;
-    auto pHUD = (pPlayer != NULL) ? pPlayer->getHUD() : NULL;
+    auto pHUD = (pPlayer != NULL) ? pPlayer->GetHUD() : NULL;
 
     Lua::setGlobal(L, "HUD", pHUD);
     Lua::setGlobal(L, "Game", pGame);
@@ -261,7 +261,7 @@ void ReloadScript()
 
     if (gamePtr != NULL && gamePtr->GetPlayer() != NULL)
     {
-        auto hud = gamePtr->GetPlayer()->getHUD();
+        auto hud = gamePtr->GetPlayer()->GetHUD();
         if (hud != NULL)
             hud->SetMessage("Lua script reloaded.", 3.5, 0);
     }
