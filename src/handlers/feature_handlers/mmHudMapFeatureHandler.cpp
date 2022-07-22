@@ -122,7 +122,7 @@ void mmHudMapFeatureHandler::DrawPlayer() {
     auto mgr = *mmGameManager::Instance;
     auto game = mgr->getGame();
     auto player = game->GetPlayer();
-    auto car = player->getCar();
+    auto car = player->GetCar();
     auto audio = car->GetCarAudioContainerPtr();
     auto siren = car->GetSiren();
     char *vehName = car->GetCarDamage()->GetName();

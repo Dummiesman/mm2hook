@@ -19,11 +19,11 @@ void mmPlayerHandler::Zoink() {
 
     //get required vars
     auto player = reinterpret_cast<mmPlayer*>(this);
-    auto car = player->getCar();
+    auto car = player->GetCar();
     auto carPos = car->GetModel()->GetPosition();
 
     // tell the player "That didn't happen!"
-    player->getHUD()->SetMessage(AngelReadString(29), 3.f, 0);
+    player->GetHUD()->SetMessage(AngelReadString(29), 3.f, 0);
 
     // if we're in CNR, drop the gold!
     if (dgStatePack::Instance->GameMode == dgGameMode::CnR) {
@@ -82,7 +82,7 @@ void mmPlayerHandler::Zoink() {
 bool prevSplashState = false;
 void mmPlayerHandler::Splash() {
     auto player = reinterpret_cast<mmPlayer*>(this);
-    auto car = player->getCar();
+    auto car = player->GetCar();
     float vehicleMph = car->GetModel()->GetVelocity().Mag() * 2.23694f;
 
     //trigger ColliderId 22 with velocity of vehicleMph
@@ -92,7 +92,7 @@ void mmPlayerHandler::Splash() {
 
 void mmPlayerHandler::PlayExplosion() {
     auto player = reinterpret_cast<mmPlayer*>(this);
-    auto car = player->getCar();
+    auto car = player->GetCar();
     auto policeAudio = car->GetCarAudioContainerPtr()->GetPoliceCarAudioPtr();
     auto explosionSound = *getPtr<AudSoundBase*>(policeAudio, 0x138);
     if (explosionSound != nullptr) {
@@ -103,7 +103,7 @@ void mmPlayerHandler::PlayExplosion() {
 
 void mmPlayerHandler::BustPerp() {
     auto player = reinterpret_cast<mmPlayer*>(this);
-    auto carsim = player->getCar()->GetCarSim();
+    auto carsim = player->GetCar()->GetCarSim();
     auto AIMAP = aiMap::GetInstance();
 
     if (Wanted_Common::enableBustedTimer)
@@ -118,7 +118,7 @@ void mmPlayerHandler::BustPerp() {
         auto copCarSim = car->GetCarSim();
         auto policePos = car->GetModel()->GetPosition();
         auto policeAud = car->GetCarAudioContainerPtr()->GetPoliceCarAudioPtr();
-        auto playerPos = player->getCar()->GetModel()->GetPosition();
+        auto playerPos = player->GetCar()->GetModel()->GetPosition();
 
         if (vehPoliceCarAudio::iNumCopsPursuingPlayer == 0) {
             if (lvlLevel::GetSingleton()->GetRoomInfo(car->GetModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
@@ -137,11 +137,11 @@ void mmPlayerHandler::BustPerp() {
             }
         }
 
-        if (*getPtr<int>(player->getCar(), 0xEC) != 0 && !player->IsMaxDamaged())
+        if (*getPtr<int>(player->GetCar(), 0xEC) != 0 && !player->IsMaxDamaged())
             continue;
 
         if (*getPtr<WORD>(police, 0x977A) != 0 && *getPtr<WORD>(police, 0x977A) != 12) {
-            if (*getPtr<vehCar*>(police, 0x9774) == player->getCar()) {
+            if (*getPtr<vehCar*>(police, 0x9774) == player->GetCar()) {
                 if (playerPos.Dist(policePos) <= 12.5f) {
                     if (carsim->GetSpeedMPH() <= Wanted_Common::bustedMaxSpeed && copCarSim->GetSpeed() <= Wanted_Common::bustedMaxSpeed) {
                         Wanted_Common::enableBustedTimer = true;
@@ -166,7 +166,7 @@ void mmPlayerHandler::BustPerp() {
                     if (policeAud != nullptr) {
                         policeAud->StopSiren();
                     }
-                    player->getHUD()->SetMessage("Busted!", 4.f, 0);
+                    player->GetHUD()->SetMessage("Busted!", 4.f, 0);
                     AIMAP->policeForce->UnRegisterCop(*getPtr<vehCar*>(police, 0x14), *getPtr<vehCar*>(police, 0x9774));
                     *getPtr<WORD>(police, 0x977A) = 12;
                     *getPtr<WORD>(police, 0x280) = 3;
@@ -188,7 +188,7 @@ void mmPlayerHandler::BustPerp() {
 
 void mmPlayerHandler::BustOpp() {
     auto player = reinterpret_cast<mmPlayer*>(this);
-    auto car = player->getCar();
+    auto car = player->GetCar();
     auto audio = car->GetCarAudioContainerPtr();
     auto siren = car->GetSiren();
     auto AIMAP = aiMap::GetInstance();
@@ -232,12 +232,12 @@ void mmPlayerHandler::BustOpp() {
 
 void mmPlayerHandler::Update() {
     auto player = reinterpret_cast<mmPlayer*>(this);
-    auto car = player->getCar();
+    auto car = player->GetCar();
     auto audio = car->GetCarAudioContainerPtr();
     auto siren = car->GetSiren();
     auto carsim = car->GetCarSim();
     auto engine = carsim->GetEngine();
-    auto basename = player->getCar()->GetCarDamage()->GetName();
+    auto basename = player->GetCar()->GetCarDamage()->GetName();
     auto flagsId = VehicleListPtr->GetVehicleInfo(basename)->GetFlags();
     auto AIMAP = aiMap::GetInstance();
 
@@ -279,8 +279,8 @@ void mmPlayerHandler::Update() {
         string_buf<80> buffer("%s_dash", basename);
         if (!datAssetManager::Exists("geometry", buffer, "pkg")) {
             if (MMSTATE->ShowDash) {
-                player->getHUD()->DeactivateDash();
-                player->getCamView()->SetCam(player->getPovCam());
+                player->GetHUD()->DeactivateDash();
+                player->GetCamView()->SetCam(player->GetPovCam());
             }
         }
     }
@@ -316,13 +316,12 @@ void mmPlayerHandler::Update() {
                             soundBase->SetSoundHandleIndex(6);
                         if (MMSTATE->GameMode == 4 || MMSTATE->GameMode == 6) {
                             soundBase->SetSoundHandleIndex(7);
-                            player->getTimer()->Stop();
                         }
                         if (MMSTATE->GameMode == 3)
                             soundBase->SetSoundHandleIndex(5);
                         soundBase->PlayOnce(-1.f, -1.f);
                         game->GetPopup()->ProcessEscape(0);
-                        player->getHUD()->StopTimers();
+                        player->GetHUD()->StopTimers();
                         Wanted_Common::enableResetTimer = false;
                         Wanted_Common::resetTimer = 0.f;
                     }

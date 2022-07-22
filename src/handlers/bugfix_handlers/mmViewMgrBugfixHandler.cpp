@@ -13,7 +13,7 @@ void mmViewMgrBugfixHandler::SetViewSetting(int a1)
     mmGameManager* mgr = mmGameManager::Instance;
 
     auto player = mgr->getGame()->GetPlayer();
-    auto dash = player->getDashView();
+    auto dash = player->GetDashView();
 
     if (!dash->getIsLoaded())
         return;

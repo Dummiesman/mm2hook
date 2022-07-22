@@ -28,7 +28,7 @@ void mmDashViewHandler::UpdateCS() {
     auto dashCam = getPtr<Matrix34>(this, 0x18);
     auto player = *getPtr<mmPlayer*>(this, 0x80);
 
-    auto car = player->getCar();
+    auto car = player->GetCar();
     auto carModel = car->GetModel();
 
     sm_DashOffset = carModel->GetMatrix(&sm_DashOffset);

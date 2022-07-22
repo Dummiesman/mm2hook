@@ -27,15 +27,15 @@ namespace MM2
         mmMultiBlitz* m_MultiBlitzGame;
         int NumUpdateCallsSinceReset;
     public:
-        inline mmGame* getGame(void) const {
+        mmGame* getGame() const {
             return this->m_CurrentGame;
         };
 
-        inline mmPlayer* getPlayerSafe(void) const {
+        mmPlayer* getPlayerSafe() const {
             auto game = this->getGame();
             if (game == nullptr)
                 return nullptr;
-            auto player = game->getPlayer();
+            auto player = game->GetPlayer();
             return player;
         }
     public:

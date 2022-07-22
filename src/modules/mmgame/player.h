@@ -16,14 +16,13 @@ namespace MM2
     private:
         byte _buffer[0x23A4];
 
-        AGE_API camCarCS * GetCurrentCameraPtr()             { return hook::Thunk<0x4048E0>::Call<camCarCS*>(this); }
+        AGE_API camCarCS * _GetCurrentCameraPtr() const       { return hook::Thunk<0x4048E0>::Call<camCarCS*>(this); }
 
     protected:
         hook::Field<0x2C, vehCar> _car;
         hook::Field<0x288, mmHUD> _hud;
 
         hook::Field<0x2A4, mmDashView> _dashView;
-        hook::Field<0xD0C, mmTimer> _timer;
         
         hook::Field<0xE28, mmHudMap *> _hudmap;
         hook::Field<0xE2C, camViewCS *> _camView;
@@ -42,34 +41,33 @@ namespace MM2
         hook::Field<0x1FBC, camCarCS> _polarCam3;
 
     public:
-        inline vehCar * getCar(void) const                  { return _car.ptr(this); }
-        inline mmHUD * getHUD(void) const                   { return _hud.ptr(this); }
+        vehCar * GetCar() const                  { return _car.ptr(this); }
+        mmHUD * GetHUD() const                   { return _hud.ptr(this); }
 
-        inline mmDashView * getDashView(void) const         { return _dashView.ptr(this); }
-        inline mmTimer * getTimer(void) const               { return _timer.ptr(this); }
+        mmDashView * GetDashView() const         { return _dashView.ptr(this); }
 
-        inline camViewCS * getCamView(void) const           { return _camView.get(this); }
+        camViewCS * GetCamView() const           { return _camView.get(this); }
 
-        inline camTrackCS * getNearCam(void) const          { return _nearCam.ptr(this); }
-        inline camTrackCS * getFarCam(void) const           { return _farCam.ptr(this); }
-        inline camTrackCS * getIndCam(void) const           { return _indCam.ptr(this); }
-        inline camPovCS * getPovCam(void) const             { return _povCam.ptr(this); }
-        inline camPovCS * getDashCam(void) const            { return _dashCam.ptr(this); }
-        inline camAICS * getFreecam(void) const             { return _freeCam.ptr(this); }
-        inline camPointCS * getPointCam(void) const         { return _pointCam.ptr(this); }
-        inline camCarCS * getPreCam(void) const             { return _preCam.ptr(this); }
-        inline camCarCS * getPostCam(void) const            { return _postCam.ptr(this); }
+        camTrackCS * GetNearCam() const          { return _nearCam.ptr(this); }
+        camTrackCS * GetFarCam() const           { return _farCam.ptr(this); }
+        camTrackCS * GetIndCam() const           { return _indCam.ptr(this); }
+        camPovCS * GetPovCam() const             { return _povCam.ptr(this); }
+        camPovCS * GetDashCam() const            { return _dashCam.ptr(this); }
+        camAICS * GetFreecam() const             { return _freeCam.ptr(this); }
+        camPointCS * GetPointCam() const         { return _pointCam.ptr(this); }
+        camCarCS * GetPreCam() const             { return _preCam.ptr(this); }
+        camCarCS * GetPostCam() const            { return _postCam.ptr(this); }
   
-        inline camCarCS * getPolarCamOne(void) const        { return _polarCam1.ptr(this); }
-        inline camCarCS * getPolarCamTwo(void) const        { return _polarCam2.ptr(this); }
-        inline camCarCS * getPolarCamThree(void) const      { return _polarCam3.ptr(this); }
+        camCarCS * GetPolarCamOne() const        { return _polarCam1.ptr(this); }
+        camCarCS * GetPolarCamTwo() const        { return _polarCam2.ptr(this); }
+        camCarCS * GetPolarCamThree() const      { return _polarCam3.ptr(this); }
 
-        inline camCarCS * getCurrentCameraPtr(void)         { return this->GetCurrentCameraPtr(); }
+        camCarCS * GetCurrentCameraPtr() const   { return this->_GetCurrentCameraPtr(); }
 
         AGE_API void EnableRegen(bool a1)                   { hook::Thunk<0x406160>::Call<void>(this, a1); }
         AGE_API float FilterSteering(float a1)              { return hook::Thunk<0x404C90>::Call<float>(this, a1); }
-        AGE_API bool IsMaxDamaged()                         { return hook::Thunk<0x406140>::Call<bool>(this); }
-        AGE_API bool IsPOV()                                { return hook::Thunk<0x404550>::Call<bool>(this); }
+        AGE_API bool IsMaxDamaged() const                   { return hook::Thunk<0x406140>::Call<bool>(this); }
+        AGE_API bool IsPOV() const                          { return hook::Thunk<0x404550>::Call<bool>(this); }
         AGE_API void ResetDamage()                          { hook::Thunk<0x406180>::Call<void>(this); }
         AGE_API void SetCamera(int a1, int a2)              { hook::Thunk<0x404710>::Call<void>(this, a1, a2); }
         AGE_API void SetMPPostCam(Matrix34 *a1, float a2)   { hook::Thunk<0x404460>::Call<void>(this, a1, a2); }
@@ -92,22 +90,22 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmPlayer, asNode>("mmPlayer")
                 //properties
-                .addPropertyReadOnly("Car", &getCar)
-                .addPropertyReadOnly("HUD", &getHUD)
-                .addPropertyReadOnly("CamView", &getCamView)
-                .addPropertyReadOnly("FreeCam", &getFreecam)
-                .addPropertyReadOnly("FarCam", &getFarCam)
-                .addPropertyReadOnly("NearCam", &getNearCam)
-                .addPropertyReadOnly("IndCam", &getIndCam)
-                .addPropertyReadOnly("DashCam", &getDashCam)
-                .addPropertyReadOnly("PovCam", &getPovCam)
-                .addPropertyReadOnly("PointCam", &getPointCam)
+                .addPropertyReadOnly("Car", &GetCar)
+                .addPropertyReadOnly("HUD", &GetHUD)
+                .addPropertyReadOnly("CamView", &GetCamView)
+                .addPropertyReadOnly("FreeCam", &GetFreecam)
+                .addPropertyReadOnly("FarCam", &GetFarCam)
+                .addPropertyReadOnly("NearCam", &GetNearCam)
+                .addPropertyReadOnly("IndCam", &GetIndCam)
+                .addPropertyReadOnly("DashCam", &GetDashCam)
+                .addPropertyReadOnly("PovCam", &GetPovCam)
+                .addPropertyReadOnly("PointCam", &GetPointCam)
 
-                .addPropertyReadOnly("PreCam", &getPreCam)
-                .addPropertyReadOnly("PostCam", &getPostCam)
-                .addPropertyReadOnly("PolarCamOne", &getPolarCamOne)
-                .addPropertyReadOnly("PolarCamTwo", &getPolarCamTwo)
-                .addPropertyReadOnly("PolarCamThree", &getPolarCamThree)
+                .addPropertyReadOnly("PreCam", &GetPreCam)
+                .addPropertyReadOnly("PostCam", &GetPostCam)
+                .addPropertyReadOnly("PolarCamOne", &GetPolarCamOne)
+                .addPropertyReadOnly("PolarCamTwo", &GetPolarCamTwo)
+                .addPropertyReadOnly("PolarCamThree", &GetPolarCamThree)
 
                 //functions
                 .addFunction("EnableRegen", &EnableRegen)

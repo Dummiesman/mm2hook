@@ -12,7 +12,7 @@ static ConfigValue<bool> cfgChatMusicFix("ChatMusicFix", true);
 bool wasCdPlayerEnabled = false;
 
 void mmPopupHandler::HudEnable() {
-    auto cdPlayer = mmGameManager::Instance.get()->getGame()->GetPlayer()->getHUD()->GetCDPlayer();
+    auto cdPlayer = mmGameManager::Instance.get()->getGame()->GetPlayer()->GetHUD()->GetCDPlayer();
 
     // if cd player is inactive, and it was active before
     // reactivate it
@@ -23,7 +23,7 @@ void mmPopupHandler::HudEnable() {
 }
 
 void mmPopupHandler::HudDisable(int a1) {
-    auto cdPlayer = mmGameManager::Instance.get()->getGame()->getPlayer()->getHUD()->GetCDPlayer();
+    auto cdPlayer = mmGameManager::Instance.get()->getGame()->GetPlayer()->GetHUD()->GetCDPlayer();
     wasCdPlayerEnabled = cdPlayer->isActive();
 
     // hide the cd player if shown

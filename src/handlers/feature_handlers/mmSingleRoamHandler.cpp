@@ -13,7 +13,7 @@ static ConfigValue<bool> cfgResetToNearestLocation("ResetToNearestLocation", fal
 void mmSingleRoamHandler::ResetToNearestLocation() {
     auto singleRoam = reinterpret_cast<mmSingleRoam*>(this);
     auto player = singleRoam->GetPlayer();
-    auto car = player->getCar();
+    auto car = player->GetCar();
     auto carsim = car->GetCarSim();
     auto carPos = car->GetModel()->GetPosition();
 
@@ -82,7 +82,7 @@ void mmSingleRoamHandler::ResetToNearestLocation() {
 void mmSingleRoamHandler::EscapeDeepWater() {
     auto singleRoam = reinterpret_cast<mmSingleRoam*>(this);
     auto player = singleRoam->GetPlayer();
-    auto car = player->getCar();
+    auto car = player->GetCar();
     auto carsim = car->GetCarSim();
     auto carPos = car->GetModel()->GetPosition();
     auto level = lvlLevel::GetSingleton();
@@ -107,21 +107,21 @@ void mmSingleRoamHandler::EscapeDeepWater() {
         *getPtr<byte>(player, 0xE59) = 0;
 
         car->GetSplash()->setActive(false);
-        player->getCamView()->SetCam(player->getCurrentCameraPtr());
+        player->GetCamView()->SetCam(player->GetCurrentCameraPtr());
 
         if (MMSTATE->ShowDash || *getPtr<int>(player, 0x880)) {
             MMSTATE->ViewMode = 1;
             *getPtr<int>(player, 0xE48) = 1;
-            player->getCamView()->SetCam(player->getDashCam());
-            player->getHUD()->ActivateDash();
+            player->GetCamView()->SetCam(player->GetDashCam());
+            player->GetHUD()->ActivateDash();
         }
 
         else if (!player->IsPOV()) {
-            player->getHUD()->DeactivateDash();
+            player->GetHUD()->DeactivateDash();
         }
 
         if (!MMSTATE->ShowDash) {
-            player->getDashView()->Deactivate();
+            player->GetDashView()->Deactivate();
         }
 
         player->SetWideFOV(MMSTATE->UseWideFOV);
