@@ -13,7 +13,7 @@ bool canPlayAirBlowSound = false;
 void vehSemiCarAudioBugfixHandler::UpdateAirBlow()
 {
     auto carAudio = reinterpret_cast<vehCarAudio*>(this);
-    auto carsim = carAudio->getCarSim();
+    auto carsim = carAudio->GetCarSim();
 
     //only do this sound for player vehicles
     //if done on all vehicles, cheaters in multiplayer
@@ -21,7 +21,7 @@ void vehSemiCarAudioBugfixHandler::UpdateAirBlow()
     auto player = mmGameManager::Instance.get()->getPlayerSafe();
     if (player == nullptr)
         return;
-    if (player->getCar()->getCarSim() != carsim)
+    if (player->GetCar()->GetCarSim() != carsim)
         return;
 
     float speed = carsim->GetSpeedMPH();
@@ -46,7 +46,7 @@ void vehSemiCarAudioBugfixHandler::UpdateAirBlow()
 void vehSemiCarAudioBugfixHandler::UpdateReverse()
 {
     auto carAudio = reinterpret_cast<vehCarAudio*>(this);
-    auto carsim = carAudio->getCarSim();
+    auto carsim = carAudio->GetCarSim();
     auto reverseSound = *getPtr<AudSoundBase*>(this, 0x138);
     auto transmission = carsim->GetTransmission();
     float throttle = carsim->GetEngine()->GetThrottleInput();

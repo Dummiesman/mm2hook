@@ -19,10 +19,6 @@ namespace MM2
     protected:
         hook::Field<0x118, vehCarSim *> _sim;
     public:
-        vehCarSim * getCarSim() const {
-            return _sim.get(this);
-        };
-
         /*
             Aud3DObject virtuals
         */
@@ -36,11 +32,15 @@ namespace MM2
         /*
             vehCarAudio
         */
-        AGE_API bool IsAirBorne()                               { return hook::Thunk<0x4DC340>::Call<bool>(this); }
-        AGE_API bool IsBrakeing()                               { return hook::Thunk<0x4DC4F0>::Call<bool>(this); }
+        AGE_API bool IsAirBorne() const                         { return hook::Thunk<0x4DC340>::Call<bool>(this); }
+        AGE_API bool IsBrakeing() const                         { return hook::Thunk<0x4DC4F0>::Call<bool>(this); }
         AGE_API void SetMinAmpSpeed(float speed)                { hook::Thunk<0x4DC000>::Call<void>(this, speed); }
         AGE_API void PlayHorn()                                 { hook::Thunk<0x4DC1D0>::Call<void>(this); }
         AGE_API void StopHorn()                                 { hook::Thunk<0x4DC210>::Call<void>(this); }
+
+        vehCarSim* GetCarSim() const {
+            return _sim.get(this);
+        };
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<vehCarAudio, Aud3DObject>("vehCarAudio")
@@ -54,7 +54,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(vehCarAudio, 0x130);
-
-    // Lua initialization
-
 }

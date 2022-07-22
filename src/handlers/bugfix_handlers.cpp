@@ -329,7 +329,7 @@ bool vehCarAudioHandler::IsAirBorne() {
 void vehCarAudioHandler::Update() {
     float elapsedTime = datTimeManager::Seconds;
     auto carAudio = reinterpret_cast<vehCarAudio*>(this);
-    auto carSim = carAudio->getCarSim();
+    auto carSim = carAudio->GetCarSim();
     
     // grab only forward/sideways velocity, ignore vertical
     Vector3 vehicleVelo = carSim->GetInstance()->GetVelocity();
