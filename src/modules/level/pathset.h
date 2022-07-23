@@ -215,8 +215,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<dgPathSet>("dgPathSet")
-                .addConstructor(LUA_ARGS())
-
+                .addFactory([]() { return new dgPathSet(); })
                 .addPropertyReadOnly("NumPaths", &getPathCount)
                 .addFunction("FindPath", &findPath)
                 .addFunction("GetPath", &getPath)
@@ -229,7 +228,4 @@ namespace MM2
 
     ASSERT_SIZEOF(dgPath, 0x38);
     ASSERT_SIZEOF(dgPathSet, 0x310);
-
-    // Lua initialization
-
 }
