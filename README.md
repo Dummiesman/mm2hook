@@ -14,13 +14,11 @@ Also included are complimentary bug-fixes for random crashes, as well as a fix f
 
  * Console output window
  * Lua scripting
- * Plugins (TODO)
  
  * ### [Discord Rich Presence](https://discordapp.com/rich-presence) Integration:
    * Dynamically updates based on the state of your game (playing a race, cruising around, in the main menu, etc.)
    * Shows a thumbnail picture for default vehicles/cities
      - Thumbnail text shows the full name (mods included!)
-   * May support Multiplayer in the future!
  
 ## Installation
 1) Grab the latest version [here](https://ci.appveyor.com/project/Fireboyd78/mm2hook/build/artifacts).
