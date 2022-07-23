@@ -185,28 +185,14 @@ void mmGameHandler::UpdateHorn(bool a1) {
     }
 
     //update horn audio
-    if (isVehiclePolice)
-    {
-        auto hornSound = *getPtr<AudSoundBase*>(policeAudio, 0x10C);
-        if (hornSound->IsPlaying() != a1) {
-            if (a1) {
-                if (!cancelHornInput)
-                    hornSound->PlayLoop(-1.f, -1.f);
-            }
-            else {
-                hornSound->Stop();
-            }
-        }
-    }
-    else
-    {
-        if (a1) {
+    if (a1) {
+        if (!isVehiclePolice)
             audio->PlayHorn();
-        }
-        else
-        {
-            audio->StopHorn();
-        }
+        else if (!cancelHornInput)
+            audio->PlayHorn();
+    }
+    else {
+        audio->StopHorn();
     }
 }
 
