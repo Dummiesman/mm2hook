@@ -56,14 +56,39 @@ namespace MM2
         AGE_API void Set3D(bool a1)                             { hook::Thunk<0x4D1840>::Call<void>(this, a1); }
         AGE_API void StartSiren()                               { hook::Thunk<0x4D18B0>::Call<void>(this); }
         AGE_API void StopSiren()                                { hook::Thunk<0x4D18C0>::Call<void>(this); }
-        AGE_API void PlayHorn()                                 { hook::Thunk<0x4D17C0>::Call<void>(this); }
-        AGE_API void StopHorn()                                 { hook::Thunk<0x4D1800>::Call<void>(this); }
         AGE_API void SilenceEngine(BOOL a1)                     { hook::Thunk<0x4D1910>::Call<void>(this, a1); }
         AGE_API vehPoliceCarAudio* GetPoliceCarAudioPtr()       { return hook::Thunk<0x4D1790>::Call<vehPoliceCarAudio*>(this); }
         AGE_API vehSemiCarAudio* GetSemiCarAudioPtr()           { return hook::Thunk<0x4D17A0>::Call<vehSemiCarAudio*>(this); }        
         AGE_API vehNitroCarAudio* GetNitroCarAudioPtr()         { return hook::Thunk<0x4D1780>::Call<vehNitroCarAudio*>(this); }
         AGE_API vehCarAudio * GetCarAudioPtr()                  { return hook::Thunk<0x4D1770>::Call<vehCarAudio*>(this); }
         AGE_API AudImpact * GetAudImpactPtr()                   { return hook::Thunk<0x4D1730>::Call<AudImpact*>(this); }
+
+        AGE_API void PlayHorn() {
+            // rewritten to support police audio horns
+            // MM2 only calls stop horn on base/nitro/semi audio
+            if (this->GetIsHornPlaying())
+                return;
+
+            auto activeAudio = GetActiveAudio();
+            if (activeAudio != nullptr) {
+                activeAudio->PlayHorn();
+            }
+            this->HornPlaying = TRUE;
+        }
+
+
+        AGE_API void StopHorn() {
+            // rewritten to support police audio horns
+            // MM2 only calls stop horn on base/nitro/semi audio
+            if (!this->GetIsHornPlaying())
+                return;
+
+            auto activeAudio = GetActiveAudio();
+            if (activeAudio != nullptr) {
+                activeAudio->StopHorn();
+            }
+            this->HornPlaying = FALSE;
+        }
         
         vehCarAudio * GetActiveAudio() {
             if (AudioPtr != nullptr)
@@ -77,11 +102,16 @@ namespace MM2
             return nullptr;
         }
 
+        bool GetIsHornPlaying() {
+            return HornPlaying == TRUE;
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<vehCarAudioContainer>("vehCarAudioContainer")
                 .addStaticFunction("IsPolice", &IsPolice)
                 .addStaticFunction("IsSemiOrBus", &IsSemiOrBus)
                 .addStaticFunction("SetSirenCSVName", &SetSirenCSVName)
+                .addPropertyReadOnly("IsHornPlaying", &GetIsHornPlaying)
                 .addFunction("GetActiveAudio", &getActiveAudioLua)
                 .addFunction("Set3D", &Set3D)
                 .addFunction("StartSiren", &StartSiren)
