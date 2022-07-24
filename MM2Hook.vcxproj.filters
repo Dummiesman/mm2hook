@@ -2253,6 +2253,9 @@
     <ClCompile Include="src\handlers\feature_handlers\aud3DObjectHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\vehicle\wheel.cpp">
+      <Filter>Source Files\modules\vehicle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AGE.h">
