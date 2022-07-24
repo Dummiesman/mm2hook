@@ -25,18 +25,6 @@ namespace MM2
         float TorqueCoef;
         float DampCoef;
     public:
-        inline vehWheel * getLeftWheel() {
-            return this->LeftWheel;
-        }
-
-        inline vehWheel * getRightWheel() {
-            return this->RightWheel;
-        }
-
-        inline Matrix34 getAxleMatrix() {
-            return this->AxleMatrix;
-        }
-    public:
         AGE_API vehAxle()                                   { hook::Thunk<0x4D9990>::Call<void>(this); }
 
         AGE_API void Init(vehCarSim *carSim, const char *vehicleBasename, const char *axleName, vehWheel *wheelL, vehWheel *wheelR)                     
@@ -51,11 +39,32 @@ namespace MM2
         AGE_API void FileIO(datParser& parser) override     { hook::Thunk<0x4D9CA0>::Call<void>(this); }
         AGE_API char * GetClassName() override              { return hook::Thunk<0x4D9D20>::Call<char*>(this); }
 
+        /*
+            vehAxle
+        */
+        float GetTorqueCoef() const                         { return this->TorqueCoef; }
+        void SetTorqueCoef(float torqueCoef)                { this->TorqueCoef = torqueCoef;}
+
+        float GetDampCoef() const                           { return this->DampCoef; }
+        void SetDampCoef(float dampCoef)                    { this->DampCoef = dampCoef;}
+
+        Matrix34 GetAxleMatrix() const {
+            return this->AxleMatrix;
+        }
+
+        vehWheel* GetLeftWheel() const {
+            return this->LeftWheel;
+        }
+
+        vehWheel* GetRightWheel() const {
+            return this->RightWheel;
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<vehAxle, asNode>("vehAxle")
                 //properties
-                .addVariableRef("TorqueCoef", &vehAxle::TorqueCoef)
-                .addVariableRef("DampCoef", &vehAxle::DampCoef)
+                .addProperty("DampCoef", &GetDampCoef, &SetDampCoef)
+                .addProperty("TorqueCoef", &GetTorqueCoef, &SetTorqueCoef)
 
                 .addFunction("Init", &Init)
                 .addFunction("ComputeConstants", &ComputeConstants)
@@ -65,7 +74,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(vehAxle, 0x9C);
-
-    // Lua initialization
-
 }

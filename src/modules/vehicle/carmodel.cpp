@@ -889,8 +889,8 @@ namespace MM2
                 DrawPart(lod, SHAFT2_GEOM_ID + i, &this->carSim->ShaftSuspensions[i].getSuspensionMatrix(), shaders, vehCarModel::PartReflections);
             }
 
-            DrawPart(lod, AXLE0_GEOM_ID, &this->carSim->AxleFront.getAxleMatrix(), shaders, vehCarModel::PartReflections);
-            DrawPart(lod, AXLE1_GEOM_ID, &this->carSim->AxleRear.getAxleMatrix(), shaders, vehCarModel::PartReflections);
+            DrawPart(lod, AXLE0_GEOM_ID, &this->carSim->AxleFront.GetAxleMatrix(), shaders, vehCarModel::PartReflections);
+            DrawPart(lod, AXLE1_GEOM_ID, &this->carSim->AxleRear.GetAxleMatrix(), shaders, vehCarModel::PartReflections);
                 
             //engine
             if ((this->wheelBrokenStatus & 0x40000) != 0)
