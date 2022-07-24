@@ -416,7 +416,7 @@ void vehCarDamageHandler::Update() {
         }
         else {
             wheel->SetRadius(-1.f);
-            car->GetStuck()->setStuckTime(0.f);
+            car->GetStuck()->SetStuckTime(0.f);
         }
     }
 

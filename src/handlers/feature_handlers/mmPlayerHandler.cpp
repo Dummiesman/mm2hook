@@ -157,7 +157,7 @@ void mmPlayerHandler::Update() {
     }
 
     if (carsim->GetWorldMatrix()->m11 <= 0.f)
-        car->GetStuck()->setStuckTime(0.f);
+        car->GetStuck()->SetStuckTime(0.f);
 
     //call original
     hook::Thunk<0x405760>::Call<void>(this);
