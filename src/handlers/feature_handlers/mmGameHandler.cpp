@@ -13,9 +13,6 @@ using namespace MM2;
     mmGameHandler
 */
 
-hook::Type<float> bridgeSpeed(0x5DBFA4);
-hook::Type<float> bridgeAngle(0x5DBFA8);
-
 static ConfigValue<bool> cfgGtaStyleHornSiren("GTAStyleHornSiren", false);
 static ConfigValue<float> cfgHornSirenThreshold("HornSirenThreshold", 0.15f);
 static ConfigValue<bool> cfgMm1StyleAutoReverse("MM1StyleAutoReverse", false);
@@ -35,12 +32,6 @@ void mmGameHandler::SendChatMessage(char *message) {
     }
     else {
         LogFile::Format("Got chat message: %s\n", message);
-
-        //handle custom commands
-        if (!strcmp(message, "/bridge")) {
-            bridgeSpeed.set(bridgeSpeed.get() == 0.05f ? 2.5f : 0.05f);
-            bridgeAngle.set(bridgeAngle.get() == 0.471238941f ? 1.f : 0.471238941f);
-        }
 
         //send to dispatcher
         GameEventDispatcher::onChatMessage(message);
