@@ -40,7 +40,7 @@ namespace MM2
         AGE_API int GetSoundIndex(LPCSTR soundName)              { return hook::Thunk<0x515610>::Call<int>(this, soundName); }
         AGE_API void PlayOneShot(int index)                      { hook::Thunk<0x5154B0>::Call<void>(this, index); }
         AGE_API void Reset()                                     { hook::Thunk<0x5151B0>::Call<void>(this); }
-        AGE_API void Update(float a1)                            { hook::Thunk<0x515BE0>::Call<void>(this, a1); }
+        AGE_API void Update(float speed)                         { hook::Thunk<0x515BE0>::Call<void>(this, speed); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<Aud3DAmbientObject, Aud3DObject>("Aud3DAmbientObject")
