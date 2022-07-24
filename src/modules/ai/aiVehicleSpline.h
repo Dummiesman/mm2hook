@@ -1,6 +1,5 @@
 #pragma once
 #include "aiVehicle.h"
-#include <modules\ai.h>
 #include <mm2_audio.h>
 
 namespace MM2
@@ -72,7 +71,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(aiVehicleSpline, 0x18C);
-
-    // Lua initialization
-
 }

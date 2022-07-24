@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\ai.h>
+#include <mm2_common.h>
 
 namespace MM2
 {
@@ -36,17 +36,19 @@ namespace MM2
         /*
             aiPath
         */
-        AGE_API void ClearAmbients()                        { hook::Thunk<0x547C00>::Call<void>(this); }
-        AGE_API void ClearPeds()                            { hook::Thunk<0x547BD0>::Call<void>(this); }
-        AGE_API bool HasCableCarLine(int roadSide) const    { return hook::Thunk<0x549980>::Call<bool>(this, roadSide); }
-        AGE_API bool HasSubwayLine(int roadSide) const      { return hook::Thunk<0x5499B0>::Call<bool>(this, roadSide); }
+        AGE_API float CenterLength(int startIdx, int endIdx)    { return hook::Thunk<0x547340>::Call<float>(this, startIdx, endIdx); }
+        AGE_API void ClearAmbients()                            { hook::Thunk<0x547C00>::Call<void>(this); }
+        AGE_API void ClearPeds()                                { hook::Thunk<0x547BD0>::Call<void>(this); }
+        AGE_API bool HasCableCarLine(int roadSide) const        { return hook::Thunk<0x549980>::Call<bool>(this, roadSide); }
+        AGE_API bool HasSubwayLine(int roadSide) const          { return hook::Thunk<0x5499B0>::Call<bool>(this, roadSide); }
         AGE_API int IsPosOnRoad(Vector3 const & pos, float margin, float* outDistanceFromCenter) const
-                                                            { return hook::Thunk<0x548370>::Call<int>(this, &pos, margin, outDistanceFromCenter); }
-        AGE_API int Lane(Vector3 & pos, int roadSide) const { return hook::Thunk<0x547900>::Call<int>(this, &pos, roadSide); }
-        AGE_API void UpdatePedestrians()                    { hook::Thunk<0x544150>::Call<void>(this); }
+                                                                { return hook::Thunk<0x548370>::Call<int>(this, &pos, margin, outDistanceFromCenter); }
+        AGE_API int Lane(Vector3 & pos, int roadSide) const     { return hook::Thunk<0x547900>::Call<int>(this, &pos, roadSide); }
+        AGE_API void UpdatePedestrians()                        { hook::Thunk<0x544150>::Call<void>(this); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiPath>("aiPath")
+                .addFunction("CenterLength", &CenterLength)
                 .addFunction("ClearAmbients", &ClearAmbients)
                 .addFunction("ClearPeds", &ClearPeds)
                 .addFunction("HasCableCarLine", &HasCableCarLine)
@@ -59,7 +61,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(aiPath, 0x164);
-
-    // Lua initialization
-
 }

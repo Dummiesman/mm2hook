@@ -1,8 +1,5 @@
 #pragma once
-#include <modules\ai.h>
-
 #include "aiVehiclePhysics.h"
-#include "aiCTFRacer.h"
 
 namespace MM2
 {

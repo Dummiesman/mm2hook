@@ -1,6 +1,4 @@
 #pragma once
-#include <modules\ai.h>
-
 #include "aiVehicleSpline.h"
 
 namespace MM2

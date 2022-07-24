@@ -1,6 +1,4 @@
 #pragma once
-#include <modules\ai.h>
-
 #include "aiVehiclePhysics.h"
 
 namespace MM2
@@ -30,7 +28,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(aiRouteRacer, 0x9794);
-
-    // Lua initialization
-
 }

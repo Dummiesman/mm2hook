@@ -1,6 +1,4 @@
 #pragma once
-#include <modules\ai.h>
-
 #include "aiPedAudio.h"
 
 namespace MM2

@@ -1,6 +1,8 @@
 #pragma once
-#include <modules\core.h>
+#include <mm2_common.h>
+#include <string>
 #include <vector>
+#include "file.h"
 
 namespace MM2
 {
@@ -84,7 +86,4 @@ namespace MM2
     AGE_EXT int     fgets       (char *buffer, int length, Stream *stream);
     AGE_EXT void    fprintf     (Stream *stream, char const *format, ...);
     AGE_EXT int     fscanf      (Stream *stream, char const *format, ...);
-
-    // Lua initialization
-
 }

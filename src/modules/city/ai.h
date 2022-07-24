@@ -88,6 +88,39 @@ namespace MM2
                     vglVertex3f(lightB.X, lightB.Y + 0.15f, lightB.Z);
                     vglEnd();
 
+                    //label
+                    Vector4 camPos = gfxRenderState::GetCameraMatrix().GetRow(3);
+                    Vector3 camPos3 = Vector3(camPos.X, camPos.Y, camPos.Z);
+                    if (camPos3.Dist(vertex) < 50.0) {
+
+                        std::string info = "";
+                        if (IsPedBlocked() == TRUE)
+                            info += "IsPedBlocked\n";
+                        if (IsBlocked() == TRUE)
+                            info += "IsBlocked\n";
+                        if (IsAlley() == TRUE)
+                            info += "IsAlley\n";
+                        if (IsDivided() == TRUE)
+                            info += "IsDivided\n";
+                        if (IsFreeway() == TRUE)
+                            info += "IsFreeway\n";
+                        info += "IntersectionType " + std::to_string(GetIntersectionType(1 - s));
+                        info += "\n";
+                        info += "NumLanes " + std::to_string(GetNumLanes(s));
+                        info += "\n";
+                        info += "NumSidewalks " + std::to_string(GetNumSidewalks(s));
+                        info += "\n";
+                        info += "NumSubwayLanes " + std::to_string(GetNumSubwayLanes(s));
+                        info += "\n";
+                        info += "NumCablecarLanes " + std::to_string(GetNumCablecarLanes(s));
+                        info += "\n";
+                        info += "StopLightName ";
+                        info += GetStopLightName(s);
+
+                        vglCurrentColor.set(0xFFFFFFFF);
+                        vglDrawLabel(Vector3(vertex.X, vertex.Y + 5.0f, vertex.Z), info.c_str());
+                    }
+
                     // draw light triangle
                     Vector3 lightDir = (lightA - lightB);
                     lightDir.Normalize();
@@ -146,6 +179,13 @@ namespace MM2
                 .addStaticFunction("GetVertex", &GetVertex)
                 .addStaticFunction("GetSubwayVertex", &GetSubwayVertex)
                 .addStaticFunction("Draw", &Draw)
+
+                .addStaticFunction("DrawStatic", []() -> void
+                {
+                    //uhh, no idea about inheritance so we have this for now
+                    auto sdl = (lvlSDL*)0x629928;
+                    Draw(*sdl);
+                })
             .endClass();
         }
     };

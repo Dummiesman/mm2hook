@@ -1,6 +1,5 @@
 #pragma once
-#include <modules\ai.h>
-
+#include <mm2_common.h>
 #include "aiVehicle.h"
 #include "aiPath.h"
 

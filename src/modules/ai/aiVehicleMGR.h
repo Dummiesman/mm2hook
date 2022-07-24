@@ -1,5 +1,4 @@
 #pragma once
-#include <modules\ai.h>
 #include <modules\ai\aiVehicleData.h>
 
 namespace MM2

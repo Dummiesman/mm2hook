@@ -1,8 +1,8 @@
 #pragma once
+#include <mm2_common.h>
 #include "aiVehicle.h"
 #include "aiPath.h"
 #include "aiTrafficLight.h"
-#include <modules\ai.h>
 
 
 namespace MM2

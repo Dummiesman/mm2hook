@@ -1,7 +1,5 @@
 #pragma once
-#include <modules\ai.h>
-
-#include <mm2_audio.h>
+#include <modules\audio\audcreaturecontainer.h>
 
 namespace MM2
 {
@@ -9,12 +7,8 @@ namespace MM2
     class aiPedAudio;
 
     // External declarations
-    extern class AudCreatureContainer;
 
     // Class definitions
 
     class aiPedAudio : public AudCreatureContainer {};
-
-    // Lua initialization
-
 }

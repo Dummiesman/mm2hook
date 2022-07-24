@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\ai.h>
+#include <mm2_common.h>
 
 namespace MM2
 {
@@ -15,7 +15,5 @@ namespace MM2
     private:
         byte _buffer[0x34];
     };
-
-    // Lua initialization
 
 }

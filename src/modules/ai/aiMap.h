@@ -2,22 +2,18 @@
 
 #include "ArrayList.h"
 
-#include "aiCTFRacer.h"
-#include "aiCableCar.h"
+#include <modules\node\node.h>
+
 #include "aiCityData.h"
 #include "aiData.h"
 #include "aiIntersection.h"
 #include "aiPath.h"
 #include "aiPedestrian.h"
 #include "aiPoliceForce.h"
-#include "aiPoliceOfficer.h"
-#include "aiRouteRacer.h"
 #include "aiSubway.h"
 #include "aiVehicleMGR.h"
 #include "aiVehicleAmbient.h"
 #include "aiVehiclePlayer.h"
-#include "aiVehicleSpline.h"
-#include "mcHookman.h"
 
 namespace MM2
 {
@@ -26,7 +22,11 @@ namespace MM2
     class aiMap;
     
     // External declarations
-    extern class asNode;
+    extern class mcHookman;
+    extern class aiCableCar;
+    extern class aiRouteRacer;
+    extern class aiCTFRacer; 
+    extern class aiPoliceOfficer;
 
     // Class definitions
     enum class aiMapComponentType

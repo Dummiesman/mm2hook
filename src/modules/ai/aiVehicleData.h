@@ -1,5 +1,4 @@
 #pragma once
-#include <modules\ai.h>
 #include <modules\phys\bound.h>
 
 namespace MM2
@@ -39,22 +38,14 @@ namespace MM2
         AGE_API void FileIO(datParser &parser) override { hook::Thunk<0x56F7C0>::Call<void>(this, &parser); }
 
         //lua helpers
-        Vector3* GetWheelPosition(int id) {
-            //clamp
+        Vector3 GetWheelPosition(int id) {
             if (id > 5) id = 5;
-
-            //
-            return &WheelPositions[id];
+            return WheelPositions[id];
         }
 
-        void SetWheelPosition(int id, Vector3* position) {
-            //clamp
+        void SetWheelPosition(int id, Vector3 const& position) {
             if (id > 5) id = 5;
-
-            auto wheelPosPtr = &WheelPositions[id];
-            wheelPosPtr->X = position->X;
-            wheelPosPtr->Y = position->Y;
-            wheelPosPtr->Z = position->Z;
+            WheelPositions[id] = position;
         }
 
         int getDataId() {
@@ -88,7 +79,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(aiVehicleData, 0xBC);
-
-    // Lua initialization
-
 }

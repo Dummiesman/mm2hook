@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\ai.h>
+#include <mm2_common.h>
 
 namespace MM2
 {
@@ -22,7 +22,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(aiRaceData, 0xC8);
-
-    // Lua initialization
-
 }

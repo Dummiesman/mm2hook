@@ -1,6 +1,5 @@
 #pragma once
 #include "aiVehicle.h"
-#include <modules\ai.h>
 
 namespace MM2
 {
@@ -18,7 +17,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(aiSubway, 0x14C);
-
-    // Lua initialization
-
 }

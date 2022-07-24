@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\ai.h>
+#include <mm2_common.h>
+#include <modules\core\stream.h>
 
 namespace MM2
 {
@@ -39,7 +40,4 @@ namespace MM2
         AGE_API void ReadBinary(Stream *stream)             { hook::Thunk<0x543DE0>::Call<void>(this, stream); }
         AGE_API void SaveBinary(Stream *stream)             { hook::Thunk<0x543DB0>::Call<void>(this, stream); }
     };
-
-    // Lua initialization
-
 }
