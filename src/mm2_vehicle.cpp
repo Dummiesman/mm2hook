@@ -17,11 +17,6 @@ declfield(vehCar::sm_DrawHeadlights)(0x627518);
 declfield(vehCarDamage::EngineSmokeRule)(0x6AFED4);
 
 /*
-    vehWheel
-*/
-declfield(vehWheel::WeatherFriction)(0x5CF6B8);
-
-/*
     vehCarModel
 */
 bool vehCarModel::EnableSpinningWheels = true;

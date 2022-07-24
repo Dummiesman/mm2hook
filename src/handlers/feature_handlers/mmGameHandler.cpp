@@ -37,14 +37,6 @@ void mmGameHandler::SendChatMessage(char *message) {
         LogFile::Format("Got chat message: %s\n", message);
 
         //handle custom commands
-        if (!strcmp(message, "/slide")) {
-            if (MMSTATE->WeatherType == 3 && MMSTATE->TimeOfDay == 3)
-                vehWheel::WeatherFriction.set(vehWheel::WeatherFriction.get() == 0.75f ? -0.02f : 0.75f);
-            else if (MMSTATE->WeatherType == 3 && MMSTATE->TimeOfDay != 3)
-                vehWheel::WeatherFriction.set(vehWheel::WeatherFriction.get() == 0.8f ? -0.03f : 0.8f);
-            else
-                vehWheel::WeatherFriction.set(vehWheel::WeatherFriction.get() == 1.f ? -0.04f : 1.f);
-        }
         if (!strcmp(message, "/bridge")) {
             bridgeSpeed.set(bridgeSpeed.get() == 0.05f ? 2.5f : 0.05f);
             bridgeAngle.set(bridgeAngle.get() == 0.471238941f ? 1.f : 0.471238941f);

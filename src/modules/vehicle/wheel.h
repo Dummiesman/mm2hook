@@ -1,6 +1,9 @@
 #pragma once
-#include <modules\vehicle.h>
-#include <modules\phys.h>
+#include <mm2_common.h>
+#include <modules\node\node.h>
+#include <modules\phys\phinertia.h>
+#include <modules\level\material.h>
+#include <modules\model\getpivot.h>
 
 namespace MM2
 {
@@ -9,7 +12,6 @@ namespace MM2
 
     // External declarations
     extern class vehCarSim;
-    extern class lvlMaterial;
 
     // Class definitions
     class vehWheel : public asNode {
@@ -85,157 +87,61 @@ namespace MM2
         float DampCoefLatLoaded;
         byte _buffer5[0x4];
         lvlMaterial *CurrentPhysicsMaterial;
+    private:
+        std::tuple<float, float> luaComputeFriction(float slip) const;
     public:
         static hook::Type<float> WeatherFriction;
 
-        inline std::tuple<float, float> computeFriction(float slip) {
-            float visualFriction = 0.f;
-            float functionalFriction = this->ComputeFriction(slip, &visualFriction);
-            return std::make_tuple(functionalFriction, visualFriction);
-        }
-
-        Matrix34 GetMatrix() const {
-            return this->WheelMatrix;
-        }
-
-        bool IsGrounded() const {
-            return this->m_IsGrounded == TRUE;
-        }
-
-        inline lvlMaterial * GetCurrentPhysicsMaterial() {
-            return this->CurrentPhysicsMaterial;
-        }
-
-        inline float GetRadius() const {
-            return this->Radius;
-        }
-
-        void SetRadius(float radius) {
-            this->Radius = radius;
-        }
-        
-        float GetWidth() const {
-            return this->Width;
-        }
-
-        void SetWidth(float width) {
-            this->Width = width;
-        }
-
-        Vector3 GetCenter() const {
-            return this->Center;
-        }
-
-        void SetCenter(Vector3 const & center) {
-            this->Center = center;
-        }
-        
-        float GetLatSlipPercent() const {
-            return this->LatSlipPercent;
-        }
-
-        float GetLongSlipPercent() const {
-            return this->LongSlipPercent;
-        }
-
-        float GetRotationRate() const {
-            return this->RotationRate;
-        }
     public:
-        AGE_API vehWheel()                                     { hook::Thunk<0x4D2190>::Call<void>(this); }
+        AGE_API vehWheel();
 
-        AGE_API void Init(vehCarSim* carSimPtr, const char* vehicleBasename, const char* wheelName, Vector3 centerOfGravity, phInertialCS* inertialCs, int a6, int a7)
-        {
-            Matrix34 outMatrix;
+        AGE_API void Init(vehCarSim* carSimPtr, const char* vehicleBasename, const char* wheelName, Vector3 centerOfGravity, phInertialCS* inertialCs, int a6, int a7);
 
-            this->m_CarSimPtr = carSimPtr;
-            this->WheelFlags |= a7;
-            *getPtr<int>(this, 0x94) = a6;
-            this->m_InertialCSPtr = inertialCs;
+        AGE_API void CopyVars(vehWheel* copyFrom);
 
-            if (GetPivot(outMatrix, vehicleBasename, wheelName)) {
-                this->Center.X = outMatrix.m30;
-                this->Center.Y = outMatrix.m31;
-                this->Center.Z = outMatrix.m32;
+        AGE_API void ComputeConstants();
+        AGE_API void AddNormalLoad(float a1);
+        AGE_API void SetNormalLoad(float a1);
+        AGE_API void SetInputs(float a1, float a2, float a3);
 
-                float halfHeight = (outMatrix.m11 - outMatrix.m01) * 0.5f;
-                this->Radius = fabs(halfHeight);
+        AGE_API int GetSurfaceSound();
+        AGE_API float GetVisualDispVert();
+        AGE_API float GetVisualDispLat();
+        AGE_API float GetVisualDispLong();
 
-                this->Width = outMatrix.m10 - outMatrix.m00;
-            }
+        AGE_API float ComputeFriction(float slip, float* vF) const;
 
-            this->ComputeConstants();
-        }
+        /*                                                    
+            asNode virtuals                                  
+        */                                                    
 
-        AGE_API void CopyVars(vehWheel *copyFrom)              { hook::Thunk<0x4D4110>::Call<void>(this, copyFrom); }
+        AGE_API void Reset() override;
+        AGE_API void Update() override;
+        AGE_API void FileIO(datParser& parser) override;
+        AGE_API char* GetClassName() override;
 
-        AGE_API void ComputeConstants()                        { hook::Thunk<0x4D23F0>::Call<void>(this); }
-        AGE_API void AddNormalLoad(float a1)                   { hook::Thunk<0x4D2490>::Call<void>(this, a1); }
-        AGE_API void SetNormalLoad(float a1)                   { hook::Thunk<0x4D24C0>::Call<void>(this, a1); }
-        AGE_API void SetInputs(float a1, float a2, float a3)
-                                                               { hook::Thunk<0x4D3F80>::Call<void>(this, a1, a2, a3); }
-        AGE_API int GetSurfaceSound()                          { return hook::Thunk<0x4D3F60>::Call<int>(this); }
-        AGE_API float GetVisualDispVert()                      { return hook::Thunk<0x4D4030>::Call<float>(this); }
-        AGE_API float GetVisualDispLat()                       { return hook::Thunk<0x4D4090>::Call<float>(this); }
-        AGE_API float GetVisualDispLong()                      { return hook::Thunk<0x4D40D0>::Call<float>(this); }
-
-        AGE_API float ComputeFriction(float slip, float *vF)   { return hook::Thunk<0x4D25D0>::Call<float>(this, slip, vF); }
         /*
-            asNode virtuals
+            vehWheel
         */
 
-        AGE_API void Reset() override                          { hook::Thunk<0x4D22E0>::Call<void>(this); }
-        AGE_API void Update() override                         { hook::Thunk<0x4D34E0>::Call<void>(this); }
-        AGE_API void FileIO(datParser &parser) override        { hook::Thunk<0x4D41C0>::Call<void>(this); }
-        AGE_API char * GetClassName() override                 { return hook::Thunk<0x4D43C0>::Call<char *>(this); }
+        Matrix34 GetMatrix() const;
+        bool IsGrounded() const;
+        lvlMaterial* GetCurrentPhysicsMaterial();
+        float GetRadius() const;
+        void SetRadius(float radius);
+        float GetWidth() const;
+        void SetWidth(float width);
+        Vector3 GetCenter() const;
+        void SetCenter(Vector3 const& center);
+        float GetLatSlipPercent() const;
+        float GetLongSlipPercent() const;
+        float GetRotationRate() const;
 
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<vehWheel, asNode>("vehWheel")
-                //properties
-                .addVariableRef("SuspensionExtent", &vehWheel::SuspensionExtent)
-                .addVariableRef("SuspensionLimit", &vehWheel::SuspensionLimit)
-                .addVariableRef("SuspensionFactor", &vehWheel::SuspensionFactor)
-                .addVariableRef("SuspensionDampCoef", &vehWheel::SuspensionDampCoef)
-                .addVariableRef("SteeringLimit", &vehWheel::SteeringLimit)
-                .addVariableRef("SteeringOffset", &vehWheel::SteeringOffset)
-                .addVariableRef("BrakeCoef", &vehWheel::BrakeCoef)
-                .addVariableRef("HandbrakeCoef", &vehWheel::HandbrakeCoef)
-                .addVariableRef("CamberLimit", &vehWheel::CamberLimit)
-                .addVariableRef("WobbleLimit", &vehWheel::WobbleLimit)
-                .addVariableRef("TireDispLimitLong", &vehWheel::TireDispLimitLong)
-                .addVariableRef("TireDampCoefLong", &vehWheel::TireDampCoefLong)
-                .addVariableRef("TireDragCoefLong", &vehWheel::TireDragCoefLong)
-                .addVariableRef("TireDispLimitLat", &vehWheel::TireDispLimitLat)
-                .addVariableRef("TireDampCoefLat", &vehWheel::TireDampCoefLat)
-                .addVariableRef("TireDragCoefLat", &vehWheel::TireDragCoefLat)
-                .addVariableRef("OptimumSlipPercent", &vehWheel::OptimumSlipPercent)
-                .addVariableRef("StaticFric", &vehWheel::StaticFric)
-                .addVariableRef("SlidingFric", &vehWheel::SlidingFric)
-
-                .addProperty("Radius", &GetRadius, &SetRadius)
-                .addProperty("Width", &GetWidth, &SetWidth)
-                
-                .addPropertyReadOnly("CurrentPhysicsMaterial", &GetCurrentPhysicsMaterial)
-                .addPropertyReadOnly("LatSlipPercent", &GetLatSlipPercent)
-                .addPropertyReadOnly("LongSlipPercent", &GetLongSlipPercent)
-                
-                //functions
-                .addFunction("CopyVars", &CopyVars)
-                .addFunction("ComputeConstants", &ComputeConstants)
-                .addFunction("AddNormalLoad", &AddNormalLoad)
-                .addFunction("SetNormalLoad", &SetNormalLoad)
-                .addFunction("SetInputs", &SetInputs)
-                .addFunction("GetSurfaceSound", &GetSurfaceSound)
-                .addFunction("GetVisualDispVert", &GetVisualDispVert)
-                .addFunction("GetVisualDispLat", &GetVisualDispLat)
-                .addFunction("GetVisualDispLong", &GetVisualDispLong)
-                .addFunction("ComputeFriction", &computeFriction)
-            .endClass();
-        }
+        static float GetWeatherFriction();
+        static void SetWeatherFriction(float friction);
+                                                              
+        static void BindLua(LuaState L);
     };
 
     ASSERT_SIZEOF(vehWheel, 0x26C);
-
-    // Lua initialization
-
 }
