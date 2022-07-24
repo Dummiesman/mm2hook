@@ -27,28 +27,8 @@ namespace MM2
         float BrakeStaticCoef;
     private:
         //lua helpers
-        inline bool addWheelLua(vehWheel* wheel) {
+        bool addWheelLua(vehWheel* wheel) {
             return this->AddWheel(wheel) == TRUE;
-        }
-    public:
-        inline vehEngine * getAttachedEngine(void) {
-            return this->m_AttachedEngine;
-        }
-
-        inline vehTransmission * getAttachedTransmission(void) {
-            return this->m_AttachedTransmission;
-        }
-
-        inline vehWheel * getWheel(int num) {
-            if (num > 3)
-                return nullptr;
-            if (num >= this->WheelCount)
-                return nullptr;
-            return this->Wheels[num];
-        }
-
-        inline int getWheelCount(void) {
-            return this->WheelCount;
         }
     public:
         AGE_API BOOL AddWheel(vehWheel *wheel)             { return hook::Thunk<0x4D9E50>::Call<BOOL>(this, wheel); }
@@ -61,7 +41,6 @@ namespace MM2
         AGE_API void Init(vehCarSim *carSim)               { hook::Thunk<0x4D9DD0>::Call<void>(this, carSim); }
         
         
-        
         /*
             asNode virtuals
         */
@@ -72,20 +51,46 @@ namespace MM2
                                                            { hook::Thunk<0x4DA570>::Call<void>(this); }
         AGE_API char * GetClassName() override             { return hook::Thunk<0x4DA600>::Call<char *>(this); }
 
+        /*
+            vehDrivetrain
+        */
+
+        int GetWheelCount() const {
+            return this->WheelCount;
+        }
+
+        bool IsAttached() const {
+            return this->m_AttachedEngine != nullptr;
+        }
+
+        vehWheel* GetWheel(int num) const {
+            if (num < 0 || num >= this->WheelCount)
+                return nullptr;
+            return this->Wheels[num];
+        }
+
+        float GetAngInertia() const                        { return this->AngInertia; }
+        void SetAngInertia(float angInertia)               { this->AngInertia = angInertia; }
+
+        float GetBrakeDynamicCoef() const                  { return this->BrakeDynamicCoef; }
+        void SetBrakeDynamicCoef(float coef)               { this->BrakeDynamicCoef = coef; }
+
+        float GetBrakeStaticCoef() const                   { return this->BrakeStaticCoef; }
+        void SetBrakeStaticCoef(float coef)                { this->BrakeStaticCoef = coef; }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<vehDrivetrain, asNode>("vehDrivetrain")
                 //properties
-                .addPropertyReadOnly("AttachedEngine", &getAttachedEngine)
-                .addPropertyReadOnly("AttachedTransmission", &getAttachedTransmission)
-                .addPropertyReadOnly("WheelCount", &getWheelCount)
+                .addPropertyReadOnly("Attached", &IsAttached)
+                .addPropertyReadOnly("WheelCount", &GetWheelCount)
 
-                .addVariableRef("AngInertia", &vehDrivetrain::AngInertia)
-                .addVariableRef("BrakeDynamicCoef", &vehDrivetrain::BrakeDynamicCoef)
-                .addVariableRef("BrakeStaticCoef", &vehDrivetrain::BrakeStaticCoef)
+                .addProperty("AngInertia", &GetAngInertia, &SetAngInertia)
+                .addProperty("BrakeDynamicCoef", &GetBrakeDynamicCoef, &SetBrakeDynamicCoef)
+                .addProperty("BrakeStaticCoef", &GetBrakeStaticCoef, &SetBrakeStaticCoef)
 
                 //functions
                 .addFunction("CopyVars", &CopyVars)
-                .addFunction("GetWheel", &getWheel)
+                .addFunction("GetWheel", &GetWheel)
                 .addFunction("AddWheel", &addWheelLua)
                 .addFunction("Attach", &Attach)
                 .addFunction("Detach", &Detach)
@@ -94,7 +99,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(vehDrivetrain, 0x4C);
-
-    // Lua initialization
-
 }
