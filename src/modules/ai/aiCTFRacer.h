@@ -14,11 +14,12 @@ namespace MM2
     class aiCTFRacer : public Base 
     {
     private:
-        hook::Field<0x04, Vector3> _flagPosition;
-        hook::Field<0x1C, Vector3> _deliverPosition;
-        hook::Field<0x028, aiVehiclePhysics> _physics;
-        hook::Field<0x979A, unsigned short> _id;
-        byte buffer[0x9870];
+        byte buffer[0x9874];
+    protected:
+        static hook::Field<0x04, Vector3> _flagPosition;
+        static hook::Field<0x1C, Vector3> _deliverPosition;
+        static hook::Field<0x028, aiVehiclePhysics> _physics;
+        static hook::Field<0x979A, unsigned short> _id;
     public:
         aiCTFRacer(void)                                    DONOTCALL;
         aiCTFRacer(const aiCTFRacer &&)                     DONOTCALL;

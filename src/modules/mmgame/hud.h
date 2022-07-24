@@ -122,16 +122,16 @@ namespace MM2
 
     class mmHUD : public asNode {
     private:
-        byte _buffer[0xB9C]; // unconfirmed
+        byte _buffer[0xBC0]; // unconfirmed
     protected:
-        hook::Field<0xB94, mmCDPlayer*> _cdplayer;
-        hook::Field<0xBA0, mmHudMap*> _hudmap;
-        hook::Field<0xBA4, camViewCS*> _camview;
-        hook::Field<0x9BC, mmArrow> _arrow;
-        hook::Field<0x950, BOOL> _showTimer;
-        hook::Field<0x914, BOOL> _useCountdownTimer;
-        hook::Field<0xA54, mmTimer> _timer;
-        hook::Field<0xA84, mmTimer> _countdownTimer;
+        static hook::Field<0xB94, mmCDPlayer*> _cdplayer;
+        static hook::Field<0xBA0, mmHudMap*> _hudmap;
+        static hook::Field<0xBA4, camViewCS*> _camview;
+        static hook::Field<0x9BC, mmArrow> _arrow;
+        static hook::Field<0x950, BOOL> _showTimer;
+        static hook::Field<0x914, BOOL> _useCountdownTimer;
+        static hook::Field<0xA54, mmTimer> _timer;
+        static hook::Field<0xA84, mmTimer> _countdownTimer;
     public:
         mmTimer* GetTimer()
         {

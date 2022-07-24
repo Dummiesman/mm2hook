@@ -19,8 +19,8 @@ namespace MM2
 
     class pedActive : public dgPhysEntity {
     protected:
-        hook::Field<0x104, crSkeleton *> _skeleton;
-        hook::Field<0x108, dgRagdoll *> _ragdoll;
+        static hook::Field<0x104, crSkeleton *> _skeleton;
+        static hook::Field<0x108, dgRagdoll *> _ragdoll;
     public:
         inline crSkeleton * GetSkeleton() const {
             return _skeleton.get(this);

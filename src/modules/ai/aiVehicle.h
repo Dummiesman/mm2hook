@@ -21,9 +21,9 @@ namespace MM2
 
     // Class definitions
     class aiRailSet {
-    private:
-        hook::Field<0x98, float> _speed;
-        hook::Field<0x44, float> _accelFactor;
+    protected:
+        static hook::Field<0x98, float> _speed;
+        static hook::Field<0x44, float> _accelFactor;
     public:
         float GetSpeed();
         float GetAccelFactor();
@@ -42,8 +42,8 @@ namespace MM2
         static const int TSLIGHT1_GEOM_ID = 22;
     public:
         static int AmbientHeadlightStyle;
-    private:
-        hook::Field<0x14, aiVehicleSpline*> _spline;
+    protected:
+        static hook::Field<0x14, aiVehicleSpline*> _spline;
     public:
         aiVehicleInstance(void)             DONOTCALL;
 

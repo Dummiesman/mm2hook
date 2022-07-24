@@ -13,11 +13,12 @@ namespace MM2
 
     class aiPoliceOfficer : public aiVehiclePhysics {
     private:
-        hook::Field<0x9774, vehCar*> _followedCar;
-        hook::Field<0x9778, unsigned short> _id;
-        hook::Field<0x977E, unsigned short> _apprehendState;
-        hook::Field<0x977A, unsigned short> _policeState;
-        byte _buffer[0x100-4];
+        byte _buffer[0x100];
+    protected:
+        static hook::Field<0x9774, vehCar*> _followedCar;
+        static hook::Field<0x9778, unsigned short> _id;
+        static hook::Field<0x977E, unsigned short> _apprehendState;
+        static hook::Field<0x977A, unsigned short> _policeState;
     public:
         aiPoliceOfficer(void)                               DONOTCALL;
         aiPoliceOfficer(const aiPoliceOfficer &&)           DONOTCALL;

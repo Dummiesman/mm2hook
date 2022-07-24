@@ -15,9 +15,9 @@ namespace MM2
 
     class vehCarAudio : public Aud3DObject {
     private:
-        byte _buffer[0xCF];
+        byte _buffer[0xD0];
     protected:
-        hook::Field<0x118, vehCarSim *> _sim;
+        static hook::Field<0x118, vehCarSim *> _sim;
     public:
         /*
             Aud3DObject virtuals

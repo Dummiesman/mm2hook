@@ -17,7 +17,7 @@ namespace MM2
     private:
         byte _buffer[0x64]; //guessed size
     protected:
-        hook::Field<0x30, phBoundBox *> _boundBox;
+        static hook::Field<0x30, phBoundBox *> _boundBox;
     public:
         AGE_API pedRagdollMgr(void) {
             scoped_vtable x(this);
@@ -49,7 +49,4 @@ namespace MM2
 
 
     };
-
-    // Lua initialization
-
 }

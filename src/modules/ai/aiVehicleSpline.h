@@ -16,10 +16,10 @@ namespace MM2
 
     class aiVehicleSpline : public aiVehicle {
     private:
-        hook::Field<0x10, aiRailSet> _railSet;
-        hook::Field<0xF4, float> _curSpeed;
+        byte _buffer[0x186];
     protected:
-        byte _buffer[0x184];
+        static hook::Field<0x10, aiRailSet> _railSet;
+        static hook::Field<0xF4, float> _curSpeed;
     public:
         aiVehicleSpline(void)                               DONOTCALL;
         aiVehicleSpline(const aiVehicleSpline &&)           DONOTCALL;

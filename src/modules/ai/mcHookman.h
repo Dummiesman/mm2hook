@@ -13,8 +13,9 @@ namespace MM2
 
     class mcHookman : public aiVehiclePhysics {
     private:
-        hook::Field<0x9794, short> _id;
-        byte _buffer[0x100-1];
+        byte _buffer[0x100];
+    protected:
+        static hook::Field<0x9794, short> _id;
     public:
         mcHookman(void)                                     DONOTCALL;
         mcHookman(const mcHookman &&)                       DONOTCALL;

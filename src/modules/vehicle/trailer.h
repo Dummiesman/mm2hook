@@ -18,13 +18,13 @@ namespace MM2
 
     class vehTrailer : public dgPhysEntity, public asNode {
     protected:
-        hook::Field<0x1E4, vehCarSim *> _sim;
-        hook::Field<0x1E8, vehTrailerInstance> _instance;
-        hook::Field<0xCC, dgTrailerJoint> _joint;
-        hook::Field<0x528, vehWheel> _twhl0;
-        hook::Field<0x794, vehWheel> _twhl1;
-        hook::Field<0xA00, vehWheel> _twhl2;
-        hook::Field<0xC6C, vehWheel> _twhl3;
+        static hook::Field<0x1E4, vehCarSim *> _sim;
+        static hook::Field<0x1E8, vehTrailerInstance> _instance;
+        static hook::Field<0xCC, dgTrailerJoint> _joint;
+        static hook::Field<0x528, vehWheel> _twhl0;
+        static hook::Field<0x794, vehWheel> _twhl1;
+        static hook::Field<0xA00, vehWheel> _twhl2;
+        static hook::Field<0xC6C, vehWheel> _twhl3;
     public:
         inline vehCarSim* getCarSim() 
         {
@@ -113,7 +113,7 @@ namespace MM2
             return vec;
         }
     protected:
-        hook::Field<0x14, vehTrailer *> _trailer;
+        static hook::Field<0x14, vehTrailer *> _trailer;
     public:
         inline vehTrailer * getTrailer(void) const {
             return _trailer.get(this);
@@ -129,7 +129,4 @@ namespace MM2
             .endClass();
         }
     };
-
-    // Lua initialization
-
 }

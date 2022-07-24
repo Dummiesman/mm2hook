@@ -12,10 +12,10 @@ namespace MM2
     // Class definitions
     class mmCDPlayer : public asNode {
     private:
-        byte buffer[0x138];
+        byte buffer[0x120];
     protected:
-        hook::Field<0x1C, int> _currentTrack;
-        hook::Field<0x24, int> _isPlaying;
+        static hook::Field<0x1C, int> _currentTrack;
+        static hook::Field<0x24, int> _isPlaying;
     public:
         inline int getCurrentTrack(void) const {
             return _currentTrack.get(this);
@@ -48,4 +48,6 @@ namespace MM2
             .endClass();
         }
     };
+
+    ASSERT_SIZEOF(mmCDPlayer, 0x138);
 }

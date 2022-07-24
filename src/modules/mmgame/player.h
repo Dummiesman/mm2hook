@@ -14,32 +14,31 @@ namespace MM2
     // Class definitions
     class mmPlayer : public asNode {
     private:
-        byte _buffer[0x23A4];
+        byte _buffer[0x238C];
 
         AGE_API camCarCS * _GetCurrentCameraPtr() const       { return hook::Thunk<0x4048E0>::Call<camCarCS*>(this); }
 
     protected:
-        hook::Field<0x2C, vehCar> _car;
-        hook::Field<0x288, mmHUD> _hud;
+        static hook::Field<0x2C, vehCar> _car;
+        static hook::Field<0x288, mmHUD> _hud;
 
-        hook::Field<0x2A4, mmDashView> _dashView;
+        static hook::Field<0x2A4, mmDashView> _dashView;
         
-        hook::Field<0xE28, mmHudMap *> _hudmap;
-        hook::Field<0xE2C, camViewCS *> _camView;
+        static hook::Field<0xE28, mmHudMap *> _hudmap;
+        static hook::Field<0xE2C, camViewCS *> _camView;
 
-        hook::Field<0xE60, camTrackCS> _nearCam;
-        hook::Field<0x10F8, camTrackCS> _farCam;
-        hook::Field<0x1390, camTrackCS> _indCam;
-        hook::Field<0x1628, camPovCS> _povCam;
-        hook::Field<0x1770, camPovCS> _dashCam;
-        hook::Field<0x18B8, camCarCS> _polarCam1;
-        hook::Field<0x19E0, camCarCS> _polarCam2;
-        hook::Field<0x1B08, camAICS> _freeCam;
-        hook::Field<0x1C2C, camPointCS> _pointCam;
-        hook::Field<0x1D70, camCarCS> _preCam;
-        hook::Field<0x1E98, camCarCS> _postCam;
-        hook::Field<0x1FBC, camCarCS> _polarCam3;
-
+        static hook::Field<0xE60, camTrackCS> _nearCam;
+        static hook::Field<0x10F8, camTrackCS> _farCam;
+        static hook::Field<0x1390, camTrackCS> _indCam;
+        static hook::Field<0x1628, camPovCS> _povCam;
+        static hook::Field<0x1770, camPovCS> _dashCam;
+        static hook::Field<0x18B8, camCarCS> _polarCam1;
+        static hook::Field<0x19E0, camCarCS> _polarCam2;
+        static hook::Field<0x1B08, camAICS> _freeCam;
+        static hook::Field<0x1C2C, camPointCS> _pointCam;
+        static hook::Field<0x1D70, camCarCS> _preCam;
+        static hook::Field<0x1E98, camCarCS> _postCam;
+        static hook::Field<0x1FBC, camCarCS> _polarCam3;
     public:
         vehCar * GetCar() const                  { return _car.ptr(this); }
         mmHUD * GetHUD() const                   { return _hud.ptr(this); }
@@ -122,4 +121,6 @@ namespace MM2
             .endClass();
         }
     };
+
+    ASSERT_SIZEOF(mmPlayer, 0x23A4);
 }

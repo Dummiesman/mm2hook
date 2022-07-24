@@ -12,9 +12,11 @@ namespace MM2
     // Class definitions
 
     class aiPedestrian {
+    private:
+        byte _buffer[0x134];
     protected:
-        hook::Field<0xC0, aiPedAudio> _audio;
-        hook::Field<0x9C, aiPedestrianInstance *> _instance;
+        static hook::Field<0xC0, aiPedAudio> _audio;
+        static hook::Field<0x9C, aiPedestrianInstance *> _instance;
     public:
         inline aiPedestrianInstance * getInstance(void) const {
             return _instance.get(this);
@@ -25,6 +27,5 @@ namespace MM2
         };
     };
 
-    // Lua initialization
-
+    ASSERT_SIZEOF(aiPedestrian, 0x134);
 }

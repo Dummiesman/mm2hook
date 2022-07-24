@@ -16,14 +16,14 @@ namespace MM2
         // PUExit: 0x24 (size: 0xBC)
         // TODO...
     private:
-        byte _buffer[0x60];
+        byte _buffer[0x48];
 
         bool getIsEnabledLua()
         {
             return this->IsEnabled() == TRUE;
         }
     protected:
-        hook::Field<0x18, mmGame *> _game;
+        static hook::Field<0x18, mmGame *> _game;
     public:
         inline mmGame* getGame(void) const {
             return _game.get(this);
@@ -44,4 +44,6 @@ namespace MM2
             .endClass();
         }
     };
+
+    ASSERT_SIZEOF(mmPopup, 0x60);
 }

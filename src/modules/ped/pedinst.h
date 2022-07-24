@@ -17,9 +17,9 @@ namespace MM2
 
     class aiPedestrianInstance : public lvlInstance {
     private:
-        byte _buffer[0x14];
+        byte _buffer[0x18];
     protected:
-        hook::Field<0x18, pedAnimationInstance> _animationInstance;
+        static hook::Field<0x18, pedAnimationInstance> _animationInstance;
     public:
         inline pedAnimationInstance* getAnimationInstance() const {
             return _animationInstance.ptr(this);
@@ -36,6 +36,5 @@ namespace MM2
         virtual AGE_API bool IsCollidable(void)             { return hook::Thunk<0x57B780>::Call<bool>(this); }
     };
 
-    // Lua initialization
-
+    ASSERT_SIZEOF(aiPedestrianInstance, 0x2C);
 }

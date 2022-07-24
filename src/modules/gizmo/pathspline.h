@@ -13,7 +13,7 @@ namespace MM2
     private:
         byte buffer[0x48];
     protected:
-        hook::Field<0x04, float> _speed;
+        static hook::Field<0x04, float> _speed;
     public:
         ANGEL_ALLOCATOR
 
@@ -44,4 +44,6 @@ namespace MM2
                 .endClass();
         }
     };
+
+    ASSERT_SIZEOF(gizPathspline, 0x48);
 }

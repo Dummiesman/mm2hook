@@ -19,9 +19,10 @@ namespace MM2
 
     class gizBridge : public dgUnhitMtxBangerInstance {
     private:
-        byte buffer[0xC4-2];
-        hook::Field<0x58, int> _state;
-        hook::Field<0x5C, int> _type;
+        byte buffer[0xC4];
+    protected:
+        static hook::Field<0x58, int> _state;
+        static hook::Field<0x5C, int> _type;
     private:
         static hook::Type<float> LiftSpeed;
         static hook::Type<float> GoalAngle;

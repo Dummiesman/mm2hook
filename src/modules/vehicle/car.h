@@ -25,18 +25,18 @@ namespace MM2
     // Class definitions
 
     class vehCar : public dgPhysEntity {
-        byte _buffer[0x1A4-10];
+        byte _buffer[0x1A4];
     protected:
-        hook::Field<0xC0, vehCarDamage *> _damage;
-        hook::Field<0xB8, vehCarSim *> _sim; // size: ~0x1560
-        hook::Field<0xBC, vehCarModel *> _model;
-        hook::Field<0xE0, vehSplash *> _splash;
-        hook::Field<0x254, vehCarAudioContainer *> _audio;
-        hook::Field<0xD8, vehTrailer *> _trailer;
-        hook::Field<0xC8, vehSiren *> _siren;
-        hook::Field<0xC4, vehWheelPtx *> _wheelPtx;
-        hook::Field<0xD0, vehGyro *> _gyro;
-        hook::Field<0xCC, vehStuck*> _stuck;
+        static hook::Field<0xC0, vehCarDamage *> _damage;
+        static hook::Field<0xB8, vehCarSim *> _sim; // size: ~0x1560
+        static hook::Field<0xBC, vehCarModel *> _model;
+        static hook::Field<0xE0, vehSplash *> _splash;
+        static hook::Field<0x254, vehCarAudioContainer *> _audio;
+        static hook::Field<0xD8, vehTrailer *> _trailer;
+        static hook::Field<0xC8, vehSiren *> _siren;
+        static hook::Field<0xC4, vehWheelPtx *> _wheelPtx;
+        static hook::Field<0xD0, vehGyro *> _gyro;
+        static hook::Field<0xCC, vehStuck*> _stuck;
     private:
         /*
             Valid Modes:
