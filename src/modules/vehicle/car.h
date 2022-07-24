@@ -25,7 +25,7 @@ namespace MM2
     // Class definitions
 
     class vehCar : public dgPhysEntity {
-        byte _buffer[0x25C];
+        byte _buffer[0x1A4-10];
     protected:
         hook::Field<0xC0, vehCarDamage *> _damage;
         hook::Field<0xB8, vehCarSim *> _sim; // size: ~0x1560
@@ -142,6 +142,5 @@ namespace MM2
         }
     };
 
-    // Lua initialization
-
+    ASSERT_SIZEOF(vehCar, 0x258);
 }
