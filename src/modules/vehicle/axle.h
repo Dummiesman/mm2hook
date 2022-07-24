@@ -25,7 +25,7 @@ namespace MM2
         float TorqueCoef;
         float DampCoef;
     public:
-        AGE_API vehAxle()                                   { hook::Thunk<0x4D9990>::Call<void>(this); }
+        AGE_API vehAxle()                                   { scoped_vtable x(this);  hook::Thunk<0x4D9990>::Call<void>(this); }
 
         AGE_API void Init(vehCarSim *carSim, const char *vehicleBasename, const char *axleName, vehWheel *wheelL, vehWheel *wheelR)                     
                                                             { hook::Thunk<0x4D9A50>::Call<void>(this, carSim, vehicleBasename, axleName, wheelL, wheelR); }
