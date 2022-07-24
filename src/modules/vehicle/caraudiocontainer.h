@@ -111,7 +111,7 @@ namespace MM2
                 .addStaticFunction("IsPolice", &IsPolice)
                 .addStaticFunction("IsSemiOrBus", &IsSemiOrBus)
                 .addStaticFunction("SetSirenCSVName", &SetSirenCSVName)
-                .addPropertyReadOnly("IsHornPlaying", &GetIsHornPlaying)
+                .addPropertyReadOnly("HornPlaying", &GetIsHornPlaying)
                 .addFunction("GetActiveAudio", &getActiveAudioLua)
                 .addFunction("Set3D", &Set3D)
                 .addFunction("StartSiren", &StartSiren)
@@ -124,7 +124,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(vehCarAudioContainer, 0x18);
-
-    // Lua initialization
-
 }
