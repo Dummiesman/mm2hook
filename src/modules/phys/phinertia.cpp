@@ -17,12 +17,20 @@ namespace MM2
         _mass.set(this, mass);
     }
 
-    float phInertialCS::GetMaxVelocity() const {
+    float phInertialCS::GetMaxSpeed() const {
         return _maxVelocity.get(this);
     }
 
-    void phInertialCS::SetMaxVelocity(float velocity) {
-        _maxVelocity.set(this, velocity);
+    void phInertialCS::SetMaxSpeed(float speed) {
+        _maxVelocity.set(this, speed);
+    }
+
+    Vector3 phInertialCS::GetMaxAngSpeed() const {
+        return _maxAngularVelocity.get(this);
+    }
+
+    void phInertialCS::SetMaxAngSpeed(Vector3 const& speed) {
+        _maxAngularVelocity.set(this, speed);
     }
 
     Vector3 phInertialCS::GetPosition() const {
@@ -33,9 +41,36 @@ namespace MM2
         return _velocity.get(this);
     }
 
-    void phInertialCS::SetVelocity(Vector3 velocity) {
+    void phInertialCS::SetVelocity(Vector3 const & velocity) {
         _velocity.set(this, velocity);
-        _scaledVelocity.set(this, velocity * this->GetMass());
+        _momentum.set(this, velocity * this->GetMass());
+    }
+
+    Vector3 phInertialCS::GetMomentum() const {
+        return _momentum.get(this);
+    }
+
+    void phInertialCS::SetMomentum(Vector3 const& momentum) {
+        _velocity.set(this, momentum / this->GetMass());
+        _momentum.set(this, momentum);
+    }
+
+    Vector3 phInertialCS::GetAngVelocity() const {
+        return _angularVelocity.get(this);
+    }
+
+    void phInertialCS::SetAngVelocity(Vector3 const& velocity) {
+        _angularVelocity.set(this, velocity);
+        _angularMomentum.set(this, velocity * this->GetMass());
+    }
+
+    Vector3 phInertialCS::GetAngMomentum() const {
+        return _angularMomentum.get(this);
+    }
+
+    void phInertialCS::SetAngMomentum(Vector3 const& momentum) {
+        _angularVelocity.set(this, momentum / this->GetMass());
+        _angularMomentum.set(this, momentum);
     }
 
     Matrix34 phInertialCS::GetMatrix() const {
@@ -108,10 +143,17 @@ namespace MM2
             .addFunction("AddForce", &AddForce)
             .addFunction("AddTorque", &AddTorque)
 
+            .addProperty("Velocity", &GetVelocity, &SetVelocity)
+            .addProperty("Momentum", &GetMomentum, &SetMomentum)
+            .addProperty("AngVelocity", &GetAngVelocity, &SetAngVelocity)
+            .addProperty("AngMomentum", &GetAngMomentum, &SetAngMomentum)
+
+            .addProperty("MaxSpeed", &GetMaxSpeed, &SetMaxSpeed)
+            .addProperty("MaxAngSpeed", &GetMaxAngSpeed, &SetMaxAngSpeed)
+
             .addProperty("Mass", &GetMass, &SetMass)
             .addProperty("Force", &GetForce, &SetForce)
             .addProperty("Torque", &GetTorque, &SetTorque)
-            .addProperty("Velocity", &GetVelocity, &SetVelocity)
             .addProperty("Position", &GetPosition, &SetPosition)
             .addProperty("Matrix", &GetMatrix, &SetMatrix)
         .endClass();
