@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\vehicle.h>
+#include <mm2_common.h>
+#include <modules\node\node.h>
 
 namespace MM2
 {
@@ -7,53 +8,52 @@ namespace MM2
     class vehAero;
 
     // External declarations
-
+    extern class vehCarSim;
 
     // Class definitions
     class vehAero : public asNode {
     private:
-        BOOL EnableAero;
+        BOOL m_EnableAero;
         vehCarSim* m_CarSimPtr;
-        Vector3 AngCDamp;
-        Vector3 AngVelDamp;
-        Vector3 AngVel2Damp;
-        float Drag;
-        float Down;
+        Vector3 m_AngCDamp;
+        Vector3 m_AngVelDamp;
+        Vector3 m_AngVel2Damp;
+        float m_Drag;
+        float m_Down;
     public:
-        bool getEnabled() {
-            return this->EnableAero == TRUE;
-        }
-
-        void setEnabled(bool enabled) {
-            this->EnableAero = (enabled) ? TRUE : FALSE;
-        }
-    public:
-        AGE_API vehAero() { hook::Thunk<0x4D9320>::Call<void>(this); }
+        AGE_API vehAero();
 
         /*
             asNode virtuals
         */
 
-        AGE_API void Update() override                  { hook::Thunk<0x4D9360>::Call<void>(this); }
-        AGE_API void FileIO(datParser& parser) override { hook::Thunk<0x4D96E0>::Call<void>(this); }
-        AGE_API char* GetClassName() override           { return hook::Thunk<0x4D9790>::Call<char*>(this); }
+        AGE_API void Update() override;
+        AGE_API void FileIO(datParser& parser) override;
+        AGE_API char* GetClassName() override;
 
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<vehAero, asNode>("vehAero")
-                //properties
-                .addProperty("Enabled", &getEnabled, &setEnabled)
-                .addVariableRef("AngCDamp", &vehAero::AngCDamp)
-                .addVariableRef("AngVelDamp", &vehAero::AngVelDamp)
-                .addVariableRef("AngVel2Damp", &vehAero::AngVel2Damp)
-                .addVariableRef("Drag", &vehAero::Drag)
-                .addVariableRef("Down", &vehAero::Down)
+        /*
+            vehAero
+        */
+        bool GetEnabled() const;
+        void SetEnabled(bool enabled);
 
-                .endClass();
-        }
+        float GetDown() const;
+        void SetDown(float down);
+
+        float GetDrag() const;
+        void SetDrag(float drag);
+
+        Vector3 GetAngCDamp() const;
+        void SetAngCDamp(Vector3 const& ang);
+
+        Vector3 GetAngVelDamp() const;
+        void SetAngVelDamp(Vector3 const& ang);
+
+        Vector3 GetAngVel2Damp() const;
+        void SetAngVel2Damp(Vector3 const& ang); 
+
+        static void BindLua(LuaState L);
     };
 
     ASSERT_SIZEOF(vehAero, 0x4C);
-
-    // Lua initialization
-
 }

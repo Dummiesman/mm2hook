@@ -2256,6 +2256,9 @@
     <ClCompile Include="src\modules\vehicle\wheel.cpp">
       <Filter>Source Files\modules\vehicle</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\vehicle\aero.cpp">
+      <Filter>Source Files\modules\vehicle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AGE.h">

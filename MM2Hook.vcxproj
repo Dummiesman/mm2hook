@@ -705,6 +705,7 @@
     <ClCompile Include="src\modules\vector\vector3.cpp" />
     <ClCompile Include="src\modules\vector\vector4.cpp" />
     <ClCompile Include="src\modules\vehicle.cpp" />
+    <ClCompile Include="src\modules\vehicle\aero.cpp" />
     <ClCompile Include="src\modules\vehicle\carmodel.cpp" />
     <ClCompile Include="src\modules\vehicle\wheel.cpp" />
     <ClCompile Include="src\settings.cpp" />
