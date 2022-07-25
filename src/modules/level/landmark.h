@@ -23,7 +23,7 @@ namespace MM2
         virtual AGE_API int Init(const char *a1, const Matrix34 &a2, int a3) override
                                                                     { return hook::Thunk<0x468010>::Call<int>(this, a1, &a2, a3); }
 
-        virtual AGE_API unsigned int SizeOf(void) override          { return sizeof(this); }
+        virtual AGE_API unsigned int SizeOf(void) override          { return sizeof(lvlLandmark); }
 
         virtual AGE_API bool IsLandmark() override                  { return hook::Thunk<0x467FF0>::Call<bool>(this); }
         virtual AGE_API bool IsCollidable() override                { return hook::Thunk<0x465EB0>::Call<bool>(this); }

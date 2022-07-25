@@ -65,7 +65,7 @@ namespace MM2
                                                             { return hook::Thunk<0x4679A0>::Call<const Matrix34 &>(this, a1); }
         virtual AGE_API void SetMatrix(const Matrix34 & a1) { hook::Thunk<0x4679F0>::Call<void>(this, &a1); }
         
-        virtual AGE_API unsigned int SizeOf(void) override { return sizeof(this); }
+        virtual AGE_API unsigned int SizeOf(void) override  { return sizeof(lvlFixedRotY); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<lvlFixedRotY, lvlFixedAny>("lvlFixedRotY")
@@ -100,7 +100,7 @@ namespace MM2
                                                             { return hook::Thunk<0x467AB0>::Call<const Matrix34 &>(this, a1); }
         virtual AGE_API void SetMatrix(const Matrix34 & a1) { hook::Thunk<0x467AC0>::Call<void>(this, &a1); }
         
-        virtual AGE_API unsigned int SizeOf(void) override { return sizeof(this); }
+        virtual AGE_API unsigned int SizeOf(void) override  { return sizeof(lvlFixedMatrix); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<lvlFixedMatrix, lvlFixedAny>("lvlFixedMatrix")
