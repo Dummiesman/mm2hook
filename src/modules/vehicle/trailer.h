@@ -15,8 +15,9 @@ namespace MM2
     extern class dgTrailerJoint;
 
     // Class definitions
-
     class vehTrailer : public dgPhysEntity, public asNode {
+    private:
+        byte _buffer[0xF6C];
     protected:
         static hook::Field<0x1E4, vehCarSim *> _sim;
         static hook::Field<0x1E8, vehTrailerInstance> _instance;
@@ -26,60 +27,17 @@ namespace MM2
         static hook::Field<0xA00, vehWheel> _twhl2;
         static hook::Field<0xC6C, vehWheel> _twhl3;
     public:
-        inline vehCarSim* getCarSim() 
-        {
-            return _sim.get(this);
-        }
+        vehCarSim* GetCarSim() const;
+        dgTrailerJoint* GetJoint() const; 
+        vehWheel* GetWheel(int num) const;
+        vehTrailerInstance* GetInstance() const;
 
-        inline dgTrailerJoint* getJoint()  
-        {
-            return _joint.ptr(this);
-        }
+        AGE_API void Init(const char* basename, const Vector3* a2, vehCarSim* a3, int a4);
 
-        inline vehWheel * getWheel(int num) 
-        {
-            switch (num) {
-            case 0:
-                return _twhl0.ptr(this);
-            case 1:
-                return _twhl1.ptr(this);
-            case 2:
-                return _twhl2.ptr(this);
-            case 3:
-                return _twhl3.ptr(this);
-            }
-            return nullptr;
-        }
-
-        inline vehTrailerInstance* getInstance()
-        {
-            return _instance.ptr(this);
-        }
-
-        AGE_API void Init(const char* basename, const Vector3* a2, vehCarSim* a3, int a4)
-        {
-            hook::Thunk<0x4D72F0>::Call<void>(this, basename, a2, a3, a4);
-
-            Matrix34 diffMatrix;
-
-            if (GetPivot(diffMatrix, basename, "trailer_twhl4")) {
-                getCarSim()->TrailerBackBackLeftWheelPosDiff = diffMatrix.GetRow(3) - getWheel(2)->GetCenter();
-            }
-
-            if (GetPivot(diffMatrix, basename, "trailer_twhl5")) {
-                getCarSim()->TrailerBackBackLeftWheelPosDiff = diffMatrix.GetRow(3) - getWheel(3)->GetCenter();
-            }
-        }
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<vehTrailer, dgPhysEntity>("vehTrailer")
-                .addFunction("GetWheel", &getWheel)
-                .addPropertyReadOnly("CarSim", &getCarSim)
-                .addPropertyReadOnly("Joint", &getJoint)
-                .addPropertyReadOnly("Instance", &getInstance)
-            .endClass();
-        }
+        static void BindLua(LuaState L);
     };
+
+    ASSERT_SIZEOF(vehTrailer, 0x1038);
 
     class vehTrailerInstance : public lvlInstance {
     public:
@@ -106,27 +64,28 @@ namespace MM2
         static const int TSLIGHT0_GEOM_ID = 23;
         static const int TSLIGHT1_GEOM_ID = 24;
     private:
-        Vector3 getTrailerHitchOffsetLua()
-        {
-            Vector3 vec;
-            this->GetTrailerHitch(&vec);
-            return vec;
-        }
+        byte _buffer[0x12];
+        Vector3 getTrailerHitchOffsetLua() const;
     protected:
         static hook::Field<0x14, vehTrailer *> _trailer;
     public:
-        inline vehTrailer * getTrailer(void) const {
-            return _trailer.get(this);
-        }
+        /*
+            lvlInstance virtuals
+        */
+        virtual AGE_API const Vector3& GetPosition() override;
+        virtual AGE_API const Matrix34& GetMatrix(Matrix34* a1) override;
+        virtual AGE_API void SetMatrix(const Matrix34& a1) override;
+        virtual AGE_API void Draw(int) override;
+        virtual AGE_API unsigned int SizeOf(void) override;
 
-        AGE_API bool GetTrailerHitch(Vector3* out)      { return hook::Thunk<0x4D8420>::Call<bool>(this, out); }
+        /*
+            vehTrailerInstance
+        */
+        vehTrailer* GetTrailer(void) const;
+        AGE_API bool GetTrailerHitch(Vector3* out) const;
 
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<vehTrailerInstance, lvlInstance>("vehTrailerInstance")
-                //properties
-                .addPropertyReadOnly("Trailer", &getTrailer)
-                .addPropertyReadOnly("TrailerHitchOffset", &getTrailerHitchOffsetLua)
-            .endClass();
-        }
+        static void BindLua(LuaState L);
     };
+
+    ASSERT_SIZEOF(vehTrailerInstance, 0x28);
 }

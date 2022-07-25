@@ -48,7 +48,7 @@ void vehTrailerInstanceFeatureHandler::DrawPart(int a1, int a2, Matrix34* a3, mo
 
 void vehTrailerInstanceFeatureHandler::Draw(int a1) {
     auto inst = reinterpret_cast<vehTrailerInstance*>(this);
-    auto trailer = inst->getTrailer();
+    auto trailer = inst->GetTrailer();
     auto trailerMtx = inst->GetMatrix(&trailerMatrix);
 
     //get our shader set
@@ -63,7 +63,7 @@ void vehTrailerInstanceFeatureHandler::Draw(int a1) {
     modStatic* tswhl4 = inst->GetGeom(a1, vehTrailerInstance::TSWHL4_GEOM_ID);
     modStatic* tswhl5 = inst->GetGeom(a1, vehTrailerInstance::TSWHL5_GEOM_ID);
 
-    vehWheel* wheels[4] = { trailer->getWheel(0), trailer->getWheel(1), trailer->getWheel(2), trailer->getWheel(3) };
+    vehWheel* wheels[4] = { trailer->GetWheel(0), trailer->GetWheel(1), trailer->GetWheel(2), trailer->GetWheel(3) };
     modStatic* sWhlGeometries[4] = { tswhl0, tswhl1, tswhl2, tswhl3 };
     int sWhlIds[4] = { vehTrailerInstance::TSWHL0_GEOM_ID, vehTrailerInstance::TSWHL1_GEOM_ID, vehTrailerInstance::TSWHL2_GEOM_ID, vehTrailerInstance::TSWHL3_GEOM_ID };
     int whlIds[4] = { vehTrailerInstance::TWHL0_GEOM_ID, vehTrailerInstance::TWHL1_GEOM_ID, vehTrailerInstance::TWHL2_GEOM_ID, vehTrailerInstance::TWHL3_GEOM_ID };
@@ -103,8 +103,8 @@ void vehTrailerInstanceFeatureHandler::Draw(int a1) {
 
 void vehTrailerInstanceFeatureHandler::DrawTwhl4(int a1, int a2, Matrix34* a3, modShader* a4) {
     auto inst = reinterpret_cast<vehTrailerInstance*>(this);
-    auto trailer = inst->getTrailer();
-    auto carsim = trailer->getCarSim();
+    auto trailer = inst->GetTrailer();
+    auto carsim = trailer->GetCarSim();
 
     auto trailerMtx = inst->GetMatrix(&trailerMatrix);
 
@@ -120,8 +120,8 @@ void vehTrailerInstanceFeatureHandler::DrawTwhl4(int a1, int a2, Matrix34* a3, m
 
 void vehTrailerInstanceFeatureHandler::DrawTwhl5(int a1, int a2, Matrix34* a3, modShader* a4) {
     auto inst = reinterpret_cast<vehTrailerInstance*>(this);
-    auto trailer = inst->getTrailer();
-    auto carsim = trailer->getCarSim();
+    auto trailer = inst->GetTrailer();
+    auto carsim = trailer->GetCarSim();
 
     auto trailerMtx = inst->GetMatrix(&trailerMatrix);
 
@@ -138,11 +138,11 @@ void vehTrailerInstanceFeatureHandler::DrawTwhl5(int a1, int a2, Matrix34* a3, m
 void vehTrailerInstanceFeatureHandler::DrawGlow() {
     auto inst = reinterpret_cast<vehTrailerInstance*>(this);
     //don't draw trailer lights if it's broken
-    if (inst->getTrailer()->getJoint()->IsBroken())
+    if (inst->GetTrailer()->GetJoint()->IsBroken())
         return;
 
     //get vars
-    auto carsim = inst->getTrailer()->getCarSim();
+    auto carsim = inst->GetTrailer()->GetCarSim();
     float brakeInput = carsim->GetBrake();
     int gear = carsim->GetTransmission()->GetGear();
 

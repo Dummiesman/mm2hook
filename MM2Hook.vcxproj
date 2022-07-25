@@ -707,6 +707,7 @@
     <ClCompile Include="src\modules\vehicle.cpp" />
     <ClCompile Include="src\modules\vehicle\aero.cpp" />
     <ClCompile Include="src\modules\vehicle\carmodel.cpp" />
+    <ClCompile Include="src\modules\vehicle\trailer.cpp" />
     <ClCompile Include="src\modules\vehicle\wheel.cpp" />
     <ClCompile Include="src\settings.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers.cpp" />
