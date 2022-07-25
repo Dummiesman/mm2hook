@@ -303,8 +303,8 @@ void mmHudMapFeatureHandler::DrawOpponents() {
             else {
                 auto opponent = AIMAP->Opponent(i);
                 auto car = opponent->GetCar();
-                auto curDamage = car->GetCarDamage()->getCurDamage();
-                auto maxDamage = car->GetCarDamage()->getMaxDamage();
+                auto curDamage = car->GetCarDamage()->GetCurDamage();
+                auto maxDamage = car->GetCarDamage()->GetMaxDamage();
 
                 if (curDamage < maxDamage) {
                     if (hudMapColorStyle == 0) {

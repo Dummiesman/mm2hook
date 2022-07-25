@@ -394,7 +394,7 @@ static ConfigValue<bool> cfgBrokenWheels("PhysicalBrokenWheels", true);
 
 void vehCarDamageHandler::Update() {
     auto carDamage = reinterpret_cast<vehCarDamage*>(this);
-    auto car = carDamage->getCar();
+    auto car = carDamage->GetCar();
     auto carsim = car->GetCarSim();
     auto model = car->GetModel();
 

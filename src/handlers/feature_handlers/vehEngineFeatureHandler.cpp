@@ -12,7 +12,7 @@ float vehEngineFeatureHandler::CalcTorque(float a1) {
     auto engine = reinterpret_cast<vehEngine*>(this);
 
     auto carDamage = reinterpret_cast<vehCarModel*>(engine->GetCarSim()->GetInstance())->GetCar()->GetCarDamage();
-    float damagePercent = (carDamage->getCurDamage() - carDamage->getMedDamage()) / (carDamage->getMaxDamage() - carDamage->getMedDamage());
+    float damagePercent = (carDamage->GetCurDamage() - carDamage->GetMedDamage()) / (carDamage->GetMaxDamage() - carDamage->GetMedDamage());
     
     //clamp from 0-70%
     damagePercent = fmaxf(0.0f, fminf(damagePercent, 0.7f));

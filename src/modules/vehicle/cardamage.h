@@ -56,29 +56,7 @@ namespace MM2
         byte pad2[3];
         Vector3 LastImpactPos;
     public:
-        inline float getCurDamage(void) {
-            return this->CurrentDamage;
-        }
-
-        inline float getMedDamage(void) {
-            return this->MedDamage;
-        }
-
-        inline float getMaxDamage(void) {
-            return this->MaxDamage;
-        }
-
-        inline float getImpactThreshold(void) {
-            return this->ImpactThreshold;
-        }
-
-        inline void setImpactThreshold(float threshold) {
-            this->ImpactThreshold = threshold;
-        }
-
-        inline vehCar* getCar(void) const {
-            return this->vehCarPtr;
-        }
+        static hook::Type<asBirthRule*> EngineSmokeRule;
     public:
         AGE_API vehCarDamage()                              { hook::Thunk<0x4CA380>::Call<void>(this); }
         AGE_API ~vehCarDamage()                             { hook::Thunk<0x4CA530>::Call<void>(this); }
@@ -104,11 +82,39 @@ namespace MM2
         AGE_API char* GetClassName() override               { return hook::Thunk<0x4CB640>::Call<char*>(this); }
         AGE_API char const* GetDirName() override           { return hook::Thunk<0x4CA5F0>::Call<char const*>(this); }
         
-        //fields
-        static hook::Type<asBirthRule*> EngineSmokeRule;
+        /*
+            vehCarDamage
+        */
+        float GetCurDamage() const {
+            return this->CurrentDamage;
+        }
 
-        inline asParticles* getParticles(void) {
+        float GetMedDamage() const {
+            return this->MedDamage;
+        }
+
+        float GetMaxDamage() {
+            return this->MaxDamage;
+        }
+
+        float GetImpactThreshold() const {
+            return this->ImpactThreshold;
+        }
+
+        void SetImpactThreshold(float threshold) {
+            this->ImpactThreshold = threshold;
+        }
+
+        vehCar* GetCar() const {
+            return this->vehCarPtr;
+        }
+
+        asParticles* GetEngineSmokePtx() const {
             return this->Particles;
+        }
+
+        asLineSparks* GetSparkomatic() const {
+            return this->Sparks;
         }
 
         static void BindLua(LuaState L) {
@@ -130,7 +136,9 @@ namespace MM2
                 .addVariableRef("DoublePivot", &vehCarDamage::DoublePivot)
                 .addVariableRef("MirrorPivot", &vehCarDamage::MirrorPivot)
 
-                .addPropertyReadOnly("Particles", &getParticles)
+                .addPropertyReadOnly("EngineSmokeParticles", &GetEngineSmokePtx)
+                .addPropertyReadOnly("Sparks", &GetSparkomatic)
+                .addPropertyReadOnly("Sparkomatic", &GetSparkomatic)
                 .addStaticProperty("EngineSmokeRule", [] { return EngineSmokeRule.get(); })
             .endClass();
         }

@@ -53,8 +53,8 @@ void mmGameHandler::UpdateSteeringBrakes(void) {
     auto carsim = car->GetCarSim();
     auto engine = carsim->GetEngine();
     auto transmission = carsim->GetTransmission();
-    auto curDamage = car->GetCarDamage()->getCurDamage();
-    auto maxDamage = car->GetCarDamage()->getMaxDamage();
+    auto curDamage = car->GetCarDamage()->GetCurDamage();
+    auto maxDamage = car->GetCarDamage()->GetMaxDamage();
     auto inst = mmReplayManager::Instance;
 
     void *gameInputPtr = *reinterpret_cast<void **>(0x6B1CF0); // pointer to mmInput

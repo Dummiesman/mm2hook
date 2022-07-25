@@ -62,8 +62,8 @@ void vehCarHandler::Mm1StyleTransmission() {
     auto engine = carsim->GetEngine();
     auto drivetrain = carsim->GetDrivetrain();
     auto transmission = carsim->GetTransmission();
-    auto curDamage = car->GetCarDamage()->getCurDamage();
-    auto maxDamage = car->GetCarDamage()->getMaxDamage();
+    auto curDamage = car->GetCarDamage()->GetCurDamage();
+    auto maxDamage = car->GetCarDamage()->GetMaxDamage();
 
     if (curDamage < maxDamage) {
         if (transmission->IsAuto()) {
