@@ -198,12 +198,6 @@ void mmPlayerHandler::SetHeadPtr(Matrix34* ptr, int a3)
 }
 
 void mmPlayerHandler::Install() {
-    //InstallCallback("Double head OWO", "3D audio test.",
-    //    &SetHeadPtr, {
-    //        cb::call(0x4057A0),
-    //    }
-    //);
-
     InstallVTableHook("mmPlayer::Update",
         &Update, {
             0x5B03BC
