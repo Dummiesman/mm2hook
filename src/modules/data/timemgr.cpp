@@ -11,11 +11,15 @@ namespace MM2
     declfield(datTimeManager::FrameCount)(0x6A3C50);
     declfield(datTimeManager::ElapsedTime)(0x6A3C40);
 
-    AGE_API void datTimeManager::Reset(void) {
+    AGE_API void datTimeManager::RealTime(float step) {
+        hook::StaticThunk<0x4C6580>::Call<void>(step);
+    }
+
+    AGE_API void datTimeManager::Reset() {
         hook::StaticThunk<0x4C6300>::Call<void>();
     };
 
-    AGE_API void datTimeManager::Update(void) {
+    AGE_API void datTimeManager::Update() {
         hook::StaticThunk<0x4C6340>::Call<void>();
     };
 
@@ -27,6 +31,7 @@ namespace MM2
             .addStaticProperty("ActualSeconds", [] {return ActualSeconds.get(); })
             .addStaticProperty("FrameCount", []() {return FrameCount.get(); })
             .addStaticProperty("ElapsedTime", []() {return ElapsedTime.get(); })
+            .addStaticFunction("RealTime", &RealTime, LUA_ARGS(_def<float, 0>))
             .endClass();
     }
 }
