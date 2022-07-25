@@ -1234,7 +1234,7 @@ namespace MM2
 
     AGE_API void vehCarModel::DrawReflected(float a1)
                                                             { hook::Thunk<0x4CF080>::Call<void>(this, a1); }
-    AGE_API unsigned int vehCarModel::SizeOf()              { return hook::Thunk<0x4CDFE0>::Call<int>(this); }
+    AGE_API unsigned int vehCarModel::SizeOf()              { sizeof(vehCarModel); }
 
 
 
