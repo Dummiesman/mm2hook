@@ -85,4 +85,6 @@ namespace MM2
                 .endClass();
         }
     };
+
+    ASSERT_SIZEOF(aiPoliceOfficer, 0x9870);
 }
