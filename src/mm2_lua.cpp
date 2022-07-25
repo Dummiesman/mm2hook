@@ -159,8 +159,6 @@ LUAMOD_API int luaopen_MM2(lua_State *L)
     luaAddModule<module_inst>(modL);
     LogFile::WriteLine("      module_phys");
     luaAddModule<module_phys>(modL);
-    LogFile::WriteLine("      module_ai");
-    luaAddModule<module_ai>(modL);
     LogFile::WriteLine("      module_breakable");
     luaAddModule<module_breakable>(modL);
     LogFile::WriteLine("      module_camera");
@@ -195,6 +193,8 @@ LUAMOD_API int luaopen_MM2(lua_State *L)
     luaAddModule<module_ui>(modL);
     LogFile::WriteLine("      module_vehicle");
     luaAddModule<module_vehicle>(modL);
+    LogFile::WriteLine("      module_ai");
+    luaAddModule<module_ai>(modL);
 
     LogFile::WriteLine("      discordHandler::BindLua");
     discordHandler::BindLua(modL);
