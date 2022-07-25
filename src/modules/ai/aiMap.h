@@ -188,6 +188,7 @@ namespace MM2
     protected:
         static hook::Type<aiMap> Instance;
     private:
+        static hook::Type<int> SignalClock;
         // Profiling Stats
         static hook::Type<float> _fSubwayUpdate;
         static hook::Type<float> _fCableCarUpdate;
@@ -214,7 +215,8 @@ namespace MM2
         /*
             aiMap
         */
-        AGE_API void Dump(void);
+        static bool GetSignalClock();
+        AGE_API void Dump();
         AGE_API void TestProbes(BOOL a2);
         AGE_API mcHookman* Hookman(int num) const;
         AGE_API aiRouteRacer* Opponent(int num) const;

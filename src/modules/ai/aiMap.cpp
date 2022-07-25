@@ -14,6 +14,7 @@ namespace MM2
     declfield(aiMap::_nAmbientQty)(0x6B2FE8);
     declfield(aiMap::_fTotUpdate)(0x6B2FF4);
 
+    declfield(aiMap::SignalClock)(0x6B31F4);
     declfield(aiMap::Instance)(0x6B2E10);
     
     // Lua Helpers
@@ -59,6 +60,11 @@ namespace MM2
     }
 
     // Properties
+    bool aiMap::GetSignalClock()
+    {
+        return (SignalClock.get() & 8) != 0;
+    }
+
     aiPoliceForce* aiMap::GetPoliceForce() {
         return policeForce;
     }
@@ -123,7 +129,7 @@ namespace MM2
     AGE_API void aiMap::Reset()               { hook::Thunk<0x536A30>::Call<void>(this); }
         
     // aiMap
-    AGE_API void aiMap::Dump(void)                              { hook::Thunk<0x538840>::Call<void>(this); }
+    AGE_API void aiMap::Dump()                              { hook::Thunk<0x538840>::Call<void>(this); }
     AGE_API void aiMap::TestProbes(BOOL a2)                     { hook::Thunk<0x53B870>::Call<void>(this, a2); }
     AGE_API mcHookman * aiMap::Hookman(int num) const           { return hook::Thunk<0x5349E0>::Call<mcHookman *>(this, num); }
     AGE_API aiRouteRacer * aiMap::Opponent(int num) const       { return hook::Thunk<0x534940>::Call<aiRouteRacer *>(this, num); }
