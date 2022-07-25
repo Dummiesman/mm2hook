@@ -1039,8 +1039,8 @@ namespace MM2
         auto car = this->GetCar();
         auto carsim = this->carSim;
         auto siren = car->GetSiren();
-        auto curDamage = car->GetCarDamage()->getCurDamage();
-        auto maxDamage = car->GetCarDamage()->getMaxDamage();
+        auto curDamage = car->GetCarDamage()->GetCurDamage();
+        auto maxDamage = car->GetCarDamage()->GetMaxDamage();
         int gear = carsim->GetTransmission()->GetGear();
         if (curDamage >= maxDamage && vehCarModel::MWStyleTotaledCar)
             return;
