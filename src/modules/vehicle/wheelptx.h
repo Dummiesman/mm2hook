@@ -1,6 +1,7 @@
 #pragma once
-#include <modules\vehicle.h>
-#include <..\mm2_particle.h>
+#include <modules\vehicle\carsim.h>
+#include <modules\effects\birth.h>
+#include <modules\effects\ptx.h>
 
 namespace MM2
 {
@@ -43,7 +44,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(vehWheelPtx, 0x78);
-
-    // Lua initialization
-
 }

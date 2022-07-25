@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\data.h>
+#include <mm2_common.h>
+#include <modules\data\base.h>
 
 namespace MM2
 {
@@ -141,7 +142,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(datCallback, 0xC);
-
-    // Lua initialization
-
 }

@@ -1,6 +1,6 @@
 #pragma once
 #include <modules\banger.h>
-#include <mm2_particle.h>
+#include <modules\effects\birth.h>
 
 namespace MM2
 {

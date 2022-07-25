@@ -1,5 +1,14 @@
 #pragma once
-#include <modules\vehicle.h>
+#include <modules\phys\physentity.h>
+#include <modules\vehicle\cardamage.h>
+#include <modules\vehicle\carsim.h>
+#include <modules\vehicle\splash.h>
+#include <modules\vehicle\caraudiocontainer.h>
+#include <modules\vehicle\siren.h>
+#include <modules\vehicle\stuck.h>
+#include <modules\vehicle\gyro.h>
+#include <modules\vehicle\carmodel.h>
+#include <modules\vehicle\trailer.h>
 
 namespace MM2
 {

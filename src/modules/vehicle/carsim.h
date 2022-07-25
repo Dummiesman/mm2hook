@@ -1,5 +1,4 @@
 #pragma once
-#include <modules\vehicle.h>
 #include <mm2_model.h>
 
 #include "transmission.h"
@@ -325,7 +324,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(vehCarSim, 0x1560 + 0xC + 0xC + 0xC + 0xC); //+4 extra fields
-
-    // Lua initialization
-
 }

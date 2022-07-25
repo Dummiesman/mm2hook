@@ -1,10 +1,11 @@
 #pragma once
 #include <mm2_common.h>
+#include <modules\lights\light.h>
+#include <modules\lights\flare.h>
 
 namespace MM2
 {
     // Forward declarations
-
 
     // External declarations
     extern class ltLight;

@@ -1,6 +1,12 @@
 #pragma once
-#include <modules\vehicle.h>
-#include <modules\effects.h>
+#include <mm2_common.h>
+#include <modules\node\node.h>
+#include <modules\effects\birth.h>
+#include <modules\effects\ptx.h>
+#include <modules\effects\shard.h>
+#include <modules\effects\linespark.h>
+#include <modules\data\callback.h>
+#include <modules\vehicle\car.h>
 
 namespace MM2
 {
