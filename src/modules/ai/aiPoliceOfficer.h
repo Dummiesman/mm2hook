@@ -1,4 +1,5 @@
 #pragma once
+#include <mm2_common.h>
 #include "aiVehiclePhysics.h"
 
 namespace MM2
@@ -11,10 +12,11 @@ namespace MM2
 
     // Class definitions
 
-    class aiPoliceOfficer : public aiVehiclePhysics {
+    class aiPoliceOfficer {
     private:
-        byte _buffer[0x100];
+        byte _buffer[0x9870];
     protected:
+        static hook::Field<0x4, aiVehiclePhysics> _vehiclePhysics;
         static hook::Field<0x9774, vehCar*> _followedCar;
         static hook::Field<0x9778, unsigned short> _id;
         static hook::Field<0x977E, unsigned short> _apprehendState;
@@ -28,6 +30,10 @@ namespace MM2
             return _id.get(this);
         }
 
+        aiVehiclePhysics* GetVehiclePhysics() const {
+            return _vehiclePhysics.ptr(this);
+        }
+
         int GetApprehendState() const
         {
             return _apprehendState.get(this);
@@ -36,6 +42,16 @@ namespace MM2
         vehCar* GetFollowedCar() const
         {
             return _followedCar.get(this);
+        }
+
+        vehCar* GetCar() const
+        {
+            return _vehiclePhysics.ptr(this)->GetCar();
+        }
+
+        unsigned short GetState() const
+        {
+            return _vehiclePhysics.ptr(this)->GetState();
         }
 
         /// <summary>
@@ -54,11 +70,14 @@ namespace MM2
         AGE_API void PerpEscapes()                          { hook::Thunk<0x53F170>::Call<void>(this); }
 
         static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<aiPoliceOfficer, aiVehiclePhysics>("aiPoliceOfficer")
+            LuaBinding(L).beginClass<aiPoliceOfficer>("aiPoliceOfficer")
                 .addPropertyReadOnly("FollowedCar", &GetFollowedCar)
                 .addPropertyReadOnly("PoliceState", &GetPoliceState)
                 .addPropertyReadOnly("ApprehendState", &GetApprehendState)
                 .addPropertyReadOnly("ID", &GetId)
+
+                .addPropertyReadOnly("Car", &GetCar)
+                .addPropertyReadOnly("State", &GetState)
 
                 .addFunction("StartSiren", &StartSiren)
                 .addFunction("StopSiren", &StopSiren)
@@ -66,9 +85,4 @@ namespace MM2
                 .endClass();
         }
     };
-
-    ASSERT_SIZEOF(aiPoliceOfficer, 0x9870);
-
-    // Lua initialization
-
 }
