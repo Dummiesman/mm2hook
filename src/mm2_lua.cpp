@@ -177,8 +177,8 @@ LUAMOD_API int luaopen_MM2(lua_State *L)
     luaAddModule<module_gfx>(modL);
     LogFile::WriteLine("      module_input");
     luaAddModule<module_input>(modL);
-    LogFile::WriteLine("      module_particle");
-    luaAddModule<module_particle>(modL);
+    LogFile::WriteLine("      module_effects");
+    luaAddModule<module_effects>(modL);
     LogFile::WriteLine("      module_level");
     luaAddModule<module_level>(modL);
     LogFile::WriteLine("      module_city");

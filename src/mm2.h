@@ -23,10 +23,9 @@
 #include "mm2_level.h"
 #include "mm2_network.h"
 #include "mm2_model.h"
-#include "mm2_particle.h"
+#include "mm2_effects.h"
 #include "mm2_phys.h"
 #include "mm2_creature.h"
-#include "mm2_effects.h"
 #include "mm2_replay.h"
 
 #include "mm2_lua.h"
