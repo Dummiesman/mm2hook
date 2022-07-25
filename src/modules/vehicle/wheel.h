@@ -89,9 +89,7 @@ namespace MM2
         lvlMaterial *CurrentPhysicsMaterial;
     private:
         std::tuple<float, float> luaComputeFriction(float slip) const;
-    public:
         static hook::Type<float> WeatherFriction;
-
     public:
         AGE_API vehWheel();
 

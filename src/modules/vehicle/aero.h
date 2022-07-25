@@ -34,6 +34,7 @@ namespace MM2
         /*
             vehAero
         */
+
         bool GetEnabled() const;
         void SetEnabled(bool enabled);
 

@@ -165,9 +165,6 @@ namespace MM2
                 .endClass();
         }
     };
+
     ASSERT_SIZEOF(vehSiren, 0x44 + 0x120); //+1 extra field
-
-
-    // Lua initialization
-
 }

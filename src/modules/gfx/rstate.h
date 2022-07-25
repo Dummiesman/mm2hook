@@ -306,7 +306,4 @@ namespace MM2
         }
     };
     ASSERT_SIZEOF(gfxRenderState, 0x98);
-
-    // Lua initialization
-
 }

@@ -55,7 +55,4 @@ namespace MM2
                 .endClass();
         }
     };
-
-    // Lua initialization
-
 }
