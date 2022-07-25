@@ -139,8 +139,6 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<vehSiren>("vehSiren")
-                //ctor
-                .addConstructor(LUA_ARGS())
                 //variables
                 .addPropertyReadOnly("HasLights", &getHasLights)
                 .addPropertyReadOnly("LightCount", &getLightCount)

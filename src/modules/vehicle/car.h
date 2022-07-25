@@ -126,7 +126,10 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<vehCar, dgPhysEntity>("vehCar")
-                .addConstructor(LUA_ARGS(bool))
+                .addFactory([]() {
+                return new vehCar(TRUE);
+                })
+
                 //properties
                 .addPropertyReadOnly("CarDamage", &GetCarDamage)
                 .addPropertyReadOnly("CarSim", &GetCarSim)

@@ -30,12 +30,12 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<lvlLandmark, lvlFixedRotY>("lvlLandmark")
-                .addConstructor(LUA_ARGS())
+                .addFactory([]() {
+                return new lvlLandmark();
+                })
                 .endClass();
         }
     };
+
     ASSERT_SIZEOF(lvlLandmark, 0x28);
-
-    // Lua initialization
-
 }
