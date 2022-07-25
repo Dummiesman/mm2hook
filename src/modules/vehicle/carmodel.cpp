@@ -1,4 +1,5 @@
 #pragma once
+#include <modules\ai\aiMap.h>
 #include "carmodel.h"
 
 namespace MM2
@@ -1056,11 +1057,8 @@ namespace MM2
         modStatic* tslight0 = this->GetGeomBase(TSLIGHT0_GEOM_ID)->GetHighestLOD();
         modStatic* tslight1 = this->GetGeomBase(TSLIGHT1_GEOM_ID)->GetHighestLOD();
 
-        //check signal clock
-        bool drawSignal = fmod(datTimeManager::ElapsedTime, 1.f) > 0.5f;
-
         //draw stuff!
-        if (drawSignal && car->IsPlayer()) {
+        if (aiMap::GetSignalClock() && car->IsPlayer()) {
             if (LeftSignalLightState || HazardLightsState) {
                 if (slight0 != nullptr)
                     slight0->Draw(shaders);
