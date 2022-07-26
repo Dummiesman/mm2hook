@@ -63,16 +63,6 @@ namespace MM2
         int NumOpponents;
         asMeshSetForm* HudmapSquareModel;
         asMeshSetForm* HudmapTriModel;
-    private:
-        bool getShowAllCopsLua()
-        {
-            return this->ShowAllCops == TRUE;
-        }
-
-        void setShowAllCopsLua(bool b)
-        {
-            this->ShowAllCops = b ? TRUE : FALSE;
-        }
     protected:
         AGE_API int GetCurrentMapMode()                     { return hook::Thunk<0x42EF20>::Call<int>(this); }
         AGE_API int GetNextMapMode()                        { return hook::Thunk<0x42EF00>::Call<int>(this); }
@@ -98,9 +88,33 @@ namespace MM2
                                                     { hook::Thunk<0x42FA60>::Call<void>(this, &parser); }
         AGE_API char * GetClassName() override      { return hook::Thunk<0x42FD60>::Call<char*>(this); }
 
+        /*
+            mmHudMap
+        */
+        bool GetShowAllCops() const
+        {
+            return this->ShowAllCops == TRUE;
+        }
+
+        void SetShowAllCops(bool show)
+        {
+            this->ShowAllCops = show ? TRUE : FALSE;
+        }
+
+        float GetIconScale() const
+        {
+            return this->IconScale;
+        }
+
+        void SetIconScale(float scale) 
+        {
+            this->IconScale = scale;
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmHudMap, asNode>("mmHudMap")
-                .addProperty("ShowAllCops", &getShowAllCopsLua, &setShowAllCopsLua)
+                .addProperty("ShowAllCops", &GetShowAllCops, &SetShowAllCops)
+                .addProperty("IconScale", &GetIconScale, &SetIconScale)
                 .addFunction("Activate", &Activate)
                 .addFunction("Deactivate", &Deactivate)
                 .addFunction("SetOrient", &SetOrient)
