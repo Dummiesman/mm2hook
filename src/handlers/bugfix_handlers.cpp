@@ -81,7 +81,7 @@ aiVehicle* findVehicle(vehCar *car) {
         auto opponent = AIMAP->opponents[i];
 
         if (opponent->GetCar() == car)
-            return opponent;
+            return opponent->GetVehiclePhysics();
     }
 
     // not found :(

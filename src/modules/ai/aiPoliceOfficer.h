@@ -30,7 +30,8 @@ namespace MM2
             return _id.get(this);
         }
 
-        aiVehiclePhysics* GetVehiclePhysics() const {
+        aiVehiclePhysics* GetVehiclePhysics() const 
+        {
             return _vehiclePhysics.ptr(this);
         }
 
