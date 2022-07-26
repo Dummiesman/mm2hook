@@ -19,6 +19,7 @@ namespace MM2
         byte _buffer[0x186];
     protected:
         static hook::Field<0x10, aiRailSet> _railSet;
+        static hook::Field<0xD4, aiVehicleInstance*> _vehicleInstance;
         static hook::Field<0xF4, float> _curSpeed;
     public:
         aiVehicleSpline(void)                               DONOTCALL;
@@ -58,8 +59,8 @@ namespace MM2
             return _railSet.ptr(this);
         }
 
-        aiVehicleInstance * getVehicleInstance(void) const {
-            return *getPtr<aiVehicleInstance*>(this, 0xD4);
+        aiVehicleInstance * getVehicleInstance() const {
+            return _vehicleInstance.get(this);
         }
 
         //lua
