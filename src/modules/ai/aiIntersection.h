@@ -41,7 +41,7 @@ namespace MM2
             return paths[id];
         }
 
-        int GetId() const {
+        int GetID() const {
             return id;
         }
 
@@ -56,7 +56,7 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiIntersection>("aiIntersection")
                 .addFunction("GetPath", &GetPath)
-                .addPropertyReadOnly("Id", &GetId)
+                .addPropertyReadOnly("ID", &GetID)
                 .addPropertyReadOnly("RoomId", &GetRoomId)
                 .addPropertyReadOnly("Center", &GetCenter)
                 .addPropertyReadOnly("NumPaths", &GetPathCount)
