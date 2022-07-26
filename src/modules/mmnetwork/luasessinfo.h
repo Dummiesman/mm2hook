@@ -39,9 +39,9 @@ namespace MM2
                     auto desc = (DPSESSIONDESC2*)data;
                     this->PlayerCount = desc->dwCurrentPlayers;
                     this->MaxPlayerCount = desc->dwMaxPlayers;
-                    strncpy(SessionName, desc->lpszSessionNameA, sizeof(SessionName));
+                    strncpy_s(SessionName, desc->lpszSessionNameA, sizeof(SessionName));
                     if (desc->lpszPasswordA != nullptr)
-                        strncpy(SessionPassword, desc->lpszPasswordA, sizeof(SessionPassword));
+                        strncpy_s(SessionPassword, desc->lpszPasswordA, sizeof(SessionPassword));
                     populated = true;
                 }
                 if (data != nullptr)
