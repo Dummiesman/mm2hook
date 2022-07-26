@@ -78,13 +78,14 @@ void mmHudMapFeatureHandler::DrawLightGreenTri(const Matrix34 *a1) {
 }
 
 void mmHudMapFeatureHandler::DrawIcon(int iconType, const Matrix34 *matrix) {
+    auto map = reinterpret_cast<mmHudMap*>(this);
     mtx.Set(matrix);
 
     mtx.SetRow(1, Vector3::YAXIS);
     mtx.Normalize();
 
     mtx.m31 += 15.f;
-    mtx.Scale(*getPtr<float>(this, 0x64));
+    mtx.Scale(map->GetIconScale());
 
     uint color = *HudmapIconColors[iconType];
 
@@ -95,25 +96,27 @@ void mmHudMapFeatureHandler::DrawIcon(int iconType, const Matrix34 *matrix) {
 }
 
 void mmHudMapFeatureHandler::DrawNfsMwPlayerIcon(const Matrix34 *matrix) {
+    auto map = reinterpret_cast<mmHudMap*>(this);
     mtx.Set(matrix);
 
     mtx.SetRow(1, Vector3::YAXIS);
     mtx.Normalize();
 
     mtx.m31 += 15.f;
-    mtx.Scale(*getPtr<float>(this, 0x64));
+    mtx.Scale(map->GetIconScale());
 
     DrawLightOrangeTri(&mtx);
 }
 
 void mmHudMapFeatureHandler::DrawNfsMwOpponentIcon(const Matrix34 *matrix) {
+    auto map = reinterpret_cast<mmHudMap*>(this);
     mtx.Set(matrix);
 
     mtx.SetRow(1, Vector3::YAXIS);
     mtx.Normalize();
 
     mtx.m31 += 15.f;
-    mtx.Scale(*getPtr<float>(this, 0x64));
+    mtx.Scale(map->GetIconScale());
 
     DrawLightGreenTri(&mtx);
 }
