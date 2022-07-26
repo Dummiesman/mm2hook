@@ -16,6 +16,7 @@ namespace MM2
         byte _buffer[0x164];
     protected:
         static hook::Field<0x8, short> _numVerts;
+        static hook::Field<0xA, short> _id;
         static hook::Field<0x18, float> _baseSpeedLimit;
     private:
         //lua helper
@@ -34,6 +35,11 @@ namespace MM2
             return _baseSpeedLimit.get(this);
         }
 
+        int GetID() const
+        {
+            return _id.get(this);
+        }
+
         /*
             aiPath
         */
@@ -50,6 +56,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiPath>("aiPath")
+                .addPropertyReadOnly("ID", &GetID)
                 .addPropertyReadOnly("NumVerts", &NumVerts)
                 .addFunction("CenterLength", &CenterLength)
                 .addFunction("ClearAmbients", &ClearAmbients)
