@@ -15,6 +15,7 @@ namespace MM2
     private:
         byte _buffer[0x164];
     protected:
+        static hook::Field<0x8, short> _numVerts;
         static hook::Field<0x18, float> _baseSpeedLimit;
     private:
         //lua helper
@@ -43,11 +44,13 @@ namespace MM2
         AGE_API bool HasSubwayLine(int roadSide) const          { return hook::Thunk<0x5499B0>::Call<bool>(this, roadSide); }
         AGE_API int IsPosOnRoad(Vector3 const & pos, float margin, float* outDistanceFromCenter) const
                                                                 { return hook::Thunk<0x548370>::Call<int>(this, &pos, margin, outDistanceFromCenter); }
+        AGE_API int NumVerts()                                  { return _numVerts.get(this); }
         AGE_API int Lane(Vector3 & pos, int roadSide) const     { return hook::Thunk<0x547900>::Call<int>(this, &pos, roadSide); }
         AGE_API void UpdatePedestrians()                        { hook::Thunk<0x544150>::Call<void>(this); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiPath>("aiPath")
+                .addPropertyReadOnly("NumVerts", &NumVerts)
                 .addFunction("CenterLength", &CenterLength)
                 .addFunction("ClearAmbients", &ClearAmbients)
                 .addFunction("ClearPeds", &ClearPeds)
