@@ -37,10 +37,8 @@ namespace MM2
 
         inline ltLight* getLight(int index) const {
             //cap index
-            if (index < 0)
-                index = 0;
-            if (index >= 24)
-                index = 23;
+            if (index < 0 || index >= 24)
+                return nullptr;
             return &ltLightPool[index];
         }
 
