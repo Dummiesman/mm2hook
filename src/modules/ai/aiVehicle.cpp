@@ -5,20 +5,6 @@
 namespace MM2
 {
     /*
-        aiRailSet
-    */
-    // Properties
-    float aiRailSet::GetSpeed()
-    {
-        return _speed.get(this);
-    }
-
-    float aiRailSet::GetAccelFactor()
-    {
-        return _accelFactor.get(this);
-    }
-
-    /*
         aiVehicleInstance
     */
 

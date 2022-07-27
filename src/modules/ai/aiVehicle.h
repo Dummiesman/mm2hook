@@ -1,13 +1,13 @@
 #pragma once
 #include <mm2_common.h>
 #include <modules\level\inst.h>
+#include "aiRailSet.h"
 
 namespace MM2
 {
     // Forward declarations
     class aiObstacle;
     class aiVehicle;
-    class aiRailSet;
     class aiVehicleSpline;
     class aiVehicleInstance;
 
@@ -20,15 +20,6 @@ namespace MM2
     extern class aiVehicleData;
 
     // Class definitions
-    class aiRailSet {
-    protected:
-        static hook::Field<0x98, float> _speed;
-        static hook::Field<0x44, float> _accelFactor;
-    public:
-        float GetSpeed();
-        float GetAccelFactor();
-    };
-
     class aiVehicleInstance : public lvlInstance {
     public:
         static const int HLIGHT_GEOM_ID = 2;
