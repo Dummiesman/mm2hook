@@ -13,7 +13,7 @@ int aiPedestrianHandler::UpdateAttempts = 0;
 void aiPedestrianHandler::Update(void) {
     if (aiPedestrianHandler::UpdateAttempts < cfgMaxPedUpdateAttempts) {
         ++aiPedestrianHandler::UpdateAttempts;
-        $::aiPedestrian::Update(this);
+        reinterpret_cast<aiPedestrian*>(this)->Update();
     }
 }
 

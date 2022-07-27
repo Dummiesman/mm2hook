@@ -18,6 +18,8 @@ namespace MM2
         static hook::Field<0xC0, aiPedAudio> _audio;
         static hook::Field<0x9C, aiPedestrianInstance *> _instance;
     public:
+        AGE_API void Update()                                   { hook::Thunk<0x54B9C0>::Call<void>(this); }
+
         inline aiPedestrianInstance * getInstance(void) const {
             return _instance.get(this);
         }

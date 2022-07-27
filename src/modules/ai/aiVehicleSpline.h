@@ -25,6 +25,8 @@ namespace MM2
         aiVehicleSpline(void)                               DONOTCALL;
         aiVehicleSpline(const aiVehicleSpline &&)           DONOTCALL;
 
+        void UpdateObstacleMap(void)                        { hook::Thunk<0x568410>::Call<void>(this); }
+
         void Position(Vector3 &a1) override                 FORWARD_THUNK;
         float Speed(void) override                          FORWARD_THUNK;
         int CurrentRoadIdx(aiPath **a1, const bool *a2, int *a3) override
@@ -45,8 +47,8 @@ namespace MM2
 
         virtual void Impact(int a1)                         FORWARD_THUNK;
         virtual AudImpact * GetAudImpactPtr(void)           FORWARD_THUNK;
-        virtual void PlayHorn(float a1, float a2)           FORWARD_THUNK;
-        virtual void StopVoice(void)                        FORWARD_THUNK;
+        virtual void PlayHorn(float a1, float a2)           { hook::Thunk<0x551CA0>::Call<void>(this, a1, a2); }
+        virtual void StopVoice(void)                        { hook::Thunk<0x551CB0>::Call<void>(this); }
 
         //fields
         inline float getCurSpeed()

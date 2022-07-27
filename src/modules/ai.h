@@ -42,20 +42,6 @@ namespace MM2
 
     // Class definitions
 
-    namespace $
-    {
-        namespace aiVehicleSpline {
-            declhook(0x568410, _MemberFunc<void>, UpdateObstacleMap);
-            declhook(0x551CB0, _MemberFunc<void>, StopVoice);
-            declhook(0x551CA0, _MemberFunc<void>, PlayHorn);
-        }
-        namespace aiPedestrian {
-            declhook(0x54B9C0, _MemberFunc<void>, Update);
-        }
-        namespace aiVehicleManager {
-            declhook(0x6B31AC, _Type<MM2::aiVehicleManager *>, Instance);
-        }
-    }
     
     // Lua initialization
 
