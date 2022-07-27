@@ -21,7 +21,8 @@ namespace MM2
             .addFunction("vglEnd", &vglEnd)
             .addFunction("vglBeginBatch", &vglBeginBatch)
             .addFunction("vglEndBatch", &vglEndBatch)
-            .addFunction("vglBindTexture", &vglBindTexture, LUA_ARGS(_opt<gfxTexture *>))
+            .addFunction("vglBindTexture", &vglBindTexture)
+            .addFunction("vglUnbindTexture", &vglUnbindTexture)
             .addFunction("vglDrawLabel", &vglDrawLabel)
 
             .addFunction("mkfrgba", &mkfrgba)

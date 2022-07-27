@@ -79,6 +79,7 @@ namespace MM2
     */
     extern void luaSetColor(float r, float g, float b, float a);
     extern void luaGfxDrawFont(double x, double y, const char* text);
+    extern void vglUnbindTexture();
 
     // Class definitions
     enum rglToken {

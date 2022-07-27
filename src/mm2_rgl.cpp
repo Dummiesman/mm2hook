@@ -28,6 +28,11 @@ void MM2::luaGfxDrawFont(double x, double y, const char* text) {
     gfxDrawFont((int)round(x), (int)round(y), text);
 }
 
+void MM2::vglUnbindTexture()
+{
+    vglBindTexture(nullptr);
+}
+
 /* psdl.obj */
 
 void    MM2::vglTexCoord2f          (float u, float v)                                          { return _StaticThunk<0x45CFD0>::Call<void>(u, v); }
