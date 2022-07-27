@@ -670,6 +670,7 @@
     <ClCompile Include="src\modules\core.cpp" />
     <ClCompile Include="src\modules\creature.cpp" />
     <ClCompile Include="src\modules\data.cpp" />
+    <ClCompile Include="src\modules\data\args.cpp" />
     <ClCompile Include="src\modules\data\base.cpp" />
     <ClCompile Include="src\modules\data\timemgr.cpp" />
     <ClCompile Include="src\modules\effects.cpp" />
