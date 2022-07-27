@@ -218,8 +218,8 @@ namespace MM2
                 .addProperty("Radius", &getCurrentRadius, &SetRadius)
                 .addProperty("Center", &getCenter, &SetCenter)
 
-                .addVariableRef("ForceCoef", &phForceSphere::ForceCoef)
-                .addVariableRef("ImpulseCoef", &phForceSphere::ImpulseCoef)
+                .addVariable("ForceCoef", &phForceSphere::ForceCoef)
+                .addVariable("ImpulseCoef", &phForceSphere::ImpulseCoef)
 
                 .addFunction("Direct", &Direct)
                 .addFunction("Update", &Update)

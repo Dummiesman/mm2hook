@@ -47,10 +47,10 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<phMaterial>("phMaterial")
                 //properties
-                .addVariableRef("EffectIndex", &phMaterial::EffectIndex)
-                .addVariableRef("SoundIndex", &phMaterial::SoundIndex)
-                .addVariableRef("Elasticity", &phMaterial::Elasticity)
-                .addVariableRef("Friction", &phMaterial::Friction)
+                .addVariable("EffectIndex", &phMaterial::EffectIndex)
+                .addVariable("SoundIndex", &phMaterial::SoundIndex)
+                .addVariable("Elasticity", &phMaterial::Elasticity)
+                .addVariable("Friction", &phMaterial::Friction)
                 
                 .addProperty("Name", &GetName, &SetName)
 

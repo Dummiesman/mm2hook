@@ -38,10 +38,10 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<dgPathPoint>("dgPathPoint")
                 .addConstructor(LUA_ARGS(_opt<float>, _opt<float>, _opt<float>))
-                .addVariableRef("x", &dgPathPoint::x)
-                .addVariableRef("y", &dgPathPoint::y)
-                .addVariableRef("z", &dgPathPoint::z)
-                .addVariableRef("unk", &dgPathPoint::unk)
+                .addVariable("x", &dgPathPoint::x)
+                .addVariable("y", &dgPathPoint::y)
+                .addVariable("z", &dgPathPoint::z)
+                .addVariable("unk", &dgPathPoint::unk)
                 .endClass();
         }
     };

@@ -294,10 +294,10 @@ namespace MM2
 
                 .addPropertyReadOnly("WorldMatrix", &GetWorldMatrix)
 
-                .addVariableRef("CenterOfGravity", &vehCarSim::CenterOfGravity)
-                .addVariableRef("SSSValue", &vehCarSim::SSSValue)
-                .addVariableRef("SSSThreshold", &vehCarSim::SSSThreshold)
-                .addVariableRef("CarFrictionHandling", &vehCarSim::CarFrictionHandling)
+                .addVariable("CenterOfGravity", &vehCarSim::CenterOfGravity)
+                .addVariable("SSSValue", &vehCarSim::SSSValue)
+                .addVariable("SSSThreshold", &vehCarSim::SSSThreshold)
+                .addVariable("CarFrictionHandling", &vehCarSim::CarFrictionHandling)
 
                 .addProperty("Mass", &GetMass, &SetAndApplyMass)
                 .addProperty("InertiaBox", &GetInertiaBox, &SetAndApplyInertiaBox)

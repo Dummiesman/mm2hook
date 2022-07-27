@@ -103,7 +103,7 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<luaNode, asNode>("luaNode")
                 .addConstructor(LUA_ARGS(LPCSTR))
-                .addVariableRef("AutoDeclareCullable", &luaNode::m_AutoDeclareCullbale)
+                .addVariable("AutoDeclareCullable", &luaNode::m_AutoDeclareCullbale)
                 .addProperty("Update", &getNil, &SetUpdateFunction)
                 .addProperty("UpdatePaused", &getNil, &SetUpdatePausedFunction)
                 .addProperty("Reset", &getNil, &SetResetFunction)

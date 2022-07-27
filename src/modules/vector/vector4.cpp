@@ -33,10 +33,10 @@ namespace MM2
             vec.W = w;
             return vec;
         }, LUA_ARGS(_opt<float>, _opt<float>, _opt<float>, _opt<float>))
-            .addVariableRef("x", &Vector4::X)
-            .addVariableRef("y", &Vector4::Y)
-            .addVariableRef("z", &Vector4::Z)
-            .addVariableRef("w", &Vector4::W)
+            .addVariable("x", &Vector4::X)
+            .addVariable("y", &Vector4::Y)
+            .addVariable("z", &Vector4::Z)
+            .addVariable("w", &Vector4::W)
             .endClass();
     }
 }

@@ -82,15 +82,15 @@ namespace MM2
                 //ctor
                 .addConstructor(LUA_ARGS())
                 //variables
-                .addVariableRef("Type", &ltLight::Type)
-                .addVariableRef("Position", &ltLight::Position)
-                .addVariableRef("Direction", &ltLight::Direction)
-                .addVariableRef("Color", &ltLight::Color)
-                .addVariableRef("Intensity", &ltLight::Intensity)
-                .addVariableRef("SpotExponent", &ltLight::SpotExponent)
-                .addVariableRef("ProjectionSize", &ltLight::ProjectionSize)
-                .addVariableRef("EnableProjection", &ltLight::EnableProjection)
-                .addVariableRef("ShadowMode", &ltLight::ShadowMode)
+                .addVariable("Type", &ltLight::Type)
+                .addVariable("Position", &ltLight::Position)
+                .addVariable("Direction", &ltLight::Direction)
+                .addVariable("Color", &ltLight::Color)
+                .addVariable("Intensity", &ltLight::Intensity)
+                .addVariable("SpotExponent", &ltLight::SpotExponent)
+                .addVariable("ProjectionSize", &ltLight::ProjectionSize)
+                .addVariable("EnableProjection", &ltLight::EnableProjection)
+                .addVariable("ShadowMode", &ltLight::ShadowMode)
 
                 //statics
                 .addStaticFunction("ShutdownLights", &ShutdownLights)

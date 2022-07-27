@@ -111,7 +111,7 @@ namespace MM2
                 .addFunction("Stop", &Stop)
                 .addFunction("StartStop", &StartStop)
 
-                .addVariableRef("StartTime", &mmTimer::StartTime)
+                .addVariable("StartTime", &mmTimer::StartTime)
                 .addPropertyReadOnly("Time", &GetTime)
                 .addPropertyReadOnly("Running", &GetRunning)
                 .addProperty("CountdownMode", &GetCountdownMode, &SetCountdownMode)

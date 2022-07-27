@@ -43,10 +43,10 @@ namespace MM2
             LuaBinding(L).beginExtendClass<dgBombInfo, asFileIO>("dgBombInfo")
                 .addConstructor(LUA_ARGS())
 
-                .addVariableRef("Strength", &dgBombInfo::Strength)
-                .addVariableRef("RadiusMin", &dgBombInfo::RadiusMin)
-                .addVariableRef("RadiusMax", &dgBombInfo::RadiusMax)
-                .addVariableRef("ExplodeTime", &dgBombInfo::ExplodeTime)
+                .addVariable("Strength", &dgBombInfo::Strength)
+                .addVariable("RadiusMin", &dgBombInfo::RadiusMin)
+                .addVariable("RadiusMax", &dgBombInfo::RadiusMax)
+                .addVariable("ExplodeTime", &dgBombInfo::ExplodeTime)
                 .endClass();
         }
     };

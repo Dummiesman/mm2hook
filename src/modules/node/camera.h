@@ -389,8 +389,8 @@ namespace MM2
             LuaBinding(L).beginExtendClass<camAICS, camCarCS>("camAICS")
                 //properties
                 .addStaticProperty("Height", &getHeight, &setHeight)
-                .addVariableRef("Speed", &camAICS::Speed)
-                .addVariableRef("RotationSpeed", &camAICS::RotationSpeed)
+                .addVariable("Speed", &camAICS::Speed)
+                .addVariable("RotationSpeed", &camAICS::RotationSpeed)
             .endClass();
         }
     };
@@ -494,9 +494,9 @@ namespace MM2
                 .addFunction("Init", &Init)
                 .addFunction("ForceMatrixDelta", static_cast<void(camViewCS::*)(const Matrix34 *)>(&ForceMatrixDelta))
 
-                .addVariableRef("OverrideClip", &camViewCS::OverrideClip)
-                .addVariableRef("OverrideFar", &camViewCS::OverrideFar)
-                .addVariableRef("OverrideNear", &camViewCS::OverrideNear)
+                .addVariable("OverrideClip", &camViewCS::OverrideClip)
+                .addVariable("OverrideFar", &camViewCS::OverrideFar)
+                .addVariable("OverrideNear", &camViewCS::OverrideNear)
             .endClass();
         }
     };

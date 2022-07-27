@@ -52,8 +52,8 @@ namespace MM2
             vec.Y = y;
             return vec;
         }, LUA_ARGS(_opt<float>, _opt<float>))
-            .addVariableRef("x", &Vector2::X)
-            .addVariableRef("y", &Vector2::Y)
+            .addVariable("x", &Vector2::X)
+            .addVariable("y", &Vector2::Y)
 
             .addFunction("__add", &Vector2::operator+)
             .addFunction("__sub", &Vector2::operator-)

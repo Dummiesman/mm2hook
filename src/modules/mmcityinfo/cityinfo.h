@@ -123,9 +123,9 @@ namespace MM2
                 .addPropertyReadOnly("LocalizedName", &GetLocalizedName)
                 .addPropertyReadOnly("MapName", &GetMapName)
                 .addPropertyReadOnly("RaceDir", &GetRaceDir)
-                .addVariableRef("NumBlitzRaces", &mmCityInfo::blitzCount, false)
-                .addVariableRef("NumCheckpointRaces", &mmCityInfo::checkpointCount, false)
-                .addVariableRef("NumCircuitRaces", &mmCityInfo::circuitCount, false)
+                .addVariable("NumBlitzRaces", &mmCityInfo::blitzCount, false)
+                .addVariable("NumCheckpointRaces", &mmCityInfo::checkpointCount, false)
+                .addVariable("NumCircuitRaces", &mmCityInfo::circuitCount, false)
                 .addFunction("GetRaceNames", &getRaceNames)
                 .endClass();
         }

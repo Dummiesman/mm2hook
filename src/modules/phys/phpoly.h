@@ -52,8 +52,8 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<phPolygon>("phPolygon")
                 .addPropertyReadOnly("IsQuad", &isQuad)
-                .addVariableRef("Radius", &phPolygon::Radius)
-                .addVariableRef("Normal", &phPolygon::Normal)
+                .addVariable("Radius", &phPolygon::Radius)
+                .addVariable("Normal", &phPolygon::Normal)
                 .addProperty("MaterialIndex", &getMaterialIndex, &setMaterialIndex)
                 .addFunction("GetIndex", &getIndex)
                 .addFunction("SetIndex", &setIndex)

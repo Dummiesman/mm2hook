@@ -526,8 +526,8 @@ static void ImguiBindLua(LuaState L) {
             vec->y = y;
             return vec;
         }, LUA_ARGS(_opt<double>, _opt<double>))
-        .addVariableRef("x", &ImPlotPoint::x)
-        .addVariableRef("y", &ImPlotPoint::y)
+        .addVariable("x", &ImPlotPoint::x)
+        .addVariable("y", &ImPlotPoint::y)
         .endClass();
 
     LuaBinding(L).beginClass<ImVec2>("ImVec2")
@@ -537,8 +537,8 @@ static void ImguiBindLua(LuaState L) {
             vec->y = y;
             return vec;
         }, LUA_ARGS(_opt<float>, _opt<float>))
-        .addVariableRef("x", &ImVec2::x)
-        .addVariableRef("y", &ImVec2::y)
+        .addVariable("x", &ImVec2::x)
+        .addVariable("y", &ImVec2::y)
         .endClass();
 
     LuaBinding(L).beginClass<ImVec4>("ImVec4")
@@ -550,10 +550,10 @@ static void ImguiBindLua(LuaState L) {
             vec->w = w;
             return vec;
         }, LUA_ARGS(_opt<float>, _opt<float>, _opt<float>, _opt<float>))
-        .addVariableRef("x", &ImVec4::x)
-        .addVariableRef("y", &ImVec4::y)
-        .addVariableRef("z", &ImVec4::z)
-        .addVariableRef("w", &ImVec4::w)
+        .addVariable("x", &ImVec4::x)
+        .addVariable("y", &ImVec4::y)
+        .addVariable("z", &ImVec4::z)
+        .addVariable("w", &ImVec4::w)
         .endClass();
     
     LuaBinding(L).beginModule("implot")

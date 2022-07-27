@@ -5,10 +5,10 @@ using namespace MM2;
 void asMeshCardVertex::BindLua(LuaState L) 
 {
     LuaBinding(L).beginClass<asMeshCardVertex>("asMeshCardVertex")
-        .addVariableRef("x", &asMeshCardVertex::x)
-        .addVariableRef("y", &asMeshCardVertex::y)
-        .addVariableRef("z", &asMeshCardVertex::z)
-        .addVariableRef("w", &asMeshCardVertex::w)
+        .addVariable("x", &asMeshCardVertex::x)
+        .addVariable("y", &asMeshCardVertex::y)
+        .addVariable("z", &asMeshCardVertex::z)
+        .addVariable("w", &asMeshCardVertex::w)
         .endClass();
 }
 

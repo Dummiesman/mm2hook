@@ -142,8 +142,8 @@ namespace MM2
                 //variables
                 .addPropertyReadOnly("HasLights", &getHasLights)
                 .addPropertyReadOnly("LightCount", &getLightCount)
-                .addVariableRef("Active", &vehSiren::Active)
-                .addVariableRef("RotationRate", &vehSiren::RotationRate)
+                .addVariable("Active", &vehSiren::Active)
+                .addVariable("RotationRate", &vehSiren::RotationRate)
 
                 //statics
 

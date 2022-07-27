@@ -191,27 +191,27 @@ namespace MM2 {
         auto binder = LuaBinding(L).beginClass<T>(name);
         binder
             .addProperty("GameMode", &dgStatePack::getGameMode, &dgStatePack::setGameMode)
-            .addVariableRef("RaceId", &dgStatePack::RaceId)
+            .addVariable("RaceId", &dgStatePack::RaceId)
 
-            .addVariableRef("TrafficDensity", &dgStatePack::TrafficDensity)
-            .addVariableRef("PedestrianDensity", &dgStatePack::PedestrianDensity)
-            .addVariableRef("CopDensity", &dgStatePack::CopDensity)
-            .addVariableRef("OpponentDensity", &dgStatePack::OpponentDensity)
-            .addVariableRef("NumCTFRacers", &dgStatePack::NumberOfCTFRacers)
+            .addVariable("TrafficDensity", &dgStatePack::TrafficDensity)
+            .addVariable("PedestrianDensity", &dgStatePack::PedestrianDensity)
+            .addVariable("CopDensity", &dgStatePack::CopDensity)
+            .addVariable("OpponentDensity", &dgStatePack::OpponentDensity)
+            .addVariable("NumCTFRacers", &dgStatePack::NumberOfCTFRacers)
 
-            .addVariableRef("MaxAmbientVehicles", &dgStatePack::MaxAmbientVehicles)
+            .addVariable("MaxAmbientVehicles", &dgStatePack::MaxAmbientVehicles)
 
             .addProperty("EnableCableCars", &dgStatePack::getEnableCableCars, &dgStatePack::setEnableCableCars)
             .addProperty("EnableSubways", &dgStatePack::getEnableSubways, &dgStatePack::setEnableSubways)
 
-            .addVariableRef("NumLaps", &dgStatePack::NumLaps)
+            .addVariable("NumLaps", &dgStatePack::NumLaps)
 
-            .addVariableRef("TextureQuality", &dgStatePack::TextureQuality)
+            .addVariable("TextureQuality", &dgStatePack::TextureQuality)
 
-            .addVariableRef("TimeOfDay", &dgStatePack::TimeOfDay)
-            .addVariableRef("WeatherType", &dgStatePack::WeatherType)
+            .addVariable("TimeOfDay", &dgStatePack::TimeOfDay)
+            .addVariable("WeatherType", &dgStatePack::WeatherType)
             .addProperty("SkillLevel", &dgStatePack::getSkillLevel, &dgStatePack::setSkillLevel)
-            .addVariableRef("AudioFlags", &dgStatePack::AudioFlags)
+            .addVariable("AudioFlags", &dgStatePack::AudioFlags)
 
             .addProperty("EnablePedestrians", &dgStatePack::getEnablePedestrians, &dgStatePack::setEnablePedestrians);
         return binder;
@@ -492,14 +492,14 @@ namespace MM2 {
             .addProperty("NetName", &getNetName, &setNetName)
             .addProperty("VehicleName", &getVehicleName, &setVehicleName)
             .addProperty("CityName", &getCityName, &setCityName)
-            .addVariableRef("VehiclePaintjob", &mmStatePack::VehiclePaintjob)
-            .addVariableRef("InCrashCourse", &mmStatePack::InCrashCourse)
-            .addVariableRef("FarClip", &mmStatePack::FarClip)
-            .addVariableRef("TimeLimitOverride", &mmStatePack::TimeLimitOverride)
+            .addVariable("VehiclePaintjob", &mmStatePack::VehiclePaintjob)
+            .addVariable("InCrashCourse", &mmStatePack::InCrashCourse)
+            .addVariable("FarClip", &mmStatePack::FarClip)
+            .addVariable("TimeLimitOverride", &mmStatePack::TimeLimitOverride)
             .addProperty("UsePortals", &getUsePortals, &setUsePortals)
-            .addVariableRef("ViewMode", &mmStatePack::ViewMode, false)
-            .addVariableRef("MapMode", &mmStatePack::MapMode, false)
-            .addVariableRef("NextState", &mmStatePack::NextState, false)
+            .addVariable("ViewMode", &mmStatePack::ViewMode, false)
+            .addVariable("MapMode", &mmStatePack::MapMode, false)
+            .addVariable("NextState", &mmStatePack::NextState, false)
             .endClass();
         }
     };

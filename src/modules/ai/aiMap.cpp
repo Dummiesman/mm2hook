@@ -179,7 +179,7 @@ namespace MM2
             .addPropertyReadOnly("NumPlayers", &GetPlayerCount)
             .addPropertyReadOnly("NumCTFRacers", &GetCtfRacerCount)
             .addPropertyReadOnly("NumPolice", &GetPoliceCount)
-            .addVariableRef("ShowHeadlights", &aiMap::showHeadlights)
+            .addVariable("ShowHeadlights", &aiMap::showHeadlights)
             .addStaticProperty("Instance", [] { return  &aiMap::Instance; })
         .endClass();
     }

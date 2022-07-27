@@ -176,9 +176,9 @@ namespace MM2
             vec.Z = z;
             return vec;
         }, LUA_ARGS(_opt<float>, _opt<float>, _opt<float>))
-            .addVariableRef("x", &Vector3::X)
-            .addVariableRef("y", &Vector3::Y)
-            .addVariableRef("z", &Vector3::Z)
+            .addVariable("x", &Vector3::X)
+            .addVariable("y", &Vector3::Y)
+            .addVariable("z", &Vector3::Z)
 
             .addFunction("__add", &Vector3::operator+)
             .addFunction("__sub", &Vector3::operator-)

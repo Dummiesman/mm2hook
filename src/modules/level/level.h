@@ -204,7 +204,7 @@ namespace MM2
             LuaBinding(L).beginExtendClass<lvlLevel, asCullable>("lvlLevel")
                 //properties
                 .addPropertyReadOnly("NumRooms", &GetRoomCount)
-                .addVariableRef("InstanceLabelMask", &lvlLevel::InstanceLabelMask)
+                .addVariable("InstanceLabelMask", &lvlLevel::InstanceLabelMask)
 
                 //virtual functions
                 .addFunction("FindRoomId", &FindRoomId, LUA_ARGS(Vector3, _def<int, -1>))
