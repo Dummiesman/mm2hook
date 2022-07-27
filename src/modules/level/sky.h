@@ -33,7 +33,7 @@ namespace MM2
         }
 
         std::tuple<byte, byte, byte, byte> getFogColor(int index) {
-            if (index < 0 || index > 16)
+            if (index < 0 || index >= 16)
                 return std::make_tuple((byte)0, (byte)0, (byte)0, (byte) 0);
 
             auto color = FogColors[index];
