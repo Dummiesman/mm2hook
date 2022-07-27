@@ -218,7 +218,6 @@
     <ClInclude Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\vehWheelHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\vglHandler.h" />
-    <ClInclude Include="src\handlers\feature_handlers\Wanted_Common.h" />
     <ClInclude Include="src\handlers\print_handler.h" />
     <ClInclude Include="src\handlers\time_handler.h" />
     <ClInclude Include="src\hook.h" />
@@ -640,7 +639,6 @@
     <ClCompile Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\vehWheelHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\vglHandler.cpp" />
-    <ClCompile Include="src\handlers\feature_handlers\Wanted_Common.cpp" />
     <ClCompile Include="src\handlers\print_handler.cpp" />
     <ClCompile Include="src\handlers\time_handler.cpp" />
     <ClCompile Include="src\hook.cpp" />

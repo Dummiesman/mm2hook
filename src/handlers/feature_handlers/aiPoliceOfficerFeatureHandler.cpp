@@ -1,5 +1,4 @@
 #include "aiPoliceOfficerFeatureHandler.h"
-#include "Wanted_Common.h"
 
 using namespace MM2;
 

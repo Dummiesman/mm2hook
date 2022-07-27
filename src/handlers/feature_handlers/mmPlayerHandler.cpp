@@ -1,5 +1,4 @@
 #include "mmPlayerHandler.h"
-#include "Wanted_Common.h"
 
 using namespace MM2;
 
@@ -168,10 +167,6 @@ void mmPlayerHandler::Reset() {
     vehCarModel::HazardLightsState = false;
     vehCarModel::LeftSignalLightState = false;
     vehCarModel::RightSignalLightState = false;
-
-    // disable and reset timers
-    Wanted_Common::enableResetTimer = false;
-    Wanted_Common::resetTimer = 0.f;
 
     // call original
     hook::Thunk<0x404A60>::Call<void>(this);

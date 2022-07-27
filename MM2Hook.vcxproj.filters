@@ -1197,9 +1197,6 @@
     <ClInclude Include="src\handlers\feature_handlers\cityTimeWeatherLightingHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\feature_handlers\Wanted_Common.h">
-      <Filter>Source Files\handlers\feature_handlers</Filter>
-    </ClInclude>
     <ClInclude Include="src\handlers\feature_handlers\vehEngineFeatureHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
@@ -2089,9 +2086,6 @@
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\dgBangerInstanceHandler.cpp">
-      <Filter>Source Files\handlers\feature_handlers</Filter>
-    </ClCompile>
-    <ClCompile Include="src\handlers\feature_handlers\Wanted_Common.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\vehEngineFeatureHandler.cpp">
