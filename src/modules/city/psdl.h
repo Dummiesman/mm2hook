@@ -6,6 +6,8 @@ namespace MM2
 {
     // Forward declarations
     class lvlSDL;
+    struct sdlPoly;
+    struct sdlPolyCached;
 
     // External declarations
 
