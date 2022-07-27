@@ -7,26 +7,29 @@ namespace MM2
     declfield(datArgParser::Argv)(0x6A3C30);
 
     template<class outType>
-    std::tuple<bool, outType> datArgParser::getTyped(LPCSTR arg, UINT index, bool(*func)(LPCSTR, UINT, outType*))
+    std::tuple<bool, outType> datArgParser::getTyped(LPCSTR arg, UINT index, bool(*func)(LPCSTR, UINT, outType*), outType defaultValue)
     {
         outType out;
         bool res = func(arg, index, &out);
-        return std::make_tuple<bool, outType>(std::move(res), std::move(out));
+        if(res)
+            return std::make_tuple<bool, outType>(std::move(res), std::move(out));
+        else
+            return std::make_tuple<bool, outType>(std::move(res), defaultValue);
     }
 
     std::tuple<bool, int> datArgParser::getInt(LPCSTR arg, int index)
     {
-        return getTyped<int>(arg, index, Get);
+        return getTyped<int>(arg, index, Get, 0);
     }
 
     std::tuple<bool, float> datArgParser::getFloat(LPCSTR arg, int index)
     {
-        return getTyped<float>(arg, index, Get);
+        return getTyped<float>(arg, index, Get, 0.f);
     }
 
     std::tuple<bool, LPCSTR> datArgParser::getString(LPCSTR arg, int index)
     {
-        return getTyped<LPCSTR>(arg, index, Get);
+        return getTyped<LPCSTR>(arg, index, Get, nullptr);
     }
 
     AGE_API bool datArgParser::Get(LPCSTR arg)                          { return hook::StaticThunk<0x4C6190>::Call<bool>(arg); }
