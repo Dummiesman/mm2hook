@@ -62,7 +62,7 @@ namespace MM2
         AGE_API void operator-=(const Vector3& vec);
         AGE_API void operator+=(Vector3& vec);
         AGE_API void operator-=(Vector3& vec);
-        AGE_API Vector3 operator+(Vector3& vec) const;
+        AGE_API Vector3 operator+(const Vector3& vec) const;
         AGE_API Vector3 operator-(const Vector3& vec) const;
         AGE_API Vector3 operator/(float value) const;
         AGE_API Vector3 operator*(float value) const;

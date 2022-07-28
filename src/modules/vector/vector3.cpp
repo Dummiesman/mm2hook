@@ -151,7 +151,7 @@ namespace MM2
         hook::Thunk<0x470180>::Call<void>(this, &vec);
     }
 
-    AGE_API Vector3 Vector3::operator+(Vector3& vec) const {
+    AGE_API Vector3 Vector3::operator+(const Vector3& vec) const {
         return Vector3(this->X + vec.X, this->Y + vec.Y, this->Z + vec.Z);
     }
     AGE_API Vector3 Vector3::operator-(const Vector3& vec) const {
