@@ -18,6 +18,8 @@ namespace MM2
     class pedActiveData {};
 
     class pedActive : public dgPhysEntity {
+    private:
+        byte _buffer[0x60];
     protected:
         static hook::Field<0x104, crSkeleton *> _skeleton;
         static hook::Field<0x108, dgRagdoll *> _ragdoll;
@@ -30,7 +32,6 @@ namespace MM2
             return _ragdoll.get(this);
         }
     };
-
-    // Lua initialization
-
+    
+    ASSERT_SIZEOF(pedActive, 0x114);
 }

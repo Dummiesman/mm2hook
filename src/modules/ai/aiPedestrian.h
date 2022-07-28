@@ -20,11 +20,11 @@ namespace MM2
     public:
         AGE_API void Update()                                   { hook::Thunk<0x54B9C0>::Call<void>(this); }
 
-        inline aiPedestrianInstance * getInstance(void) const {
+        inline aiPedestrianInstance * GetInstance(void) const {
             return _instance.get(this);
         }
 
-        inline aiPedAudio * getAudio(void) const {
+        inline aiPedAudio * GetAudio(void) const {
             return _audio.ptr(this);
         };
     };

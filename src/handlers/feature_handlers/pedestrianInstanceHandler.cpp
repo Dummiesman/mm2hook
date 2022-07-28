@@ -62,7 +62,7 @@ void pedestrianInstanceHandler::DrawRagdoll()
     ragdollSkel->Attach(&pedestrianMatrixList[0]);
 
     //get animationInstance and draw it
-    auto animationInstance = inst->getAnimationInstance();
+    auto animationInstance = inst->GetAnimationInstance();
     auto anim = animationInstance->getAnimation();
     anim->pModel->Draw(&pedestrianMatrixList[0], anim->ppShaders[animationInstance->getVariant()], 0xFFFFFFFF);
 }
@@ -88,6 +88,17 @@ void pedestrianInstanceHandler::Detach()
     //call pedActive::Detach
     if (entity == nullptr)
         hook::Thunk<0x57C260>::ThisCall<void>(entity);
+}
+
+void pedestrianInstanceHandler::FirstImpactCallback()
+{
+    //call original
+    hook::Thunk<0x57C2E0>::Call<void>(this);
+
+    //call play impact reaction
+    auto active = reinterpret_cast<pedActive*>(this);
+    float force = active->GetICS()->GetImpulse().Mag(); // assumed atm. decompilation of MC1 method yields uninitialized second param.
+    reinterpret_cast<aiPedestrianInstance*>(active->GetInst())->GetPedestrian()->GetAudio()->PlayImpactReaction(force);
 }
 
 void pedestrianInstanceHandler::Install()
@@ -129,6 +140,14 @@ void pedestrianInstanceHandler::Install()
     InstallVTableHook("aiPedestrianInstance::IsCollidable",
         &IsCollidable , {
             0x5B6340
+        }
+    );
+
+    // MM2 doesn't call PlayImpactReaction for some reason
+    // it's the only difference in this function versus MC1
+    InstallVTableHook("pedActive::FirstImpactCallback",
+        &FirstImpactCallback, {
+            0x5B63C0
         }
     );
 }

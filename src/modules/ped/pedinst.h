@@ -12,6 +12,7 @@ namespace MM2
     extern class lvlInstance;
 
     extern class pedAnimationInstance;
+    extern class aiPedestrian;
 
     // Class definitions
 
@@ -20,8 +21,13 @@ namespace MM2
         byte _buffer[0x18];
     protected:
         static hook::Field<0x18, pedAnimationInstance> _animationInstance;
+        static hook::Field<0x14, aiPedestrian*> _ped;
     public:
-        inline pedAnimationInstance* getAnimationInstance() const {
+        aiPedestrian* GetPedestrian() const {
+            return _ped.get(this);
+        }
+
+        pedAnimationInstance* GetAnimationInstance() const {
             return _animationInstance.ptr(this);
         }
 
