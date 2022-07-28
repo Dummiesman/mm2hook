@@ -25,6 +25,8 @@ namespace MM2
         static hook::Field<0x90, Vector3> _angularVelocity;
         static hook::Field<0x48, Vector3> _angularMomentum;
         static hook::Field<0xA8, Vector3> _torque;
+        static hook::Field<0xD0, Vector3> _impulse;
+        static hook::Field<0xDC, Vector3> _angImpulse;
     public:
         AGE_API phInertialCS();
 
@@ -48,11 +50,15 @@ namespace MM2
         void SetPosition(Vector3 const& position);
         void SetMatrix(Matrix34 const& matrix);
         Vector3 GetForce() const;
-        void AddForce(Vector3 force);
-        void SetForce(Vector3 force);
+        void AddForce(Vector3 const & force);
+        void SetForce(Vector3 const & force);
         Vector3 GetTorque() const;
-        void AddTorque(Vector3 torque);
-        void SetTorque(Vector3 torque);
+        void AddTorque(Vector3 const & torque);
+        void SetTorque(Vector3 const & torque);
+        Vector3 GetImpulse() const;
+        void SetImpulse(Vector3 const& impulse);
+        Vector3 GetAngImpulse() const;
+        void SetAngImpulse(Vector3 const& impulse);
 
         //members (not all here yet!)
         AGE_API void Zero();

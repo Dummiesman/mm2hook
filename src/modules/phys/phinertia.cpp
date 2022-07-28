@@ -91,12 +91,12 @@ namespace MM2
         return _force.get(this);
     }
 
-    void phInertialCS::AddForce(Vector3 force) {
+    void phInertialCS::AddForce(Vector3 const & force) {
         auto current = GetForce();
         SetForce(current + force);
     }
 
-    void phInertialCS::SetForce(Vector3 force) {
+    void phInertialCS::SetForce(Vector3 const & force) {
         _force.set(this, force);
     }
 
@@ -104,13 +104,29 @@ namespace MM2
         return _torque.get(this);
     }
 
-    void phInertialCS::AddTorque(Vector3 torque) {
+    void phInertialCS::AddTorque(Vector3 const & torque) {
         auto current = GetTorque();
         SetTorque(current + torque);
     }
 
-    void phInertialCS::SetTorque(Vector3 torque) {
+    void phInertialCS::SetTorque(Vector3 const & torque) {
         _torque.set(this, torque);
+    }
+
+    Vector3 phInertialCS::GetImpulse() const {
+        return _impulse.get(this);
+    }
+
+    void phInertialCS::SetImpulse(Vector3 const& impulse) {
+        _impulse.set(this, impulse);
+    }
+
+    Vector3 phInertialCS::GetAngImpulse() const {
+        return _angImpulse.get(this);
+    }
+
+    void phInertialCS::SetAngImpulse(Vector3 const& impulse) {
+        _angImpulse.set(this, impulse);
     }
 
     //members (not all here yet!)
@@ -145,8 +161,10 @@ namespace MM2
 
             .addProperty("Velocity", &GetVelocity, &SetVelocity)
             .addProperty("Momentum", &GetMomentum, &SetMomentum)
+            .addProperty("Impulse", &GetImpulse, &SetImpulse)
             .addProperty("AngVelocity", &GetAngVelocity, &SetAngVelocity)
             .addProperty("AngMomentum", &GetAngMomentum, &SetAngMomentum)
+            .addProperty("AngImpulse", &GetAngImpulse, &SetAngImpulse)
 
             .addProperty("MaxSpeed", &GetMaxSpeed, &SetMaxSpeed)
             .addProperty("MaxAngSpeed", &GetMaxAngSpeed, &SetMaxAngSpeed)
