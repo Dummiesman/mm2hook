@@ -150,5 +150,9 @@ void pedestrianInstanceHandler::Install()
             0x5B63C0
         }
     );
+
+    // reduce impact cooldown time from 60 seconds (MM2 default) to 7 seconds (MC1 default)
+    // this lets the player well, actually hear creature impact sounds
+    mem::write(0x5D24C4, 7.0f);
 }
 
