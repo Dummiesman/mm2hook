@@ -26,8 +26,8 @@ void pedestrianInstanceHandler::aiMapInit(char * a1, char * a2, char * a3, const
     //init pedRagdollMgr
     pedRagdollMgr::Instance = new pedRagdollMgr();
 
-    char* values[2] = { "pedmodel_man", "pedmodel_woman" };
-    pedRagdollMgr::Instance->Init(2, values);
+    auto cityData = aiMap::GetInstance()->GetCityData();
+    pedRagdollMgr::Instance->Init(cityData->GetNumPedTypes(), cityData->GetGoodWeatherPedNames());
 
     aiMap::GetInstance()->AddChild(pedRagdollMgr::Instance);
 }
