@@ -15,7 +15,7 @@ namespace MM2
 
     class pedRagdollMgr : public asNode {
     private:
-        byte _buffer[0x64]; //guessed size
+        byte _buffer[0x1C];
     protected:
         static hook::Field<0x30, phBoundBox *> _boundBox;
     public:
@@ -46,7 +46,7 @@ namespace MM2
 
         virtual AGE_API void Update()                       { hook::Thunk<0x57BC10>::Call<void>(this); }
         virtual AGE_API void Reset()                        { hook::Thunk<0x57BBD0>::Call<void>(this); }
-
-
     };
+
+    ASSERT_SIZEOF(pedRagdollMgr, 0x34);
 }
