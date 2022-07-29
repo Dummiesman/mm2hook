@@ -31,7 +31,7 @@ namespace MM2
 
         static hook::Type<pedRagdollMgr *> Instance;
 
-        inline phBoundBox* getBoundBox() const {
+        phBoundBox* GetBoundBox() const {
             return _boundBox.get(this);
         }
 

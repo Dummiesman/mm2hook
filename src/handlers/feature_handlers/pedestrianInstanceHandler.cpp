@@ -34,7 +34,7 @@ void pedestrianInstanceHandler::aiMapInit(char * a1, char * a2, char * a3, const
 
 phBound * pedestrianInstanceHandler::GetBound(int a1)
 {
-    return pedRagdollMgr::Instance->getBoundBox();
+    return pedRagdollMgr::Instance->GetBoundBox();
 }
 
 bool pedestrianInstanceHandler::IsCollidable() 
