@@ -20,7 +20,7 @@ namespace MM2
 
     class aiCityData {
     private:
-        bool AmbientsDriveOnleft;
+        bool AmbientsDriveOnLeft;
         float SpeedLimit;
         int PedPoolSize;
         short NumAmbientTypes;
@@ -64,7 +64,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiCityData>("aiCityData")
-                .addVariable("AmbientsDriveOnleft", &aiCityData::AmbientsDriveOnleft, false)
+                .addVariable("AmbientsDriveOnLeft", &aiCityData::AmbientsDriveOnLeft, false)
                 .addVariable("SpeedLimit", &aiCityData::SpeedLimit, false)
                 .addVariable("PedPoolSize", &aiCityData::PedPoolSize, false)
                 .addVariable("NumPedTypes", &aiCityData::NumPedTypes, false)
