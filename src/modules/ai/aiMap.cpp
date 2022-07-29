@@ -65,43 +65,47 @@ namespace MM2
         return (SignalClock.get() & 8) != 0;
     }
 
-    aiPoliceForce* aiMap::GetPoliceForce() {
+    aiCityData* aiMap::GetCityData() const {
+        return cityData;
+    }
+
+    aiPoliceForce* aiMap::GetPoliceForce() const  {
         return policeForce;
     }
 
-    int aiMap::GetPoliceCount() {
+    int aiMap::GetPoliceCount() const  {
         return numCops;
     }
 
-    int aiMap::GetHookmanCount() {
+    int aiMap::GetHookmanCount() const  {
         return numHookmen;
     }
 
-    int aiMap::GetPedestrianCount() {
+    int aiMap::GetPedestrianCount() const  {
         return numPedestrians;
     }
 
-    int aiMap::GetCtfRacerCount() {
+    int aiMap::GetCtfRacerCount() const  {
         return numCTFRacers;
     }
 
-    int aiMap::GetPlayerCount() {
+    int aiMap::GetPlayerCount() const  {
         return numPlayers;
     }
 
-    int aiMap::GetOpponentCount() {
+    int aiMap::GetOpponentCount() const  {
         return numOpponents;
     }
 
-    int aiMap::GetAmbientCount() {
+    int aiMap::GetAmbientCount() const  {
         return numAmbientVehicles;
     }
 
-    int aiMap::GetPathsCount() {
+    int aiMap::GetPathsCount() const  {
         return numPaths;
     }
 
-    int aiMap::GetIntersectionCount() {
+    int aiMap::GetIntersectionCount() const {
         return numIntersections;
     }
 
@@ -168,6 +172,7 @@ namespace MM2
             .addFunction("CTFOpponent", &CTFOpponent)
             .addFunction("Vehicle", &Vehicle)
             .addFunction("Intersection", &Intersection)
+            .addPropertyReadOnly("CityData", &GetCityData)
             .addPropertyReadOnly("PoliceForce", &GetPoliceForce)
             .addPropertyReadOnly("Stats", &GetStats)
             .addPropertyReadOnly("NumAmbientVehicles", &GetAmbientCount)

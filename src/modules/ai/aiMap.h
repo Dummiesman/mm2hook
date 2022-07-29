@@ -173,16 +173,17 @@ namespace MM2
         std::tuple<int, int> mapComponentLua(const Vector3& position, int room);
         std::tuple<int, int, int> positionToAIMapCompLua(const Vector3& position);
     public:
-        aiPoliceForce* GetPoliceForce();
-        int GetPoliceCount();
-        int GetHookmanCount();
-        int GetPedestrianCount();
-        int GetCtfRacerCount();
-        int GetPlayerCount();
-        int GetOpponentCount();
-        int GetAmbientCount();
-        int GetPathsCount();
-        int GetIntersectionCount();
+        aiCityData* GetCityData() const;
+        aiPoliceForce* GetPoliceForce() const;
+        int GetPoliceCount() const;
+        int GetHookmanCount() const;
+        int GetPedestrianCount() const;
+        int GetCtfRacerCount() const;
+        int GetPlayerCount() const;
+        int GetOpponentCount() const;
+        int GetAmbientCount() const;
+        int GetPathsCount() const;
+        int GetIntersectionCount() const;
 
         aiMapStats GetStats() const;
     protected:
