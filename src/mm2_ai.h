@@ -13,6 +13,7 @@ namespace MM2
         luaBind<aiPath>(L);
         luaBind<aiIntersection>(L);
         luaBind<aiMap>(L);
+        luaBind<aiCityData>(L);
         luaBind<aiPoliceForce>(L);
         luaBind<aiMapStats>(L);
         luaBind<aiObstacle>(L);
