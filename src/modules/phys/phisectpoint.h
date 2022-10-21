@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\phys.h>
+#include <modules\vector.h>
 
 namespace MM2
 {
@@ -28,9 +28,6 @@ namespace MM2
             this->IntersectResult = result;
         }
     };
+
     ASSERT_SIZEOF(phIntersectionPoint, 0x24);
-
-
-    // Lua initialization
-
 }

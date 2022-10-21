@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\phys.h>
+#include <modules\vector.h>
+#include <modules\phys\phisectpoint.h>
 
 namespace MM2
 {

@@ -1,4 +1,6 @@
 #pragma once
+#include <modules\vector.h>
+
 namespace MM2
 {
     // Forward declarations
