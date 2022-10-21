@@ -35,7 +35,7 @@ namespace MM2
             return pathCount;
         }
 
-        inline aiPath* GetPath(int id) const {
+        aiPath* GetPath(int id) const {
             if (id >= pathCount)
                 return nullptr;
             return paths[id];
