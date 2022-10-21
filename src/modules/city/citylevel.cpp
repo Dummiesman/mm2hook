@@ -30,9 +30,10 @@ namespace MM2
 
     AGE_API int cityLevel::FindRoomId(Vector3 const& a1, int a2) const
                                                         { return hook::Thunk<0x446A60>::Call<int>(this, &a1, a2); }
-    AGE_API int cityLevel::GetNeighborCount(int a1) const { return hook::Thunk<0x446C20>::Call<int>(this, a1); }
-    AGE_API int cityLevel::GetNeighbors(int* a1, int a2) const  
-                                                        { return hook::Thunk<0x446C40>::Call<int>(this, a1, a2); }
+    AGE_API int cityLevel::GetNeighborCount(int room) const 
+                                                        { return hook::Thunk<0x446C20>::Call<int>(this, room); }
+    AGE_API int cityLevel::GetNeighbors(int* neighbourRooms, int room) const  
+                                                        { return hook::Thunk<0x446C40>::Call<int>(this, neighbourRooms, room); }
     AGE_API int cityLevel::GetTouchedNeighbors(int* a1, int a2, int a3, const Vector4& a4)
                                                         { return hook::Thunk<0x446CD0>::Call<int>(this, a1, a2, a3, a4); }
     AGE_API int cityLevel::GetRoomPerimeter(int roomId, Vector3* out, int outSize) const
