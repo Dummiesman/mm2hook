@@ -560,6 +560,8 @@ AGE_API bool MM2::dgPhysManager::Collide(lvlSegment& segment, lvlIntersection* i
         this->ExternalProbes++;
         this->ExternalProbeTime += probeTime;
     }
+
+    return res;
 }
 
 void MM2::dgPhysManager::Reset()
