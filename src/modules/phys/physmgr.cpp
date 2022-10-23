@@ -513,20 +513,20 @@ void dgPhysManager::DeclareMover(lvlInstance* instance, int a3, int a4)
 
         int neighborRoomCount = lvlLevel::GetSingleton()->GetNeighbors(&activeRooms[1], instance->GetRoomId());     
 
-        for (int i = 0; i < neighborRoomCount + 1; i++) {
+        for (int i = 0; i < neighborRoomCount + 1 && GetActiveRoomCount() < MAX_ROOMS; i++) 
+        {
             int roomId = activeRooms[i];
-            
+
             bool alreadyContained = false;
-            for (int j = 0; j < this->GetActiveRoomCount() && !alreadyContained; j++) {
+            for (int j = 0; j < this->GetActiveRoomCount() && !alreadyContained; j++) 
+            {
                 alreadyContained |= this->GetActiveRoomId(j) == roomId;
             }
 
-            if (!alreadyContained) {
+            if (!alreadyContained) 
+            {
                 this->ActiveRoomIds[NumActiveRooms++] = roomId;
             }
-
-            if (GetActiveRoomCount() >= MAX_ROOMS)
-                break;
         }
     }
     if (a3 == 4)
