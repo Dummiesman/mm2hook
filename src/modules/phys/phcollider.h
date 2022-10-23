@@ -6,7 +6,7 @@ namespace MM2
     class phCollider;
 
     // External declarations
-
+    extern class phJoint;
 
     // Class definitions
 
@@ -15,6 +15,11 @@ namespace MM2
         byte unknown[0x30];
     public:
         int colliderId; //?
+
+        phJoint* GetJoint()
+        {
+            return *getPtr<phJoint*>(this, 0xAC);
+        }
     };
 
     // Lua initialization
