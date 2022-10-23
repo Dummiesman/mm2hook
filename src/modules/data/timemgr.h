@@ -20,6 +20,7 @@ namespace MM2
         static hook::Type<unsigned int> FrameCount;
         static hook::Type<Timer> Time;
 
+        AGE_API static void SetTempOversampling(bool a1, int a2);
         AGE_API static void RealTime(float step);
         AGE_API static void Reset();
         AGE_API static void Update();

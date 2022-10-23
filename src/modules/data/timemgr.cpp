@@ -11,6 +11,11 @@ namespace MM2
     declfield(datTimeManager::FrameCount)(0x6A3C50);
     declfield(datTimeManager::ElapsedTime)(0x6A3C40);
 
+    AGE_API void datTimeManager::SetTempOversampling(bool a1, int a2)
+    {
+        hook::StaticThunk<0x4C64F0>::Call<void>(a1, a2);
+    }
+
     AGE_API void datTimeManager::RealTime(float step) {
         hook::StaticThunk<0x4C6580>::Call<void>(step);
     }
