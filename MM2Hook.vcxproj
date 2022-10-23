@@ -178,6 +178,7 @@
     <ClInclude Include="src\handlers\feature_handlers\cityTimeWeatherLightingHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\datCallbackExtensionHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\dgBangerInstanceHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\dgPhysManagerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\Dialog_NewPlayerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\fxTexelDamageHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gettexHandler.h" />
@@ -599,6 +600,7 @@
     <ClCompile Include="src\handlers\feature_handlers\cityTimeWeatherLightingHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\datCallbackExtensionHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\dgBangerInstanceHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\dgPhysManagerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\Dialog_NewPlayerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\fxTexelDamageHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gettexHandler.cpp" />

@@ -1555,6 +1555,9 @@
     <ClInclude Include="src\modules\gizmo\bridge.h">
       <Filter>Source Files\modules\gizmo</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\dgPhysManagerHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2258,6 +2261,12 @@
     </ClCompile>
     <ClCompile Include="src\modules\data\args.cpp">
       <Filter>Source Files\modules\data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\phys\physmgr.cpp">
+      <Filter>Source Files\modules\phys</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\dgPhysManagerHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
