@@ -18,6 +18,7 @@
 #include "feature_handlers/cityTimeWeatherLightingHandler.h"
 #include "feature_handlers/datCallbackExtensionHandler.h"
 #include "feature_handlers/dgBangerInstanceHandler.h"
+#include "feature_handlers/dgPhysManagerHandler.h"
 #include "feature_handlers/Dialog_NewPlayerHandler.h"
 #include "feature_handlers/fxTexelDamageHandler.h"
 #include "feature_handlers/gettexHandler.h"

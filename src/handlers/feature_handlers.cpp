@@ -45,6 +45,8 @@ static init_handler g_feature_handlers[] = {
     CreateHandler<mmSingleRaceHandler>("mmSingleRace"),
     CreateHandler<mmSingleRoamHandler>("mmSingleRoam"),
 
+    CreateHandler<dgPhysManagerHandler>("dgPhysManager"),
+
     CreateHandler<dgBangerInstanceHandler>("dgBangerInstance"),
     CreateHandler<ltLensFlareHandler>("ltLensFlare"),
 
