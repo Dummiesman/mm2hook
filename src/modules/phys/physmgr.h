@@ -143,7 +143,7 @@ namespace MM2
         static hook::Type<float> perfTotalCollisionTime;
         static hook::Type<float> perfPostCollision;
 
-        PhysicsStats GetStats() const;
+        PhysicsStats GetStats();
 
         int GetLastActiveMoverCount() const;
         int GetActiveMoverCount() const;

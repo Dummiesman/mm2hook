@@ -189,8 +189,9 @@ std::shared_ptr<LuaRaycastResult> dgPhysManager::collideLua(Vector3 start, Vecto
     return std::shared_ptr<LuaRaycastResult>(result);
 }
     
-PhysicsStats dgPhysManager::GetStats() const
+PhysicsStats dgPhysManager::GetStats()
 {
+    // make stats struct
     auto stats = PhysicsStats();
     stats.CarImpactTime = this->CarDamageImpactTime;
     stats.CollisionsTime = dgPhysManager::perfPhysCollide.get();
@@ -210,6 +211,21 @@ PhysicsStats dgPhysManager::GetStats() const
     stats.ExternalProbeTime = this->ExternalProbeTime;
     stats.TotalProbeTime = this->TotalProbeTime;
     stats.TotalProbes = physTotalProbes;
+
+    // reset stats that accumulate over time (in dev builds this is reset in dgPhysManager::Stats, so I feel this is appropriate here)
+    this->ExternalProbes = 0;
+    this->ExternalProbeTime = 0.0f;
+    this->NumCulledMovers = 0;
+    this->TotalProbeTime = 0.0f;
+    this->CarDamageImpactTime = 0.0f;
+    this->perfObjObjImpact = 0.0f;
+    this->perfObjObjCollision = 0.0f;
+    this->perfObjTerrainImpact = 0.0f;
+    this->perfObjTerrainCollision = 0.0f;
+    dgPhysManager::perfMoverUpdate.set(0.0f);
+    dgPhysManager::perfPhysGathering.set(0.0f);
+    dgPhysManager::perfPhysCollide.set(0.0f);
+    physTotalProbes = 0;
 
     return stats;
 }
