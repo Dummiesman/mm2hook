@@ -1,4 +1,5 @@
 #pragma once
+#include <modules\node\cullable.h>
 #include <modules\phys\segment.h>
 #include <modules\phys\phintersection.h>
 
@@ -10,11 +11,8 @@ namespace MM2
     struct PhysicsStats;
 
     // External declarations
-    extern class dgPhysEntity;
     extern class lvlInstance;
-    extern struct lvlSegment;
-    extern struct phIntersectionPoint;
-    extern struct lvlIntersection;
+    extern class dgPhysEntity;
 
     // Class definitions
     struct LuaRaycastResult 
@@ -23,52 +21,16 @@ namespace MM2
         lvlSegment* segment;
         lvlIntersection* isect;
     private:
-        inline Vector3 getIntersectionPoint()
-        {
-            return isect->IntersectionPoint.Point;
-        }
-
-        inline Vector3 getNormal()
-        {
-            return isect->IntersectionPoint.Normal;
-        }
-
-        inline float getNormalizedDistance()
-        {
-            return isect->IntersectionPoint.NormalizedDistance;
-        }
-
-        inline float getPenetration()
-        {
-            return isect->IntersectionPoint.Penetration;
-        }
-
-        inline phBound* getBound()
-        {
-            return isect->Bound;
-        }
-
-        inline phPolygon* getPolygon()
-        {
-            return isect->Poly;
-        }
+        Vector3 getIntersectionPoint();
+        Vector3 getNormal();
+        float getNormalizedDistance();
+        float getPenetration();
+        phBound* getBound();
+        phPolygon* getPolygon();
     public:
-        LuaRaycastResult(lvlSegment* segment, lvlIntersection* isect) 
-        {
-            this->segment = segment;
-            this->isect = isect;
-        }
+        LuaRaycastResult(lvlSegment* segment, lvlIntersection* isect);
 
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<LuaRaycastResult>("LuaRaycastResult")
-                .addPropertyReadOnly("NormalizedDistance", &getNormalizedDistance)
-                .addPropertyReadOnly("Penetration", &getPenetration)
-                .addPropertyReadOnly("Point", &getIntersectionPoint)
-                .addPropertyReadOnly("Bound", &getBound)
-                .addPropertyReadOnly("Normal", &getNormal)
-                .addPropertyReadOnly("Polygon", &getPolygon)
-                .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     struct PhysicsStats
@@ -94,29 +56,8 @@ namespace MM2
         float TotalProbeTime;
         int ExternalProbes;
         float ExternalProbeTime;
-        
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<PhysicsStats>("PhysicsStats")
-                .addVariable("TotalUpdateTime", &PhysicsStats::TotalUpdateTime, false)
-                .addVariable("ObjPairCollectingTime", &PhysicsStats::ObjPairCollectingTime, false)
-                .addVariable("TotalCollisionTime", &PhysicsStats::TotalCollisionTime, false)
-                .addVariable("MoverUpdateTime", &PhysicsStats::MoverUpdateTime, false)
-                .addVariable("MoverGatherTime", &PhysicsStats::MoverGatherTime, false)
-                .addVariable("ObjToObjCollisionTime", &PhysicsStats::ObjToObjCollisionTime, false)
-                .addVariable("ObjToObjImpactTime", &PhysicsStats::ObjToObjImpactTime, false)
-                .addVariable("CarImpactTime", &PhysicsStats::CarImpactTime, false)
-                .addVariable("ObjTerrainCollisionTime", &PhysicsStats::ObjTerrainCollisionTime, false)
-                .addVariable("ObjTerrainImpactTime", &PhysicsStats::ObjTerrainImpactTime, false)
-                .addVariable("PostCollisionTime", &PhysicsStats::PostCollisionTime, false)
-                .addVariable("TotalProbes", &PhysicsStats::TotalProbes, false)
-                .addVariable("TotalProbeTime", &PhysicsStats::TotalProbeTime, false)
-                .addVariable("ExternalProbes", &PhysicsStats::ExternalProbes, false)
-                .addVariable("ExternalProbeTime", &PhysicsStats::ExternalProbeTime, false)
-                .addVariable("MoverVsMover", &PhysicsStats::MoverVsMover, false)
-                .addVariable("MoverVsCollidable", &PhysicsStats::MoverVsCollidable, false)
-                .addVariable("CollisionsTime", &PhysicsStats::CollisionsTime, false)
-                .endClass();
-        }
+    public:
+        static void BindLua(LuaState L);
     };
 
     class phPhysicsManager {
@@ -134,52 +75,38 @@ namespace MM2
 
     class dgPhysManager : phPhysicsManager, asCullable {
     public:
+        static const int MAX_MOVERS = 128; // Default 32
+        static const int MAX_ROOMS = 20;
+    public:
         struct CollisionTableEntry
         {
         private:
-            lvlInstance* Instance;
-            dgPhysEntity* PhysEntity;
-            short CollidablesCount;
-            lvlInstance* Collidables[32];
-            short Flags;
-            byte byte_8e;
+            lvlInstance* m_Instance;
+            dgPhysEntity* m_PhysEntity;
+            unsigned short m_CollidablesCount;
+            lvlInstance* m_Collidables[32];
+            short m_Flags;
+            byte m_Priority;
             byte byte_8f;
         public:
-            inline short getFlags()
-            {
-                return this->Flags;
-            }
+            void SetFlags(short flags);
+            short GetFlags() const;
+            byte GetPriority() const;
+            dgPhysEntity* GetEntity() const;
+            lvlInstance* GetInstance() const;
+            int GetCollidablesCount() const;
+            lvlInstance* GetCollidable(int num);
+            void SetCollidable(int num, lvlInstance* instance);
+            void ClearCollidables();
+            void Reset();
+            void Set(dgPhysEntity* entity, lvlInstance* instance, short flags, byte priority);
 
-            inline lvlInstance* getInstance()
-            {
-                return this->Instance;
-            }
-
-            inline int getCollidablesCount()
-            {
-                return this->CollidablesCount;
-            }
-
-            inline lvlInstance* getCollidable(int num)
-            {
-                if (num < 0 || num >= this->getCollidablesCount())
-                    return nullptr;
-                return this->Collidables[num];
-            }
-
-            static void BindLua(LuaState L) {
-                LuaBinding(L).beginClass<dgPhysManager>("dgPhysManager")
-                    .beginClass<CollisionTableEntry>("CollisionTableEntry")
-                        .addPropertyReadOnly("NumCollidables", &getCollidablesCount)
-                        .addPropertyReadOnly("Instance", &getInstance)
-                        .addFunction("GetCollidable", &getCollidable)
-                        .endClass();
-            }
+            static void BindLua(LuaState L);
         };
     private:
         int NumActiveRooms;
         int NumCulledMovers;
-        int ActiveRoomIds[20];
+        int ActiveRoomIds[MAX_ROOMS];
         int NumSamples;
         float perfTotalUpdateTime;
         float perfObjObjCollision;
@@ -197,126 +124,13 @@ namespace MM2
         BOOL IsUpdating;
         class phContactMgr * ContactMgr;
         int LinesMode; // unused
-        dgPhysManager::CollisionTableEntry Table[32];
+        dgPhysManager::CollisionTableEntry Table[MAX_MOVERS];
         int NumActiveMovers;
         int MaxSamples;
         float SampleStep;
     private:
-        std::shared_ptr<LuaRaycastResult> collideLua(Vector3 start, Vector3 end)
-        {
-            lvlSegment segment;
-            lvlIntersection isect;
-            segment.Set(start, end, 0, nullptr);
-            
-            bool collided = dgPhysManager::Collide(segment, &isect, 0, nullptr, 0x20, 0);
-            LuaRaycastResult* result = (collided) ? new LuaRaycastResult(&segment, &isect) : nullptr;
-            return std::shared_ptr<LuaRaycastResult>(result);
-        }
-    public:
-        inline PhysicsStats getStats()
-        {
-            auto stats = PhysicsStats();
-            stats.CarImpactTime = this->CarDamageImpactTime;
-            stats.CollisionsTime = dgPhysManager::perfPhysCollide.get();
-            stats.MoverVsCollidable = this->MoverVsCollidable;
-            stats.MoverVsMover = this->MoverVsMover;
-            stats.MoverGatherTime = dgPhysManager::perfPhysGathering.get();
-            stats.MoverUpdateTime = dgPhysManager::perfMoverUpdate.get();
-            stats.ObjPairCollectingTime = dgPhysManager::perfObjPairCollecting.get();
-            stats.ObjTerrainCollisionTime = this->perfObjTerrainCollision;
-            stats.ObjTerrainImpactTime = this->perfObjTerrainImpact;
-            stats.ObjToObjCollisionTime = this->perfObjObjCollision;
-            stats.ObjToObjImpactTime = this->perfObjObjImpact;
-            stats.PostCollisionTime = dgPhysManager::perfPostCollision.get();
-            stats.TotalCollisionTime = this->perfTotalCollisionTime;
-            stats.TotalUpdateTime = this->perfTotalUpdateTime;
-
-            //MM2 doesn't keep track of these
-            //would need to rewrite dgPhysManager
-            stats.ExternalProbes = 0;
-            stats.ExternalProbeTime = 0.f;
-            stats.TotalProbes = 0;
-            stats.TotalProbeTime = 0.f;
-
-            return stats;
-        }
-
-        inline int getMoverCount()
-        {
-            return this->NumMovers;
-        }
-
-        inline int getActiveRoomCount()
-        {
-            return this->NumActiveRooms;
-        }
-
-        inline int getActiveRoomId(int index)
-        {
-            if (index > 20 || index < 0)
-                return 0;
-            return this->ActiveRoomIds[index];
-        }
-
-        inline int getNumSamples()
-        {
-            return this->NumSamples;
-        }
-
-        inline int getNumCulledMovers()
-        {
-            return this->NumCulledMovers;
-        }
-
-        inline int getMaxSamples()
-        {
-            return this->MaxSamples;
-        }
-
-        inline void setMaxSamples(int samples)
-        {
-            this->MaxSamples = samples;
-        }
-
-        inline float getSampleStep()
-        {
-            return this->SampleStep;
-        }
-
-        inline void setSampleStep(float step)
-        {
-            this->SampleStep = step;
-        }
-
-
-        CollisionTableEntry* getMover(int num)
-        {
-            if (num < 0 || num >= this->getMoverCount())
-                return nullptr;
-            return &this->Table[num];
-        }
-
-        CollisionTableEntry* findMover(lvlInstance* instance)
-        {
-            int count = this->getMoverCount();
-            for (int i = 0; i < count; i++) 
-            {
-                auto entry = getMover(i);
-                if (entry->getInstance() == instance)
-                    return entry;
-            }
-            return nullptr;
-        }
-    
-        static inline float getGravity() 
-        {
-            return dgPhysManager::Gravity.get();
-        }
-
-        static inline void setGravity(float gravity) 
-        {
-            dgPhysManager::Gravity.set(gravity);
-        }
+        std::shared_ptr<LuaRaycastResult> collideLua(Vector3 start, Vector3 end);
+        static hook::Type<float> TimeDiscrepancy;
     public:
         static hook::Type<lvlInstance *> PlayerInst;
         static hook::Type<dgPhysManager *> Instance;
@@ -329,45 +143,41 @@ namespace MM2
         static hook::Type<float> perfTotalCollisionTime;
         static hook::Type<float> perfPostCollision;
 
-        AGE_API void IgnoreMover(lvlInstance* instance)                  { hook::Thunk<0x468860>::Call<void>(this, instance); }
-        AGE_API void DeclareMover(lvlInstance* instance, int a2, int a3) { hook::Thunk<0x468370>::Call<void>(this, instance, a2, a3); }
-        AGE_API bool Collide(lvlSegment& segment, lvlIntersection* intersection, int a4, lvlInstance* ignoreInstance, ushort flags1, int flags2 )
-                                                                         { return hook::Thunk<0x468E40>::Call<bool>(this, &segment, intersection, a4, ignoreInstance, flags1, flags2); }
+        PhysicsStats GetStats() const;
 
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<dgPhysManager>("dgPhysManager")
-                //statics
-                .addStaticProperty("Instance", [] { return (dgPhysManager*)Instance; })
+        int GetLastActiveMoverCount() const;
+        int GetActiveMoverCount() const;
+        int GetActiveRoomCount() const;
+        int GetActiveRoomId(int index) const;
+        int GetNumSamples() const;
+        int GetNumCulledMovers() const;
+        int GetMaxSamples() const;
+        void SetMaxSamples(int samples);
+        float GetSampleStep() const;
+        void SetSampleStep(float step);
 
-                //properties
-                .addPropertyReadOnly("Stats", &getStats)
+        CollisionTableEntry* GetMover(int num);
+        CollisionTableEntry* FindMover(lvlInstance* instance);
 
-                .addPropertyReadOnly("NumMovers", &getMoverCount)
-                .addPropertyReadOnly("NumActiveRooms", &getActiveRoomCount)
-                .addPropertyReadOnly("NumCulledMovers", &getNumCulledMovers)
-                .addPropertyReadOnly("NumSamples", &getNumSamples)
+        static float GetGravity();
+        static void SetGravity(float gravity);
 
-                .addProperty("MaxSamples", &getMaxSamples, &setMaxSamples)
-                .addProperty("SampleStep", &getSampleStep, &setSampleStep)
+        AGE_API bool CollideTerrain(CollisionTableEntry* entry);
+        AGE_API void GatherCollidables(CollisionTableEntry* entry);
+        AGE_API void IgnoreMover(lvlInstance* instance);
+        AGE_API void NewMover(lvlInstance* instance);
+        AGE_API void NewMover(lvlInstance* instanceA, lvlInstance* instanceB);
+        AGE_API void NewMover(lvlInstance* instanceA, lvlInstance* instanceB, lvlInstance* instanceC);
+        AGE_API void DeclareMover(lvlInstance* instance, int a3, int a4);
+        AGE_API bool TrivialCollideInstances(lvlInstance* instanceA, lvlInstance* instanceB);
+        AGE_API bool CollideInstances(lvlInstance* instanceA, lvlInstance* instanceB);
+        AGE_API bool Collide(lvlSegment& segment, lvlIntersection* intersection, int a4, lvlInstance* ignoreInstance, ushort flags1, int flags2);
+        void ResetTable();
+        void Reset();
+        void Update();
 
-                .addStaticProperty("Gravity", &getGravity, &setGravity)
-                .addStaticProperty("PlayerInst", [] { return (lvlInstance*)dgPhysManager::PlayerInst; })
-
-                //functions
-                .addFunction("Collide", &collideLua)
-                .addFunction("IgnoreMover", &IgnoreMover)
-                .addFunction("DeclareMover", &DeclareMover)
-
-                .addFunction("FindMover", &findMover)
-                .addFunction("GetMover", &getMover)
-                .addFunction("GetActiveRoomID", &getActiveRoomId)
-
-                .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
-    ASSERT_SIZEOF(dgPhysManager, 0x12B0);
-
-    // Lua initialization
-
+    //ASSERT_SIZEOF(dgPhysManager, 0x12B0);
 }

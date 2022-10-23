@@ -696,6 +696,7 @@
     <ClCompile Include="src\modules\ped.cpp" />
     <ClCompile Include="src\modules\phys.cpp" />
     <ClCompile Include="src\modules\phys\phinertia.cpp" />
+    <ClCompile Include="src\modules\phys\physmgr.cpp" />
     <ClCompile Include="src\modules\rgl.cpp" />
     <ClCompile Include="src\modules\vector.cpp" />
     <ClCompile Include="src\modules\vector\matrix34.cpp" />
