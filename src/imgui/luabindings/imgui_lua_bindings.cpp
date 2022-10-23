@@ -607,7 +607,7 @@ static void ImguiBindLua(LuaState L) {
         .addVariable("MouseDelta", &ImGuiIO::MouseDelta)
         .endClass();
 
-    LuaBinding(L).beginModule("implot")
+    LuaBinding(L).beginModule("ImPlot")
         .addFunction("BeginPlot", &ImPlot_BeginPlot)
         .addFunction("EndPlot", &ImPlot_EndPlot)
         .addFunction("PlotLine", &ImPlot_PlotLine)
@@ -617,8 +617,7 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("PlotText", &ImPlot_PlotText)
         .endModule();
 
-    LuaBinding(L).beginModule("imgui")
-        .addFunction("GetIO", &ImGui::GetIO)
+    LuaBinding(L).beginModule("ImGui")
         .addFunction("Button", &ImGui::Button)
         .addFunction("InvisibleButton", &ImGui::InvisibleButton)
         .addFunction("SmallButton", &ImGui::SmallButton)
@@ -804,7 +803,7 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("PushID", &ImGuiPushIDLua)
         .addFunction("PopID", &ImGui::PopID)
 
-        //This window is a good reference/test. So we'll expose it
         .addFunction("ShowDemoWindow", &ImGuiShowDemoWindowLua)
+        .addFunction("GetIO", &ImGui::GetIO)
         .endModule();
 }
