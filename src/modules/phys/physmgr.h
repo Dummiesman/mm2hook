@@ -75,7 +75,7 @@ namespace MM2
 
     class dgPhysManager : phPhysicsManager, asCullable {
     public:
-        static const int MAX_MOVERS = 128; // Default 32
+        static const int MAX_MOVERS = 64; // Default 32
         static const int MAX_ROOMS = 20;
     public:
         struct CollisionTableEntry
