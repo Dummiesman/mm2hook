@@ -112,5 +112,55 @@ void dgPhysManagerHandler::Install() {
             }
         );
     }
+
+    // wrap the Collide function to re-enable additional debugging values in dgPhysManager
+    InstallCallback("dgPhysManager::Collide", "Use extended Collide function",
+        &dgPhysManager::Collide, {
+            cb::call(0x405F93),
+            cb::call(0x4134B9),
+            cb::call(0x413602),
+            cb::call(0x415048),
+            cb::call(0x41A2A1),
+            cb::call(0x42566A),
+            cb::call(0x442E08),
+            cb::call(0x4462AE),
+            cb::call(0x4644EB),
+            cb::call(0x464578),
+            cb::call(0x4D2C0F),
+            cb::call(0x4DF22C),
+            cb::call(0x51ED71),
+            cb::call(0x51EE4A),
+            cb::call(0x51F12C),
+            cb::call(0x51F218),
+            cb::call(0x51F301),
+            cb::call(0x51F3EA),
+            cb::call(0x51F5C7),
+            cb::call(0x520311),
+            cb::call(0x520B76),
+            cb::call(0x520C25),
+            cb::call(0x520F5D),
+            cb::call(0x53B95C),
+            cb::call(0x53BAB4),
+            cb::call(0x540199),
+            cb::call(0x540283),
+            cb::call(0x54039D),
+            cb::call(0x5423A0),
+            cb::call(0x54248A),
+            cb::call(0x5425C0),
+            cb::call(0x54B89E),
+            cb::call(0x54BEDF),
+            cb::call(0x54D301),
+            cb::call(0x54DAC7),
+            cb::call(0x553802),
+            cb::call(0x568C65),
+            cb::call(0x568D75),
+            cb::call(0x568E91),
+            cb::call(0x569201),
+            cb::call(0x569345),
+            cb::call(0x5694A1),
+            cb::call(0x59DAE0),
+            cb::call(0x5A8381),
+        }
+    );
 }
 

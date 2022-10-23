@@ -176,6 +176,8 @@ declfield(dgPhysManager::perfPhysCollide)(0x655DB0);
 
 declfield(dgPhysManager::PlayerInst)(0x65D9E0);
 
+static int physTotalProbes = 0;
+
 std::shared_ptr<LuaRaycastResult> dgPhysManager::collideLua(Vector3 start, Vector3 end)
 {
     lvlSegment segment;
@@ -204,13 +206,10 @@ PhysicsStats dgPhysManager::GetStats() const
     stats.PostCollisionTime = dgPhysManager::perfPostCollision.get();
     stats.TotalCollisionTime = this->perfTotalCollisionTime;
     stats.TotalUpdateTime = this->perfTotalUpdateTime;
-
-    //MM2 doesn't keep track of these
-    //would need to rewrite dgPhysManager
-    stats.ExternalProbes = 0;
-    stats.ExternalProbeTime = 0.f;
-    stats.TotalProbes = 0;
-    stats.TotalProbeTime = 0.f;
+    stats.ExternalProbes = this->ExternalProbes;
+    stats.ExternalProbeTime = this->ExternalProbeTime;
+    stats.TotalProbeTime = this->TotalProbeTime;
+    stats.TotalProbes = physTotalProbes;
 
     return stats;
 }
@@ -549,7 +548,18 @@ AGE_API bool MM2::dgPhysManager::CollideInstances(lvlInstance* instanceA, lvlIns
 
 AGE_API bool MM2::dgPhysManager::Collide(lvlSegment& segment, lvlIntersection* intersection, int a4, lvlInstance* ignoreInstance, ushort flags1, int flags2)
 {
-    return hook::Thunk<0x468E40>::Call<bool>(this, &segment, intersection, a4, ignoreInstance, flags1, flags2);
+    physTotalProbes++;
+
+    auto probeTimer = Timer::Timer();
+    bool res = hook::Thunk<0x468E40>::Call<bool>(this, &segment, intersection, a4, ignoreInstance, flags1, flags2);
+
+    float probeTime = (Timer::Ticks() - probeTimer.StartTicks) * Timer::TicksToMilliseconds;
+    this->TotalProbeTime += probeTime;
+    if (this->IsUpdating == FALSE)
+    {
+        this->ExternalProbes++;
+        this->ExternalProbeTime += probeTime;
+    }
 }
 
 void MM2::dgPhysManager::Reset()

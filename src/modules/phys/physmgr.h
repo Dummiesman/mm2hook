@@ -118,9 +118,9 @@ namespace MM2
         int NumMovers;
         int MoverVsMover; // unused
         int MoverVsCollidable;
-        int ExternalProbes; // unused
-        float TotalProbeTime; // unused
-        float ExternalProbeTime; // unused
+        int ExternalProbes;
+        float TotalProbeTime;
+        float ExternalProbeTime;
         BOOL IsUpdating;
         class phContactMgr * ContactMgr;
         int LinesMode; // unused
