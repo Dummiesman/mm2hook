@@ -6,6 +6,13 @@ using namespace MM2;
     mmMultiCRHandler
 */
 
+void mmMultiCRHandler::GoldRotate(Vector3* axis, float amount)
+{
+    auto mtx = reinterpret_cast<Matrix34*>(this);
+    float newAmount = 3.0f * datTimeManager::Seconds; // match mmPowerupInstance
+    mtx->Rotate(*axis, newAmount);
+}
+
 bool mmMultiCRHandler::LoadMusic(char* a1, char* a2) {
     return hook::Thunk<0x433F40>::Call<bool>(this, "singlerace", a2);
 }
@@ -14,6 +21,12 @@ void mmMultiCRHandler::Install() {
     InstallCallback("mmMultiCR::Init", "Fixes results screen crash due to incorrect music.",
         &LoadMusic, {
             cb::call(0x4239CB),
+        }
+    );
+
+    InstallCallback("mmCRHUD::UpdateGold", "Fixes gold rotation being FPS dependent.",
+        &GoldRotate, {
+            cb::call(0x43828D),
         }
     );
 
