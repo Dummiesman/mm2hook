@@ -363,6 +363,7 @@
     <ClInclude Include="src\modules\mmcityinfo\vehlist.h" />
     <ClInclude Include="src\modules\mmeffects.h" />
     <ClInclude Include="src\modules\mmeffects\meshform.h" />
+    <ClInclude Include="src\modules\mmeffects\mmnumber.h" />
     <ClInclude Include="src\modules\mmeffects\mmtext.h" />
     <ClInclude Include="src\modules\mmgame.h" />
     <ClInclude Include="src\modules\mmgame\cd.h" />

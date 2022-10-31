@@ -1558,6 +1558,9 @@
     <ClInclude Include="src\handlers\feature_handlers\dgPhysManagerHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmeffects\mmnumber.h">
+      <Filter>Source Files\modules\mmeffects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">

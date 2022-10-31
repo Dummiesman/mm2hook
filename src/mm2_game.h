@@ -12,6 +12,8 @@ namespace MM2
         luaBind<mmGameManager>(L);
         luaBind<mmTimer>(L);
         luaBind<mmArrow>(L);
+        luaBind<mmNumberFont>(L);
+        luaBind<mmNumber>(L);
         luaBind<mmHUD>(L);
         luaBind<mmCDPlayer>(L);
         luaBind<mmHudMap>(L);
