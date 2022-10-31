@@ -33,7 +33,7 @@ namespace MM2
         float Radius;
         float Flexibility;
         bool IsFlexible;
-        float o16;
+        float GravityFactor;
         float Penetration;
         float PenetrationBarelyMoved;
     public:
