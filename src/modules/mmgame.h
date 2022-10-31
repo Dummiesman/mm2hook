@@ -2,6 +2,7 @@
 #include <mm2_common.h>
 #include <modules\core.h>
 
+#include "mmgame\oppiconinfo.h"
 #include "mmgame\cd.h"
 #include "mmgame\gauge.h"
 #include "mmgame\dash.h"

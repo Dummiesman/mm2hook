@@ -1,11 +1,11 @@
 #pragma once
 #include <modules\node.h>
+#include "oppiconinfo.h"
 
 namespace MM2
 {
     // Forward declarations
     class mmHudMap;
-    struct OppIconInfo;
 
     // External declarations
     extern class mmWaypoints;
@@ -13,20 +13,6 @@ namespace MM2
     extern class asMeshSetForm;
 
     // Class definitions
-    struct OppIconInfo
-    {
-        ColorARGB Color;
-        int dword_04;
-        Matrix34* MatrixPtr;
-        int dword_0c;
-        int dword_10;
-        int dword_14;
-        int dword_18;
-        int dword_1c;
-        int Bitmap;
-        int dword_24;
-    };
-
     class mmHudMap : public asNode {
     private:
         mmWaypoints* Waypoints;
