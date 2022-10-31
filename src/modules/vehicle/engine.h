@@ -19,7 +19,7 @@ namespace MM2
         float MaxRPM;
         float GCL;
         float HPScale;
-        int unknown652;
+        float AIThrottle; // used only by AI as some kind of saved "target throttle" value
         float AngInertia;
         float MaxTorque;
         float OptTorque;
