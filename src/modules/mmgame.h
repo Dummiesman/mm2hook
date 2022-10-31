@@ -6,6 +6,7 @@
 #include "mmgame\cd.h"
 #include "mmgame\gauge.h"
 #include "mmgame\dash.h"
+#include "mmgame\wphud.h"
 #include "mmgame\hud.h"
 #include "mmgame\popup.h"
 #include "mmgame\icons.h"

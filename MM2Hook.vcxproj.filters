@@ -1561,6 +1561,9 @@
     <ClInclude Include="src\modules\mmeffects\mmnumber.h">
       <Filter>Source Files\modules\mmeffects</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmgame\wphud.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
     <ClInclude Include="src\modules\mmgame\wpinst.h">
       <Filter>Source Files\modules\mmgame</Filter>
     </ClInclude>

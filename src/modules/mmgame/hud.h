@@ -1,5 +1,6 @@
 #pragma once
 #include <modules\node.h>
+#include "wphud.h"
 #include "cd.h"
 
 namespace MM2
@@ -132,7 +133,13 @@ namespace MM2
         static hook::Field<0x914, BOOL> _useCountdownTimer;
         static hook::Field<0xA54, mmTimer> _timer;
         static hook::Field<0xA84, mmTimer> _countdownTimer;
+        static hook::Field<0x9B4, mmCRHUD*> _crHud;
     public:
+        mmCRHUD* GetCRHUD()
+        {
+            return _crHud.get(this);
+        }
+
         mmTimer* GetTimer()
         {
             return _timer.ptr(this);
@@ -225,6 +232,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmHUD, asNode>("mmHUD")
+                .addPropertyReadOnly("CRHUD", &GetCRHUD)
                 .addPropertyReadOnly("CDPlayer", &GetCDPlayer)
                 .addPropertyReadOnly("Arrow", &GetArrow)
                 .addPropertyReadOnly("Map", &GetHudMap)
