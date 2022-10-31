@@ -15,6 +15,7 @@
 #include "mmgame\game.h"
 #include "mmgame\gamesingle.h"
 #include "mmgame\gamemulti.h"
+#include "mmgame\wpinst.h"
 #include "mmgame\singleroam.h"
 #include "mmgame\singleblitz.h"
 #include "mmgame\singlerace.h"
