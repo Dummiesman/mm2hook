@@ -375,12 +375,14 @@
     <ClInclude Include="src\modules\mmgame\gauge.h" />
     <ClInclude Include="src\modules\mmgame\hud.h" />
     <ClInclude Include="src\modules\mmgame\hudmap.h" />
+    <ClInclude Include="src\modules\mmgame\icons.h" />
     <ClInclude Include="src\modules\mmgame\mmgamemusicdata.h" />
     <ClInclude Include="src\modules\mmgame\multiblitz.h" />
     <ClInclude Include="src\modules\mmgame\multicircuit.h" />
     <ClInclude Include="src\modules\mmgame\multicr.h" />
     <ClInclude Include="src\modules\mmgame\multirace.h" />
     <ClInclude Include="src\modules\mmgame\multiroam.h" />
+    <ClInclude Include="src\modules\mmgame\oppiconinfo.h" />
     <ClInclude Include="src\modules\mmgame\player.h" />
     <ClInclude Include="src\modules\mmgame\popup.h" />
     <ClInclude Include="src\modules\mmgame\singleblitz.h" />

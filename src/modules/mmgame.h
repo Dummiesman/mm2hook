@@ -8,6 +8,7 @@
 #include "mmgame\dash.h"
 #include "mmgame\hud.h"
 #include "mmgame\popup.h"
+#include "mmgame\icons.h"
 #include "mmgame\hudmap.h"
 #include "mmgame\player.h"
 #include "mmgame\mmgamemusicdata.h"
