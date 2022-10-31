@@ -31,6 +31,9 @@ namespace MM2
         aiIntersection(void)                                DONOTCALL;
         aiIntersection(const aiIntersection &&)             DONOTCALL;
 
+        AGE_API int NumSources() { return hook::Thunk<0x549D60>::Call<int>(this); }
+        AGE_API int NumSinks() { return hook::Thunk<0x549D90>::Call<int>(this); }
+
         int GetPathCount() const {
             return pathCount;
         }
@@ -60,6 +63,8 @@ namespace MM2
                 .addPropertyReadOnly("RoomId", &GetRoomId)
                 .addPropertyReadOnly("Center", &GetCenter)
                 .addPropertyReadOnly("NumPaths", &GetPathCount)
+                .addPropertyReadOnly("NumSinks", &NumSinks)
+                .addPropertyReadOnly("NumSources", &NumSources)
                 .endClass();
         }
     };
