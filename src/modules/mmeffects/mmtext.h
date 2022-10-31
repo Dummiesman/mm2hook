@@ -27,6 +27,7 @@ namespace MM2
     };
 
     class mmTextNode : public asNode {
+    private:
         Vector2 Pos;
         uint32_t EntryCount;
         uint32_t MaxEntries;
@@ -37,12 +38,56 @@ namespace MM2
         BOOL bModified;
         uint32_t dword3C;
         uint32_t dword40;
-        uint8_t byte44;
+        uint8_t SrcColorKey;
         uint32_t FGColor;
         uint32_t BGColor;
         uint32_t HiglightColor;
+    private:
+
+    public:
+        Vector4 nullVecTemp() { return Vector4(); }
+
+        // last parameter is unused (in thunk call)
+        AGE_API void Init(float xPos, float yPos, float width, float height, int maxEntries)
+                                                            { hook::Thunk<0x532840>::Call<void>(this, xPos, yPos, width, height, maxEntries, 1); }
+
+        AGE_API int AddText(HFONT font, LPCSTR str, int flags, float xPosition, float yPosition)
+                                                            { return hook::Thunk<0x532C70>::Call<int>(this, font, str, flags, xPosition, yPosition); }
+
+        AGE_API void SetBGColor(Vector4& color)             { hook::Thunk<0x532970>::Call<void>(this, &color); }
+        AGE_API void SetFGColor(Vector4& color)             { hook::Thunk<0x5329E0>::Call<void>(this, &color); }
+        AGE_API void SetHlColor(Vector4& color)             { hook::Thunk<0x532A40>::Call<void>(this, &color); }
+        AGE_API int GetEffects(int entryNum) const          { return hook::Thunk<0x532AE0>::Call<int>(this, entryNum); }
+        AGE_API unsigned int GetFGColor() const             { return hook::Thunk<0x532AA0>::Call<unsigned int>(this); }
+        AGE_API void SetString(int entryNum, LPCSTR str)    { hook::Thunk<0x532D50>::Call<void>(this, entryNum, str); }
+        AGE_API void SetEffects(int entryNum, int effects)  { hook::Thunk<0x532AB0>::Call<void>(this, entryNum, effects); }
+        AGE_API void SetTextPosition(int entryNum, float x, float y)
+                                                            { hook::Thunk<0x532C20>::Call<void>(this, entryNum, x, y); }
+        
+        mmTextData* GetEntry(int entryNum)                  { return (entryNum < 0 || entryNum >= this->MaxEntries) ? nullptr : &this->pTextEntries[entryNum]; }
+        int GetNumEntries() const                           { return this->EntryCount; }
+        int GetMaxEntries() const                           { return this->MaxEntries; }
+
+        Vector2 GetPosition() const                         { return this->Pos; }
+        void SetPosition(Vector2 position)                  { this->Pos = position; this->bModified = true; }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<mmTextNode, asNode>("mmTextNode")
+                .addProperty("BackgroundColor", &nullVecTemp, &SetBGColor)
+                .addProperty("ForegroundColor", &nullVecTemp, &SetFGColor)
+                .addProperty("HighlightColor", &nullVecTemp, &SetHlColor)
+                .addPropertyReadOnly("NumEntries", &GetNumEntries)
+                .addPropertyReadOnly("MaxEntries", &GetMaxEntries)
+                .addFunction("Init", &Init)
+                .addFunction("SetString", &SetString)
+                .addFunction("GetEffects", &GetEffects)
+                .addFunction("SetEffects", &SetEffects)
+                .addFunction("SetTextPosition", &SetTextPosition)
+                .addFunction("GetPosition", &GetPosition)
+                .addFunction("SetPosition", &SetPosition)
+                .endClass();
+        }
     };
 
-    // Lua initialization
-
+    ASSERT_SIZEOF(mmTextNode, 0x54);
 }
