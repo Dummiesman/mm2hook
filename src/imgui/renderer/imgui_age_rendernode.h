@@ -19,15 +19,13 @@ public:
     static mmImGuiManager* Instance;
 private:
     gfxViewport* viewport;
-    bool uiShowing = false;
 private:
     //mmInput::PutEventInQueue called from mmInput::ProcessMouseEvents
     void PutMouseEventInQueue(long long a1)
     {
         auto io = ImGui::GetIO();
-        bool isGuiShowing = mmImGuiManager::Instance != nullptr && mmImGuiManager::Instance->IsShowing();
 
-        if (!isGuiShowing || !io.WantCaptureMouse)
+        if (!io.WantCaptureMouse)
             hook::Thunk<0x52D5E0>::Call<void>(this, a1);
     }
 
@@ -35,9 +33,8 @@ private:
     void PutKeyboardEventInQueue(long long a1)
     {
         auto io = ImGui::GetIO();
-        bool isGuiShowing = mmImGuiManager::Instance != nullptr && mmImGuiManager::Instance->IsShowing();
 
-        if (!isGuiShowing || !io.WantCaptureKeyboard)
+        if (!io.WantCaptureKeyboard)
             hook::Thunk<0x52D5E0>::Call<void>(this, a1);
     }
 
@@ -45,12 +42,11 @@ private:
     static void EventQueueQueue(int a1, int a2, int a3, int a4)
     {
         auto io = ImGui::GetIO();
-        bool isGuiShowing = mmImGuiManager::Instance != nullptr && mmImGuiManager::Instance->IsShowing();
 
-        if (isGuiShowing && io.WantCaptureKeyboard && a1 >= 7)
+        if (io.WantCaptureKeyboard && a1 >= 7)
             return;
 
-        if (isGuiShowing && io.WantCaptureMouse && a1 <= 6) 
+        if (io.WantCaptureMouse && a1 <= 6) 
         {
             ioMouse::ClearStates();
             return;
@@ -63,16 +59,15 @@ private:
     static void IOInputHook()
     {
         auto io = ImGui::GetIO();
-        bool isGuiShowing = mmImGuiManager::Instance != nullptr && mmImGuiManager::Instance->IsShowing();
 
         //update mouse
-        if (!isGuiShowing || !io.WantCaptureMouse)
+        if (!io.WantCaptureMouse)
             ioMouse::Update();
         else
             ioMouse::ClearStates();
 
         //update keyboard
-        if (!isGuiShowing || !io.WantCaptureKeyboard)
+        if (!io.WantCaptureKeyboard)
             ioKeyboard::Update();
         else
             ioKeyboard::ClearStates();
@@ -167,15 +162,6 @@ public:
         asNode::~asNode();
     }
 
-    bool IsShowing() {
-        return this->uiShowing;
-    }
-
-    void ToggleShowUI() {
-        this->uiShowing = !this->uiShowing;
-        ImGui::GetIO().MouseDrawCursor = this->uiShowing;
-    }
-
 	virtual void Cull() override {
         // Feed inputs to dear imgui, start new frame
         ImGui_ImplAGE_NewFrame();
@@ -185,7 +171,6 @@ public:
         // Lua
         MM2Lua::OnRenderUi();
 
-        //
         ImGui::Render();
         ImGui_ImplAGE_RenderDrawData(ImGui::GetDrawData());
 
@@ -199,15 +184,6 @@ public:
 	}
 
 	virtual void Update() override {
-        // Showing toggle
-        if (ioKeyboard::GetKeyDown(DIK_F10)) {
-            ToggleShowUI();
-        }
-
-        //Declare Cullable
-        if (uiShowing) 
-        {
-            asCullManager::Instance.get()->DeclareCullable2DFG(this);
-        }
+        asCullManager::Instance.get()->DeclareCullable2DFG(this);
 	}
 };
