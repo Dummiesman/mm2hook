@@ -15,6 +15,7 @@ namespace MM2
     protected:
         hook::Field<0x48, mmPlayer *> _player;
         hook::Field<0x94, mmPopup *> _popup;
+        static hook::Field<0x54, mmIcons*> _icons;
     public:
         ANGEL_ALLOCATOR
 
@@ -35,6 +36,10 @@ namespace MM2
         mmPopup* GetPopup(void) const {
             return _popup.get(this);
         };
+
+        mmIcons* GetIcons(void) const {
+            return _icons.get(this);
+        }
 
         AGE_API void InitWeather(void)                      { hook::Thunk<0x413370>::Call<void>(this); }
         AGE_API void SetIconsState(void)                    { hook::Thunk<0x414BB0>::Call<void>(this); }
@@ -73,6 +78,7 @@ namespace MM2
                 //properties
                 .addPropertyReadOnly("Player", &GetPlayer)
                 .addPropertyReadOnly("Popup", &GetPopup)
+                .addPropertyReadOnly("Icons", &GetIcons)
             .endClass();
         }
     };

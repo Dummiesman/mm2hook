@@ -22,7 +22,7 @@ namespace MM2
         Vector3* HideoutLocation;
         int dword_2c;
         mmPlayer* PlayerPtr;
-        OppIconInfo* OppIconInfo;
+        OppIconInfo* OpponentIcons;
         BOOL ShowAllCops;
         bool MapOnLeft;
         bool MapMissing;
@@ -97,8 +97,25 @@ namespace MM2
             this->IconScale = scale;
         }
 
+        int GetOpponentCount() const 
+        {
+            return NumOpponents; 
+        }
+
+        OppIconInfo* GetOpponentIcon(int index) {
+            if (index < 0 || index >= GetOpponentCount())
+                return nullptr;
+
+            if (OpponentIcons == nullptr)
+                return nullptr;
+
+            return &OpponentIcons[index];
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmHudMap, asNode>("mmHudMap")
+                .addPropertyReadOnly("NumOpponents", &GetOpponentCount)
+                .addFunction("GetOpponentIcon", &GetOpponentIcon)
                 .addProperty("ShowAllCops", &GetShowAllCops, &SetShowAllCops)
                 .addProperty("IconScale", &GetIconScale, &SetIconScale)
                 .addFunction("Activate", &Activate)
