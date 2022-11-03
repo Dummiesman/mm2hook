@@ -18,6 +18,12 @@ namespace MM2
         Y = y;
     }
 
+    AGE_API void Vector2::Set(const Vector2& vec)
+    {
+        X = vec.X;
+        Y = vec.Y;
+    }
+
     bool Vector2::IsEqual(const Vector2& vec) const {
         return this->X == vec.X && this->Y == vec.Y;
     }
@@ -61,6 +67,7 @@ namespace MM2
             .addFunction("__mul", &Vector2::operator*)
             .addFunction("__eq", &Vector2::IsEqual)
 
+            .addFunction("Set", static_cast<void(Vector2::*)(const Vector2&)>(&Vector2::Set))
             .addFunction("Mag", &Mag)
             .addFunction("Mag2", &Mag2)
             .addFunction("Normalize", &Normalize)

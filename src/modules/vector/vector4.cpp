@@ -11,6 +11,13 @@ namespace MM2
         this->Z = z;
         this->W = w;
     }
+    AGE_API void Vector4::Set(const Vector4& vec)
+    {
+        this->X = vec.X;
+        this->Y = vec.Y;
+        this->Z = vec.Z;
+        this->W = vec.W;
+    }
     AGE_API void Vector4::Cross(const Vector4& vec1, const Vector4& vec2)                     { hook::Thunk<0x494C90>::Call<void>(this, &vec1, &vec2); }
     AGE_API void Vector4::Subtract(const Vector3& vec1, const Vector3& vec2)                  { hook::Thunk<0x494C40>::Call<void>(this, &vec1, &vec2); }
     AGE_API float Vector4::Dot(const Vector4& vec) const                                      { return hook::Thunk<0x43DDA0>::Call<float>(this, &vec); }
@@ -37,6 +44,8 @@ namespace MM2
             .addVariable("y", &Vector4::Y)
             .addVariable("z", &Vector4::Z)
             .addVariable("w", &Vector4::W)
+
+            .addFunction("Set", static_cast<void(Vector4::*)(const Vector4&)>(&Vector4::Set))
             .endClass();
     }
 }

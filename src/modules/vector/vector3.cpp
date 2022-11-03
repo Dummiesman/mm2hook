@@ -195,6 +195,7 @@ namespace MM2
             .addFunction("RotateY", &RotateY)
             .addFunction("RotateZ", &RotateZ)
             .addFunction("RotateAboutAxis", &RotateAboutAxis)
+            .addFunction("Set", static_cast<void(Vector3::*)(const Vector3&)>(&Vector3::Set))
             .addFunction("Lerp", &Lerp)
             .addFunction("Dist", &Dist)
             .addFunction("Angle", &Angle)

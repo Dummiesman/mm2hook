@@ -20,6 +20,7 @@ namespace MM2
         AGE_API float Mag(void) const;
         AGE_API float Mag2(void) const;
         AGE_API void Set(float x, float y);
+        AGE_API void Set(const Vector2& vec);
         bool IsEqual(const Vector2& vec) const;
         AGE_API void Normalize();
 

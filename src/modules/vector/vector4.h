@@ -23,6 +23,7 @@ namespace MM2
         AGE_API Vector4(float x, float y, float z, float w);
 
         AGE_API void Set(float x, float y, float z, float w);
+        AGE_API void Set(const Vector4& vec);
         AGE_API void Cross(const Vector4& vec1, const Vector4& vec2);
         AGE_API void Subtract(const Vector3& vec1, const Vector3& vec2);
         AGE_API float Dot(const Vector4& vec) const;
