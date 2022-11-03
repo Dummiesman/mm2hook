@@ -30,5 +30,7 @@ namespace MM2
         luaBind<aiVehicleInstance>(L);
         luaBind<aiVehicleData>(L);
         luaBind<aiVehicleManager>(L);
+        luaBind<aiTrafficLightInstance>(L);
+        luaBind<aiTrafficLightSet>(L);
     }
 }
