@@ -2,6 +2,9 @@
 
 namespace MM2
 {
+    /*
+        gizBridge
+    */
     AGE_API gizBridge::gizBridge() {
         scoped_vtable x(this);
         hook::Thunk<0x577410>::Call<void>(this);
@@ -62,7 +65,7 @@ namespace MM2
     void gizBridge::SetProximityDist(float dist) { gizBridge::ProximityDist2.set(dist * dist); }
 
     void gizBridge::BindLua(LuaState L) {
-        LuaBinding(L).beginClass<gizBridge>("gizBridge")
+        LuaBinding(L).beginExtendClass<gizBridge, dgUnhitMtxBangerInstance>("gizBridge")
             .addStaticProperty("LiftSpeed", &GetLiftSpeed, &SetLiftSpeed)
             .addStaticProperty("GoalAngle", &GetGoalAngle, &SetGoalAngle)
             .addStaticProperty("DownInterval", &GetDownInterval, &SetDownInterval)
