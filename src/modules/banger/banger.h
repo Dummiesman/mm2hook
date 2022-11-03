@@ -88,6 +88,17 @@ namespace MM2
             return dgUnhitBangerInstance::RequestBanger(a1, a2 ? TRUE : FALSE);
         }
     public:
+        AGE_API dgUnhitBangerInstance()
+        {
+            scoped_vtable x(this);
+            hook::Thunk<0x541880>::Call<void>(this);
+        }
+
+        AGE_API ~dgUnhitBangerInstance()
+        {
+            scoped_vtable x(this);
+            hook::Thunk<0x5418B0>::Call<void>(this);
+        }
 
         /*
             dgUnhitBangerInstance
@@ -120,6 +131,18 @@ namespace MM2
         char gap[0x10]; // unknown use
         Matrix34 Matrix;
     public:
+        AGE_API dgHitBangerInstance()
+        {
+            scoped_vtable x(this);
+            hook::Thunk<0x442A60>::Call<void>(this);
+        }
+
+        AGE_API ~dgHitBangerInstance()
+        {
+            scoped_vtable x(this);
+            hook::Thunk<0x4429B0>::Call<void>(this);
+        }
+
         /*
             lvlInstance virtuals
         */
