@@ -9,6 +9,7 @@ namespace MM2
     // External declarations
     extern class mmPlayer;
     extern class mmPopup;
+    extern class gizBridgeMgr;
 
     // Class definitions
     class mmGame : public asNode {
@@ -39,6 +40,19 @@ namespace MM2
 
         mmIcons* GetIcons(void) const {
             return _icons.get(this);
+        }
+
+        gizBridgeMgr* GetBridgeManager(void) 
+        {
+            for (int i = 0; i < this->NumChildren(); i++) {
+                auto child = this->GetChild(i);
+                auto vtblPtr = *reinterpret_cast<uintptr_t*>(child);
+                if (vtblPtr == 0x5B6004) 
+                {
+                    return reinterpret_cast<gizBridgeMgr*>(child);
+                }
+            }
+            return nullptr;
         }
 
         AGE_API void InitWeather(void)                      { hook::Thunk<0x413370>::Call<void>(this); }
@@ -76,6 +90,7 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmGame, asNode>("mmGame")
                 //properties
+                .addPropertyReadOnly("BridgeManager", &GetBridgeManager)
                 .addPropertyReadOnly("Player", &GetPlayer)
                 .addPropertyReadOnly("Popup", &GetPopup)
                 .addPropertyReadOnly("Icons", &GetIcons)
