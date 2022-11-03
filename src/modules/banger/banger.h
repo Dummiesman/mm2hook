@@ -157,6 +157,14 @@ namespace MM2
         virtual AGE_API void SetMatrix(const Matrix34& a1) override
                                                                    { hook::Thunk<0x441F40>::Call<void>(this, &a1); }
         virtual AGE_API unsigned int SizeOf(void)                  { return hook::Thunk<0x442AE0>::Call<unsigned int>(this); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<dgUnhitYBangerInstance, dgUnhitBangerInstance>("dgUnhitYBangerInstance")
+                .addFactory([]() {
+                return new dgUnhitYBangerInstance();
+                })
+                .endClass();
+        }
     };
     ASSERT_SIZEOF(dgUnhitYBangerInstance, 0x3C);
 
@@ -176,6 +184,14 @@ namespace MM2
             hook::Thunk<0x441FD0>::Call<void>(this, a1);
         }
         virtual AGE_API unsigned int SizeOf(void) { return hook::Thunk<0x442AF0>::Call<unsigned int>(this); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<dgUnhitMtxBangerInstance, dgUnhitBangerInstance>("dgUnhitMtxBangerInstance")
+                .addFactory([]() {
+                return new dgUnhitMtxBangerInstance();
+                })
+                .endClass();
+        }
     };
     ASSERT_SIZEOF(dgUnhitMtxBangerInstance, 0x58);
 
