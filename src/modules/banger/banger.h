@@ -63,11 +63,14 @@ namespace MM2
         virtual AGE_API void DrawShadowMap()          override     { hook::Thunk<0x4419A0>::Call<void>(this); }
         virtual AGE_API void DrawGlow()               override     { hook::Thunk<0x441840>::Call<void>(this); }
         virtual AGE_API void DrawReflected(float a1)  override     { hook::Thunk<0x4417B0>::Call<void>(this, a1); }
-        virtual AGE_API phBound* GetBound(int a1)     override     { return hook::Thunk<0x441AD0>::Call<phBound*>(this, a1); } 
+        virtual AGE_API phBound* GetBound(int a1)     override     { return hook::Thunk<0x442580>::Call<phBound*>(this, a1); }
 
         /* 
             dgBangerInstance virtuals
         */
+        virtual AGE_API int ComputeLod(float a1, float a2)         { return hook::Thunk<0x4415C0>::Call<int>(this, a1, a2); }
+        virtual AGE_API int SetupGfxLights(Matrix34 const & a1) const
+                                                                   { return hook::Thunk<0x442910>::Call<int>(&a1); }
         virtual AGE_API void Impact(lvlInstance* a1, Vector3* a2)  PURE;
         virtual AGE_API void ImpactCB(dgHitBangerInstance * a1)    PURE;
 
