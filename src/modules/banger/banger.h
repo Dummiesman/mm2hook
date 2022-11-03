@@ -130,12 +130,6 @@ namespace MM2
         virtual AGE_API unsigned int SizeOf(void)                  { return hook::Thunk<0x42AB0>::Call<unsigned int>(this); }
         virtual AGE_API void Detach() override                     { return hook::Thunk<0x442680>::Call<void>(this); }
 
-        /*
-            dgBangerInstance virtuals
-        */
-        virtual AGE_API void Impact(lvlInstance* a1, Vector3* a2)  { hook::Thunk<0x442010>::Call<void>(this, a1, a2); };
-        virtual AGE_API void ImpactCB(dgHitBangerInstance* a1)     { hook::Thunk<0x442AD0>::Call<void>(this, a1); };
-
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<dgHitBangerInstance, dgBangerInstance>("dgHitBangerInstance")
                 .endClass();
@@ -161,7 +155,7 @@ namespace MM2
         virtual AGE_API const Vector3& GetPosition() override      { return hook::Thunk<0x441FC0>::Call<const Vector3&>(this); }
         virtual AGE_API const Matrix34& GetMatrix(Matrix34* a1)    { return hook::Thunk<0x441F70>::Call<const Matrix34&>(this, a1); };
         virtual AGE_API void SetMatrix(const Matrix34& a1) override
-                                                                   { hook::Thunk<0x441F40>::Call<void>(this, a1); }
+                                                                   { hook::Thunk<0x441F40>::Call<void>(this, &a1); }
         virtual AGE_API unsigned int SizeOf(void)                  { return hook::Thunk<0x442AE0>::Call<unsigned int>(this); }
     };
     ASSERT_SIZEOF(dgUnhitYBangerInstance, 0x3C);
