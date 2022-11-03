@@ -463,11 +463,12 @@ namespace MM2
                 .addProperty("Owner", &GetOwner, &SetOwner)
                 .addProperty("SubType", &GetSubType, &SetSubType)
                 .addProperty("Flags", &GetFlags, &SetFlags)
-                .addProperty("GeometrySetIndex", &GetGeomIndex, &SetGeomIndex) //legacy
                 .addProperty("GeomIndex", &GetGeomIndex, &SetGeomIndex)
                 .addPropertyReadOnly("Previous", &GetPrevious)
                 .addPropertyReadOnly("Next", &GetNext)
                 .addPropertyReadOnly("CurrentRoom", &GetRoomId)
+                .addPropertyReadOnly("NumShaders", &GetShaderCount)
+                .addPropertyReadOnly("NumVariants", &GetVariantCount)
 
                 //statics
                 .addStaticProperty("GeomTableSize", &GetGeomSetCount)
@@ -493,6 +494,9 @@ namespace MM2
                 .addStaticFunction("DeleteTempBounds", &DeleteTempBounds)
                 .addFunction("PreLoadShader", &PreLoadShader)
                 .addFunction("Optimize", &Optimize)
+                .addFunction("GetGeom", &GetGeom)
+                .addFunction("GetGeomBase", &GetGeomBase)
+                .addFunction("GetShader", &GetShader)
 
                 //virtuals
                 .addFunction("Reset", &Reset)
