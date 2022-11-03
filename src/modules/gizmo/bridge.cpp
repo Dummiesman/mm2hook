@@ -75,4 +75,26 @@ namespace MM2
             .addProperty("Type", &GetType, &SetType)
             .endClass();
     }
+
+    /*
+        gizBridgeMgr
+    */
+    int gizBridgeMgr::GetBridgeCount() const
+    {
+        return this->BridgeCount;
+    }
+
+    gizBridge* gizBridgeMgr::GetBridge(int num)
+    {
+        if (num < 0 || num >= this->GetBridgeCount())
+            return nullptr;
+        return &this->Bridges[num];
+    }
+
+    void gizBridgeMgr::BindLua(LuaState L) {
+        LuaBinding(L).beginExtendClass<gizBridgeMgr, asNode>("gizBridgeMgr")
+            .addPropertyReadOnly("NumBridges", &GetBridgeCount)
+            .addFunction("GetBridge", &GetBridge)
+            .endClass();
+    }
 }

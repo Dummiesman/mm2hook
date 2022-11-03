@@ -18,5 +18,6 @@ namespace MM2
         luaBind<lvlRoomInfo>(L);
         luaBind<lvlLevel>(L);
         luaBind<gizBridge>(L);
+        luaBind<gizBridgeMgr>(L);
     }
 }

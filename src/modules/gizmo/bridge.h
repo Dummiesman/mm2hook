@@ -1,6 +1,7 @@
 #pragma once
 #include <mm2_common.h>
 #include <modules\banger\banger.h>
+#include <modules\node\node.h>
 
 namespace MM2
 {
@@ -16,6 +17,22 @@ namespace MM2
         Timed = 0x2,
         AlwaysOpen = 0x3
     };
+
+    class gizBridgeMgr : public asNode {
+    private:
+        int BridgeCount;
+        dgPathSet* PathSet;
+        gizBridge* Bridges;
+        int ProximityTriggerCount;
+        Vector3* ProximityTriggerPtrs[9];
+        float RenderDistance;
+    public:
+        int GetBridgeCount() const;
+        gizBridge* GetBridge(int num);
+
+        static void BindLua(LuaState L);
+    };
+    ASSERT_SIZEOF(gizBridgeMgr, 0x50);
 
     class gizBridge : public dgUnhitMtxBangerInstance {
     private:
@@ -67,6 +84,5 @@ namespace MM2
 
         static void BindLua(LuaState L);
     };
-
     ASSERT_SIZEOF(gizBridge, 0x11C);
 }
