@@ -32,13 +32,13 @@ namespace MM2
         static hook::Field<0x1390, camTrackCS> _indCam;
         static hook::Field<0x1628, camPovCS> _povCam;
         static hook::Field<0x1770, camPovCS> _dashCam;
-        static hook::Field<0x18B8, camCarCS> _polarCam1;
-        static hook::Field<0x19E0, camCarCS> _polarCam2;
+        static hook::Field<0x18B8, camCarCS> _thrillCam;
+        static hook::Field<0x19E0, camCarCS> _xCam;
         static hook::Field<0x1B08, camAICS> _freeCam;
         static hook::Field<0x1C2C, camPointCS> _pointCam;
         static hook::Field<0x1D70, camCarCS> _preCam;
         static hook::Field<0x1E98, camCarCS> _postCam;
-        static hook::Field<0x1FBC, camCarCS> _polarCam3;
+        static hook::Field<0x1FBC, camCarCS> _mpPostCam;
     public:
         vehCar * GetCar() const                  { return _car.ptr(this); }
         mmHUD * GetHUD() const                   { return _hud.ptr(this); }
@@ -56,10 +56,9 @@ namespace MM2
         camPointCS * GetPointCam() const         { return _pointCam.ptr(this); }
         camCarCS * GetPreCam() const             { return _preCam.ptr(this); }
         camCarCS * GetPostCam() const            { return _postCam.ptr(this); }
-  
-        camCarCS * GetPolarCamOne() const        { return _polarCam1.ptr(this); }
-        camCarCS * GetPolarCamTwo() const        { return _polarCam2.ptr(this); }
-        camCarCS * GetPolarCamThree() const      { return _polarCam3.ptr(this); }
+        camCarCS * GetThrillCam() const          { return _thrillCam.ptr(this); }
+        camCarCS * GetXCam() const               { return _xCam.ptr(this); }
+        camCarCS * GetMPPostCam() const          { return _mpPostCam.ptr(this); }
 
         camCarCS * GetCurrentCameraPtr() const   { return this->_GetCurrentCameraPtr(); }
 
@@ -99,12 +98,11 @@ namespace MM2
                 .addPropertyReadOnly("DashCam", &GetDashCam)
                 .addPropertyReadOnly("PovCam", &GetPovCam)
                 .addPropertyReadOnly("PointCam", &GetPointCam)
-
                 .addPropertyReadOnly("PreCam", &GetPreCam)
                 .addPropertyReadOnly("PostCam", &GetPostCam)
-                .addPropertyReadOnly("PolarCamOne", &GetPolarCamOne)
-                .addPropertyReadOnly("PolarCamTwo", &GetPolarCamTwo)
-                .addPropertyReadOnly("PolarCamThree", &GetPolarCamThree)
+                .addPropertyReadOnly("ThrillCam", &GetThrillCam)
+                .addPropertyReadOnly("XCam", &GetXCam)
+                .addPropertyReadOnly("MPPostCam", &GetMPPostCam)
 
                 //functions
                 .addFunction("EnableRegen", &EnableRegen)
