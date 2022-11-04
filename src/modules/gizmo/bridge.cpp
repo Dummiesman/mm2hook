@@ -42,6 +42,11 @@ namespace MM2
         hook::Thunk<0x577530>::Call<void>(this, name, &matrix);
     }
 
+    float gizBridge::GetTimeInState() const
+    {
+        return _stateTimer.get(this);
+    }
+
     int gizBridge::GetState() const {
         return _state.get(this);
     };
@@ -73,6 +78,7 @@ namespace MM2
             .addStaticProperty("ProximityDist", &GetProximityDist, &SetProximityDist)
             .addPropertyReadOnly("State", &GetState)
             .addProperty("Type", &GetType, &SetType)
+            .addPropertyReadOnly("TimeInState", &GetTimeInState)
             .endClass();
     }
 
