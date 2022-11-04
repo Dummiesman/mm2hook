@@ -40,6 +40,7 @@ namespace MM2
     protected:
         static hook::Field<0x58, int> _state;
         static hook::Field<0x5C, int> _type;
+        static hook::Field<0x60, float> _stateTimer;
     private:
         static hook::Type<float> LiftSpeed;
         static hook::Type<float> GoalAngle;
@@ -61,6 +62,8 @@ namespace MM2
             gizBridge
         */
         AGE_API void Init(LPCSTR name, Matrix34 const& matrix);
+
+        float GetTimeInState() const;
 
         int GetState() const;
 
