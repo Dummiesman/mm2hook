@@ -44,7 +44,7 @@ namespace MM2
                 .endClass();
         }
     };
-
+    ASSERT_SIZEOF(aiTrafficLightSet, 0x34);
 
     class aiTrafficLightInstance : public dgUnhitYBangerInstance {
     private:
@@ -60,7 +60,7 @@ namespace MM2
         */
         virtual AGE_API void Draw(int a1)             override     { hook::Thunk<0x53C960>::Call<void>(this, a1); }
         virtual AGE_API void DrawGlow()               override     { hook::Thunk<0x53CA70>::Call<void>(this); }
-        virtual AGE_API unsigned int SizeOf(void)                  { return hook::Thunk<0x53CD50>::Call<unsigned int>(this); }
+        virtual AGE_API unsigned int SizeOf(void)     override     { return hook::Thunk<0x53CD50>::Call<unsigned int>(this); }
 
 
         /* 
@@ -90,4 +90,5 @@ namespace MM2
                 .endClass();
         }
     };
+    ASSERT_SIZEOF(aiTrafficLightInstance, 0x40);
 }
