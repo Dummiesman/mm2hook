@@ -495,7 +495,7 @@ namespace MM2
                 .addFunction("PreLoadShader", &PreLoadShader)
                 .addFunction("Optimize", &Optimize)
                 .addFunction("GetGeom", &GetGeom)
-                .addFunction("GetGeomBase", &GetGeomBase)
+                .addFunction("GetGeomBase", &GetGeomBase, LUA_ARGS(_def<int, 0>))
                 .addFunction("GetShader", &GetShader)
 
                 //virtuals
