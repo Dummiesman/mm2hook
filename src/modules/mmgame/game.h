@@ -17,6 +17,7 @@ namespace MM2
         hook::Field<0x48, mmPlayer *> _player;
         hook::Field<0x94, mmPopup *> _popup;
         static hook::Field<0x54, mmIcons*> _icons;
+        static hook::Field<0x767C, gizBridgeMgr*> _bridgeManager;
     public:
         ANGEL_ALLOCATOR
 
@@ -42,17 +43,8 @@ namespace MM2
             return _icons.get(this);
         }
 
-        gizBridgeMgr* GetBridgeManager(void) 
-        {
-            for (int i = 0; i < this->NumChildren(); i++) {
-                auto child = this->GetChild(i);
-                auto vtblPtr = *reinterpret_cast<uintptr_t*>(child);
-                if (vtblPtr == 0x5B6004) 
-                {
-                    return reinterpret_cast<gizBridgeMgr*>(child);
-                }
-            }
-            return nullptr;
+        gizBridgeMgr* GetBridgeManager(void) const {
+            return _bridgeManager.get(this);
         }
 
         AGE_API void InitWeather(void)                      { hook::Thunk<0x413370>::Call<void>(this); }
