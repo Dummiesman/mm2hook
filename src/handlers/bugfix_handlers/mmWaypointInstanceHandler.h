@@ -3,9 +3,9 @@
 #include "patch.h"
 #include "mm2.h"
 
-class mmBillInstanceHandler
+class mmWaypointInstanceHandler
 {
 public:
-    void Scale(float x, float y, float z);
+    void Draw(int lod);
     static void Install();
 };

@@ -19,7 +19,7 @@ static init_handler g_bugfix_handlers[] = {
 
     CreateHandler<gfxImageHandler>("gfxImage"),
 
-    CreateHandler<mmBillInstanceHandler>("mmBillInstance"),
+    CreateHandler<mmWaypointInstanceHandler>("mmWaypointInstanceHandler"),
 
     CreateHandler<mmInterfaceHandler>("mmInterface"),
     CreateHandler<mmPopupHandler>("mmPopupHandler"),

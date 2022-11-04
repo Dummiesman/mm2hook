@@ -17,7 +17,7 @@
 #include "bugfix_handlers/gfxImageHandler.h"
 #include "bugfix_handlers/lvlSkyHandler.h"
 #include "bugfix_handlers/memMemoryAllocatorHandler.h"
-#include "bugfix_handlers/mmBillInstanceHandler.h"
+#include "bugfix_handlers/mmWaypointInstanceHandler.h"
 #include "bugfix_handlers/mmCDPlayerHandler.h"
 #include "bugfix_handlers/mmHudMapHandler.h"
 #include "bugfix_handlers/mmInterfaceHandler.h"

@@ -990,7 +990,7 @@
     <ClInclude Include="src\handlers\bugfix_handlers\gfxImageHandler.h">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\bugfix_handlers\mmBillInstanceHandler.h">
+    <ClInclude Include="src\handlers\bugfix_handlers\mmWaypointInstanceHandler.h">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClInclude>
     <ClInclude Include="src\handlers\bugfix_handlers\mmPopupHandler.h">
@@ -1899,7 +1899,7 @@
     <ClCompile Include="src\handlers\bugfix_handlers\gfxImageHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\bugfix_handlers\mmBillInstanceHandler.cpp">
+    <ClCompile Include="src\handlers\bugfix_handlers\mmWaypointInstanceHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\bugfix_handlers\mmPopupHandler.cpp">
