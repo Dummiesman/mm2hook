@@ -48,10 +48,15 @@ static bool ImGuiShowDemoWindowLua(bool show)
 }
 
 //
-static  bool ImGuiBeginLua(const char* name, bool show = true, ImGuiWindowFlags flags = 0) 
+static bool ImGuiBegin2Lua(const char* name, ImGuiWindowFlags flags = 0) 
 {
-    ImGui::Begin(name, &show, flags);
-    return show;
+    return ImGui::Begin(name, nullptr, flags);    
+}
+
+static std::tuple<bool, bool> ImGuiBeginLua(const char* name, bool bOpen, ImGuiWindowFlags flags = 0)
+{
+    bool draw =  ImGui::Begin(name, &bOpen, flags);
+    return std::make_tuple(draw, bOpen);
 }
 
 static int ImGuiVSliderIntLua(const char* label, const ImVec2& size, int value, int min, int max, ImGuiSliderFlags flags)
@@ -740,6 +745,7 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("EndTabItem", &ImGui::EndTabItem)
 
         .addFunction("Begin", &ImGuiBeginLua)
+        .addFunction("Begin2", &ImGuiBegin2Lua)
         .addFunction("End", &ImGui::End)
 
         .addFunction("SetNextItemWidth", &ImGui::SetNextItemWidth)
