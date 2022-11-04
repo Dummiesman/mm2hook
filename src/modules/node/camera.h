@@ -233,8 +233,8 @@ namespace MM2
         AGE_API void SetAppRate(float rate)                 { hook::Thunk<0x520730>::Call<void>(this, rate); }
         AGE_API void SetMaxDist(float dist)                 { hook::Thunk<0x5206F0>::Call<void>(this, dist); }
         AGE_API void SetMinDist(float dist)                 { hook::Thunk<0x520710>::Call<void>(this, dist); }
-        AGE_API void SetPos(Vector3 *pos)                   { hook::Thunk<0x5206B0>::Call<void>(this, pos); }
-        AGE_API void SetVel(Vector3 *vel)                   { hook::Thunk<0x520740>::Call<void>(this, vel); }
+        AGE_API void SetPos(Vector3 const &pos)             { hook::Thunk<0x5206B0>::Call<void>(this, &pos); }
+        AGE_API void SetVel(Vector3 const &vel)             { hook::Thunk<0x520740>::Call<void>(this, &vel); }
 
         //camBaseCS overrides
         AGE_API void MakeActive() override                  { hook::Thunk<0x5206A0>::Call<void>(this); }
@@ -249,6 +249,7 @@ namespace MM2
             LuaBinding(L).beginExtendClass<camPointCS, camCarCS>("camPointCS")
                 //properties
                 .addProperty("Position", &getPosition, &SetPos)
+                .addFunction("SetPosition", &SetPos)
                 .addFunction("SetVel", &SetVel)
                 .addFunction("SetAppRate", &SetAppRate)
                 .addFunction("SetMaxDist", &SetMaxDist)
