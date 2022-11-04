@@ -32,7 +32,7 @@ namespace MM2
     }
         
     AGE_API unsigned int gizBridge::SizeOf() {
-        return hook::Thunk<0x578250>::Call<int>(this);
+        return hook::Thunk<0x578250>::Call<unsigned int>(this);
     }
 
     /*

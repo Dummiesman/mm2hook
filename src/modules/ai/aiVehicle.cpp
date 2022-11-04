@@ -27,7 +27,7 @@ namespace MM2
     AGE_API void aiVehicleInstance::Draw(int a1)                                 { hook::Thunk<0x552160>::Call<void>(this, a1); }
 
     AGE_API void aiVehicleInstance::DrawReflected(float a1)              { hook::Thunk<0x552CB0>::Call<void>(this, a1); }
-    AGE_API unsigned int aiVehicleInstance::SizeOf()                     { return hook::Thunk<0x553060>::Call<int>(this); };
+    AGE_API unsigned int aiVehicleInstance::SizeOf()                     { return hook::Thunk<0x553060>::Call<unsigned int>(this); };
     AGE_API phBound* aiVehicleInstance::GetBound(int a1)                 { return hook::Thunk<0x552F40>::Call<phBound*>(this, a1); };
         
     //members

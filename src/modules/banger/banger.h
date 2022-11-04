@@ -153,7 +153,7 @@ namespace MM2
         virtual AGE_API const Matrix34& GetMatrix(Matrix34* a1)    { return hook::Thunk<0x441B60>::Call<const Matrix34&>(this, a1); };
         virtual AGE_API void SetMatrix(const Matrix34& a1) override
                                                                    { hook::Thunk<0x441B40>::Call<void>(this, a1); }
-        virtual AGE_API unsigned int SizeOf(void)                  { return hook::Thunk<0x42AB0>::Call<unsigned int>(this); }
+        virtual AGE_API unsigned int SizeOf(void)                  { return hook::Thunk<0x442AB0>::Call<unsigned int>(this); }
         virtual AGE_API void Detach() override                     { return hook::Thunk<0x442680>::Call<void>(this); }
 
         static void BindLua(LuaState L) {
