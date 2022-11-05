@@ -5,13 +5,13 @@
 namespace MM2
 {
     // Forward declarations
-    class RadialGauge;
+    class mmMirror;
 
     // External declarations
     extern class gfxViewport;
 
     // Class definitions
-    class RadialGauge : public asNode
+    class mmMirror : public asNode
     {
     private:
         Matrix34 matrix;
