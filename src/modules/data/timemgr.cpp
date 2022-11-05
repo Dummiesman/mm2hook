@@ -16,6 +16,10 @@ namespace MM2
         hook::StaticThunk<0x4C64F0>::Call<void>(a1, a2);
     }
 
+    AGE_API void datTimeManager::FixedFrame(float fps, unsigned int overSamples) {
+        hook::StaticThunk<0x4C65D0>::Call<void>(fps, overSamples);
+    }
+
     AGE_API void datTimeManager::RealTime(float step) {
         hook::StaticThunk<0x4C6580>::Call<void>(step);
     }
@@ -36,6 +40,7 @@ namespace MM2
             .addStaticProperty("ActualSeconds", [] {return ActualSeconds.get(); })
             .addStaticProperty("FrameCount", []() {return FrameCount.get(); })
             .addStaticProperty("ElapsedTime", []() {return ElapsedTime.get(); })
+            .addStaticFunction("FixedFrame", &FixedFrame)
             .addStaticFunction("RealTime", &RealTime, LUA_ARGS(_def<float, 0>))
             .endClass();
     }
