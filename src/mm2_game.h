@@ -22,6 +22,7 @@ namespace MM2
         luaBind<OppIconInfo>(L);
         luaBind<mmHudMap>(L);
         luaBind<mmIcons>(L);
+        luaBind<mmViewMgr>(L);
         luaBind<mmPlayer>(L);
     }
 }

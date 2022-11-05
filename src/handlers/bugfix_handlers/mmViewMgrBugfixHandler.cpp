@@ -28,7 +28,8 @@ void mmViewMgrBugfixHandler::SetViewSetting_Mirror(int a1)
     hook::Thunk<0x431D10>::Call<void>(this, a1);
 
     //copy over mirror state to MMSTATE
-    auto mirror = *getPtr<mmMirror*>(this, 0x20);
+    auto viewmgr = reinterpret_cast<mmViewMgr*>(this);
+    auto mirror = viewmgr->GetMirror();
     auto state = &MMSTATE;
     state->ShowMirror = mirror->isActive();
 }

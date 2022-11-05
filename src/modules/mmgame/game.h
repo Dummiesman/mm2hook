@@ -17,6 +17,7 @@ namespace MM2
         static hook::Field<0x48, mmPlayer *> _player;
         static hook::Field<0x54, mmIcons*> _icons;
         static hook::Field<0x94, mmPopup *> _popup;
+        static hook::Field<0x240, mmViewMgr> _viewManager;
         static hook::Field<0x767C, gizBridgeMgr*> _bridgeManager;
     public:
         ANGEL_ALLOCATOR
@@ -41,6 +42,10 @@ namespace MM2
 
         mmIcons* GetIcons(void) const {
             return _icons.get(this);
+        }
+
+        mmViewMgr* GetViewManager(void) const {
+            return _viewManager.ptr(this);
         }
 
         gizBridgeMgr* GetBridgeManager(void) const {
@@ -86,6 +91,7 @@ namespace MM2
                 .addPropertyReadOnly("Player", &GetPlayer)
                 .addPropertyReadOnly("Popup", &GetPopup)
                 .addPropertyReadOnly("Icons", &GetIcons)
+                .addPropertyReadOnly("ViewManager", &GetViewManager)
             .endClass();
         }
     };
