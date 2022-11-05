@@ -13,6 +13,7 @@
 #include "mmgame\hudmap.h"
 #include "mmgame\player.h"
 #include "mmgame\mmgamemusicdata.h"
+#include "mmgame\mirror.h"
 #include "mmgame\game.h"
 #include "mmgame\gamesingle.h"
 #include "mmgame\gamemulti.h"

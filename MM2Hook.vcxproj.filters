@@ -1573,6 +1573,9 @@
     <ClInclude Include="src\modules\mmgame\oppiconinfo.h">
       <Filter>Source Files\modules\mmgame</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmgame\mirror.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
