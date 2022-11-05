@@ -37,7 +37,4 @@ namespace MM2
 
         static void BindLua(LuaState L);
     };
-
-    // Lua initialization
-
 }

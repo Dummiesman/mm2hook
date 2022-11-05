@@ -243,7 +243,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(vehCarModel, 0xCC + 0xC + 0xC + 0xC + 0xC + 0x18 + 0x48); //+6 extra fields
-
-    // Lua initialization
-
 }

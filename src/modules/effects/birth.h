@@ -157,7 +157,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(asBirthRule, 0xB4);
-
-    // Lua initialization
-
 }

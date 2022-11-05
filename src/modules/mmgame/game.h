@@ -14,9 +14,9 @@ namespace MM2
     // Class definitions
     class mmGame : public asNode {
     protected:
-        hook::Field<0x48, mmPlayer *> _player;
-        hook::Field<0x94, mmPopup *> _popup;
+        static hook::Field<0x48, mmPlayer *> _player;
         static hook::Field<0x54, mmIcons*> _icons;
+        static hook::Field<0x94, mmPopup *> _popup;
         static hook::Field<0x767C, gizBridgeMgr*> _bridgeManager;
     public:
         ANGEL_ALLOCATOR
@@ -35,7 +35,7 @@ namespace MM2
             return _player.get(this);
         };
 
-        mmPopup* GetPopup(void) const {
+        mmPopup * GetPopup(void) const {
             return _popup.get(this);
         };
 
