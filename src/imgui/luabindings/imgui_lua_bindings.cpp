@@ -562,6 +562,7 @@ static void ImguiBindLua(LuaState L) {
         .endClass();
     
     LuaBinding(L).beginClass<ImGuiIO>("ImGuiIO")
+        .addVariable("DisplaySize", &ImGuiIO::DisplaySize)
         .addVariable("DeltaTime", &ImGuiIO::DeltaTime)
         .addVariable("IniSavingRate", &ImGuiIO::IniSavingRate)
         .addVariable("IniFilename", &ImGuiIO::IniFilename)
@@ -610,6 +611,12 @@ static void ImguiBindLua(LuaState L) {
         .addVariable("MetricsActiveWindows", &ImGuiIO::MetricsActiveWindows)
         .addVariable("MetricsActiveAllocations", &ImGuiIO::MetricsActiveAllocations)
         .addVariable("MouseDelta", &ImGuiIO::MouseDelta)
+        .endClass();
+
+    LuaBinding(L).beginClass<ImDrawList>("ImDrawList")
+        .addFunction("AddLine", &ImDrawList::AddLine, LUA_ARGS(const ImVec2 &, const ImVec2 &, ImU32, _def<float, 1>))
+        .addFunction("AddTriangle", &ImDrawList::AddTriangle, LUA_ARGS(const ImVec2&, const ImVec2&, const ImVec2&, ImU32, _def<float, 1>))
+        .addFunction("AddTriangleFilled", &ImDrawList::AddTriangleFilled, LUA_ARGS(const ImVec2&, const ImVec2&, const ImVec2&, ImU32))
         .endClass();
 
     LuaBinding(L).beginModule("ImPlot")
@@ -798,6 +805,14 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("IsMouseClicked",&ImGui::IsMouseClicked)
         .addFunction("GetMouseDragDelta", &ImGui::GetMouseDragDelta)
         .addFunction("IsMouseDragging", &ImGui::IsMouseDragging)
+
+        .addFunction("GetWindowDrawList", &ImGui::GetWindowDrawList)
+
+        .addFunction("ColorConvertU32ToFloat4", &ImGui::ColorConvertU32ToFloat4)
+        .addFunction("ColorConvertFloat4ToU32", &ImGui::ColorConvertFloat4ToU32)
+
+        .addFunction("GetClipboardText", &ImGui::GetClipboardText)
+        .addFunction("SetClipboardText", &ImGui::SetClipboardText)
 
         .addFunction("PushStyleVarFloat", &ImGuiPushStyleVarLuaFloat)
         .addFunction("PushStyleVarVec2", &ImGuiPushStyleVarLuaVec2)
