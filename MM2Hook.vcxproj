@@ -391,6 +391,7 @@
     <ClInclude Include="src\modules\mmgame\singlerace.h" />
     <ClInclude Include="src\modules\mmgame\singleroam.h" />
     <ClInclude Include="src\modules\mmgame\singlestunt.h" />
+    <ClInclude Include="src\modules\mmgame\wphud.h" />
     <ClInclude Include="src\modules\mmgame\wpinst.h" />
     <ClInclude Include="src\modules\mmnetwork.h" />
     <ClInclude Include="src\modules\mmnetwork\luasessinfo.h" />
