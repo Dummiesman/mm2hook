@@ -617,6 +617,12 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("AddLine", &ImDrawList::AddLine, LUA_ARGS(const ImVec2 &, const ImVec2 &, ImU32, _def<float, 1>))
         .addFunction("AddTriangle", &ImDrawList::AddTriangle, LUA_ARGS(const ImVec2&, const ImVec2&, const ImVec2&, ImU32, _def<float, 1>))
         .addFunction("AddTriangleFilled", &ImDrawList::AddTriangleFilled, LUA_ARGS(const ImVec2&, const ImVec2&, const ImVec2&, ImU32))
+        .addFunction("AddQuad", &ImDrawList::AddQuad, LUA_ARGS(const ImVec2&, const ImVec2&, const ImVec2&, const ImVec2&, ImU32, _def<float, 1>))
+        .addFunction("AddQuadFilled", &ImDrawList::AddQuadFilled, LUA_ARGS(const ImVec2&, const ImVec2&, const ImVec2&, const ImVec2&, ImU32))
+        .addFunction("AddCircle", &ImDrawList::AddCircle, LUA_ARGS(const ImVec2&, float, ImU32, _def<int, 0>, _def<float, 1>))
+        .addFunction("AddCircleFilled", &ImDrawList::AddCircleFilled, LUA_ARGS(const ImVec2&, float, ImU32, _def<int, 0>))
+        .addFunction("AddNgon", &ImDrawList::AddNgon, LUA_ARGS(const ImVec2&, float, ImU32, _def<int, 0>, _def<float, 1>))
+        .addFunction("AddNgonFilled", &ImDrawList::AddNgonFilled, LUA_ARGS(const ImVec2&, float, ImU32, _def<int, 0>))
         .endClass();
 
     LuaBinding(L).beginModule("ImPlot")
