@@ -5,6 +5,7 @@
 
 class mmViewMgrBugfixHandler {
 public:
-    void SetViewSetting(int a1);
+    void SetViewSetting_Dash(int a1);
+    void SetViewSetting_Mirror(int a1);
     static void Install();
 };

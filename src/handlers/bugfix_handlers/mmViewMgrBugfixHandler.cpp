@@ -8,7 +8,7 @@ static ConfigValue<bool> cfgMissingDashboardFix("MissingDashboardFix", true);
     mmViewMgrBugfixHandler
 */
 
-void mmViewMgrBugfixHandler::SetViewSetting(int a1)
+void mmViewMgrBugfixHandler::SetViewSetting_Dash(int a1)
 {
     mmGameManager* mgr = mmGameManager::Instance;
 
@@ -22,13 +22,30 @@ void mmViewMgrBugfixHandler::SetViewSetting(int a1)
     hook::Thunk<0x431D10>::Call<void>(this, a1);
 }
 
+void mmViewMgrBugfixHandler::SetViewSetting_Mirror(int a1)
+{
+    //call original
+    hook::Thunk<0x431D10>::Call<void>(this, a1);
+
+    //copy over mirror state to MMSTATE
+    auto mirror = *getPtr<mmMirror*>(this, 0x20);
+    auto state = &MMSTATE;
+    state->ShowMirror = mirror->isActive();
+}
+
 void mmViewMgrBugfixHandler::Install()
 {
     if (cfgMissingDashboardFix.Get()) {
         InstallCallback("mmViewMgr::SetViewSetting", "Disables the dashboard view camera if a dashboard model is missing.",
-            &SetViewSetting, {
+            &SetViewSetting_Dash, {
                 cb::call(0x41489A),
             }
         );
     }
+
+    InstallCallback("mmViewMgr::SetViewSetting", "Fixes mirror state not saving to MMSTATE (and therefore the player config file).",
+        &SetViewSetting_Mirror, {
+            cb::call(0x4148B8),
+        }
+    );
 }
