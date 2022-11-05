@@ -696,6 +696,7 @@
     <ClCompile Include="src\modules\mmeffects.cpp" />
     <ClCompile Include="src\modules\mmeffects\meshform.cpp" />
     <ClCompile Include="src\modules\mmgame.cpp" />
+    <ClCompile Include="src\modules\mmgame\mirror.cpp" />
     <ClCompile Include="src\modules\mmnetwork.cpp" />
     <ClCompile Include="src\modules\mmwidget.cpp" />
     <ClCompile Include="src\modules\model.cpp" />

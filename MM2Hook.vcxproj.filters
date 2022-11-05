@@ -2289,6 +2289,9 @@
     <ClCompile Include="src\handlers\feature_handlers\dgPhysManagerHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\mmgame\mirror.cpp">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AGE.h">
