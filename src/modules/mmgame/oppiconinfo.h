@@ -27,13 +27,13 @@ namespace MM2
         Vector4 luaGetColor() const
         {
             Vector4 vec;
-            vec.UnpackColorARGB(this->Color);
+            vec.UnpackColorBGRA(this->Color);
             return vec;
         }
 
         void luaSetColor(const Vector4& color)
         {
-            this->Color = color.PackColorARGB();
+            this->Color = color.PackColorBGRA();
         }
     public:
         unsigned int Color;
