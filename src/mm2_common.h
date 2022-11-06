@@ -139,7 +139,7 @@ namespace MM2 {
         static hook::Type<float> TicksToSeconds;
         static hook::Type<float> TicksToMilliseconds;
 
-        DWORD StartTime;
+        DWORD StartTicks;
 
         AGE_API Timer()                                     { hook::Thunk<0x4C7840>::Call<void>(this); }
 
