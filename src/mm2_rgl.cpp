@@ -19,8 +19,8 @@ declfield(MM2::vglCloudMapTexture)  (0x682B74);
 declfield(MM2::mtxstack)            (0x682F98);
 
 /* lua helper */
-void MM2::luaSetColor(float r, float g, float b, float a) {
-    vglCurrentColor.set(mkfrgba(r, g, b, a));
+void MM2::luaSetColor(const Vector4 & color) {
+    vglCurrentColor.set(color.PackColorBGRA());
 }
 
 void MM2::luaGfxDrawFont(double x, double y, const char* text) {

@@ -169,17 +169,11 @@ void asBirthRule::SetBirthFlags(int flags) { this->m_BirthFlags = flags; }
 int asBirthRule::GetInitialBlast() const { return this->m_InitialBlast; }
 void asBirthRule::SetInitialBlast(int initialBlast) { this->m_InitialBlast = initialBlast; }
 
-//helpers
-inline std::tuple<byte, byte, byte, byte> asBirthRule::getColorTuple(void) {
-    return std::make_tuple(m_Color.r, m_Color.g, m_Color.b, m_Color.a);
-}
-
-inline void asBirthRule::setColorTuple(std::tuple<byte, byte, byte, byte> setColor) {
-    auto myColor = &this->m_Color;
-    myColor->a = std::get<3>(setColor);
-    myColor->r = std::get<0>(setColor);
-    myColor->g = std::get<1>(setColor);
-    myColor->b = std::get<2>(setColor);
+void MM2::asBirthRule::SetColor(const Vector4 & color) { this->m_Color = color.PackColorRGBA(); }
+Vector4 MM2::asBirthRule::GetColor() {
+    Vector4 vec;
+    vec.UnpackColorRGBA(this->m_Color);
+    return vec;
 }
 
 //lua
@@ -208,7 +202,7 @@ void asBirthRule::BindLua(LuaState L)
         .addProperty("Gravity", &GetGravity, &SetGravity)
         .addProperty("Height", &GetHeight, &SetHeight)
         .addProperty("Intensity", &GetIntensity, &SetIntensity)
-        .addProperty("Color", &getColorTuple, &setColorTuple)
+        .addProperty("Color", &GetColor, &SetColor)
         .addProperty("DAlpha", &GetDAlpha, &SetDAlpha)
         .addProperty("DAlphaVar", &GetDAlphaVar, &SetDAlphaVar)
         .addProperty("DRotation", &GetDRotation, &SetDRotation)

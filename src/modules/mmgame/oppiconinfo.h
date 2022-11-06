@@ -1,4 +1,5 @@
 #pragma once
+#include <modules\vector.h>
 
 namespace MM2
 {
@@ -13,14 +14,26 @@ namespace MM2
 	struct OppIconInfo {
     private:
         // lua helpers
-        LPCSTR GetText() const
+        LPCSTR luaGetText() const
         {
             return Text;
         }
 
-        void SetText(LPCSTR text)
+        void luaSetText(LPCSTR text)
         {
             strncpy_s(Text, text, sizeof(Text));
+        }
+
+        Vector4 luaGetColor() const
+        {
+            Vector4 vec;
+            vec.UnpackColorARGB(this->Color);
+            return vec;
+        }
+
+        void luaSetColor(const Vector4& color)
+        {
+            this->Color = color.PackColorARGB();
         }
     public:
         unsigned int Color;
@@ -33,10 +46,10 @@ namespace MM2
     public:
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<OppIconInfo>("OppIconInfo")
-                .addVariable("Color", &OppIconInfo::Color)
+                .addProperty("Color", &luaGetColor, &luaSetColor)
                 .addVariable("Enabled", &OppIconInfo::Enabled)
                 .addVariable("IconIndex", &OppIconInfo::IconIndex)
-                .addProperty("Text", &GetText, &SetText)
+                .addProperty("Text", &luaGetText, &luaSetText)
                 .addVariable("Bitmap", &OppIconInfo::Bitmap)
                 .addVariable("Scale", &OppIconInfo::Scale)
                 .endClass();

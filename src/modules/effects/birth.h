@@ -68,7 +68,7 @@ namespace MM2
         float m_Gravity;
         float m_Height;
         float m_Intensity;
-        ColorARGB m_Color;
+        unsigned int m_Color;
         int m_DAlpha;
         int m_DAlphaVar;
         int m_DRotation;
@@ -147,11 +147,10 @@ namespace MM2
         int GetInitialBlast() const;
         void SetInitialBlast(int initialBlast);
         void SetTexFrame(int start, int end);
-
-        //helpers
-        inline std::tuple<byte, byte, byte, byte> getColorTuple(void);
-        inline void setColorTuple(std::tuple<byte, byte, byte, byte> setColor);
-
+        
+        void SetColor(const Vector4 & color);
+        Vector4 GetColor();
+        
         //lua
         static void BindLua(LuaState L);
     };
