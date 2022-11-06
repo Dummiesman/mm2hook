@@ -367,14 +367,16 @@ void MM2Lua::OnSessionJoin(char * a2, GUID * a3, char * a4)
     }
 }
 
-void MM2Lua::OnDisconnect() {
+void MM2Lua::OnDisconnect() 
+{
     if (IsLoaded()) {
         LuaRef func(L, "onDisconnect");
         TryCallFunction(func);
     }
 }
 
-void MM2Lua::OnReset() {
+void MM2Lua::OnReset() 
+{
     if (IsLoaded()) {
         LuaRef func(L, "onReset");
         TryCallFunction(func);
