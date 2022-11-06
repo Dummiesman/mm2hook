@@ -44,7 +44,7 @@ namespace MM2
     {
         LuaBinding(L).beginClass<aiIntersection>("aiIntersection")
             .addFunction("GetPath", &GetPath)
-            .addPropertyReadOnly("ID", &GetdD)
+            .addPropertyReadOnly("ID", &GetId)
             .addPropertyReadOnly("RoomId", &GetRoomId)
             .addPropertyReadOnly("Center", &GetCenter)
             .addPropertyReadOnly("NumPaths", &GetPathCount)
