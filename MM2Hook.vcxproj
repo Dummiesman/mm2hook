@@ -670,7 +670,9 @@
     <ClCompile Include="src\events\dispatcher.cpp" />
     <ClCompile Include="src\mm2_replay.cpp" />
     <ClCompile Include="src\modules\ai.cpp" />
+    <ClCompile Include="src\modules\ai\aiIntersection.cpp" />
     <ClCompile Include="src\modules\ai\aiMap.cpp" />
+    <ClCompile Include="src\modules\ai\aiPath.cpp" />
     <ClCompile Include="src\modules\ai\aiVehicle.cpp" />
     <ClCompile Include="src\modules\audio.cpp" />
     <ClCompile Include="src\modules\banger.cpp" />

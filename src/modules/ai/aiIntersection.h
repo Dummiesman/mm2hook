@@ -4,7 +4,6 @@
 #include "aiPath.h"
 #include "aiTrafficLight.h"
 
-
 namespace MM2
 {
     // Forward declarations
@@ -31,42 +30,16 @@ namespace MM2
         aiIntersection(void)                                DONOTCALL;
         aiIntersection(const aiIntersection &&)             DONOTCALL;
 
-        AGE_API int NumSources() { return hook::Thunk<0x549D60>::Call<int>(this); }
-        AGE_API int NumSinks() { return hook::Thunk<0x549D90>::Call<int>(this); }
+        AGE_API int NumSources() const;
+        AGE_API int NumSinks() const;
 
-        int GetPathCount() const {
-            return pathCount;
-        }
+        int GetPathCount() const;
+        aiPath* GetPath(int id) const;
+        int GetID() const;
+        int GetRoomId() const;
+        Vector3 GetCenter() const;
 
-        aiPath* GetPath(int id) const {
-            if (id >= pathCount)
-                return nullptr;
-            return paths[id];
-        }
-
-        int GetID() const {
-            return id;
-        }
-
-        int GetRoomId() const {
-            return roomId;
-        }
-
-        Vector3 GetCenter() const {
-            return center;
-        }
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<aiIntersection>("aiIntersection")
-                .addFunction("GetPath", &GetPath)
-                .addPropertyReadOnly("ID", &GetID)
-                .addPropertyReadOnly("RoomId", &GetRoomId)
-                .addPropertyReadOnly("Center", &GetCenter)
-                .addPropertyReadOnly("NumPaths", &GetPathCount)
-                .addPropertyReadOnly("NumSinks", &NumSinks)
-                .addPropertyReadOnly("NumSources", &NumSources)
-                .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     ASSERT_SIZEOF(aiIntersection, 0x2C);
