@@ -7,7 +7,7 @@ namespace MM2
     class aiPath;
 
     // External declarations
-
+    extern class aiIntersection;
 
     // Class definitions
 
@@ -18,6 +18,8 @@ namespace MM2
         static hook::Field<0x8, short> _numVerts;
         static hook::Field<0xA, short> _id;
         static hook::Field<0x18, float> _baseSpeedLimit;
+        static hook::Field<0x118, aiIntersection*> _intersectionA;
+        static hook::Field<0x13C, aiIntersection*> _intersectionB;
     private:
         //lua helper
         std::tuple<int, float> luaIsPosOnRoad(Vector3 const& pos, float margin) const;
@@ -27,6 +29,7 @@ namespace MM2
 
         float GetBaseSpeedLimit() const;
         int GetId() const;
+        aiIntersection* GetIntersection(int num) const;
 
         /*
             aiPath

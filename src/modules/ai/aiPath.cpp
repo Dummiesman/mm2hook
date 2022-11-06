@@ -20,6 +20,16 @@ namespace MM2
         return _id.get(this);
     }
 
+    aiIntersection* aiPath::GetIntersection(int num) const
+    {
+        if (num == 0)
+            return _intersectionA.get(this);
+        else if (num == 1)
+            return _intersectionB.get(this);
+        else
+            return nullptr;
+    }
+
     AGE_API float aiPath::CenterLength(int startIdx, int endIdx)  const 
     {
         return hook::Thunk<0x547340>::Call<float>(this, startIdx, endIdx); 
@@ -69,6 +79,7 @@ namespace MM2
         LuaBinding(L).beginClass<aiPath>("aiPath")
             .addPropertyReadOnly("ID", &GetId)
             .addPropertyReadOnly("NumVerts", &NumVerts)
+            .addFunction("GetIntersection", &GetIntersection)
             .addFunction("CenterLength", &CenterLength)
             .addFunction("ClearAmbients", &ClearAmbients)
             .addFunction("ClearPeds", &ClearPeds)
