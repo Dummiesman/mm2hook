@@ -27,6 +27,12 @@ namespace MM2
         inline aiPedAudio * GetAudio(void) const {
             return _audio.ptr(this);
         };
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<aiPedestrian>("aiPedestrian")
+                .addPropertyReadOnly("Audio", &GetAudio)
+                .endClass();
+        }
     };
 
     ASSERT_SIZEOF(aiPedestrian, 0x134);
