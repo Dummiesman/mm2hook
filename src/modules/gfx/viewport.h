@@ -43,9 +43,26 @@ namespace MM2
         float Fov;
         float Aspect;
     public:
-        void Ortho(float a1, float a2, float a3, float a4, float a5, float a6) { hook::Thunk<0x4B1800>::Call<void>(this, a1, a2, a3, a4, a5, a6); }
+        AGE_API void ResetWindow()
+        {
+            hook::Thunk<0x4B14A0>::Call<void>(this);
+        }
+
+        AGE_API void Ortho(float left, float right, float bottom, float top, float nearVal, float farVal) 
+        {
+            hook::Thunk<0x4B1800>::Call<void>(this, left, right, bottom, top, nearVal, farVal); 
+        }
+
+        AGE_API void Perspective(float fov, float aspect, float nearClip, float farClip) 
+        {
+            hook::Thunk<0x4B1640>::Call<void>(this, fov, aspect, nearClip, farClip);
+        }
+
+        AGE_API void SetWindow(int left, int top, int width, int height, float dvMinZ, float dvMaxZ)
+        {
+            hook::Thunk<0x4B14C0>::Call<void>(this, left, top, width, height, dvMinZ, dvMaxZ);
+        }
     };
 
-    // Lua initialization
-
+    ASSERT_SIZEOF(gfxViewport, 0x17C);
 }
