@@ -30,6 +30,78 @@ namespace MM2
     AGE_API void Vector4::Min(const Vector4& vec1, const Vector4& vec2)                       { hook::Thunk<0x4C53F0>::Call<void>(this, &vec1, &vec2); }
     AGE_API void Vector4::Max(const Vector4& vec1, const Vector4& vec2)                       { hook::Thunk<0x4C5460>::Call<void>(this, &vec1, &vec2); }
 
+    unsigned int Vector4::PackColorARGB() const
+    {
+        uint32_t color = 0;
+        color |= ((uint8_t)(this->X * 255.0f) << 8);
+        color |= ((uint8_t)(this->Y * 255.0f) << 16);
+        color |= ((uint8_t)(this->Z * 255.0f) << 24);
+        color |= ((uint8_t)(this->W * 255.0f));
+        return color;
+    }
+
+    unsigned int Vector4::PackColorABGR() const
+    {
+        uint32_t color = 0;
+        color |= ((uint8_t)(this->Z * 255.0f) << 8);
+        color |= ((uint8_t)(this->Y * 255.0f) << 16);
+        color |= ((uint8_t)(this->X * 255.0f) << 24);
+        color |= ((uint8_t)(this->W * 255.0f));
+        return color;
+    }
+
+    unsigned int Vector4::PackColorRGBA() const
+    {
+        uint32_t color = 0;
+        color |= ((uint8_t)(this->X * 255.0f));
+        color |= ((uint8_t)(this->Y * 255.0f) << 8);
+        color |= ((uint8_t)(this->Z * 255.0f) << 16);
+        color |= ((uint8_t)(this->W * 255.0f) << 24);
+        return color;
+    }
+
+    unsigned int Vector4::PackColorBGRA() const
+    {
+        uint32_t color = 0;
+        color |= ((uint8_t)(this->Z * 255.0f));
+        color |= ((uint8_t)(this->Y * 255.0f) << 8);
+        color |= ((uint8_t)(this->X * 255.0f) << 16);
+        color |= ((uint8_t)(this->W * 255.0f) << 24);
+        return color;
+    }
+
+    void Vector4::UnpackColorARGB(unsigned int color)
+    {
+        this->X = ((float)((color >> 8) & 0xFF)) / 255.0f;
+        this->Y = ((float)((color >> 16) & 0xFF)) / 255.0f;
+        this->Z = ((float)((color >> 24) & 0xFF)) / 255.0f;
+        this->W = ((float)((color) & 0xFF)) / 255.0f;
+    }
+
+    void Vector4::UnpackColorABGR(unsigned int color)
+    {
+        this->Z = ((float)((color >> 8) & 0xFF)) / 255.0f;
+        this->Y = ((float)((color >> 16) & 0xFF)) / 255.0f;
+        this->X = ((float)((color >> 24) & 0xFF)) / 255.0f;
+        this->W = ((float)((color) & 0xFF)) / 255.0f;
+    }
+
+    void Vector4::UnpackColorRGBA(unsigned int color)
+    {
+        this->X = ((float)((color) & 0xFF)) / 255.0f;
+        this->Y = ((float)((color >> 8) & 0xFF)) / 255.0f;
+        this->Z = ((float)((color >> 16) & 0xFF)) / 255.0f;
+        this->W = ((float)((color >> 24) & 0xFF)) / 255.0f;
+    }
+
+    void Vector4::UnpackColorBGRA(unsigned int color)
+    {
+        this->Z = ((float)((color) & 0xFF)) / 255.0f;
+        this->Y = ((float)((color >> 8) & 0xFF)) / 255.0f;
+        this->X = ((float)((color >> 16) & 0xFF)) / 255.0f;
+        this->W = ((float)((color >> 24) & 0xFF)) / 255.0f;
+    }
+
     void Vector4::BindLua(LuaState L) {
         LuaBinding(L).beginClass<Vector4>("Vector4")
             .addFactory([](float x = 0.0, float y = 0.0, float z = 0.0, float w = 0.0) {
