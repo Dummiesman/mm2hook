@@ -15,11 +15,10 @@ namespace MM2
         return _baseSpeedLimit.get(this);
     }
 
-    int aiPath::GetID() const
+    int aiPath::GetId() const
     {
         return _id.get(this);
     }
-
 
     AGE_API float aiPath::CenterLength(int startIdx, int endIdx)  const 
     {
@@ -68,7 +67,7 @@ namespace MM2
 
     void aiPath::BindLua(LuaState L) {
         LuaBinding(L).beginClass<aiPath>("aiPath")
-            .addPropertyReadOnly("ID", &GetID)
+            .addPropertyReadOnly("ID", &GetId)
             .addPropertyReadOnly("NumVerts", &NumVerts)
             .addFunction("CenterLength", &CenterLength)
             .addFunction("ClearAmbients", &ClearAmbients)

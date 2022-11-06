@@ -26,7 +26,7 @@ namespace MM2
         aiPath(const aiPath &&)                             DONOTCALL;
 
         float GetBaseSpeedLimit() const;
-        int GetID() const;
+        int GetId() const;
 
         /*
             aiPath

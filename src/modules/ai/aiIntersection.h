@@ -35,7 +35,7 @@ namespace MM2
 
         int GetPathCount() const;
         aiPath* GetPath(int id) const;
-        int GetID() const;
+        int GetId() const;
         int GetRoomId() const;
         Vector3 GetCenter() const;
 

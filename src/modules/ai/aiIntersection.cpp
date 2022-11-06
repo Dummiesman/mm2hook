@@ -25,7 +25,7 @@ namespace MM2
         return paths[id];
     }
 
-    int aiIntersection::GetID() const 
+    int aiIntersection::GetId() const 
     {
         return id;
     }
@@ -44,7 +44,7 @@ namespace MM2
     {
         LuaBinding(L).beginClass<aiIntersection>("aiIntersection")
             .addFunction("GetPath", &GetPath)
-            .addPropertyReadOnly("ID", &GetID)
+            .addPropertyReadOnly("ID", &GetdD)
             .addPropertyReadOnly("RoomId", &GetRoomId)
             .addPropertyReadOnly("Center", &GetCenter)
             .addPropertyReadOnly("NumPaths", &GetPathCount)
