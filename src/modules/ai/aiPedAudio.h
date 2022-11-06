@@ -10,5 +10,11 @@ namespace MM2
 
     // Class definitions
 
-    class aiPedAudio : public AudCreatureContainer {};
+    class aiPedAudio : public AudCreatureContainer {
+    public:
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<aiPedAudio, AudCreatureContainer>("aiPedAudio")
+                .endClass();
+        }
+    };
 }

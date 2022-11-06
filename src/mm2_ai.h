@@ -27,6 +27,7 @@ namespace MM2
         luaBind<aiVehicleData>(L);
         luaBind<aiVehicleInstance>(L);
         luaBind<aiVehicleManager>(L);
+        luaBind<aiPedAudio>(L);
         luaBind<aiMap>(L);
         luaBind<lvlAiMap>(L);
         luaBind<lvlAiRoad>(L);
