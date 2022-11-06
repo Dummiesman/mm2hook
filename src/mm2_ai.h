@@ -12,7 +12,6 @@ namespace MM2
     void luaAddModule<module_ai>(LuaState L) {
         luaBind<aiPath>(L);
         luaBind<aiIntersection>(L);
-        luaBind<aiMap>(L);
         luaBind<aiCityData>(L);
         luaBind<aiPoliceForce>(L);
         luaBind<aiMapStats>(L);
@@ -25,11 +24,12 @@ namespace MM2
         luaBind<aiCTFRacer>(L);
         luaBind<aiPoliceOfficer>(L);
         luaBind<mcHookman>(L);
+        luaBind<aiVehicleData>(L);
+        luaBind<aiVehicleInstance>(L);
+        luaBind<aiVehicleManager>(L);
+        luaBind<aiMap>(L);
         luaBind<lvlAiMap>(L);
         luaBind<lvlAiRoad>(L);
-        luaBind<aiVehicleInstance>(L);
-        luaBind<aiVehicleData>(L);
-        luaBind<aiVehicleManager>(L);
         luaBind<aiTrafficLightInstance>(L);
         luaBind<aiTrafficLightSet>(L);
     }
