@@ -459,8 +459,8 @@ namespace MM2
         AGE_API void SetCam(camCarCS *cam)                  { hook::Thunk<0x51FE90>::Call<void>(this, cam); }
         AGE_API void OneShot()                              { hook::Thunk<0x5200C0>::Call<void>(this); }
 
-        AGE_API bool NewCam(camCarCS *cam, int a2, float a3, datCallback a4)
-                                                            { return hook::Thunk<0x51FF30>::Call<bool>(this, cam, a2, a3, a4); }
+        AGE_API BOOL NewCam(camCarCS *cam, int type, float time, datCallback postTransitionCB)
+                                                            { return hook::Thunk<0x51FF30>::Call<bool>(this, cam, type, time, postTransitionCB); }
 
         AGE_API void Init(vehCar *car)                      { hook::Thunk<0x51FFF0>::Call<void>(this, car); }
 
@@ -473,8 +473,8 @@ namespace MM2
         AGE_API void FileIO(datParser &parser) override     { hook::Thunk<0x5200D0>::Call<void>(this, &parser); }
 
         //helpers for lua calls
-        bool NewCam(camCarCS *cam, int a2, float a3) {
-            return NewCam(cam, a2, a3, datCallback::NullCallback);
+        bool NewCam(camCarCS *cam, int type, float time) {
+            return NewCam(cam, type, time, datCallback::NullCallback) == TRUE;
         }
 
         static void BindLua(LuaState L) {
