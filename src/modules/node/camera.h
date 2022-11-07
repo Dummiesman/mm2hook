@@ -64,7 +64,7 @@ namespace MM2
         }
 
         //fields
-        Matrix34 getMatrix()
+        Matrix34 getMatrix() const
         {
             return matrix_1; 
         }
@@ -74,7 +74,7 @@ namespace MM2
             matrix_1 = matrix;
         }
         
-        Vector3 getPosition()
+        Vector3 getPosition() const
         {
             return matrix_1.GetRow(3); 
         }
@@ -84,7 +84,7 @@ namespace MM2
             matrix_1.SetRow(3, position);
         }
 
-        float getFOV() 
+        float getFOV() const
         {
             return CameraFOV; 
         }
@@ -233,6 +233,17 @@ namespace MM2
             hook::Thunk<0x406820>::Call<void>(this);
         }
 
+        float GetMinDist() const {
+            return this->minDist;
+        }
+
+        float GetMaxDist() const {
+            return this->maxDist;
+        }
+
+        float GetAppRate()  const {
+            return this->appRate;
+        }
         AGE_API void SetAppRate(float rate)                 { hook::Thunk<0x520730>::Call<void>(this, rate); }
         AGE_API void SetMaxDist(float dist)                 { hook::Thunk<0x5206F0>::Call<void>(this, dist); }
         AGE_API void SetMinDist(float dist)                 { hook::Thunk<0x520710>::Call<void>(this, dist); }
@@ -251,12 +262,11 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camPointCS, camCarCS>("camPointCS")
                 //properties
-                .addProperty("Position", &getPosition, &SetPos)
+                .addProperty("MinDist", &GetMinDist, &SetMinDist)
+                .addProperty("MaxDist", &GetMaxDist, &SetMaxDist)
+                .addProperty("AppRate", &GetAppRate, &SetAppRate)
                 .addFunction("SetPosition", &SetPos)
-                .addFunction("SetVel", &SetVel)
-                .addFunction("SetAppRate", &SetAppRate)
-                .addFunction("SetMaxDist", &SetMaxDist)
-                .addFunction("SetMinDist", &SetMinDist)
+                .addFunction("SetVelocity", &SetVel)
             .endClass();
         }
     };
@@ -398,11 +408,11 @@ namespace MM2
             LuaBinding(L).beginExtendClass<camPolarCS, camCarCS>("camPolarCS")
                 //properties
                 .addProperty("AzimuthLock", &getAzimuthLock, &setAzimuthLock)
-                .addVariable("PolarHeight", &camPolarCS::PolarHeight)
-                .addVariable("PolarDelta", &camPolarCS::PolarDelta)
-                .addVariable("PolarDistance", &camPolarCS::PolarDistance)
-                .addVariable("PolarIncline", &camPolarCS::PolarIncline)
-                .addVariable("PolarAzimuth", &camPolarCS::PolarAzimuth)
+                .addVariable("Height", &camPolarCS::PolarHeight)
+                .addVariable("Delta", &camPolarCS::PolarDelta)
+                .addVariable("Distance", &camPolarCS::PolarDistance)
+                .addVariable("Incline", &camPolarCS::PolarIncline)
+                .addVariable("Azimuth", &camPolarCS::PolarAzimuth)
             .endClass();
         }
     };
