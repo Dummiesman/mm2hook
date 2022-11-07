@@ -12,6 +12,7 @@ namespace MM2
     class camPointCS;
     class camPovCS;
     class camTrackCS;
+    class camPolarCS;
     class camAICS;
     class camViewCS;
     class asCamera;
@@ -354,6 +355,59 @@ namespace MM2
     };
     ASSERT_SIZEOF(camTrackCS, 0x298);
 
+    class camPolarCS : camCarCS {
+    private:
+        float PolarHeight;
+        float PolarDistance;
+        float PolarAzimuth;
+        float PolarIncline;
+        float PolarDelta;
+        BOOL AzimuthLock;
+    public:
+        AGE_API camPolarCS(void) {
+            scoped_vtable x(this);
+            hook::Thunk<0x520FB0>::Call<void>(this);
+        }
+
+        virtual AGE_API ~camPolarCS(void) {
+            scoped_vtable x(this);
+            hook::Thunk<0x406800>::Call<void>(this);
+        }
+
+        bool getAzimuthLock()
+        {
+            return this->AzimuthLock == TRUE;
+        }
+
+        void setAzimuthLock(bool lock)
+        {
+            this->AzimuthLock = (lock) ? TRUE : FALSE;
+        }
+
+        //asNode overrides
+        AGE_API void FileIO(datParser &parser) override     { hook::Thunk<0x521380 >::Call<void>(this, &parser); }
+        AGE_API char * GetClassName() override              { return hook::Thunk<0x521460>::Call<char*>(this); }
+        AGE_API void Reset() override                       { hook::Thunk<0x521010>::Call<void>(this); }
+        AGE_API void Update() override                      { hook::Thunk<0x521030>::Call<void>(this); }
+
+        //camBaseCS overrides
+        AGE_API void MakeActive() override                  { hook::Thunk<0x521020>::Call<void>(this); }
+
+        //lua
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<camPolarCS, camCarCS>("camPolarCS")
+                //properties
+                .addProperty("AzimuthLock", &getAzimuthLock, &setAzimuthLock)
+                .addVariable("PolarHeight", &camPolarCS::PolarHeight)
+                .addVariable("PolarDelta", &camPolarCS::PolarDelta)
+                .addVariable("PolarDistance", &camPolarCS::PolarDistance)
+                .addVariable("PolarIncline", &camPolarCS::PolarIncline)
+                .addVariable("PolarAzimuth", &camPolarCS::PolarAzimuth)
+            .endClass();
+        }
+    };
+    ASSERT_SIZEOF(camPolarCS, 0x128);
+
     class camAICS : public camCarCS {
     private:
         float Speed;
@@ -514,6 +568,7 @@ namespace MM2
         //camera types
         luaBind<camPointCS>(L);
         luaBind<camPovCS>(L);
+        luaBind<camPolarCS>(L);
         luaBind<camAICS>(L);
         luaBind<camTrackCS>(L);
 
