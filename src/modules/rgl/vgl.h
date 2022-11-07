@@ -77,7 +77,7 @@ namespace MM2
     /*
         Lua helper
     */
-    extern void luaSetColor(float r, float g, float b, float a);
+    extern void luaSetColor(const Vector4 & color);
     extern void luaGfxDrawFont(double x, double y, const char* text);
     extern void vglUnbindTexture();
 
