@@ -93,6 +93,11 @@ namespace MM2
             CameraFOV = fov;
         }
 
+        //asNode overrides
+        AGE_API void AfterLoad() override                   { hook::Thunk<0x521F30>::Call<void>(this); }
+        AGE_API void FileIO(datParser &parser) override     { hook::Thunk<0x521EA0>::Call<void>(this, &parser); }
+        AGE_API const char * GetDirName() override          { return hook::Thunk<0x521E00>::Call<const char*>(this); }
+
         //virtuals
         virtual AGE_API void MakeActive()                   { hook::Thunk<0x521520>::Call<void>(this); }
         virtual AGE_API void UpdateInput()                  { hook::Thunk<0x520410>::Call<void>(this); }
@@ -101,6 +106,7 @@ namespace MM2
         virtual AGE_API void SetST(float *a1)               { hook::Thunk<0x51D750>::Call<void>(this, a1); }
 
         //members
+        AGE_API BOOL IsViewCSInTransition()                 { return hook::Thunk<0x521E10>::Call<BOOL>(this);}
         AGE_API void UpdateView()                           { hook::Thunk<0x521E30>::Call<void>(this); }
 
         //lua
