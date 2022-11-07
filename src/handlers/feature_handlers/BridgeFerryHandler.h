@@ -5,7 +5,7 @@
 
 class BridgeFerryHandler {
 public:
-    void Cull(int lod);
+    void Cull();
     void Draw(int lod);
 
     static void Install();

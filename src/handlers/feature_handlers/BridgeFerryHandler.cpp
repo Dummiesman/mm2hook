@@ -21,9 +21,7 @@ using namespace MM2;
     It also seems to create rendering artifacts when set too high.
 */
 
-void BridgeFerryHandler::Cull(int lod) {
-    // TODO: Make this do something?
-}
+void BridgeFerryHandler::Cull() {}
 
 void BridgeFerryHandler::Draw(int lod) {
     reinterpret_cast<dgBangerInstance*>(this)->dgBangerInstance::Draw(lod);
@@ -31,12 +29,10 @@ void BridgeFerryHandler::Draw(int lod) {
 
 void BridgeFerryHandler::Install() {
     // revert bridges/ferries to how they were in the betas
-    InstallCallback("Bridge/Ferry: Cull", "Quick'n dirty fix for fullbright bridges/ferries.",
-        &Cull, {
-            cb::call(0x5780BC), // gizBridgeMgr::Cull
-            cb::call(0x5798F0), // gizFerryMgr::Cull
-        }
-    );
+    InstallVTableHook("Bridge/Ferry: Cull", &Cull, {
+            0x5B6008, // gizBridgeMgr::Cull
+            0x5B61FC, // gizFerryMgr::Cull
+        });
 
     InstallVTableHook("Bridge/Ferry: Draw", &Draw, {
         0x5B5FB8, // gizBridge::Draw
