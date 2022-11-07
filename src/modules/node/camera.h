@@ -425,8 +425,8 @@ namespace MM2
     class camViewCS : public asNode {
     protected:
         int unk_18;
-        int unk_1C;
-        int unk_20;
+        short LastTransitionType;
+        float LastTransitionTime;
 
         datCallback callback;
 
