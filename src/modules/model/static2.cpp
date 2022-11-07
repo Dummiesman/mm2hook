@@ -51,6 +51,25 @@ AGE_API void modStatic::DrawWithTexGenAndTexMatrix(void) const
 	return hook::Thunk<0x4A4C50>::Call<void>(this); 
 }
 
+int MM2::modStatic::GetPacketCount() const
+{
+	return this->PacketCount;
+}
+
+gfxPacket* MM2::modStatic::GetPacket(int num)
+{
+	if (num < 0 || num >= GetPacketCount())
+		return nullptr;
+	return this->ppPackets[num];
+}
+
+int MM2::modStatic::GetShaderIndex(int num) const
+{
+	if (num < 0 || num >= GetPacketCount())
+		return -1;
+	return this->ShaderIndices[num];
+}
+
 void modStatic::BindLua(LuaState L) 
 {
 	LuaBinding(L).beginClass<modStatic>("modStatic")

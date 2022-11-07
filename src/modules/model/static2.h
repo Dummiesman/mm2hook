@@ -22,7 +22,6 @@ namespace MM2
         uint8_t *ShaderIndices;
         gfxPacket **ppPackets;
         gfxPacketList **ppPacketLists;
-
     public:
         AGE_API int GetTriCount(void) const;
         AGE_API int GetAdjunctCount(void) const;
@@ -34,6 +33,10 @@ namespace MM2
         AGE_API void DrawEnvMapped(modShader *shader, gfxTexture *tex, float a3) const;
         AGE_API void DrawOrthoMapped(modShader *shader, gfxTexture *tex, float a3, uint a4) const;
         AGE_API void DrawWithTexGenAndTexMatrix(void) const;
+
+        int GetPacketCount() const;
+        gfxPacket* GetPacket(int num);
+        int GetShaderIndex(int num) const;
 
         static void BindLua(LuaState L);
     };
