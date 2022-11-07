@@ -35,7 +35,6 @@ namespace MM2
             hook::Thunk<0x4A22E0>::Call<void>(this);
         };
     };
-    
     ASSERT_SIZEOF(asCamera, 0x170);
 
     class camBaseCS : public asNode {
@@ -64,32 +63,32 @@ namespace MM2
         }
 
         //fields
-        inline Matrix34 getMatrix()
+        Matrix34 getMatrix()
         {
             return matrix_1; 
         }
 
-        inline void setMatrix(Matrix34 matrix)
+        void setMatrix(Matrix34 matrix)
         {
             matrix_1 = matrix;
         }
         
-        inline Vector3 getPosition()
+        Vector3 getPosition()
         {
             return matrix_1.GetRow(3); 
         }
 
-        inline void setPosition(Vector3 position)
+        void setPosition(Vector3 position)
         {
             matrix_1.SetRow(3, position);
         }
 
-        inline float getFOV() 
+        float getFOV() 
         {
             return CameraFOV; 
         }
         
-        inline void setFOV(float fov)
+        void setFOV(float fov)
         {
             CameraFOV = fov;
         }
@@ -119,7 +118,6 @@ namespace MM2
             .endClass();
         }
     };
-
     ASSERT_SIZEOF(camBaseCS, 0x90);
 
     class camAppCS : public camBaseCS {
@@ -172,7 +170,6 @@ namespace MM2
             .endClass();
         }
     };
-
     ASSERT_SIZEOF(camAppCS, 0x108);
 
     class camCarCS : public camAppCS {
@@ -180,7 +177,7 @@ namespace MM2
         vehCar *car;
         int unk_10C; // one of: -1, 0, 1?
     public:
-        inline vehCar * getCar(void) const {
+        vehCar * getCar(void) const {
             return this->car;
         }
 
@@ -206,7 +203,6 @@ namespace MM2
             .endClass();
         }
     };
-
     ASSERT_SIZEOF(camCarCS, 0x110);
 
     class camPointCS : public camCarCS {
@@ -257,7 +253,6 @@ namespace MM2
             .endClass();
         }
     };
-
     ASSERT_SIZEOF(camPointCS, 0x13C);
 
     class camPovCS : public camCarCS {
@@ -304,7 +299,6 @@ namespace MM2
             .endClass();
         }
     };
-
     ASSERT_SIZEOF(camPovCS, 0x148);
 
     class camTrackCS : public camCarCS {
@@ -370,11 +364,11 @@ namespace MM2
             hook::Thunk<0x406810>::Call<void>(this);
         }
 
-        static inline float getHeight(void) {
+        static float getHeight(void) {
             return *(float*)0x5D4340;
         }
 
-        static inline void setHeight(float height) {
+        static void setHeight(float height) {
             auto heightPtr = (float*)0x5D4340;
             *heightPtr = height;
         }
@@ -415,7 +409,6 @@ namespace MM2
             scoped_vtable x(this);
             hook::Thunk<0x5215C0>::Call<void>(this);
         }
-
 
         // asNode overrides
         AGE_API void Reset() override                       { hook::Thunk<0x520AB0>::Call<void>(this); }
