@@ -205,7 +205,7 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camCarCS, camAppCS>("camCarCS")
-                // TODO
+                .addPropertyReadOnly("Car", &getCar)
             .endClass();
         }
     };
