@@ -12,6 +12,9 @@ static ConfigValue<int> cfgPhysRewriteFlags("dbg_PhysRewriteFlags", 127);
 
 
 void dgPhysManagerHandler::Install() {
+    if (cfgPhysRewriteFlags.Get() == 0)
+        return;
+
     // large parts of dgPhysManager have been rewritten to accomodate an increased MAX_MOVERS value
     // adjust size 
     mem::write(0x4129C7 + 1, sizeof(dgPhysManager));
