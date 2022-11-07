@@ -500,9 +500,9 @@ namespace MM2
 
         datCallback callback;
 
-        camCarCS *carCS;
-        void *unk_34;
-        camTransitionCS *transitionCS;
+        camCarCS *currentCamera;
+        camCarCS *afterTransitionCamera;
+        camTransitionCS *transitionCamera;
 
         // overrides
         bool OverrideClip; 
@@ -521,8 +521,9 @@ namespace MM2
             hook::Thunk<0x51FE20>::Call<void>(this);
         }
 
-        inline camCarCS * getCurrentCamera(void) const      { return carCS; }
-        bool isCurrentCamera(camCarCS *cam)                 { return carCS == cam; }
+        camCarCS * getCurrentCamera(void) const             { return currentCamera; }
+        bool isCurrentCamera(camCarCS *cam) const           { return currentCamera == cam; }
+        bool isTransitioning() const                        { return isCurrentCamera(this->transitionCamera); }
 
         AGE_API static camViewCS * Instance(vehCar *a1)     { return hook::StaticThunk<0x51FE30>::Call<camViewCS *>(a1); }
 
@@ -552,6 +553,7 @@ namespace MM2
                 //properties
                 .addStaticFunction("Instance", &Instance)
                 .addPropertyReadOnly("CurrentCamera", &getCurrentCamera)
+                .addPropertyReadOnly("IsTransitioning", &isTransitioning)
                 .addFunction("IsCurrentCamera", &isCurrentCamera)
                 .addFunction("SetCam", &SetCam)
                 .addFunction("NewCam", static_cast<bool(camViewCS::*)(camCarCS *, int, float)>(&NewCam))
