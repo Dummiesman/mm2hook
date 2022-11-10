@@ -82,11 +82,11 @@ bool prevSplashState = false;
 void mmPlayerHandler::Splash() {
     auto player = reinterpret_cast<mmPlayer*>(this);
     auto car = player->GetCar();
-    float vehicleMph = car->GetModel()->GetVelocity().Mag() * 2.23694f;
+    float vehicleVelocity = car->GetModel()->GetVelocity().Mag();
 
     //trigger ColliderId 22 with velocity of vehicleMph
     auto impactAud = car->GetCarAudioContainerPtr()->GetAudImpactPtr();
-    impactAud->Play(vehicleMph, 22);
+    impactAud->Play(vehicleVelocity, 22);
 }
 
 void mmPlayerHandler::PlayExplosion() {
@@ -170,26 +170,6 @@ void mmPlayerHandler::Reset() {
 
     // call original
     hook::Thunk<0x404A60>::Call<void>(this);
-}
-
-Matrix34 leftMatrix;
-Matrix34 rightMatrix;
-
-void mmPlayerHandler::SetHeadPtr(Matrix34* ptr, int a3) 
-{
-    Matrix34 camMatrix = *ptr;
-
-    Vector3 left = camMatrix.Transform(Vector3(-1, 0, 0));
-    Vector3 right = camMatrix.Transform(Vector3(1, 0, 0));
-    
-
-    leftMatrix.Set(&camMatrix);
-    rightMatrix.Set(&camMatrix);
-    leftMatrix.SetRow(3, left);
-    rightMatrix.SetRow(3, right);
-
-    hook::Thunk<0x510020>::Call<void>(this, &leftMatrix, 0);
-    hook::Thunk<0x510040>::Call<void>(this, &rightMatrix, 0);
 }
 
 void mmPlayerHandler::Install() {

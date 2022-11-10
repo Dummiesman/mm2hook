@@ -11,7 +11,7 @@ hook::Type<bool> sm_EnablePVS(0x62B070);
 
 Stream* cityLevelBugfixHandler::OpenPvsStream(const char* folder, const char* file, const char* extension, bool a4, bool a5) {
     //open stream
-    auto stream = hook::StaticThunk<0x4C58C0>::Call<Stream*>(folder, file, extension, a4, a5);
+    auto stream = datAssetManager::Open(folder, file, extension, a4, a5);
 
     //stream will be NULL if the PVS doesn't exist
     if (!stream) {
