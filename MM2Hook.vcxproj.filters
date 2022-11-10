@@ -1579,6 +1579,12 @@
     <ClInclude Include="src\modules\mmgame\viewmgr.h">
       <Filter>Source Files\modules\mmgame</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\audio\audimpactdata.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\audio\audimpact.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">

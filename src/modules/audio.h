@@ -6,6 +6,8 @@
 #include "audio\audcreaturecontainer.h"
 #include "audio\aud3dambientobject.h"
 #include "audio\aud3dambientobject_wrapper.h"
+#include "audio\audimpactdata.h"
+#include "audio\audimpact.h"
 
 namespace MM2
 {

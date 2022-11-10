@@ -272,6 +272,8 @@
     <ClInclude Include="src\modules\audio\aud3dobject.h" />
     <ClInclude Include="src\modules\audio\aud3dobjectmanager.h" />
     <ClInclude Include="src\modules\audio\audcreaturecontainer.h" />
+    <ClInclude Include="src\modules\audio\audimpact.h" />
+    <ClInclude Include="src\modules\audio\audimpactdata.h" />
     <ClInclude Include="src\modules\audio\sound.h" />
     <ClInclude Include="src\modules\banger.h" />
     <ClInclude Include="src\modules\banger\active.h" />

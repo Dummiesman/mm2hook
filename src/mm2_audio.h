@@ -26,7 +26,6 @@ namespace MM2
     // Forward declarations
     class DirSnd;
     class mmDirSnd;
-    class Aud3DObject;
     class AudCreatureContainer;
     class AudManager;
     class mmCNRSpeech;
@@ -218,13 +217,6 @@ namespace MM2
         virtual AGE_API int InitPrimarySoundBuffer(DWORD p1, BYTE p2, char *p3) {
             return $::mmDirSnd::InitPrimarySoundBuffer(this, p1, p2, p3);
         };
-    };
-
-    class AudImpact {
-    public:
-        AGE_API void Play(float a1, int a2) {
-            hook::Thunk<0x511860>::Call<void>(this, a1, a2);
-        }
     };
 
     class mmCNRSpeech {

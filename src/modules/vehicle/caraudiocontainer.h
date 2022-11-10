@@ -1,10 +1,12 @@
 #pragma once
 #include <modules\vehicle.h>
+#include <modules\audio\audimpact.h>
 
 #include "nitrocaraudio.h"
 #include "semicaraudio.h"
 #include "policecaraudio.h"
 #include "caraudio.h"
+
 
 namespace MM2
 {
@@ -12,7 +14,6 @@ namespace MM2
     class vehCarAudioContainer;
 
     // External declarations
-    extern class AudImpact;
     extern class Stream;
 
     // Class definitions
