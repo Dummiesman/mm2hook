@@ -558,6 +558,7 @@ namespace MM2
                 .addFunction("SetCam", &SetCam)
                 .addFunction("NewCam", static_cast<bool(camViewCS::*)(camCarCS *, int, float)>(&NewCam))
                 .addFunction("Init", &Init)
+                .addFunction("OneShot", &OneShot)
                 .addFunction("ForceMatrixDelta", static_cast<void(camViewCS::*)(const Matrix34 *)>(&ForceMatrixDelta))
 
                 .addVariable("OverrideClip", &camViewCS::OverrideClip)
