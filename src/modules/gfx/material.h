@@ -25,6 +25,11 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<gfxMaterial>("gfxMaterial")
+                .addVariable("Diffuse", &gfxMaterial::Diffuse)
+                .addVariable("Ambient", &gfxMaterial::Ambient)
+                .addVariable("Specular", &gfxMaterial::Specular)
+                .addVariable("Emissive", &gfxMaterial::Emissive)
+                .addVariable("Shininess", &gfxMaterial::Shininess)
                 .endClass();
         }
     };
