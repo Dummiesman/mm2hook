@@ -216,19 +216,20 @@ void mmHudMapFeatureHandler::DrawPlayer() {
 }
 
 void mmHudMapFeatureHandler::DrawCops() {
+    auto map = reinterpret_cast<mmHudMap*>(this);
     auto AIMAP = aiMap::GetInstance();
     bool elapsedTime1 = fmod(datTimeManager::ElapsedTime, 0.15f) > 0.1f;
     bool elapsedTime2 = fmod(datTimeManager::ElapsedTime, 0.125f) > 0.1f;
     bool elapsedTime3 = fmod(datTimeManager::ElapsedTime, 0.5f) > 0.25f;
-    BOOL ShowAllCops = *getPtr<BOOL>(this, 0x38);
+    bool showAllCops = map->GetShowAllCops();
 
     for (int i = 0; i < AIMAP->numCops; i++) {
         auto police = AIMAP->Police(i);
         auto policeMtx = getPtr<Matrix34>(*getPtr<Matrix34*>(police, 0xCC), 0x6C);
-        WORD policeState = *getPtr<WORD>(police, 0x977A);
+        WORD policeState = police->GetPoliceState();
 
         // check if the cop in pursuit
-        if (policeState || ShowAllCops) {
+        if (policeState || showAllCops) {
             // draw triangle outline
             float triSize = *getPtr<float>(this, 0x64) * 1.3f;
             auto sizeHandler = *getPtr<Matrix34*>(this, 0x64);
