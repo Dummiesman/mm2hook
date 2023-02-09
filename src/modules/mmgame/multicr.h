@@ -66,5 +66,5 @@ namespace MM2
         }
     };
 
-    ASSERT_SIZEOF(mmMultiCR, 0xB2A8);
+    //ASSERT_SIZEOF(mmMultiCR, 0xB2A8);  unknown base class size, TODO
 }

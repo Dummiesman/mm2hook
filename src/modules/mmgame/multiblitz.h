@@ -62,5 +62,5 @@ namespace MM2
         }
     };
 
-    ASSERT_SIZEOF(mmMultiBlitz, 0xB218);
+    //ASSERT_SIZEOF(mmMultiBlitz, 0xB218);  unknown base class size, TODO
 }

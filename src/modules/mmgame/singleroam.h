@@ -13,7 +13,7 @@ namespace MM2
     class mmSingleRoam : public mmGameSingle
     {
     private:
-        byte _buffer[0x76F0 - sizeof(asNode) - 0x4];
+        byte _buffer[0x76F0];
     public:
         AGE_API mmSingleRoam(void) {
             //scoped_vtable x(this);
@@ -56,5 +56,5 @@ namespace MM2
         }
     };
 
-    ASSERT_SIZEOF(mmSingleRoam, 0x76F0);
+    //ASSERT_SIZEOF(mmSingleRoam, 0x76F0); Don't know size of base classes yet
 }

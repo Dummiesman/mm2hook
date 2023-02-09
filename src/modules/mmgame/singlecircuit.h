@@ -59,5 +59,5 @@ namespace MM2
         }
     };
 
-    ASSERT_SIZEOF(mmSingleCircuit, 0x7720);
+    //ASSERT_SIZEOF(mmSingleCircuit, 0x7720); unknown base class size, TODO
 }
