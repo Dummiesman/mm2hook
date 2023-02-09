@@ -29,12 +29,12 @@ namespace MM2
             parser.AddValue("ExplodeTime", &ExplodeTime);
         };
         
-        virtual AGE_API const char* GetDirName(void) 
+        virtual AGE_API const char* GetDirName(void) override
         {
             return "tune/banger";
         };
 
-        virtual AGE_API char* GetClassName(void) 
+        virtual AGE_API char* GetClassName(void) override
         {
             return "dgBombInfo";
         };
@@ -172,20 +172,16 @@ namespace MM2
             if (this->Active == FALSE)
                 return;
 
-            if (this->Sphere.getIsRunning())
+            if (this->Sphere.IsActive())
             {
-                auto position = this->GetPosition();
-                int room = lvlLevel::Singleton->FindRoomId(position, this->GetRoomId());
-                if (room != this->GetRoomId())
-                    lvlLevel::Singleton->MoveToRoom(this, room);
-
+                lvlLevel::GetSingleton()->Reparent(this);
                 dgPhysManager::Instance->DeclareMover(this, 3, 0x1A); // Verify flags, they're from Test Drive
                 this->Sphere.Update();
             }
             else
             {
                 this->Active = FALSE;
-                lvlLevel::Singleton->MoveToRoom(this, 0);
+                lvlLevel::GetSingleton()->MoveToRoom(this, 0);
             }
         }
 

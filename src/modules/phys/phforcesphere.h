@@ -14,7 +14,7 @@ namespace MM2
     class phForceSphere : public phBound
     {
     private:
-        BOOL DoRunUpdate;
+        BOOL IsActive;
         Vector3 Center;
         float CurrentRadius;
         float ForceCoef;
@@ -116,24 +116,24 @@ namespace MM2
 
         void Start()
         {
-            this->DoRunUpdate = TRUE;
+            this->IsActive = TRUE;
         }
 
         void Stop()
         {
-            this->DoRunUpdate = FALSE;
+            this->IsActive = FALSE;
         }
 
         void Reset()
         {
-            this->DoRunUpdate = FALSE;
+            this->IsActive = FALSE;
             this->IsGrowing = FALSE;
             this->TimeLeft = FLT_MAX;
         }
 
         void Update()
         {
-            if (this->DoRunUpdate == FALSE)
+            if (this->IsActive == FALSE)
                 return;
 
             this->TimeLeft = this->TimeLeft - datTimeManager::Seconds;
@@ -141,7 +141,7 @@ namespace MM2
 
             if (this->TimeLeft < 0.f || (this->ImpulseCoef == 0.f && this->ForceCoef == 0.f))
             {
-                this->DoRunUpdate = false;
+                this->IsActive = false;
                 return;
             }
 
@@ -198,9 +198,9 @@ namespace MM2
             return this->FadeFactor;
         }
         
-        inline bool getIsRunning()
+        inline bool IsActive()
         {
-            return this->DoRunUpdate == TRUE;
+            return this->IsActive == TRUE;
         }
 
         inline Vector3 getCenter()
