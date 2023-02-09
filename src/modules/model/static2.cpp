@@ -74,6 +74,9 @@ void modStatic::BindLua(LuaState L)
 {
 	LuaBinding(L).beginClass<modStatic>("modStatic")
 		//functions
+		.addPropertyReadOnly("NumPackets", &GetPacketCount)
+		.addFunction("GetPacket", &GetPacket)
+		.addFunction("GetShaderIndex", &GetShaderIndex)
 		.addFunction("GetTriCount", &GetTriCount)
 		.addFunction("GetAdjunctCount", &GetAdjunctCount)
 		.endClass();
