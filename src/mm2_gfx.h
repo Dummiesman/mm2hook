@@ -21,6 +21,8 @@ namespace MM2
         luaBind<gfxTextureCacheEntry>(L);
         luaBind<gfxTextureCachePool>(L);
 
+        luaBind<gfxPacket>(L);
+
         LuaBinding(L).addFunction("gfxGetTexture", &gfxGetTexture);
     }
 }
