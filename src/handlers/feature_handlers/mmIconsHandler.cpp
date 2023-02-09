@@ -86,7 +86,7 @@ void mmIconsHandler::RegisterOpponents(OppIconInfo *icons, int count, void *a3) 
     }
 
     //call original
-    hook::Thunk<0x4322F0>::Call<void>(this, icons, count, a3);
+    reinterpret_cast<mmIcons*>(this)->RegisterOpponents(icons, count, a3);
 }
 
 void mmIconsHandler::RegisterOpponents_Blitz(OppIconInfo *icons, int count, void *a3) {
