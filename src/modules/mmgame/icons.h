@@ -29,6 +29,9 @@ namespace MM2
             return &icons[index];
         }
 
+        AGE_API void RegisterOpponents(OppIconInfo* infos, int numInfos, void* font)
+                                                    { hook::Thunk<0x4322F0>::Call<void>(this, infos, numInfos, font); }
+
         /*
             asNode virtuals
         */        
