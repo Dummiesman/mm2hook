@@ -7,6 +7,18 @@ namespace MM2
     declfield(cityLevel::sm_EnablePVS)(0x62B070);
     declfield(cityLevel::sm_PvsBuffer)(0x62AE68);
 
+    /*
+        cityTimeWeatherLighting
+    */
+    void cityTimeWeatherLighting::ComputeAmbientLightLevels()
+    {
+        hook::Thunk<0x443300>::Call<void>(this);
+    }
+
+    /*
+        cityLevel
+    */
+
     AGE_API cityLevel::cityLevel() {
         scoped_vtable x(this);
         hook::Thunk<0x443860>::Call<void>(this);

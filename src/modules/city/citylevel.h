@@ -6,8 +6,9 @@
 namespace MM2
 {
     // Forward declarations
+    struct cityTimeWeatherLighting;
     class cityLevel;
-
+    
     // External declarations
     extern class gfxViewport;
     extern class lvlInstance;
@@ -15,6 +16,30 @@ namespace MM2
     extern struct lvlIntersection;
 
     // Class definitions
+    struct cityTimeWeatherLighting {
+        float KeyHeading;
+        float KeyPitch;
+        Vector3 KeyColor;
+
+        float Fill1Heading;
+        float Fill1Pitch;
+        Vector3 Fill1Color;
+
+        float Fill2Heading;
+        float Fill2Pitch;
+        Vector3 Fill2Color;
+
+        // "ambient light levels" that get calculated using the Ambient color?
+        // doesn't care for any of the Key/Pitch values
+        int AmbientLevel3; // fullbright
+        int AmbientLevel2;
+        int AmbientLevel1;
+
+        int Ambient; // looks like the alpha is ignored
+
+        void ComputeAmbientLightLevels();
+    };
+
     class cityLevel : public lvlLevel {
     private:
         int unk28;
