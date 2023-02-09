@@ -63,13 +63,13 @@ void mmSingleRoamHandler::ResetToNearestLocation() {
         auto oldResetPos = carsim->GetResetPosition();
 
         // set to closest intersection
-        carsim->SetResetPos(&AIMAP->intersections[closestIntersection]->GetCenter());
+        carsim->SetResetPos(AIMAP->intersections[closestIntersection]->GetCenter());
 
         // reset vehicle
         player->Reset();
 
         // set back
-        carsim->SetResetPos(&oldResetPos);
+        carsim->SetResetPos(oldResetPos);
     }
     else
     {

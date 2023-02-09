@@ -19,20 +19,20 @@ void mmPlayerHandler::Zoink() {
     //get required vars
     auto player = reinterpret_cast<mmPlayer*>(this);
     auto car = player->GetCar();
-    auto carPos = car->GetModel()->GetPosition();
+    Vector3 carPos = car->GetModel()->GetPosition();
 
     // tell the player "That didn't happen!"
     player->GetHUD()->SetMessage(AngelReadString(29), 3.f, 0);
 
     // if we're in CNR, drop the gold!
-    if (dgStatePack::Instance->GameMode == dgGameMode::CnR) {
+    if (dgStatePack::Instance->GameMode == dgGameMode::CnR)  {
         auto game = mmGameManager::Instance->getGame();
         hook::Thunk<0x425460>::ThisCall<void>(game); // mmMultiCR::DropThruCityHandler
     }
 
     // early exit
     auto AIMAP = aiMap::GetInstance();
-    if (AIMAP == nullptr || AIMAP->GetIntersectionCount() == 0) {
+    if (AIMAP == nullptr || AIMAP->GetIntersectionCount() == 0)  {
         car->Reset();
         return;
     }
@@ -71,10 +71,11 @@ void mmPlayerHandler::Zoink() {
     }
 
     // move player to the closest intersection if we can
-    car->Reset();
     if (closestIntersection >= 0) {
-        auto ics = car->GetICS();
-        ics->SetPosition(AIMAP->Intersection(closestIntersection)->GetCenter());
+        Vector3 originalResetPos = car->GetCarSim()->GetResetPosition();
+        car->GetCarSim()->SetResetPos(AIMAP->Intersection(closestIntersection)->GetCenter());
+        car->Reset();
+        car->GetCarSim()->SetResetPos(originalResetPos);
     }
 }
 
@@ -197,6 +198,7 @@ void mmPlayerHandler::Install() {
     }
 
     //fix collision detection
+    //TODO: fix this properly by setting the hasCollided flag!
     InstallPatch({ 0x8B, 0x81, 0xF4, 0x0, 0x0, 0x0 }, {
         0x40493F, // mmPlayer::UpdateHOG
     });
