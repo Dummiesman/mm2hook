@@ -17,6 +17,10 @@ namespace MM2
     protected:
         static hook::Field<0x00, aiVehiclePhysics> _vehiclePhysics;
         static hook::Field<0x9780, unsigned short> _id;
+    private:
+        void registerRouteLua(std::vector<short> intersectionIds, Vector3 const & endPosition, Vector3 const & endOrientation,short numLaps, float targetSpeed) {
+            //RegisterRoute(intersectionIds.data(), intersectionIds.size(), endPosition, endOrientation, numLaps, targetSpeed);
+        }
     public:
         aiRouteRacer(void)                                  DONOTCALL;
         aiRouteRacer(const aiRouteRacer &&)                 DONOTCALL;
@@ -41,11 +45,18 @@ namespace MM2
             return _vehiclePhysics.ptr(this)->GetState();
         }
 
-        AGE_API int Finished()                              { return hook::Thunk<0x53D6E0>::Call<int>(this); }
+        AGE_API int Finished()                                  { return hook::Thunk<0x53D6E0>::Call<int>(this); }
+        AGE_API void RegisterRoute(short* intersectionIDs, short numIntersections, Vector3 const & endPosition, Vector3 const & endOrientation,
+                                   short numLaps = 0, float targetSpeed = 9999.0f, float a8 = 0.0f, bool unkFlag = false, bool avoidTraffic = true, bool avoidProps = true, bool avoidPlayers = true,
+                                   bool avoidOpponents = true, bool weirdPathfinding = false, float a15 = 1.0f, float a16 = 2.0f, float a17 = 0.7f, float a18 = 75.0f)
+                                                                { hook::Thunk<0x5598A0>::Call<void>(this, intersectionIDs, numIntersections, &endPosition, &endOrientation, 
+                                                                                                    numLaps, targetSpeed, a8, unkFlag, avoidTraffic, avoidProps, avoidPlayers,
+                                                                                                    avoidOpponents, weirdPathfinding, a15, a16, a17, a18); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiRouteRacer>("aiRouteRacer")
                 .addFunction("Finished", &Finished)
+                .addFunction("RegisterRoute", &registerRouteLua)
 
                 .addPropertyReadOnly("ID", &GetId)
                 .addPropertyReadOnly("Car", &GetCar)
