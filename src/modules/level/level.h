@@ -94,6 +94,22 @@ namespace MM2
         {
             luaDrawableHandler::UnregisterCallback(id);
         }
+
+        //lua function for getting neighbours
+        std::vector<int> LuaGetNeighbors(int room)
+        {
+            int neighborCount = this->GetNeighborCount(room);
+            int* rooms = static_cast<int*>(alloca(neighborCount * 4));
+            int neighborRoomCount = this->GetNeighbors(rooms, room);
+
+            std::vector<int> vec(neighborRoomCount);
+            for (int i = 0; i < neighborRoomCount; i++)
+            {
+                vec.push_back(rooms[i]);
+            }
+
+            return vec;
+        }
     protected:
         static hook::Type<lvlLevel*> Singleton;
     public:
@@ -208,6 +224,7 @@ namespace MM2
 
                 //virtual functions
                 .addFunction("FindRoomId", &FindRoomId, LUA_ARGS(Vector3, _def<int, -1>))
+                .addFunction("GetNeighbors", &LuaGetNeighbors)
                 .addFunction("GetNeighborCount", &GetNeighborCount)
                 .addFunction("SetObjectDetail", &SetObjectDetail)
                 .addFunction("GetWaterLevel", &GetWaterLevel)
