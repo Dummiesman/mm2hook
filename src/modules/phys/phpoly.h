@@ -21,7 +21,7 @@ namespace MM2
         /*
             Lua Helpers
         */
-        short getIndex(int i)
+        short getIndex(int i) const
         {
             if (i < 0 || i >= 4)
                 return -1;
@@ -34,17 +34,17 @@ namespace MM2
                 this->Indices[i] = index;
         }
 
-        inline byte getMaterialIndex() 
+        byte getMaterialIndex() const
         {
             return *(byte*)&Radius;
         }
 
-        inline void setMaterialIndex(byte index) 
+        void setMaterialIndex(byte index) 
         {
             *(byte*)&Radius = index;
         }
 
-        inline bool isQuad()
+        bool isQuad() const
         {
             return this->Indices[3] != 0;
         }
