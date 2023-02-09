@@ -25,6 +25,7 @@ namespace MM2
     extern class lvlFixedMatrix;
     extern class lvlLandmark;
     extern class dgUnhitYBangerInstance;
+    extern class dgUnhitMtxBangerInstance;
     extern class phBoundBox;
     extern class phBoundGeometry;
     extern class phBoundHotdog;
@@ -32,6 +33,8 @@ namespace MM2
     extern class phBoundTerrain;
     extern class phBoundTerrainLocal;
     extern class phForceSphere;
+    extern class gizBridge;
+    extern class aiTrafficLightInstance;
 
     // Class definitions
     class lvlInstance
@@ -56,10 +59,14 @@ namespace MM2
                     LuaState(L).push(reinterpret_cast<dgUnhitYBangerInstance*>(this));
                     break;
                 case 0x5B1494: //dgUnhitMtxBangerInstance
+                    LuaState(L).push(reinterpret_cast<dgUnhitMtxBangerInstance*>(this));
+                    break;
                 case 0x5B54AC: //aiTrafficLightInstance
+                    LuaState(L).push(reinterpret_cast<aiTrafficLightInstance*>(this));
+                    break;
                 case 0x5B5F8C: //gizBridge
-                case 0x5B6180: //gizFerry
-                case 0x5B60D4: //gizTrainCar
+                    LuaState(L).push(reinterpret_cast<gizBridge*>(this));
+                    break;
                 case 0x5B15B8: //dgHitBangerInstance
                     LuaState(L).push(reinterpret_cast<dgBangerInstance*>(this));
                     break;
@@ -81,6 +88,8 @@ namespace MM2
                 case 0x5B1A88: //lvlLandmark
                     LuaState(L).push(reinterpret_cast<lvlLandmark*>(this));
                     break;
+                case 0x5B6180: //gizFerry
+                case 0x5B60D4: //gizTrainCar
                 default:
                     LuaState(L).push(this);
                     break;
