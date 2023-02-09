@@ -265,7 +265,7 @@ namespace MM2
         AGE_API void ReconfigureDrivetrain()                { hook::Thunk<0x4CC0B0>::Call<void>(this); }
         AGE_API void SetHackedImpactParams()                { hook::Thunk<0x4CC080>::Call<void>(this); }
         AGE_API void RestoreImpactParams()                  { hook::Thunk<0x4CC050>::Call<void>(this); }
-        AGE_API void SetResetPos(Vector3 * a1)              { hook::Thunk<0x4CC830>::Call<void>(this, a1); }
+        AGE_API void SetResetPos(Vector3 const & a1)        { hook::Thunk<0x4CC830>::Call<void>(this, &a1); }
         
         /*
             asNode virtuals
@@ -274,7 +274,7 @@ namespace MM2
         AGE_API void Update() override                      { hook::Thunk<0x4CC8E0>::Call<void>(this); }
         AGE_API void Reset() override                       { hook::Thunk<0x4CBA70>::Call<void>(this); }
         AGE_API void FileIO(datParser &parser)  override
-                                                            { hook::Thunk<0x4CCC70>::Call<void>(this); }
+                                                            { hook::Thunk<0x4CCC70>::Call<void>(this, &parser); }
         AGE_API char* GetClassName() override               { return hook::Thunk<0x4CCF10>::Call<char*>(this); }
         AGE_API char const* GetDirName() override           { return hook::Thunk<0x4CBAF0>::Call<char const*>(this); }
 
