@@ -24,7 +24,6 @@ namespace MM2
         aiVehicleActive* activeActives[32];
         aiVehicleActive aiVehicleActives[32];
         __int16 attachedCount;
-        __int16 gap;
         ltLight* sharedLight;
     public:
         static hook::Type<aiVehicleManager *> Instance;
@@ -83,7 +82,4 @@ namespace MM2
     };
 
     ASSERT_SIZEOF(aiVehicleManager, 0x177A4);
-
-    // Lua initialization
-
 }
