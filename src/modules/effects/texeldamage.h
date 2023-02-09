@@ -141,7 +141,7 @@ namespace MM2
 
                 for (int i = 0; i < model->PacketCount; ++i)
                 {
-                    for (gfxPacket* packet = model->ppPackets[i]; packet; packet = packet->Next)
+                    for (gfxPacket* packet = model->ppPackets[i]; packet; packet = packet->GetNext())
                     {
                         if (packet->StartVertex >= 0)
                         {
@@ -150,8 +150,8 @@ namespace MM2
 
                         for (int j = 0; j < packet->AdjunctCount; ++j)
                         {
-                            packet->GetPosition(&Positions[currentPos], j);
-                            packet->GetTexCoord(&TexCoords[currentPos], j);
+                            packet->GetPosition(Positions[currentPos], j);
+                            packet->GetTexCoord(TexCoords[currentPos], j);
 
                             ++currentPos;
                         }
@@ -175,7 +175,7 @@ namespace MM2
                 {
                     uint8_t shaderIndex = model->ShaderIndices[i];
 
-                    for (gfxPacket* packet = model->ppPackets[i]; packet; packet = packet->Next)
+                    for (gfxPacket* packet = model->ppPackets[i]; packet; packet = packet->GetNext())
                     {
                         for (int j = 0; j < (packet->TriCount / 3); ++j)
                         {
