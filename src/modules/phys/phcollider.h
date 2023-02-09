@@ -12,10 +12,8 @@ namespace MM2
 
     class phCollider {
     private:
-        byte unknown[0x30];
+        byte unknown[0xB0];
     public:
-        int colliderId; //?
-
         phJoint* GetJoint()
         {
             return *getPtr<phJoint*>(this, 0xAC);

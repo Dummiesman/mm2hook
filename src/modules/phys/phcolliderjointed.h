@@ -4,15 +4,11 @@
 
 namespace MM2
 {
-    // Forward declarations
+    class phColliderJointed : public phCollider
+    {
+    public:
+        void Attach(phJoint* joint) { hook::Thunk<0x46D4D0>::Call<void>(this, joint); }
 
-
-    // External declarations
-
-
-    // Class definitions
-
-
-    // Lua initialization
-
+        // TODO: Virtuals
+    };
 }
