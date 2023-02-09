@@ -38,36 +38,36 @@ namespace MM2
         phPolygon* PolygonsPtr;
         phHotEdge* HotEdgePtr;
     public:
-        inline int getVertexCount()
+        int GetVertexCount() const
         {
             return VertexCount;
         }
 
-        inline int getPolygonCount()
+        int GetPolygonCount() const
         {
             return PolygonCount;
         }
 
-        inline int getEdgeCount()
+        int GetEdgeCount() const
         {
             return EdgeCount;
         }
 
-        inline phPolygon* getPolygon(int index) 
+        phPolygon* GetPolygon(int index) 
         {
             if(PolygonsPtr == nullptr || index < 0 || index >= PolygonCount)
                 return nullptr;
             return &PolygonsPtr[index];
         }
 
-        inline phHotEdge* getEdge(int index)
+        phHotEdge* GetEdge(int index)
         {
             if (HotEdgePtr == nullptr || index < 0 || index >= EdgeCount)
                 return nullptr;
             return &HotEdgePtr[index];
         }
 
-        inline Vector3* getVertex(int index)
+        Vector3* GetVertexSafe(int index)
         {
             if (VertexPtr == nullptr || index < 0 || index >= VertexCount)
                 return nullptr;
@@ -76,12 +76,12 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<phBoundPolygonal, phBound>("phBoundPolygonal")
-                .addFunction("GetPolygon", &getPolygon)
-                .addFunction("GetEdge", &getEdge)
-                .addFunction("GetVertex", &getVertex)
-                .addPropertyReadOnly("NumPolygons", &getPolygonCount)
-                .addPropertyReadOnly("NumEdges", &getEdgeCount)
-                .addPropertyReadOnly("NumVertices", &getVertexCount)
+                .addFunction("GetPolygon", &GetPolygon)
+                .addFunction("GetEdge", &GetEdge)
+                .addFunction("GetVertex", &GetVertexSafe)
+                .addPropertyReadOnly("NumPolygons", &GetPolygonCount)
+                .addPropertyReadOnly("NumEdges", &GetEdgeCount)
+                .addPropertyReadOnly("NumVertices", &GetVertexCount)
                 .endClass();
         }
     };
