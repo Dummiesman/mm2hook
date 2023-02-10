@@ -351,6 +351,14 @@ namespace MM2 {
         void setCityName(LPCSTR name) {
             memcpy(&CityName, name, sizeof(CityName) - 1);
         }
+
+        LPCSTR getCityLocale() const {
+            return (LPCSTR)CityLocale;
+        }
+
+        void setCityLocale(LPCSTR name) {
+            memcpy(&CityLocale, name, sizeof(CityLocale) - 1);
+        }
     public:
         char CityName[40];
         char CityLocale[40]; // same as city name, referred to as 'locale'?
@@ -492,6 +500,7 @@ namespace MM2 {
             .addProperty("NetName", &getNetName, &setNetName)
             .addProperty("VehicleName", &getVehicleName, &setVehicleName)
             .addProperty("CityName", &getCityName, &setCityName)
+            .addProperty("CityLocale", &getCityLocale, &setCityLocale)
             .addVariable("VehiclePaintjob", &mmStatePack::VehiclePaintjob)
             .addVariable("InCrashCourse", &mmStatePack::InCrashCourse)
             .addVariable("FarClip", &mmStatePack::FarClip)
@@ -499,7 +508,7 @@ namespace MM2 {
             .addProperty("UsePortals", &getUsePortals, &setUsePortals)
             .addVariable("ViewMode", &mmStatePack::ViewMode, false)
             .addVariable("MapMode", &mmStatePack::MapMode, false)
-            .addVariable("NextState", &mmStatePack::NextState, false)
+            .addVariable("NextState", &mmStatePack::NextState)
             .endClass();
         }
     };
