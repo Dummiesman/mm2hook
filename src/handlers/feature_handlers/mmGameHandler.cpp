@@ -64,7 +64,7 @@ void mmGameHandler::UpdateSteeringBrakes(void) {
     int autoReverse = *getPtr<int>(gameInputPtr, 0x18C);
     int *pedalsSwapped = getPtr<int>(gameInputPtr, 0x1D4); // swaps throttle and brake inputs if true
 
-    float v1 = *getPtr<float>(this, 0x40C);
+    float throttleLimit = *getPtr<float>(this, 0x40C);
     float v2 = *getPtr<float>(this, 0x68);
     float v3 = *getPtr<float>(this, 0x6C);
     float speedMPH = carsim->GetSpeedMPH();
@@ -77,19 +77,10 @@ void mmGameHandler::UpdateSteeringBrakes(void) {
     carsim->SetHandbrake(handbrakes);
     player->SetSteering(steering);
 
-    if (NETMGR->getInSession() && reverse >= 2) {
-        if (throttle >= 0.f) {
-            if (throttle > v1)
-                throttle = v1;
-            engine->SetThrottleInput(throttle);
-        }
-        else {
-            engine->SetThrottleInput(0.f);
-        }
-    }
-    else {
+    if (reverse >= 2)
+        engine->SetThrottleInput(min(throttle, throttleLimit));
+    else
         engine->SetThrottleInput(throttle);
-    }
 
     if (transmission->IsAuto() && autoReverse) {
         if (reverse) {
