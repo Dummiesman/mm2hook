@@ -170,7 +170,7 @@ public:
 
         LPCSTR str = NULL;
 
-        if (MM2Lua::IsLoaded())
+        if (MM2Lua::IsInitialized())
         {
             auto L = MM2Lua::GetState();
             
