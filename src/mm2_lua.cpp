@@ -213,9 +213,6 @@ LUAMOD_API int luaopen_MM2(lua_State *L)
 }
 
 void LoadMainScript() {
-    //char lua_file[MAX_PATH];
-    //MM2::datAssetManager::FullPath(lua_file, sizeof(lua_file), "lua", "main", "lua");
-
     LPCSTR lua_file = ".\\lua\\main.lua";
 
     if (file_exists(lua_file))
@@ -233,8 +230,6 @@ void LoadMainScript() {
             LuaRef func(L, "init");
             MM2Lua::TryCallFunction(func);
         }
-
-        //mm2L_error(L.toString(-1));
     }
     else
     {
@@ -280,16 +275,19 @@ bool MM2Lua::IsEnabled()
     return cfgEnableLua;
 }
 
-bool MM2Lua::IsLoaded()
+bool MM2Lua::IsInitialized()
 {
-    return cfgEnableLua && isMainLuaLoaded;
+    return (L != nullptr);
 }
 
 void MM2Lua::Initialize() {
-    if (cfgEnableLua) {
-        if (isMainLuaLoaded)
-            mm2L_error("Tried to initialize the Lua engine twice!");
+    if (IsInitialized())
+    {
+        mm2L_error("Tried to initialize the Lua engine twice!");
+        return;
+    }
 
+    if (IsEnabled()) {
         LogFile::WriteLine("Initializing Lua...");
 
         L = LuaState::newState();
@@ -317,26 +315,26 @@ void MM2Lua::Initialize() {
 
 void MM2Lua::Reset()
 {
-    if(IsEnabled())
+    if(IsInitialized())
         luaSetGlobals();
 }
 
 void MM2Lua::OnChatMessage(char* message) {
-    if (IsLoaded()) {
+    if (IsInitialized()) {
         LuaRef func(L, "onChatMessage");
         TryCallFunction<void>(func, message);
     }
 }
 
 void MM2Lua::OnGameEnd() {
-    if (IsLoaded()) {
+    if (IsInitialized()) {
         LuaRef func(L, "onGameEnd");
         TryCallFunction(func);
     }
 }
 
 void MM2Lua::OnGamePreInit() {
-    if (IsLoaded()) {
+    if (IsInitialized()) {
         luaSetGlobals();
         LuaRef func(L, "onGamePreInit");
         TryCallFunction(func);
@@ -344,7 +342,7 @@ void MM2Lua::OnGamePreInit() {
 }
 
 void MM2Lua::OnGamePostInit() {
-    if (IsLoaded()) {
+    if (IsInitialized()) {
         luaSetGlobals();
         LuaRef func(L, "onGamePostInit");
         TryCallFunction(func);
@@ -353,7 +351,7 @@ void MM2Lua::OnGamePostInit() {
 
 void MM2Lua::OnSessionCreate(char * sessionName, char * sessionPassword, int sessionMaxPlayers, NETSESSION_DESC * sessionData)
 {
-    if (IsLoaded()) {
+    if (IsInitialized()) {
         LuaRef func(L, "onSessionCreate");
         TryCallFunction<void>(func, sessionName, sessionPassword, sessionMaxPlayers, sessionData);
     }
@@ -361,7 +359,7 @@ void MM2Lua::OnSessionCreate(char * sessionName, char * sessionPassword, int ses
 
 void MM2Lua::OnSessionJoin(char * a2, GUID * a3, char * a4)
 {
-    if (IsLoaded()) {
+    if (IsInitialized()) {
         LuaRef func(L, "onSessionJoin");
         TryCallFunction<void>(func, a2, a3, a4);
     }
@@ -369,7 +367,7 @@ void MM2Lua::OnSessionJoin(char * a2, GUID * a3, char * a4)
 
 void MM2Lua::OnDisconnect() 
 {
-    if (IsLoaded()) {
+    if (IsInitialized()) {
         LuaRef func(L, "onDisconnect");
         TryCallFunction(func);
     }
@@ -377,7 +375,7 @@ void MM2Lua::OnDisconnect()
 
 void MM2Lua::OnReset() 
 {
-    if (IsLoaded()) {
+    if (IsInitialized()) {
         LuaRef func(L, "onReset");
         TryCallFunction(func);
     }
@@ -385,7 +383,7 @@ void MM2Lua::OnReset()
 
 void MM2Lua::OnTick()
 {
-    if (IsLoaded()) {
+    if (IsInitialized()) {
         LuaRef tickFunction(L, "tick");
         TryCallFunction(tickFunction);
     }
@@ -397,12 +395,10 @@ void MM2Lua::OnTick()
 
 void MM2Lua::OnShutdown()
 {
-    if(IsLoaded()) {
+    if(IsInitialized()) {
         LuaRef func(L, "shutdown");
         TryCallFunction(func);
-    }
 
-    if (IsEnabled()) {
         GC();
         L.close();
         isMainLuaLoaded = false;
@@ -411,7 +407,7 @@ void MM2Lua::OnShutdown()
 
 void MM2Lua::OnRenderUi()
 {
-    if (IsLoaded()) {
+    if (IsInitialized()) {
         LuaRef func(L, "onRenderUi");
         TryCallFunction(func);
     }
@@ -419,22 +415,18 @@ void MM2Lua::OnRenderUi()
 
 void MM2Lua::OnKeyPress(DWORD vKey)
 {
-    if (IsEnabled()) {
+    if (IsInitialized()) {
         Lua::setGlobal(L, "lastKey", vKey);
 
-        switch (vKey)
-        {
-        case VK_F5:
-        {
+        if (vKey == VK_F5) {
             ReloadScript();
-        } break;
         }
     }
 }
 
 void MM2Lua::SendCommand(LPCSTR command)
 {
-    if (IsEnabled()) {
+    if (IsInitialized()) {
         LogFile::Format("> [Lua]: %s\n", command);
         try
         {

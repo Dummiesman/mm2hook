@@ -23,8 +23,8 @@ namespace MM2Lua
     LuaState * GetState();
 
     //
+    bool IsInitialized();
     bool IsEnabled();
-    bool IsLoaded();
 
     void Initialize();
     void Reset();
