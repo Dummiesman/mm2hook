@@ -223,9 +223,6 @@ void LoadMainScript() {
         {
             LogFile::Format(" - Loaded script file: %s\n", lua_file);
 
-            // this is kinda important, no?
-            luaSetGlobals();
-
             //call init
             LuaRef func(L, "init");
             MM2Lua::TryCallFunction(func);
@@ -298,6 +295,7 @@ void MM2Lua::Initialize() {
         L.pop();
 
         ImguiBindLua(L);
+        luaSetGlobals();
 
         //set LFS path
         LogFile::WriteLine("Setting lfs path...");
@@ -389,7 +387,7 @@ void MM2Lua::OnTick()
     }
 
     // reset lastKey
-    if (IsEnabled())
+    if (IsInitialized())
         Lua::setGlobal(L, "lastKey", -1);
 }
 
@@ -401,6 +399,7 @@ void MM2Lua::OnShutdown()
 
         GC();
         L.close();
+        L = nullptr;
         isMainLuaLoaded = false;
     }
 }
