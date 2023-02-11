@@ -14,6 +14,7 @@ namespace MM2
     template<>
     void luaAddModule<module_gfx>(LuaState L) {
         luaBind<gfxRenderState>(L);
+        luaBind<gfxPipeline>(L);
 
         luaBind<ltLight>(L);
         luaBind<ltLensFlare>(L);
