@@ -148,5 +148,6 @@ namespace MM2
         luaBind<mmPlayerData>(L);
         luaBind<dgStatePack>(L);
         luaBind<mmStatePack>(L);
+        luaBind<mmPositions>(L);
     }
 }

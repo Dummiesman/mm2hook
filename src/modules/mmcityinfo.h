@@ -7,6 +7,7 @@
 #include "mmcityinfo\citylist.h"
 #include "mmcityinfo\vehinfo.h"
 #include "mmcityinfo\vehlist.h"
+#include "mmcityinfo\position.h"
 
 namespace MM2
 {
