@@ -96,11 +96,12 @@ namespace MM2
                             hook::Type<gfxTexture*> g_ReflectionMap = 0x628914;
                             bool isSoftware = *(bool*)0x6830D4;
 
-                            auto state = &MMSTATE;
-                            if (a3 == 3 && (g_ReflectionMap != nullptr && !isSoftware && state->EnableReflections))
+                            float reflectionIntensity;
+                            auto reflectionMap = lvlLevel::GetSingleton()->GetEnvMap(0, a1->GetRow(3), reflectionIntensity);
+                            if (a3 == 3 && reflectionMap != nullptr)
                             {
-                                modShader::BeginEnvMap(g_ReflectionMap, drawMatrix);
-                                lodModel->DrawEnvMapped(a2, g_ReflectionMap, 1.f);
+                                modShader::BeginEnvMap(reflectionMap, drawMatrix);
+                                lodModel->DrawEnvMapped(a2, reflectionMap, reflectionIntensity);
                                 modShader::EndEnvMap();
                             }
                         }
