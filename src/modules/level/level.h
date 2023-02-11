@@ -155,7 +155,7 @@ namespace MM2
         AGE_API virtual bool ClampToWorld(Vector3& a1) const        { return false; }
         AGE_API virtual bool LoadInstances(const char* a1, const char* a2)
                                                                     { return hook::Thunk<0x656F0>::Call<bool>(this, a1, a2); }
-        AGE_API virtual gfxTexture* GetEnvMap(int a1, Vector3 const& a2, float* a3)
+        AGE_API virtual gfxTexture* GetEnvMap(int room, Vector3 const& position, float& intensity)
                                                                     { return nullptr; }
                                                                     
 

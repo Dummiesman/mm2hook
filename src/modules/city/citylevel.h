@@ -74,7 +74,7 @@ namespace MM2
         AGE_API virtual float GetWaterLevel(int a1) const override;
         AGE_API virtual float GetLightingIntensity(Vector3 const& a1) const override;
         AGE_API virtual void SetPtxHeight(asParticles& a1) override;
-        AGE_API virtual gfxTexture* GetEnvMap(int a1, Vector3 const& a2, float* a3) override;
+        AGE_API virtual gfxTexture* GetEnvMap(int room, Vector3 const& position, float& intensity) override;
 
 
         /*

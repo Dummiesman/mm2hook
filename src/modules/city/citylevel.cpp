@@ -64,8 +64,8 @@ namespace MM2
                                                         { return hook::Thunk<0x445290>::Call<float>(this, a1); }
     AGE_API void cityLevel::SetPtxHeight(asParticles& a1) { hook::Thunk<0x4452A0>::Call<void>(this, &a1); }
 
-    AGE_API gfxTexture* cityLevel::GetEnvMap(int a1, Vector3 const& a2, float* a3)
-                                                                { return hook::Thunk<0x443940>::Call<gfxTexture*>(this, a1, a2, a3); }
+    AGE_API gfxTexture* cityLevel::GetEnvMap(int room, Vector3 const& position, float& intensity)
+                                                                { return hook::Thunk<0x443940>::Call<gfxTexture*>(this, room, &position, &intensity); }
 
 
     /*
