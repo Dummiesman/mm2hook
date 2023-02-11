@@ -363,6 +363,9 @@
     <ClInclude Include="src\modules\mmcityinfo.h" />
     <ClInclude Include="src\modules\mmcityinfo\cityinfo.h" />
     <ClInclude Include="src\modules\mmcityinfo\citylist.h" />
+    <ClInclude Include="src\modules\mmcityinfo\infobase.h" />
+    <ClInclude Include="src\modules\mmcityinfo\playerdata.h" />
+    <ClInclude Include="src\modules\mmcityinfo\state.h" />
     <ClInclude Include="src\modules\mmcityinfo\vehinfo.h" />
     <ClInclude Include="src\modules\mmcityinfo\vehlist.h" />
     <ClInclude Include="src\modules\mmeffects.h" />

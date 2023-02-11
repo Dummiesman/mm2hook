@@ -1585,6 +1585,15 @@
     <ClInclude Include="src\modules\audio\audimpact.h">
       <Filter>Source Files\modules\audio</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmcityinfo\infobase.h">
+      <Filter>Source Files\modules\mmcityinfo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmcityinfo\playerdata.h">
+      <Filter>Source Files\modules\mmcityinfo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmcityinfo\state.h">
+      <Filter>Source Files\modules\mmcityinfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
