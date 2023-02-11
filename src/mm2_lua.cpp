@@ -126,6 +126,7 @@ void luaSetGlobals()
     Lua::setGlobal(L, "Player", pPlayer);
     Lua::setGlobal(L, "ROOT", &ROOT);
     Lua::setGlobal(L, "MMSTATE", &MMSTATE);
+    Lua::setGlobal(L, "MMCURRPLAYER", &MMCURRPLAYER);
     Lua::setGlobal(L, "NETMGR", &NETMGR);
     Lua::setGlobal(L, "AIMAP", aiMap::GetInstance());
     Lua::setGlobal(L, "VehicleList", VehicleListPtr.get());
