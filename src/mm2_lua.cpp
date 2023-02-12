@@ -10,6 +10,7 @@ using namespace MM2;
 
 LuaState L;
 bool isMainLuaLoaded = false;
+bool isStateInitialized;
 
 /*
     luaCallback
@@ -275,7 +276,7 @@ bool MM2Lua::IsEnabled()
 
 bool MM2Lua::IsInitialized()
 {
-    return (L != nullptr);
+    return isStateInitialized;
 }
 
 void MM2Lua::Initialize() {
@@ -289,6 +290,7 @@ void MM2Lua::Initialize() {
         LogFile::WriteLine("Initializing Lua...");
 
         L = LuaState::newState();
+        isStateInitialized = true;
 
         L.openLibs();
         L.require("MM2", luaopen_MM2);
@@ -398,9 +400,8 @@ void MM2Lua::OnShutdown()
         LuaRef func(L, "shutdown");
         TryCallFunction(func);
 
-        GC();
         L.close();
-        L = nullptr;
+        isStateInitialized = false;
         isMainLuaLoaded = false;
     }
 }
