@@ -438,6 +438,12 @@ static ImVec2 ImGuiCalcTextSizeLua(const char* text, const char* text_end, bool 
     return ImGui::CalcTextSize(text, text_end, hide_text_after_double_hash, wrap_width);
 }
 
+static void ImGuiColumns(int count, const char* id, bool border)
+{
+    id = ProcessNullableString(id);
+    ImGui::Columns(count, id, border);
+}
+
 ///////////////////
 //IMPLOT BINDINGS//
 ///////////////////
@@ -817,6 +823,15 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("Begin", &ImGuiBeginLua)
         .addFunction("Begin2", &ImGuiBegin2Lua)
         .addFunction("End", &ImGui::End)
+
+        .addFunction("Columns", &ImGuiColumns)
+        .addFunction("GetColumnIndex", &ImGui::GetColumnIndex)
+        .addFunction("GetColumnOffset", &ImGui::GetColumnOffset)
+        .addFunction("GetColumnsCount", &ImGui::GetColumnsCount)
+        .addFunction("GetColumnWidth", &ImGui::GetColumnWidth)
+        .addFunction("NextColumn", &ImGui::NextColumn)
+        .addFunction("SetColumnOffset", &ImGui::SetColumnOffset)
+        .addFunction("SetColumnWidth", &ImGui::SetColumnWidth)
 
         .addFunction("SetNextItemWidth", &ImGui::SetNextItemWidth)
         .addFunction("SetItemDefaultFocus", &ImGui::SetItemDefaultFocus)
