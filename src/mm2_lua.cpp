@@ -406,6 +406,14 @@ void MM2Lua::OnShutdown()
     }
 }
 
+void MM2Lua::OnInitializeUi()
+{
+    if (IsInitialized()) {
+        LuaRef func(L, "onInitUi");
+        TryCallFunction(func);
+    }
+}
+
 void MM2Lua::OnRenderUi()
 {
     if (IsInitialized()) {

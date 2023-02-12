@@ -142,6 +142,7 @@ public:
         mmImGuiManager::Instance = this;
 
         asNode::asNode();
+        // tell lua we've initialized
     }
 
     mmImGuiManager::~mmImGuiManager()

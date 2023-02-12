@@ -48,6 +48,7 @@ namespace MM2Lua
     void OnShutdown();
     void OnKeyPress(DWORD vKey);
 
+    void OnInitializeUi();
     void OnRenderUi();
 
     void SendCommand(LPCSTR command);
