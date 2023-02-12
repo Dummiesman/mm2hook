@@ -366,6 +366,7 @@
     <ClInclude Include="src\modules\mmcityinfo\infobase.h" />
     <ClInclude Include="src\modules\mmcityinfo\playerdata.h" />
     <ClInclude Include="src\modules\mmcityinfo\position.h" />
+    <ClInclude Include="src\modules\mmcityinfo\racedata.h" />
     <ClInclude Include="src\modules\mmcityinfo\state.h" />
     <ClInclude Include="src\modules\mmcityinfo\vehinfo.h" />
     <ClInclude Include="src\modules\mmcityinfo\vehlist.h" />

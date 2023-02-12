@@ -144,6 +144,7 @@ namespace MM2
         luaBind<mmCityInfo>(L);
         luaBind<mmCityList>(L);
 
+        luaBind<mmRaceData>(L);
         luaBind<mmInfoBase>(L);
         luaBind<mmPlayerData>(L);
         luaBind<dgStatePack>(L);
