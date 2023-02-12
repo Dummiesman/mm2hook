@@ -541,6 +541,17 @@ static ImVec4 ImGuiStyle_GetColor(ImGuiStyle& style, int index) {
         return ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
+// ImFontAtlas helpers
+static ImFont* ImFontAtlas_AddFontFromFileTTF(ImFontAtlas& atlas, const char* file, float size_pixels)
+{
+    return atlas.AddFontFromFileTTF(file, size_pixels);
+}
+
+static ImFont* ImFontAtlas_AddFontFromMemoryTTF(ImFontAtlas& atlas, const char* data, int dataSize, float size_pixels)
+{
+    return atlas.AddFontFromMemoryTTF((void*)data, dataSize, size_pixels);
+}
+
 //
 static void ImguiBindLua(LuaState L) {
     LuaBinding(L).beginClass<ImPlotPoint>("ImPlotPoint")
@@ -587,6 +598,9 @@ static void ImguiBindLua(LuaState L) {
         .endClass();
 
     LuaBinding(L).beginClass<ImFontAtlas>("ImFontAtlas")
+        .addFunction("Build", &ImFontAtlas::Build)
+        .addMetaFunction("AddFontFromFileTTF", &ImFontAtlas_AddFontFromFileTTF)
+        .addMetaFunction("AddFontFromMemoryTTF", &ImFontAtlas_AddFontFromMemoryTTF)
         .endClass();
 
     LuaBinding(L).beginClass<ImGuiIO>("ImGuiIO")
