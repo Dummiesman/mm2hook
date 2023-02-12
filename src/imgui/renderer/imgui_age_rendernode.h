@@ -98,12 +98,6 @@ public:
         io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;           // Enable Docking
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 
-        // Make the background a little more transparent
-        auto style = &ImGui::GetStyle();
-        ImVec4* colors = style->Colors;
-
-        colors[ImGuiCol_WindowBg] = ImVec4(15 / 255.f, 15 / 255.f, 15 / 255.f, 200 / 255.f);
-
         // Initialize helper Platform and Renderer bindings
         ImGui_ImplWin32_Init(hWndMain.get());
         ImGui_ImplAGE_Init(viewport);
