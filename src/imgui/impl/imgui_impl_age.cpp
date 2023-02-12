@@ -26,10 +26,17 @@ struct ImDrawVertAGE
 };
 
 // Data
-static gfxViewport*             g_Viewport = NULL;
-static gfxTexture*              g_Texture = NULL;
-static double                   g_Time = 0.0;
-static char*                    g_ClipboardTextData = NULL;
+struct ImGui_ImplAGE_Data
+{
+    gfxViewport* Viewport;
+    gfxTexture* Texture;
+    double Time;
+    char* ClipboardTextData;
+
+    ImGui_ImplAGE_Data() { memset((void*)this, 0, sizeof(*this)); }
+};
+
+static ImGui_ImplAGE_Data* ImGui_ImplAGE_GetBackendData() { return ImGui::GetCurrentContext() ? (ImGui_ImplAGE_Data*)ImGui::GetIO().BackendPlatformUserData : nullptr; }
 
 static void ImGui_ImplAGE_SetupRenderState(ImDrawData* draw_data)
 {
@@ -43,8 +50,9 @@ static void ImGui_ImplAGE_SetupRenderState(ImDrawData* draw_data)
     float T = draw_data->DisplayPos.y;
     float B = draw_data->DisplayPos.y + draw_data->DisplaySize.y;
 
-    g_Viewport->Ortho(L, R, B, T, -1.0f, +1.0f);
-    gfxPipeline::ForceSetViewport(g_Viewport);
+    ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
+    bd->Viewport->Ortho(L, R, B, T, -1.0f, +1.0f);
+    gfxPipeline::ForceSetViewport(bd->Viewport);
 }
 
 // Render function.
@@ -164,8 +172,9 @@ bool ImGui_ImplAGE_CreateDeviceObjects()
     auto tex = gfxTexture::Create(img, true);
     
     // Store our identifier
+    ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
     io.Fonts->TexID = (void*)tex;
-    g_Texture = tex;
+    bd->Texture = tex;
 
     return true;
 }
@@ -173,16 +182,14 @@ bool ImGui_ImplAGE_CreateDeviceObjects()
 void ImGui_ImplAGE_InvalidateDeviceObjects()
 {
     Displayf("ImGui_ImplAGE_InvalidateDeviceObjects");
-    /*
-    * Will crash on gfxTextureCache::Evict.
-    * TODO: Fix I guess?
-    if (g_Texture)
+    
+    ImGuiIO& io = ImGui::GetIO();
+    ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
+    if (bd->Texture)
     {
-        delete g_Texture;
-        ImGui::GetIO().Fonts->TexID = NULL;
-        g_Texture = NULL;
+        delete bd->Texture;
+        io.Fonts->SetTexID(0);
     }
-    */
 }
 
 bool ImGui_ImplAGE_Init(gfxViewport *viewport)
@@ -191,22 +198,24 @@ bool ImGui_ImplAGE_Init(gfxViewport *viewport)
     ImGuiIO& io = ImGui::GetIO();
     io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;       // We can honor GetMouseCursor() values (optional)
     io.BackendPlatformName = io.BackendRendererName = "imgui_impl_AGE";
-    
-    // Set data
-    g_Viewport = viewport;
+    io.BackendPlatformUserData = (void*)IM_NEW(ImGui_ImplAGE_Data)();
 
-    //Create device objects
-    ImGui_ImplAGE_InvalidateDeviceObjects();
-    ImGui_ImplAGE_CreateDeviceObjects();
+    // Set data
+    ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
+    bd->Viewport = viewport;
 
     return true;
 }
 
 void ImGui_ImplAGE_Shutdown()
 {
+    ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
+    ImGuiIO& io = ImGui::GetIO();
     ImGui_ImplAGE_InvalidateDeviceObjects();
 
-    g_Time = 0.0;
+    io.BackendPlatformUserData = nullptr;
+    io.BackendPlatformName = io.BackendRendererName = nullptr;
+    IM_DELETE(bd);
 }
 
 // You can read the io.WantCaptureMouse, io.WantCaptureKeyboard flags to tell if dear imgui wants to use your inputs.
@@ -230,6 +239,11 @@ void ImGui_ImplAGE_NewFrame()
 {
     ImGuiIO& io = ImGui::GetIO();
 
+    // Check if we need to create device objects again
+    ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
+    if (!bd->Texture)
+        ImGui_ImplAGE_CreateDeviceObjects();
+
     // Setup display size (every frame to accommodate for window resizing)
     int w, h;
     w = window_iWidth;
@@ -238,8 +252,8 @@ void ImGui_ImplAGE_NewFrame()
 
     // Setup time step
     double current_time = datTimeManager::ElapsedTime;
-    io.DeltaTime = g_Time > 0.0 ? (float)(current_time - g_Time) : (float)(1.0f / 60.0f);
-    g_Time = current_time;
+    io.DeltaTime = bd->Time > 0.0 ? (float)(current_time - bd->Time) : (float)(1.0f / 60.0f);
+    bd->Time = current_time;
 
     ImGui_ImplAGE_UpdateMouseCursor();
 }
