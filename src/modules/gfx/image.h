@@ -23,7 +23,7 @@ namespace MM2
             rif4 = 6,
         };
 
-
+        
         uint16_t Width;
         uint16_t Height;
         uint16_t Stride;
@@ -34,6 +34,9 @@ namespace MM2
         void *pPaletteData;
         uint32_t RefCount;
         gfxImage *Next;
+
+    public:
+        ANGEL_ALLOCATOR
 
         void Scale(int a1, int a2)                          { hook::Thunk<0x4AEDC0>::Call<void>(this, a1, a2); }
 

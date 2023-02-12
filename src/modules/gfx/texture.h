@@ -72,6 +72,8 @@ namespace MM2
             return this->NextLOD;
         }
     public:
+        ANGEL_ALLOCATOR
+
         AGE_API gfxTexture()
         {
             hook::Thunk<0x4AC8E0>::Call<void>(this);
@@ -132,6 +134,8 @@ namespace MM2
         IDirectDrawSurface7* pSurface;
         uint32_t RefCount;
         gfxBitmap* Next;
+    public:
+        ANGEL_ALLOCATOR
     };
 
     class gfxTextureCacheEntry {
