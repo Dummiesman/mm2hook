@@ -580,6 +580,15 @@ static void ImguiBindLua(LuaState L) {
         .addVariable("w", &ImVec4::w)
         .endClass();
     
+    LuaBinding(L).beginClass<ImFont>("ImFont")
+        .endClass();
+
+    LuaBinding(L).beginClass<ImFontConfig>("ImFontConfig")
+        .endClass();
+
+    LuaBinding(L).beginClass<ImFontAtlas>("ImFontAtlas")
+        .endClass();
+
     LuaBinding(L).beginClass<ImGuiIO>("ImGuiIO")
         .addVariable("DisplaySize", &ImGuiIO::DisplaySize)
         .addVariable("DeltaTime", &ImGuiIO::DeltaTime)
@@ -608,6 +617,7 @@ static void ImguiBindLua(LuaState L) {
         .addVariable("ConfigWindowsResizeFromEdges", &ImGuiIO::ConfigWindowsResizeFromEdges)
         .addVariable("ConfigWindowsMoveFromTitleBarOnly", &ImGuiIO::ConfigWindowsMoveFromTitleBarOnly)
         .addVariable("ConfigWindowsMemoryCompactTimer", &ImGuiIO::ConfigWindowsMemoryCompactTimer)
+        .addVariableRef("Fonts", &ImGuiIO::Fonts, false)
         .addVariable("MousePos", &ImGuiIO::MousePos)
         .addVariable("MouseWheel", &ImGuiIO::MouseWheel)
         .addVariable("MouseWheelH", &ImGuiIO::MouseWheelH)
@@ -842,7 +852,6 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("GetFrameCount", &ImGui::GetFrameCount)
         .addFunction("GetFrameHeight", &ImGui::GetFrameHeight)
         .addFunction("GetFrameHeightWithSpacing", &ImGui::GetFrameHeightWithSpacing)
-        .addFunction("GetFontSize", &ImGui::GetFontSize)
         .addFunction("SetNextWindowBgAlpha", &ImGui::SetNextWindowBgAlpha)
         .addFunction("SetNextWindowSize", &ImGui::SetNextWindowSize)
         .addFunction("SetNextWindowPos", &ImGui::SetNextWindowPos)
@@ -851,6 +860,12 @@ static void ImguiBindLua(LuaState L) {
 
         .addFunction("PushButtonRepeat", &ImGui::PushButtonRepeat)
         .addFunction("PopButtonRepeat", &ImGui::PopButtonRepeat)
+
+        .addFunction("GetFont", &ImGui::GetFont)
+        .addFunction("GetFontSize", &ImGui::GetFontSize)
+        .addFunction("SetWindowFontScale", &ImGui::SetWindowFontScale)
+        .addFunction("PushFont", &ImGui::PushFont)
+        .addFunction("PopFont", &ImGui::PopFont)
 
         .addFunction("GetCursorPos", &ImGui::GetCursorPos)
         .addFunction("GetCursorPosX", &ImGui::GetCursorPosX)
