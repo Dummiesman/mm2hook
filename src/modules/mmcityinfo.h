@@ -7,6 +7,9 @@
 #include "mmcityinfo\citylist.h"
 #include "mmcityinfo\vehinfo.h"
 #include "mmcityinfo\vehlist.h"
+#include "mmcityinfo\racedata.h"
+#include "mmcityinfo\infobase.h"
+#include "mmcityinfo\playerdata.h"
 #include "mmcityinfo\position.h"
 
 namespace MM2
