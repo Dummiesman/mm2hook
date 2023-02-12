@@ -522,6 +522,19 @@ static void ImPlot_PlotDigital(const char* label, LuaRef xValues, LuaRef yValues
     ImPlot::PlotDigital(label, xAxisVector.data(), yAxisVector.data(), count, offset);
 }
 
+// ImGuiStyle helpers
+static void ImGuiStyle_SetColor(ImGuiStyle& style, int index, ImVec4 color) {
+    if(index < ImGuiCol_COUNT)
+        style.Colors[index] = color;
+}
+
+static ImVec4 ImGuiStyle_GetColor(ImGuiStyle& style, int index) {
+    if (index < ImGuiCol_COUNT)
+        return style.Colors[index];
+    else
+        return ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
 //
 static void ImguiBindLua(LuaState L) {
     LuaBinding(L).beginClass<ImPlotPoint>("ImPlotPoint")
@@ -611,6 +624,50 @@ static void ImguiBindLua(LuaState L) {
         .addVariable("MetricsActiveWindows", &ImGuiIO::MetricsActiveWindows)
         .addVariable("MetricsActiveAllocations", &ImGuiIO::MetricsActiveAllocations)
         .addVariable("MouseDelta", &ImGuiIO::MouseDelta)
+        .endClass();
+
+    LuaBinding(L).beginClass<ImGuiStyle>("ImGuiStyle")
+        .addVariable("Alpha", &ImGuiStyle::Alpha)
+        .addVariable("WindowPadding", &ImGuiStyle::WindowPadding)
+        .addVariable("WindowRounding", &ImGuiStyle::WindowRounding)
+        .addVariable("WindowBorderSize", &ImGuiStyle::WindowBorderSize)
+        .addVariable("WindowMinSize", &ImGuiStyle::WindowMinSize)
+        .addVariable("WindowTitleAlign", &ImGuiStyle::WindowTitleAlign)
+        .addVariable("WindowMenuButtonPosition", &ImGuiStyle::WindowMenuButtonPosition)
+        .addVariable("ChildRounding", &ImGuiStyle::ChildRounding)
+        .addVariable("ChildBorderSize", &ImGuiStyle::ChildBorderSize)
+        .addVariable("PopupRounding", &ImGuiStyle::PopupRounding)
+        .addVariable("PopupBorderSize", &ImGuiStyle::PopupBorderSize)
+        .addVariable("FramePadding", &ImGuiStyle::FramePadding)
+        .addVariable("FrameRounding", &ImGuiStyle::FrameRounding)
+        .addVariable("FrameBorderSize", &ImGuiStyle::FrameBorderSize)
+        .addVariable("ItemSpacing", &ImGuiStyle::ItemSpacing)
+        .addVariable("ItemInnerSpacing", &ImGuiStyle::ItemInnerSpacing)
+        .addVariable("TouchExtraPadding", &ImGuiStyle::TouchExtraPadding)
+        .addVariable("IndentSpacing", &ImGuiStyle::IndentSpacing)
+        .addVariable("ColumnsMinSpacing", &ImGuiStyle::ColumnsMinSpacing)
+        .addVariable("ScrollbarSize", &ImGuiStyle::ScrollbarSize)
+        .addVariable("ScrollbarRounding", &ImGuiStyle::ScrollbarRounding)
+        .addVariable("GrabMinSize", &ImGuiStyle::GrabMinSize)
+        .addVariable("GrabRounding", &ImGuiStyle::GrabRounding)
+        .addVariable("LogSliderDeadzone", &ImGuiStyle::LogSliderDeadzone)
+        .addVariable("TabRounding", &ImGuiStyle::TabRounding)
+        .addVariable("TabBorderSize", &ImGuiStyle::TabBorderSize)
+        .addVariable("TabMinWidthForUnselectedCloseButton", &ImGuiStyle::TabMinWidthForUnselectedCloseButton)
+        .addVariable("ColorButtonPosition", &ImGuiStyle::ColorButtonPosition)
+        .addVariable("ButtonTextAlign", &ImGuiStyle::ButtonTextAlign)
+        .addVariable("SelectableTextAlign", &ImGuiStyle::SelectableTextAlign)
+        .addVariable("DisplayWindowPadding", &ImGuiStyle::DisplayWindowPadding)
+        .addVariable("DisplaySafeAreaPadding", &ImGuiStyle::DisplaySafeAreaPadding)
+        .addVariable("MouseCursorScale", &ImGuiStyle::MouseCursorScale)
+        .addVariable("AntiAliasedLines", &ImGuiStyle::AntiAliasedLines)
+        .addVariable("AntiAliasedLinesUseTex", &ImGuiStyle::AntiAliasedLinesUseTex)
+        .addVariable("AntiAliasedFill", &ImGuiStyle::AntiAliasedFill)
+        .addVariable("CurveTessellationTol", &ImGuiStyle::CurveTessellationTol)
+        .addVariable("CircleSegmentMaxError", &ImGuiStyle::CircleSegmentMaxError)
+        .addFunction("ScaleAllSizes", &ImGuiStyle::ScaleAllSizes)
+        .addMetaFunction("GetColor", &ImGuiStyle_GetColor)
+        .addMetaFunction("SetColor", &ImGuiStyle_SetColor)
         .endClass();
 
     LuaBinding(L).beginClass<ImDrawList>("ImDrawList")
@@ -832,5 +889,6 @@ static void ImguiBindLua(LuaState L) {
 
         .addFunction("ShowDemoWindow", &ImGuiShowDemoWindowLua)
         .addFunction("GetIO", &ImGui::GetIO)
+        .addFunction("GetStyle", &ImGui::GetStyle)
         .endModule();
 }
