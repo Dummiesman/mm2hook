@@ -412,6 +412,7 @@
     <ClInclude Include="src\modules\mmwidget\button.h" />
     <ClInclude Include="src\modules\mmwidget\icon.h" />
     <ClInclude Include="src\modules\mmwidget\label.h" />
+    <ClInclude Include="src\modules\mmwidget\manager.h" />
     <ClInclude Include="src\modules\mmwidget\menu.h" />
     <ClInclude Include="src\modules\mmwidget\ttip.h" />
     <ClInclude Include="src\modules\mmwidget\widget.h" />

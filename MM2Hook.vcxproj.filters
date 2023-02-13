@@ -1600,6 +1600,7 @@
     <ClInclude Include="src\modules\mmcityinfo\racedata.h">
       <Filter>Source Files\modules\mmcityinfo</Filter>
     </ClInclude>
+      <Filter>Source Files\modules\mmwidget</Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">

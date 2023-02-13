@@ -9,6 +9,7 @@
 #include "mmwidget\icon.h"
 #include "mmwidget\label.h"
 #include "mmwidget\menu.h"
+#include "mmwidget\manager.h"
 
 
 namespace MM2
