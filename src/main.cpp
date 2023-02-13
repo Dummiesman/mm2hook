@@ -662,7 +662,7 @@ public:
         MM2::ROOT->AddChild(imguiNode);
     }
 
-    static void EndPhase(bool a1) {
+    static void EndPhase() {
         // shutdown imgui
         if (mmImGuiManager::Instance != nullptr) {
             delete mmImGuiManager::Instance;
