@@ -18,8 +18,8 @@ namespace MM2
     struct LuaRaycastResult 
     {
     private:
-        lvlSegment* segment;
-        lvlIntersection* isect;
+        lvlSegment segment;
+        lvlIntersection isect;
     private:
         Vector3 getIntersectionPoint();
         Vector3 getNormal();
@@ -28,7 +28,7 @@ namespace MM2
         phBound* getBound();
         phPolygon* getPolygon();
     public:
-        LuaRaycastResult(lvlSegment* segment, lvlIntersection* isect);
+        LuaRaycastResult(lvlSegment segment, lvlIntersection isect);
 
         static void BindLua(LuaState L);
     };
@@ -129,7 +129,7 @@ namespace MM2
         int MaxSamples;
         float SampleStep;
     private:
-        std::shared_ptr<LuaRaycastResult> collideLua(Vector3 start, Vector3 end);
+        int collideLua(lua_State* L, Vector3 start, Vector3 end);
         static hook::Type<float> TimeDiscrepancy;
     public:
         static hook::Type<lvlInstance *> PlayerInst;

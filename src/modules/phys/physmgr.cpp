@@ -9,7 +9,7 @@ using namespace MM2;
 /*
     LuaRaycastResult
 */
-LuaRaycastResult::LuaRaycastResult(lvlSegment* segment, lvlIntersection* isect)
+LuaRaycastResult::LuaRaycastResult(lvlSegment segment, lvlIntersection isect)
 {
     this->segment = segment;
     this->isect = isect;
@@ -28,32 +28,32 @@ void LuaRaycastResult::BindLua(LuaState L) {
 
 Vector3 LuaRaycastResult::getIntersectionPoint()
 {
-    return isect->IntersectionPoint.Point;
+    return isect.IntersectionPoint.Point;
 }
 
 Vector3 LuaRaycastResult::getNormal()
 {
-    return isect->IntersectionPoint.Normal;
+    return isect.IntersectionPoint.Normal;
 }
 
 float LuaRaycastResult::getNormalizedDistance()
 {
-    return isect->IntersectionPoint.NormalizedDistance;
+    return isect.IntersectionPoint.NormalizedDistance;
 }
 
 float LuaRaycastResult::getPenetration()
 {
-    return isect->IntersectionPoint.Penetration;
+    return isect.IntersectionPoint.Penetration;
 }
 
 phBound* LuaRaycastResult::getBound()
 {
-    return isect->Bound;
+    return isect.Bound;
 }
 
 phPolygon* LuaRaycastResult::getPolygon()
 {
-    return isect->Poly;
+    return isect.Poly;
 }
 
 /*
@@ -178,15 +178,23 @@ declfield(dgPhysManager::PlayerInst)(0x65D9E0);
 
 static int physTotalProbes = 0;
 
-std::shared_ptr<LuaRaycastResult> dgPhysManager::collideLua(Vector3 start, Vector3 end)
+int dgPhysManager::collideLua(lua_State* L, Vector3 start, Vector3 end)
 {
     lvlSegment segment;
     lvlIntersection isect;
     segment.Set(start, end, 0, nullptr);
 
     bool collided = dgPhysManager::Collide(segment, &isect, 0, nullptr, 0x20, 0);
-    LuaRaycastResult* result = (collided) ? new LuaRaycastResult(&segment, &isect) : nullptr;
-    return std::shared_ptr<LuaRaycastResult>(result);
+    if (collided)
+    {
+        auto luaResult = LuaRaycastResult(segment, isect);
+        LuaState(L).push(luaResult);
+    }
+    else 
+    {
+        LuaState(L).push(nullptr);
+    }
+    return 1;
 }
     
 PhysicsStats dgPhysManager::GetStats()
