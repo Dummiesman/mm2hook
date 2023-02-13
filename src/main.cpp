@@ -663,16 +663,17 @@ public:
     }
 
     static void EndPhase(bool a1) {
-        //call original
-        hook::StaticThunk<0x401FC0>::Call<void>();
-
-        //shutdown lua (therefore releasing all memory)
-        MM2Lua::OnShutdown();
-
         // shutdown imgui
         if (mmImGuiManager::Instance != nullptr) {
             delete mmImGuiManager::Instance;
         }
+
+        //shutdown lua (therefore releasing all memory)
+        MM2Lua::OnShutdown();
+
+        //call original
+        hook::StaticThunk<0x401FC0>::Call<void>();
+
     }
 
     static void Shutdown() {
