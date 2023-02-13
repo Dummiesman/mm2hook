@@ -397,9 +397,10 @@ void MM2Lua::OnTick()
 void MM2Lua::OnShutdown()
 {
     if(IsInitialized()) {
-        LuaRef func(L, "shutdown");
-        TryCallFunction(func);
-
+        {
+            LuaRef func(L, "shutdown");
+            TryCallFunction(func);
+        }
         L.close();
         isStateInitialized = false;
         isMainLuaLoaded = false;
