@@ -387,11 +387,8 @@ void MM2Lua::OnTick()
     if (IsInitialized()) {
         LuaRef tickFunction(L, "tick");
         TryCallFunction(tickFunction);
-    }
-
-    // reset lastKey
-    if (IsInitialized())
-        Lua::setGlobal(L, "lastKey", -1);
+        Lua::setGlobal(L, "lastKey", -1); // reset lastKey
+    }        
 }
 
 void MM2Lua::OnShutdown()
