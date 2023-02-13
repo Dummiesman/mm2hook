@@ -29,7 +29,7 @@ namespace MM2
             hook::Thunk<0x50D6D0>::Call<void>(this, flags, soundHandleCount, unused);
         };
 
-        AGE_API ~AudSoundBase() {
+        AGE_API virtual ~AudSoundBase() {
             scoped_vtable x(this);
             hook::Thunk<0x50D7B0>::Call<void>(this);
         };
