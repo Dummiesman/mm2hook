@@ -368,7 +368,7 @@ namespace MM2
         }
     }
 
-    AGE_API void Matrix34::Set(const Matrix34* a1) { hook::Thunk<0x4BBFB0>::Call<void>(this, a1); }
+    AGE_API void Matrix34::Set(const Matrix34 &a1) { hook::Thunk<0x4BBFB0>::Call<void>(this, &a1); }
 
     void Matrix34::BindLua(LuaState L) {
         LuaBinding(L).beginClass<Matrix34>("Matrix34")
