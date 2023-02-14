@@ -907,7 +907,7 @@ namespace MM2
             {
                 auto carMatrix = this->carSim->GetWorldMatrix();
                 auto refWheel = this->carSim->GetWheel(2);
-                dummyWhl4Matrix.Set(&refWheel->GetMatrix());
+                dummyWhl4Matrix.Set(refWheel->GetMatrix());
                 dummyWhl4Matrix.SetRow(3, dummyWhl4Matrix.GetRow(3) + carMatrix->Transform3x3(carSim->BackBackLeftWheelPosDiff));
 
                 if (fabs(refWheel->GetRotationRate()) >= BlurSpeed && shub4geom != nullptr && vehCarModel::EnableSpinningWheels)
@@ -925,7 +925,7 @@ namespace MM2
             {
                 auto carMatrix = this->carSim->GetWorldMatrix();
                 auto refWheel = this->carSim->GetWheel(3);
-                dummyWhl5Matrix.Set(&refWheel->GetMatrix());
+                dummyWhl5Matrix.Set(refWheel->GetMatrix());
                 dummyWhl5Matrix.SetRow(3, dummyWhl5Matrix.GetRow(3) + carMatrix->Transform3x3(carSim->BackBackRightWheelPosDiff));
 
                 if (fabs(refWheel->GetRotationRate()) >= BlurSpeed && shub5geom != nullptr && vehCarModel::EnableSpinningWheels)
@@ -989,7 +989,7 @@ namespace MM2
             {
                 auto carMatrix = this->carSim->GetWorldMatrix();
                 auto refWheel = this->carSim->GetWheel(2);
-                dummyWhl4Matrix.Set(&refWheel->GetMatrix());
+                dummyWhl4Matrix.Set(refWheel->GetMatrix());
                 dummyWhl4Matrix.SetRow(3, dummyWhl4Matrix.GetRow(3) + carMatrix->Transform3x3(carSim->BackBackLeftWheelPosDiff));
 
                 if (fabs(refWheel->GetRotationRate()) >= BlurSpeed  && swhl4geom != nullptr && vehCarModel::EnableSpinningWheels)
@@ -1006,7 +1006,7 @@ namespace MM2
             {
                 auto carMatrix = this->carSim->GetWorldMatrix();
                 auto refWheel = this->carSim->GetWheel(3);
-                dummyWhl5Matrix.Set(&refWheel->GetMatrix());
+                dummyWhl5Matrix.Set(refWheel->GetMatrix());
                 dummyWhl5Matrix.SetRow(3, dummyWhl5Matrix.GetRow(3) + carMatrix->Transform3x3(carSim->BackBackRightWheelPosDiff));
 
                 if (fabs(refWheel->GetRotationRate()) >= BlurSpeed && swhl5geom != nullptr && vehCarModel::EnableSpinningWheels)

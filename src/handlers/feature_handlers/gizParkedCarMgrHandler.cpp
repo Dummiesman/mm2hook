@@ -43,7 +43,7 @@ void gizParkedCarMgrHandler::EnumeratePath(LPCSTR a1, Matrix34* a2, bool a3) {
                 rotationMatrix.Identity();
                 rotationMatrix.MakeRotateY(1.5707964f);
 
-                mtx.Set(a2);
+                mtx.Set(*a2);
                 mtx.Dot(rotationMatrix);
                 mtx.SetRow(3, a2->GetRow(3)); // set position to a2 position
 

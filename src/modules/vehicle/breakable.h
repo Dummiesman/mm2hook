@@ -82,7 +82,7 @@ namespace MM2
                     if (lodModel != nullptr)
                     {
                         Matrix34 drawMatrix = Matrix34();
-                        drawMatrix.Set(&i->matrix);
+                        drawMatrix.Set(i->matrix);
                         drawMatrix.Dot(*a1);
 
                         //setup renderer

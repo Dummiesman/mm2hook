@@ -234,7 +234,7 @@ namespace MM2
         {
             Matrix34 discard;
             auto matrix = this->GetMatrix(&discard);
-            discard.Set(&matrix);
+            discard.Set(matrix);
             return discard;
         }
 

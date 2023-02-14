@@ -11,6 +11,7 @@ namespace MM2
 
     // Class definitions
 
+    // Inertial coordinate system
     class phInertialCS {
     private:
         byte _buffer[0x1B4];

@@ -79,7 +79,7 @@ void mmHudMapFeatureHandler::DrawLightGreenTri(const Matrix34 *a1) {
 
 void mmHudMapFeatureHandler::DrawIcon(int iconType, const Matrix34 *matrix) {
     auto map = reinterpret_cast<mmHudMap*>(this);
-    mtx.Set(matrix);
+    mtx.Set(*matrix);
 
     mtx.SetRow(1, Vector3::YAXIS);
     mtx.Normalize();
@@ -97,7 +97,7 @@ void mmHudMapFeatureHandler::DrawIcon(int iconType, const Matrix34 *matrix) {
 
 void mmHudMapFeatureHandler::DrawNfsMwPlayerIcon(const Matrix34 *matrix) {
     auto map = reinterpret_cast<mmHudMap*>(this);
-    mtx.Set(matrix);
+    mtx.Set(*matrix);
 
     mtx.SetRow(1, Vector3::YAXIS);
     mtx.Normalize();
@@ -110,7 +110,7 @@ void mmHudMapFeatureHandler::DrawNfsMwPlayerIcon(const Matrix34 *matrix) {
 
 void mmHudMapFeatureHandler::DrawNfsMwOpponentIcon(const Matrix34 *matrix) {
     auto map = reinterpret_cast<mmHudMap*>(this);
-    mtx.Set(matrix);
+    mtx.Set(*matrix);
 
     mtx.SetRow(1, Vector3::YAXIS);
     mtx.Normalize();
