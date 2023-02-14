@@ -92,6 +92,7 @@ namespace MM2
                 .addPropertyReadOnly("Popup", &GetPopup)
                 .addPropertyReadOnly("Icons", &GetIcons)
                 .addPropertyReadOnly("ViewManager", &GetViewManager)
+                .addFunction("BeDone", &BeDone, LUA_ARGS(_def<int, 0>))
             .endClass();
         }
     };
