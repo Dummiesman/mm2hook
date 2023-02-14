@@ -80,8 +80,8 @@ namespace MM2
                 .addStaticFunction("Get2DFlags", &Get2DFlags)
                 .addStaticFunction("GetSoft2DFlags", &GetSoft2DFlags)
 
-                .addProperty("NumSoundHandles", &GetNumSoundHandles)
-                .addProperty("IsPlaying", &IsPlaying)
+                .addPropertyReadOnly("NumSoundHandles", &GetNumSoundHandles)
+                .addPropertyReadOnly("IsPlaying", &IsPlaying)
                 .addProperty("SoundHandleIndex", &GetSoundHandleIndex, &SetSoundHandleIndex)
 
                 .addFunction("Load", &LoadLua)
@@ -91,6 +91,7 @@ namespace MM2
 
                 .addFunction("PlayOnce", &PlayOnce, LUA_ARGS(_def<float, -1>, _def<float, -1>))
                 .addFunction("PlayLoop", &PlayLoop, LUA_ARGS(_def<float, -1>, _def<float, -1>))
+                .addFunction("Stop", &Stop)
                 .addFunction("SetFrequency", &SetFrequency)
                 .addFunction("SetPan", &SetPan)
                 .addFunction("SetVolume", &SetVolume)
