@@ -875,6 +875,8 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("GetFrameCount", &ImGui::GetFrameCount)
         .addFunction("GetFrameHeight", &ImGui::GetFrameHeight)
         .addFunction("GetFrameHeightWithSpacing", &ImGui::GetFrameHeightWithSpacing)
+        .addFunction("GetWindowSize", &ImGui::GetWindowSize)
+        .addFunction("GetWindowPos", &ImGui::GetWindowPos)
         .addFunction("SetNextWindowBgAlpha", &ImGui::SetNextWindowBgAlpha)
         .addFunction("SetNextWindowSize", &ImGui::SetNextWindowSize)
         .addFunction("SetNextWindowPos", &ImGui::SetNextWindowPos)
