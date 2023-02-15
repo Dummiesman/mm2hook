@@ -457,8 +457,8 @@ static void ImPlot_EndPlot() {
     ImPlot::EndPlot();
 }
 
-static void ImPlot_PlotText(const char* text, double x, double y, bool vertical, ImVec2 pix_offset) {
-    ImPlot::PlotText(text, x, y, vertical, pix_offset);
+static void ImPlot_PlotText(const char* text, double x, double y, ImVec2 pix_offset, ImPlotTextFlags flags) {
+    ImPlot::PlotText(text, x, y, pix_offset, flags);
 }
 
 static void ImPlot_PlotBars(const char* label_id, LuaRef xValues, LuaRef yValues, double width, int offset) {
@@ -552,6 +552,11 @@ static ImFont* ImFontAtlas_AddFontFromMemoryTTF(ImFontAtlas& atlas, const char* 
     return atlas.AddFontFromMemoryTTF((void*)data, dataSize, size_pixels);
 }
 
+static ImFont* ImFontAtlas_AddFontFromMemoryCompressedBase85TTF(ImFontAtlas& atlas, const char* data, float size_pixels)
+{
+    return atlas.AddFontFromMemoryCompressedBase85TTF(data, size_pixels);
+}
+
 //
 static void ImguiBindLua(LuaState L) {
     LuaBinding(L).beginClass<ImPlotPoint>("ImPlotPoint")
@@ -601,6 +606,7 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("Build", &ImFontAtlas::Build)
         .addMetaFunction("AddFontFromFileTTF", &ImFontAtlas_AddFontFromFileTTF)
         .addMetaFunction("AddFontFromMemoryTTF", &ImFontAtlas_AddFontFromMemoryTTF)
+        .addMetaFunction("AddFontFromMemoryCompressedBase85TTF", &ImFontAtlas_AddFontFromMemoryCompressedBase85TTF)
         .endClass();
 
     LuaBinding(L).beginClass<ImGuiIO>("ImGuiIO")
@@ -630,7 +636,6 @@ static void ImguiBindLua(LuaState L) {
         .addVariable("ConfigInputTextCursorBlink", &ImGuiIO::ConfigInputTextCursorBlink)
         .addVariable("ConfigWindowsResizeFromEdges", &ImGuiIO::ConfigWindowsResizeFromEdges)
         .addVariable("ConfigWindowsMoveFromTitleBarOnly", &ImGuiIO::ConfigWindowsMoveFromTitleBarOnly)
-        .addVariable("ConfigWindowsMemoryCompactTimer", &ImGuiIO::ConfigWindowsMemoryCompactTimer)
         .addVariableRef("Fonts", &ImGuiIO::Fonts, false)
         .addVariable("MousePos", &ImGuiIO::MousePos)
         .addVariable("MouseWheel", &ImGuiIO::MouseWheel)
@@ -683,7 +688,6 @@ static void ImguiBindLua(LuaState L) {
         .addVariable("LogSliderDeadzone", &ImGuiStyle::LogSliderDeadzone)
         .addVariable("TabRounding", &ImGuiStyle::TabRounding)
         .addVariable("TabBorderSize", &ImGuiStyle::TabBorderSize)
-        .addVariable("TabMinWidthForUnselectedCloseButton", &ImGuiStyle::TabMinWidthForUnselectedCloseButton)
         .addVariable("ColorButtonPosition", &ImGuiStyle::ColorButtonPosition)
         .addVariable("ButtonTextAlign", &ImGuiStyle::ButtonTextAlign)
         .addVariable("SelectableTextAlign", &ImGuiStyle::SelectableTextAlign)
@@ -694,7 +698,6 @@ static void ImguiBindLua(LuaState L) {
         .addVariable("AntiAliasedLinesUseTex", &ImGuiStyle::AntiAliasedLinesUseTex)
         .addVariable("AntiAliasedFill", &ImGuiStyle::AntiAliasedFill)
         .addVariable("CurveTessellationTol", &ImGuiStyle::CurveTessellationTol)
-        .addVariable("CircleSegmentMaxError", &ImGuiStyle::CircleSegmentMaxError)
         .addFunction("ScaleAllSizes", &ImGuiStyle::ScaleAllSizes)
         .addMetaFunction("GetColor", &ImGuiStyle_GetColor)
         .addMetaFunction("SetColor", &ImGuiStyle_SetColor)
@@ -761,6 +764,8 @@ static void ImguiBindLua(LuaState L) {
 
         .addFunction("Image", &ImGuiImageLua)
 
+        .addFunction("BeginListBox", &ImGui::BeginListBox)
+        .addFunction("EndListBox", &ImGui::EndListBox)
         .addFunction("ListBox", &ImGuiListBoxLua)
         .addFunction("Combo", &ImGuiComboLua)
         
@@ -806,6 +811,9 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("IsItemClicked", &ImGui::IsItemClicked)
         .addFunction("IsItemToggledOpen", &ImGui::IsItemToggledOpen)
 
+        .addFunction("BeginDisabled", &ImGui::BeginDisabled)
+        .addFunction("EndDisabled", &ImGui::EndDisabled)
+
         .addFunction("BeginTooltip", &ImGui::BeginTooltip)
         .addFunction("EndTooltip", &ImGui::EndTooltip)
         .addFunction("SetTooltip", &ImGuiSetTooltipLua)
@@ -832,6 +840,7 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("Indent", &ImGui::Indent)
         .addFunction("Unindent", &ImGui::Unindent)
 
+        .addFunction("SeparatorText", &ImGui::SeparatorText)
         .addFunction("Separator", &ImGui::Separator)
         .addFunction("Dummy", &ImGui::Dummy)
         .addFunction("Spacing", &ImGui::Spacing)

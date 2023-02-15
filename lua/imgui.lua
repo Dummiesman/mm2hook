@@ -33,149 +33,176 @@ M.EndRadioButtonGroup = function()
 end
 
 --IMGUI
-M.BeginTooltip =                      function()               imgui.BeginTooltip()                                    end
-M.EndTooltip =                        function()               imgui.EndTooltip()                                      end
+M.BeginTooltip =                      function()               ImGui.BeginTooltip()                                    end
+M.EndTooltip =                        function()               ImGui.EndTooltip()                                      end
                     
-M.BeginMenu =                         function(mNam, enable)   return imgui.BeginMenu(mNam, boolDefault(enable, true)) end
-M.EndMenu =                           function()               imgui.EndMenu()                                         end
-M.BeginMenuBar =                      function()               return imgui.BeginMenuBar()                             end
-M.EndMenuBar =                        function()               imgui.EndMenuBar()                                      end
-M.BeginMainMenuBar =                  function()               return imgui.BeginMainMenuBar()                         end
-M.EndMainMenuBar =                    function()               imgui.EndMainMenuBar()                                  end
+M.BeginMenu =                         function(mNam, enable)   return ImGui.BeginMenu(mNam, boolDefault(enable, true)) end
+M.EndMenu =                           function()               ImGui.EndMenu()                                         end
+M.BeginMenuBar =                      function()               return ImGui.BeginMenuBar()                             end
+M.EndMenuBar =                        function()               ImGui.EndMenuBar()                                      end
+M.BeginMainMenuBar =                  function()               return ImGui.BeginMainMenuBar()                         end
+M.EndMainMenuBar =                    function()               ImGui.EndMainMenuBar()                                  end
           
-M.Dummy =                             function(sz)             imgui.Dummy(sz or ImVec2(0, 0))                         end        
+M.Dummy =                             function(sz)             ImGui.Dummy(sz or ImVec2(0, 0))                         end        
+
+M.BeginDisabled =                     function(disabled)       ImGui.BeginDisabled(boolDefault(disabled, true))        end
+M.EndDisabled =                       function()               ImGui.EndDisabled()                                     end
           
-M.HelpMarker =                        function(text)           imgui.HelpMarker(text)                                  end
-M.Separator =                         function()               imgui.Separator()                                       end
+M.HelpMarker =                        function(text)           ImGui.HelpMarker(text)                                  end
+M.Separator =                         function()               ImGui.Separator()                                       end
+M.SeparatorText =                     function(text)               ImGui.SeparatorText(text)                                       end
                 
-M.AlignTextToFramePadding =           function()               imgui.AlignTextToFramePadding()                         end
-M.GetTextLineHeight =                 function()               return imgui.GetTextLineHeight()                        end
-M.CalcItemWidth =                     function()               return imgui.CalcItemWidth()                            end
-M.GetFrameCount =                     function()               return imgui.GetFrameCount()                            end
-M.GetFrameHeight =                    function()               return imgui.GetFrameHeight()                           end
-M.GetFrameHeightWithSpacing =         function()               return imgui.GetFrameHeightWithSpacing()                end
-M.GetFontSize =                       function()               return imgui.GetFontSize()                              end
-M.Text =                              function(text)           imgui.Text(text)                                        end
-M.TextWrapped =                       function(text)           imgui.TextWrapped(text)                                 end
-M.TextColored =                       function(color, text)    imgui.TextColored(color, text)                          end
-M.LabelText =                         function(label, text)    imgui.LabelText(label, text)                            end
-M.BulletText =                        function(text)           imgui.BulletText(text)                                  end
-        
-M.GetMousePos =                       function()               return imgui.GetMousePos()                              end        
-M.GetMousePosOnOpeningCurrentPopup =  function()               return imgui.GetMousePosOnOpeningCurrentPopup()         end        
-M.IsMouseDown =                       function(btn)            return imgui.IsMouseDown(btn)                           end
-M.IsMouseClicked =                    function(btn,rp)         return imgui.IsMouseClicked(btn, boolDefault(rp,false)) end
-M.IsMouseReleased =                   function(btn)            return imgui.IsMouseReleased(btn)                       end
-M.IsAnyMouseDown =                    function()               return imgui.IsAnyMouseDown()                           end
-M.IsMouseDragging =                   function(btn, lockThrsh) return imgui.IsMouseDragging(btn. lockThrsh or -1.0)    end
-M.GetMouseDragDelta =                 function(btn, lockThrsh) return imgui.GetMouseDragDelta(btn, lockThrsh or -1.0)  end
+M.AlignTextToFramePadding =           function()               ImGui.AlignTextToFramePadding()                         end
+M.GetTextLineHeight =                 function()               return ImGui.GetTextLineHeight()                        end
+M.CalcItemWidth =                     function()               return ImGui.CalcItemWidth()                            end
+M.GetFrameCount =                     function()               return ImGui.GetFrameCount()                            end
+M.GetFrameHeight =                    function()               return ImGui.GetFrameHeight()                           end
+M.GetFrameHeightWithSpacing =         function()               return ImGui.GetFrameHeightWithSpacing()                end
+M.Text =                              function(text)           ImGui.Text(text)                                        end
+M.TextWrapped =                       function(text)           ImGui.TextWrapped(text)                                 end
+M.TextColored =                       function(color, text)    ImGui.TextColored(color, text)                          end
+M.LabelText =                         function(label, text)    ImGui.LabelText(label, text)                            end
+M.BulletText =                        function(text)           ImGui.BulletText(text)                                  end
 
-M.IsWindowFocused =                   function(focusFlags)     return imgui.IsWindowFocused(focusFlags or 0)           end
-M.IsWindowHovered =                   function(hoverFlags)     return imgui.IsWindowHovered(hoverFlags or 0)           end
-M.IsItemActive =                      function()               return imgui.IsItemActive()                             end
-M.IsItemFocused =                     function()               return imgui.IsItemFocused()                            end
-M.IsItemHovered =                     function(hoverFlags)     return imgui.IsItemHovered(hoverFlags or 0)             end
-M.IsAnyItemActive =                   function()               return imgui.IsAnyItemActive()                          end
-M.IsAnyItemFocused =                  function()               return imgui.IsAnyItemFocused()                         end
-M.IsAnyItemHovered =                  function()               return imgui.IsAnyItemHovered()                         end
-M.IsItemActivated =                   function()               return imgui.IsItemActivated()                          end
-M.IsItemVisible =                     function()               return imgui.IsItemVisible()                            end
-M.IsItemDeactivated =                 function()               return imgui.IsItemDeactivated()                        end
-M.IsItemDeactivatedAfterEdit =        function()               return imgui.IsItemDeactivatedAfterEdit()               end  
-M.IsItemClicked =                     function(btn)            return imgui.IsItemClicked(btn)                         end
-M.IsItemEdited =                      function()               return imgui.IsItemEdited()                             end
-M.IsItemToggledOpen =                 function()               return imgui.IsItemToggledOpen()                        end
+M.GetFont =                           function()               return ImGui.GetFont()                                  end       
+M.GetFontSize =                       function()               return ImGui.GetFontSize()                              end
+M.SetWindowFontScale =                function(scale)          ImGui.SetWindowFontScale(scale)                         end       
+M.PushFont =                          function(font)           ImGui.PushFont(font)                                    end       
+M.PopFont =                           function()               ImGui.PopFont()                                         end       
 
-M.GetItemRectMin =                    function()               return imgui.GetItemRectMin()                           end
-M.GetItemRectMax =                    function()               return imgui.GetItemRectMax()                           end
-M.GetItemRectSize =                   function()               return imgui.GetItemRectSize()                          end
+M.GetColumnIndex =                    function()               return ImGui.GetColumnIndex()                           end
+M.GetColumnOffset =                   function(index)          return ImGui.GetColumnOffset(index or -1)               end
+M.GetColumnsCount =                   function()               return ImGui.GetColumnsCount()                          end
+M.GetColumnWidth =                    function(index)          return ImGui.GetColumnWidth(index or -1)                end
+M.NextColumn =                        function()               ImGui.NextColumn()                                      end
+M.SetColumnOffset =                   function(index, offset)  ImGui.SetColumnOffset(index, offset)                    end
+M.SetColumnWidth =                    function(index, width)   ImGui.SetColumnWidth(index, width)                      end
 
-M.GetScrollX =                        function()               return imgui.GetScrollX()                               end
-M.GetScrollY =                        function()               return imgui.GetScrollY()                               end
-M.GetScrollMaxX =                     function()               return imgui.GetScrollMaxX()                            end
-M.GetScrollMaxY =                     function()               return imgui.GetScrollMaxY()                            end
-M.SetScrollHereX =                    function(xr)             return imgui.SetScrollHereX(xr or 0.5)                  end
-M.SetScrollHereY =                    function(yr)             return imgui.SetScrollHereY(yr or 0.5)                  end
-M.SetScrollFromPosX =                 function(lx, xr)         return imgui.SetScrollFromPosX(lx, xr or 0.5)           end
-M.SetScrollFromPosY =                 function(ly, yr)         return imgui.SetScrollFromPosY(ly, yr or 0.5)           end
+M.GetMousePos =                       function()               return ImGui.GetMousePos()                              end        
+M.GetMousePosOnOpeningCurrentPopup =  function()               return ImGui.GetMousePosOnOpeningCurrentPopup()         end        
+M.IsMouseDown =                       function(btn)            return ImGui.IsMouseDown(btn)                           end
+M.IsMouseClicked =                    function(btn,rp)         return ImGui.IsMouseClicked(btn, boolDefault(rp,false)) end
+M.IsMouseReleased =                   function(btn)            return ImGui.IsMouseReleased(btn)                       end
+M.IsAnyMouseDown =                    function()               return ImGui.IsAnyMouseDown()                           end
+M.IsMouseDragging =                   function(btn, lockThrsh) return ImGui.IsMouseDragging(btn. lockThrsh or -1.0)    end
+M.GetMouseDragDelta =                 function(btn, lockThrsh) return ImGui.GetMouseDragDelta(btn, lockThrsh or -1.0)  end
 
-M.TreePop =                           function()               imgui.TreePop()                                         end
-M.TreeNode =                          function(label)          return imgui.TreeNode(label)                            end
+M.IsWindowFocused =                   function(focusFlags)     return ImGui.IsWindowFocused(focusFlags or 0)           end
+M.IsWindowHovered =                   function(hoverFlags)     return ImGui.IsWindowHovered(hoverFlags or 0)           end
+M.IsItemActive =                      function()               return ImGui.IsItemActive()                             end
+M.IsItemFocused =                     function()               return ImGui.IsItemFocused()                            end
+M.IsItemHovered =                     function(hoverFlags)     return ImGui.IsItemHovered(hoverFlags or 0)             end
+M.IsAnyItemActive =                   function()               return ImGui.IsAnyItemActive()                          end
+M.IsAnyItemFocused =                  function()               return ImGui.IsAnyItemFocused()                         end
+M.IsAnyItemHovered =                  function()               return ImGui.IsAnyItemHovered()                         end
+M.IsItemActivated =                   function()               return ImGui.IsItemActivated()                          end
+M.IsItemVisible =                     function()               return ImGui.IsItemVisible()                            end
+M.IsItemDeactivated =                 function()               return ImGui.IsItemDeactivated()                        end
+M.IsItemDeactivatedAfterEdit =        function()               return ImGui.IsItemDeactivatedAfterEdit()               end  
+M.IsItemClicked =                     function(btn)            return ImGui.IsItemClicked(btn)                         end
+M.IsItemEdited =                      function()               return ImGui.IsItemEdited()                             end
+M.IsItemToggledOpen =                 function()               return ImGui.IsItemToggledOpen()                        end
+
+M.GetItemRectMin =                    function()               return ImGui.GetItemRectMin()                           end
+M.GetItemRectMax =                    function()               return ImGui.GetItemRectMax()                           end
+M.GetItemRectSize =                   function()               return ImGui.GetItemRectSize()                          end
+
+M.GetScrollX =                        function()               return ImGui.GetScrollX()                               end
+M.GetScrollY =                        function()               return ImGui.GetScrollY()                               end
+M.GetScrollMaxX =                     function()               return ImGui.GetScrollMaxX()                            end
+M.GetScrollMaxY =                     function()               return ImGui.GetScrollMaxY()                            end
+M.SetScrollHereX =                    function(xr)             return ImGui.SetScrollHereX(xr or 0.5)                  end
+M.SetScrollHereY =                    function(yr)             return ImGui.SetScrollHereY(yr or 0.5)                  end
+M.SetScrollFromPosX =                 function(lx, xr)         return ImGui.SetScrollFromPosX(lx, xr or 0.5)           end
+M.SetScrollFromPosY =                 function(ly, yr)         return ImGui.SetScrollFromPosY(ly, yr or 0.5)           end
+
+M.TreePop =                           function()               ImGui.TreePop()                                         end
+M.TreeNode =                          function(label)          return ImGui.TreeNode(label)                            end
                 
-M.PopButtonRepeat =                   function()               imgui.PopButtonRepeat()                                 end
-M.PushButtonRepeat =                  function(rp)             imgui.PushButtonRepeat(boolDefault(rp, true))           end
+M.PopButtonRepeat =                   function()               ImGui.PopButtonRepeat()                                 end
+M.PushButtonRepeat =                  function(rp)             ImGui.PushButtonRepeat(boolDefault(rp, true))           end
           
-M.PushItemWidth =                     function(val)            imgui.PushItemWidth(val)                                end
-M.PopItemWidth =                      function()               imgui.PopItemWidth()                                    end
+M.PushItemWidth =                     function(val)            ImGui.PushItemWidth(val)                                end
+M.PopItemWidth =                      function()               ImGui.PopItemWidth()                                    end
                               
-M.PushStyleColor =                    function(id, val)        imgui.PushStyleColor(id, val)                           end
-M.PopStyleColor =                     function(c)              imgui.PopStyleColor(c or 1)                             end
+M.PushStyleColor =                    function(id, val)        ImGui.PushStyleColor(id, val)                           end
+M.PopStyleColor =                     function(c)              ImGui.PopStyleColor(c or 1)                             end
                 
-M.SetTooltip =                        function(tooltip)        imgui.SetTooltip(tooltip)                               end
+M.SetTooltip =                        function(tooltip)        ImGui.SetTooltip(tooltip)                               end
                 
-M.CenterNextWindow =                  function()               imgui.CenterNextWindow()                                end
-M.SetItemDefaultFocus =               function()               imgui.SetItemDefaultFocus()                             end
-M.SetNextItemWidth =                  function(width)          imgui.SetNextItemWidth(width)                           end
-M.SetNextWindowBgAlpha =              function(alpha)          imgui.SetNextWindowBgAlpha(alpha)                       end
-M.SetNextWindowContentSize =          function(sz)             imgui.SetNextWindowContentSize(sz)                      end
+M.CenterNextWindow =                  function()               ImGui.CenterNextWindow()                                end
+M.SetItemDefaultFocus =               function()               ImGui.SetItemDefaultFocus()                             end
+M.SetNextItemWidth =                  function(width)          ImGui.SetNextItemWidth(width)                           end
+M.SetNextWindowBgAlpha =              function(alpha)          ImGui.SetNextWindowBgAlpha(alpha)                       end
+M.SetNextWindowContentSize =          function(sz)             ImGui.SetNextWindowContentSize(sz)                      end
 
-M.GetCursorStartPos =                 function()               return imgui.GetCursorStartPos()                        end
-M.GetCursorScreenPos =                function()               return imgui.GetCursorScreenPos()                       end
-M.GetCursorPos =                      function()               return imgui.GetCursorPos()                             end
-M.GetCursorPosX =                     function()               return imgui.GetCursorPosX()                            end
-M.GetCursorPosY =                     function()               return imgui.GetCursorPosY()                            end
-M.SetCursorPos =                      function(pos)            imgui.SetCursorPos(pos)                                 end
-M.SetCursorPosX =                     function(x)              imgui.SetCursorPosX(x)                                  end
-M.SetCursorPosY =                     function(y)              imgui.SetCursorPosY(y)                                  end
+M.ColorConvertU32ToFloat4 =           function(col)            return ImGui.ColorConvertU32ToFloat4(col)               end
+M.ColorConvertFloat4ToU32 =           function(col)            return ImGui.ColorConvertFloat4ToU32(col)               end
 
+M.GetClipboardText =                  function()               return ImGui.GetClipboardText()                         end
+M.SetClipboardText =                  function(text)           ImGui.SetClipboardText(text)                            end
+
+M.GetWindowDrawList =                 function()               return ImGui.GetWindowDrawList()                        end
+
+M.GetCursorStartPos =                 function()               return ImGui.GetCursorStartPos()                        end
+M.GetCursorScreenPos =                function()               return ImGui.GetCursorScreenPos()                       end
+M.GetCursorPos =                      function()               return ImGui.GetCursorPos()                             end
+M.GetCursorPosX =                     function()               return ImGui.GetCursorPosX()                            end
+M.GetCursorPosY =                     function()               return ImGui.GetCursorPosY()                            end
+M.SetCursorPos =                      function(pos)            ImGui.SetCursorPos(pos)                                 end
+M.SetCursorPosX =                     function(x)              ImGui.SetCursorPosX(x)                                  end
+M.SetCursorPosY =                     function(y)              ImGui.SetCursorPosY(y)                                  end
+
+M.GetIO =                             function()               return ImGui.GetIO()                                    end
+M.GetStyle =                          function()               return ImGui.GetStyle()                                 end
 --
 M.CalcTextSize = function(text, text_end, hide_text_after_double_hash, wrap_width)
   text_end = nullableString(text_end)
   hide_text_after_double_hash = boolDefault(hide_text_after_double_hash, false)
   wrap_width = wrap_width or -1.0
-  return imgui.CalcTextSize(text, text_end, hide_text_after_double_hash, wrap_width)
+  return ImGui.CalcTextSize(text, text_end, hide_text_after_double_hash, wrap_width)
 end
 
 
 M.PopTextWrapPos = function()
-  imgui.PopTextWrapPos()
+  ImGui.PopTextWrapPos()
 end
 
 M.PushTextWrapPos = function(wrap_local_pos_x)
   wrap_local_pos_x = wrap_local_pos_x or 0
-  imgui.PushTextWrapPos(wrap_local_pos_x)
+  ImGui.PushTextWrapPos(wrap_local_pos_x)
 end
 
 M.PushStyleVar = function(id, val)  
   --check what variant of the function to use
   if type(val) == 'number' then
-    imgui.PushStyleVarFloat(id, val)
+    ImGui.PushStyleVarFloat(id, val)
   else
-    imgui.PushStyleVarVec2(id, val)
+    ImGui.PushStyleVarVec2(id, val)
   end
 end
 
 M.PopStyleVar = function(c)
-  imgui.PopStyleVar(c or 1)                               
+  ImGui.PopStyleVar(c or 1)                               
 end
 
 M.BeginTabItem = function(label ,flags)
   flags = flags or 0
-  return imgui.BeginTabItem(label, flags)
+  return ImGui.BeginTabItem(label, flags)
 end
 
 M.EndTabItem = function()               
-  imgui.EndTabItem()                                      
+  ImGui.EndTabItem()                                      
 end
 
 M.BeginTabBar = function(str_id, flags)              
   str_id = str_id or "##TabBar"
   flags = flags or 0
-  return imgui.BeginTabBar(str_id, flags)
+  return ImGui.BeginTabBar(str_id, flags)
 end
 
 M.EndTabBar = function()               
-  imgui.EndTabBar()                                      
+  ImGui.EndTabBar()                                      
 end
 
 local function plotLinesHistogramSharedSig(label, values, valuesOffset, overlayText, scaleMin, scaleMax, size, stride, func)
@@ -190,82 +217,82 @@ local function plotLinesHistogramSharedSig(label, values, valuesOffset, overlayT
 end
 
 M.PlotLines = function(label, values, valuesOffset, overlayText, scaleMin, scaleMax, size, stride)
-  plotLinesHistogramSharedSig(label, values, valuesOffset, overlayText, scaleMin, scaleMax, size, stride, imgui.PlotLines)
+  plotLinesHistogramSharedSig(label, values, valuesOffset, overlayText, scaleMin, scaleMax, size, stride, ImGui.PlotLines)
 end
 
 M.PlotHistogram = function(label, values, valuesOffset, overlayText, scaleMin, scaleMax, size, stride)
-  plotLinesHistogramSharedSig(label, values, valuesOffset, overlayText, scaleMin, scaleMax, size, stride, imgui.PlotHistogram)
+  plotLinesHistogramSharedSig(label, values, valuesOffset, overlayText, scaleMin, scaleMax, size, stride, ImGui.PlotHistogram)
 end
 
 M.InputFloat = function(label, value, step, stepFast, flags)
   step = step or 0
   stepFast = stepFast or 0
   flags = flags or 0
-  return imgui.InputFloat(label, value, step, stepFast, flags)
+  return ImGui.InputFloat(label, value, step, stepFast, flags)
 end
 
 M.InputInt = function(label, value, step, stepFast, flags)
   step = step or 1
   stepFast = stepFast or 100
   flags = flags or 0
-  return imgui.InputInt(label, value, step, stepFast, flags)
+  return ImGui.InputInt(label, value, step, stepFast, flags)
 end
 
 M.InputText = function(label, text, flags)
   flags = flags or 0
-  return imgui.InputText(label, text, flags)
+  return ImGui.InputText(label, text, flags)
 end
 
 M.InputTextMultiline = function(label, text, size, flags)
   size = size or ImVec2(0.0, 0.0)
   flags = flags or 0
-  return imgui.InputTextMultiline(label, text, size, flags)
+  return ImGui.InputTextMultiline(label, text, size, flags)
 end
 
 M.InputTextWithHint = function(label, hint, text, flags)
   flags = flags or 0
-  return imgui.InputTextWithHint(label, hint, text, flags)
+  return ImGui.InputTextWithHint(label, hint, text, flags)
 end
 
 M.SetNextWindowPos = function(pos, cond, pivot)
   pivot = pivot or ImVec2(0.0, 0.0)
   cond = cond or 0
-  imgui.SetNextWindowPos(pos, cond, pivot)
+  ImGui.SetNextWindowPos(pos, cond, pivot)
 end
 
 M.SetNextWindowSize = function(sz, cond)
   cond = cond or 0
-  imgui.SetNextWindowSize(sz, cond)
+  ImGui.SetNextWindowSize(sz, cond)
 end
 
 M.BeginChild = function(str_id, size, border, flags)
   flags = flags or 0
   border = boolDefault(border, true)
   size = size or ImVec2(0, 100)
-  return imgui.BeginChild(str_id, size, border, flags)
+  return ImGui.BeginChild(str_id, size, border, flags)
 end
 
 M.EndChild = function()               
-  imgui.EndChild()                        
+  ImGui.EndChild()                        
 end
 
 M.BeginPopupModal = function(name, open, flags)
   flags = flags or 0
   open = boolDefault(open, true)
-  return imgui.BeginPopupModal(name, open, flags)
+  return ImGui.BeginPopupModal(name, open, flags)
 end
 
 M.EndPopup = function()               
-  imgui.EndPopup()                        
+  ImGui.EndPopup()                        
 end
 
 M.CloseCurrentPopup = function()               
-  imgui.CloseCurrentPopup()                        
+  ImGui.CloseCurrentPopup()                        
 end
 
 M.OpenPopup = function(name, flags)               
   flags = flags or 0
-  imgui.OpenPopup(name, flags)                       
+  ImGui.OpenPopup(name, flags)                       
 end
 
 M.Selectable = function(label, selected, flags, size)
@@ -274,7 +301,7 @@ M.Selectable = function(label, selected, flags, size)
   size = size or ImVec2(0.0, 0.0)
   
   --Multi return: clicked, selected
-  return imgui.Selectable(label, selected, flags, size)
+  return ImGui.Selectable(label, selected, flags, size)
 end
 
 M.MenuItem = function(label, shortcut, selected, enabled)
@@ -283,69 +310,69 @@ M.MenuItem = function(label, shortcut, selected, enabled)
   shortcut = nullableString(shortcut)
   
   --Multi return: clicked, selected
-  return imgui.MenuItem(label, shortcut, selected, enabled)
+  return ImGui.MenuItem(label, shortcut, selected, enabled)
 end
 
 M.BeginPopupContextItem = function(str_id, flags)
-  return imgui.BeginPopupContextItem(nullableString(str_id), flags or 0)
+  return ImGui.BeginPopupContextItem(nullableString(str_id), flags or 0)
 end
 
 M.BeginPopupContextWindow = function(str_id, flags)
-  return imgui.BeginPopupContextWindow(nullableString(str_id), flags or 1)
+  return ImGui.BeginPopupContextWindow(nullableString(str_id), flags or 1)
 end
 
 M.BeginPopupContextVoid = function(str_id, flags)
-  return imgui.BeginPopupContextVoid(nullableString(str_id), flags or 1)
+  return ImGui.BeginPopupContextVoid(nullableString(str_id), flags or 1)
 end
 
 M.EndPopup = function()
-  imgui.EndPopup()
+  ImGui.EndPopup()
 end
 
 M.LeftArrowButton = function()
-  return imgui.LeftArrowButton()
+  return ImGui.LeftArrowButton()
 end
 
 M.RightArrowButton = function()
-  return imgui.RightArrowButton()
+  return ImGui.RightArrowButton()
 end
 
 M.UpArrowButton = function()
-  return imgui.UpArrowButton()
+  return ImGui.UpArrowButton()
 end
 
 
 M.DownArrowButton = function()
-  return imgui.DownArrowButton()
+  return ImGui.DownArrowButton()
 end
 
 M.Unindent = function(indent_w)
-  imgui.Unindent(indent_w or 0)     
+  ImGui.Unindent(indent_w or 0)     
 end
 
 M.Indent = function(indent_w)
-   imgui.Indent(indent_w or 0)                  
+   ImGui.Indent(indent_w or 0)                  
 end
 
 M.LeftArrowButton = function()
-  return imgui.LeftArrowButton()
+  return ImGui.LeftArrowButton()
 end
 
 M.RightArrowButton = function()
-  return imgui.RightArrowButton()
+  return ImGui.RightArrowButton()
 end
 
 M.UpArrowButton = function()
-  return imgui.UpArrowButton()
+  return ImGui.UpArrowButton()
 end
 
 
 M.DownArrowButton = function()
-  return imgui.DownArrowButton()
+  return ImGui.DownArrowButton()
 end
 
 M.Checkbox = function(label, checked)
-  return imgui.Checkbox(label, checked)
+  return ImGui.Checkbox(label, checked)
 end
 
 M.RadioButton = function(label, selectedId, id)
@@ -353,97 +380,106 @@ M.RadioButton = function(label, selectedId, id)
     id = id or M.radioButtonGroupId
     M.radioButtonGroupId = M.radioButtonGroupId + 1
     
-    M.radioButtonGroupSid = imgui.RadioButton(label, M.radioButtonGroupSid, id)
+    M.radioButtonGroupSid = ImGui.RadioButton(label, M.radioButtonGroupSid, id)
     return M.radioButtonGroupSid
   else
-    return imgui.radioButton(label, selectedId, id)
+    return ImGui.radioButton(label, selectedId, id)
   end
 end
 
 M.CollapsingHeader = function(label, flags)
-  return imgui.CollapsingHeader(label, flags or 0)
+  return ImGui.CollapsingHeader(label, flags or 0)
 end
 
 M.SameLine = function(offsetX, spacing)
-  imgui.SameLine(offsetX or 0.0, spacing or -1.0)
+  ImGui.SameLine(offsetX or 0.0, spacing or -1.0)
 end
 
 M.Combo = function(label, currentItem, items)
-  return imgui.Combo(label, currentItem, items)
+  return ImGui.Combo(label, currentItem, items)
+end
+
+M.BeginListBox = function(label, size)
+  size = size or ImVec2(0, 0)
+  return ImGui.BeginListBox(label, size)
+end
+
+M.EndListBox = function()
+  ImGui.EndListBox()
 end
 
 M.ListBox = function(label, currentItem, items, heightInItems)
-  return imgui.ListBox(label, currentItem, items, heightInItems or 4)
+  return ImGui.ListBox(label, currentItem, items, heightInItems or 4)
 end
 
 M.VSliderInt = function(label, size, value, min, max, flags)
   min = min or INT_SLIDER_MIN
   max = max or INT_SLIDER_MAX
   flags = flags or 0
-  return imgui.VSliderInt(label, size, value, min, max, flags)
+  return ImGui.VSliderInt(label, size, value, min, max, flags)
 end
 
 M.VSliderFloat = function(label, size, value, min, max, flags)
   min = min or FLOAT_SLIDER_MIN
   max = max or FLOAT_SLIDER_MAX
   flags = flags or 0
-  return imgui.VSliderFloat(label, size, value, min, max, flags)
+  return ImGui.VSliderFloat(label, size, value, min, max, flags)
 end
 
 M.SliderInt = function(label, value, min, max, flags)
   min = min or INT_SLIDER_MIN
   max = max or INT_SLIDER_MAX
   flags = flags or 0
-  return imgui.SliderInt(label, value, min, max, flags)
+  return ImGui.SliderInt(label, value, min, max, flags)
 end
 
 M.SliderInt2 = function(label, x, y, min, max, flags)
   min = min or INT_SLIDER_MIN
   max = max or INT_SLIDER_MAX
   flags = flags or 0
-  return imgui.SliderInt2(label, x, y, min, max, flags)
+  return ImGui.SliderInt2(label, x, y, min, max, flags)
 end
 
 M.SliderInt3 = function(label, x, y, z, min, max, flags)
   min = min or INT_SLIDER_MIN
   max = max or INT_SLIDER_MAX
   flags = flags or 0
-  return imgui.SliderInt3(label, x, y, z, min, max, flags)
+  return ImGui.SliderInt3(label, x, y, z, min, max, flags)
 end
 
 M.SliderInt4 = function(label, x, y, z, w, min, max, flags)
   min = min or INT_SLIDER_MIN
   max = max or INT_SLIDER_MAX
   flags = flags or 0
-  return imgui.SliderInt4(label, x, y, z, w, min, max, flags)
+  return ImGui.SliderInt4(label, x, y, z, w, min, max, flags)
 end
 
 M.SliderFloat = function(label, value, min, max, flags)
   min = min or FLOAT_SLIDER_MIN
   max = max or FLOAT_SLIDER_MAX
   flags = flags or 0
-  return imgui.SliderFloat(label, value, min, max, flags)
+  return ImGui.SliderFloat(label, value, min, max, flags)
 end
 
 M.SliderFloat2 = function(label, x, y, min, max, flags)
   min = min or FLOAT_SLIDER_MIN
   max = max or FLOAT_SLIDER_MAX
   flags = flags or 0
-  return imgui.SliderFloat2(label, x, y, min, max, flags)
+  return ImGui.SliderFloat2(label, x, y, min, max, flags)
 end
 
 M.SliderFloat3 = function(label, x, y, z, min, max, flags)
   min = min or FLOAT_SLIDER_MIN
   max = max or FLOAT_SLIDER_MAX
   flags = flags or 0
-  return imgui.SliderFloat3(label, x, y, z, min, max, flags)
+  return ImGui.SliderFloat3(label, x, y, z, min, max, flags)
 end
 
 M.SliderFloat4 = function(label, x, y, z, w, min, max, flags)
   min = min or FLOAT_SLIDER_MIN
   max = max or FLOAT_SLIDER_MAX
   flags = flags or 0
-  return imgui.SliderFloat4(label, x, y, z, w, min, max, flags)
+  return ImGui.SliderFloat4(label, x, y, z, w, min, max, flags)
 end
 
 M.Slider = function(label, value, min, max)
@@ -457,7 +493,7 @@ M.DragFloat4 = function(label, x, y, z, w, speed, min, max, flags)
   max = max or 0
   speed = speed or 1
   flags = flags or 0
-  return imgui.DragFloat4(label, x, y, z, w, speed, min, max, flags)
+  return ImGui.DragFloat4(label, x, y, z, w, speed, min, max, flags)
 end
 
 M.DragFloat3 = function(label, x, y, z, speed, min, max, flags)
@@ -465,7 +501,7 @@ M.DragFloat3 = function(label, x, y, z, speed, min, max, flags)
   max = max or 0
   speed = speed or 1
   flags = flags or 0
-  return imgui.DragFloat3(label, x, y, z, speed, min, max, flags)
+  return ImGui.DragFloat3(label, x, y, z, speed, min, max, flags)
 end
 
 M.DragFloat2 = function(label, x, y, speed, min, max, flags)
@@ -473,7 +509,7 @@ M.DragFloat2 = function(label, x, y, speed, min, max, flags)
   max = max or 0
   speed = speed or 1
   flags = flags or 0
-  return imgui.DragFloat2(label, x, y, speed, min, max, flags)
+  return ImGui.DragFloat2(label, x, y, speed, min, max, flags)
 end
 
 M.DragInt4 = function(label, x, y, z, w, speed, min, max, flags)
@@ -481,7 +517,7 @@ M.DragInt4 = function(label, x, y, z, w, speed, min, max, flags)
   max = max or 0
   speed = speed or 1
   flags = flags or 0
-  return imgui.DragInt4(label, x, y, z, w, speed, min, max, flags)
+  return ImGui.DragInt4(label, x, y, z, w, speed, min, max, flags)
 end
 
 M.DragInt3 = function(label, x, y, z, speed, min, max, flags)
@@ -489,7 +525,7 @@ M.DragInt3 = function(label, x, y, z, speed, min, max, flags)
   max = max or 0
   speed = speed or 1
   flags = flags or 0
-  return imgui.DragInt3(label, x, y, z, speed, min, max, flags)
+  return ImGui.DragInt3(label, x, y, z, speed, min, max, flags)
 end
 
 M.DragInt2 = function(label, x, y, speed, min, max, flags)
@@ -497,24 +533,24 @@ M.DragInt2 = function(label, x, y, speed, min, max, flags)
   max = max or 0
   speed = speed or 1
   flags = flags or 0
-  return imgui.DragInt2(label, x, y, speed, min, max, flags)
+  return ImGui.DragInt2(label, x, y, speed, min, max, flags)
 end
 
 M.ColorButton = function(dec_id, r, g, b, a, flags, size)
   flags = flags or 0
   size = size or ImVec2(0, 0)
   a = a or 1.0
-  return imgui.ColorButton(dec_id, r, g, b, a, flags, size)
+  return ImGui.ColorButton(dec_id, r, g, b, a, flags, size)
 end
 
 M.ColorEdit4 = function(label, r, g, b, a, flags)
   flags = flags or 0
-  return imgui.ColorEdit4(label, r, g, b, a, flags)
+  return ImGui.ColorEdit4(label, r, g, b, a, flags)
 end
 
 M.ColorEdit3 = function(label, r, g, b, flags)
   flags = flags or 0
-  return imgui.ColorEdit3(label, r, g, b, flags)
+  return ImGui.ColorEdit3(label, r, g, b, flags)
 end
 
 M.DragInt = function(label, value, speed, min, max, flags)
@@ -522,7 +558,7 @@ M.DragInt = function(label, value, speed, min, max, flags)
   max = max or 0
   speed = speed or 1
   flags = flags or 0
-  return imgui.DragInt(label, value, speed, min, max, flags)
+  return ImGui.DragInt(label, value, speed, min, max, flags)
 end
 
 M.DragFloat = function(label, value, speed, min, max, flags)
@@ -530,7 +566,7 @@ M.DragFloat = function(label, value, speed, min, max, flags)
   max = max or 0
   speed = speed or 1
   flags = flags or 0
-  return imgui.DragFloat(label, value, speed, min, max, flags)
+  return ImGui.DragFloat(label, value, speed, min, max, flags)
 end
 
 M.Drag = function(label, value, speed, min, max)
@@ -540,32 +576,42 @@ M.Drag = function(label, value, speed, min, max)
 end
 
 M.End = function()
-  imgui.End()
+  ImGui.End()
 end
 
-M.Begin = function(name, open, flags)
-  open = boolDefault(open, true)
-  flags = flags or 0
-  return imgui.Begin(name, open, flags)
+M.Begin = function(name, arg2, arg3)
+  -- arg2: either open status, or flags
+  -- arg3: flags if open status is specified
+  
+  -- call Begin if we have all 3 args
+  if type(arg2) == 'boolean' then
+    arg3 = arg3 or 0
+    return ImGui.Begin(name, arg2, arg3)
+  elseif type(arg2) == 'number' or type(arg2) == 'nil' then
+    arg2 = arg2 or 0
+    return ImGui.Begin2(name, arg2)
+  else
+    print("imgui.Begin : invalid parameters (" .. name .. ", " .. tostring(arg2) .. ", " .. tostring(arg3) .. ")")
+  end
 end
 
 M.InvisibleButton = function(text, size, flags)
   flags = flags or 0
-  return imgui.InvisibleButton(text, size, flags) 
+  return ImGui.InvisibleButton(text, size, flags) 
 end
 
 M.Button = function(text, size)
-  return imgui.Button(text, size or ImVec2(0, 0))
+  return ImGui.Button(text, size or ImVec2(0, 0))
 end
 
 M.SmallButton = function(text)
-  return imgui.SmallButton(text)
+  return ImGui.SmallButton(text)
 end
 
 M.ProgressBar = function(fraction, size, overlay)
   size = size or ImVec2(-1, 0)
   overlay = nullableString(overlay)
-  imgui.ProgressBar(fraction, size, overlay)
+  ImGui.ProgressBar(fraction, size, overlay)
 end
 
 M.Image = function(texture, size, uv0, uv1, tintColor, borderColor)
@@ -573,13 +619,30 @@ M.Image = function(texture, size, uv0, uv1, tintColor, borderColor)
   uv1 = uv1 or ImVec2(1, 1)
   tintColor = tintColor or ImVec4(1, 1, 1, 1)
   borderColor = borderColor or ImVec4(0, 0, 0, 0)
-  imgui.Image(texture, size, uv0, uv1, tintColor, borderColor)
+  ImGui.Image(texture, size, uv0, uv1, tintColor, borderColor)
+end
+
+M.Columns = function(count, id, border)
+  count = count or 1
+  id = nullableString(id)
+  border = boolDefault(border, true)
+  ImGui.Columns(count, id, border)
+end
+
+M.Tooltip = function(text)
+  if M.IsItemHovered() then
+      M.BeginTooltip()
+      M.PushTextWrapPos(450.0)
+      M.Text(text)
+      M.PopTextWrapPos()
+      M.EndTooltip()
+  end
 end
 
 --Demo window. Draw this for cool examples
 M.ShowDemoWindow = function(show) 
   show = boolDefault(show, true)
-  return imgui.ShowDemoWindow(show)
+  return ImGui.ShowDemoWindow(show)
 end
 
 --Make global constants
@@ -609,29 +672,34 @@ ImGuiColorEditFlags_InputRGB                = 1 << 27
 ImGuiColorEditFlags_InputHSV                = 1 << 28
     
 ImGuiStyleVar_Alpha                         = 0
-ImGuiStyleVar_WindowPadding                 = 1
-ImGuiStyleVar_WindowRounding                = 2
-ImGuiStyleVar_WindowBorderSize              = 3
-ImGuiStyleVar_WindowMinSize                 = 4
-ImGuiStyleVar_WindowTitleAlign              = 5
-ImGuiStyleVar_ChildRounding                 = 6
-ImGuiStyleVar_ChildBorderSize               = 7
-ImGuiStyleVar_PopupRounding                 = 8
-ImGuiStyleVar_PopupBorderSize               = 9
-ImGuiStyleVar_FramePadding                  = 10
-ImGuiStyleVar_FrameRounding                 = 11
-ImGuiStyleVar_FrameBorderSize               = 12
-ImGuiStyleVar_ItemSpacing                   = 13
-ImGuiStyleVar_ItemInnerSpacing              = 14
-ImGuiStyleVar_IndentSpacing                 = 15
-ImGuiStyleVar_ScrollbarSize                 = 16
-ImGuiStyleVar_ScrollbarRounding             = 17
-ImGuiStyleVar_GrabMinSize                   = 18
-ImGuiStyleVar_GrabRounding                  = 19
-ImGuiStyleVar_TabRounding                   = 20
-ImGuiStyleVar_ButtonTextAlign               = 21
-ImGuiStyleVar_SelectableTextAlign           = 22
-ImGuiStyleVar_COUNT                         = 23
+ImGuiStyleVar_DisabledAlpha                 = 1
+ImGuiStyleVar_WindowPadding                 = 2
+ImGuiStyleVar_WindowRounding                = 3
+ImGuiStyleVar_WindowBorderSize              = 4
+ImGuiStyleVar_WindowMinSize                 = 5
+ImGuiStyleVar_WindowTitleAlign              = 6
+ImGuiStyleVar_ChildRounding                 = 7
+ImGuiStyleVar_ChildBorderSize               = 8
+ImGuiStyleVar_PopupRounding                 = 9
+ImGuiStyleVar_PopupBorderSize               = 10
+ImGuiStyleVar_FramePadding                  = 11
+ImGuiStyleVar_FrameRounding                 = 12
+ImGuiStyleVar_FrameBorderSize               = 13
+ImGuiStyleVar_ItemSpacing                   = 14
+ImGuiStyleVar_ItemInnerSpacing              = 15
+ImGuiStyleVar_IndentSpacing                 = 16
+ImGuiStyleVar_CellPadding                   = 17
+ImGuiStyleVar_ScrollbarSize                 = 18
+ImGuiStyleVar_ScrollbarRounding             = 19
+ImGuiStyleVar_GrabMinSize                   = 20
+ImGuiStyleVar_GrabRounding                  = 21
+ImGuiStyleVar_TabRounding                   = 22
+ImGuiStyleVar_ButtonTextAlign               = 23
+ImGuiStyleVar_SelectableTextAlign           = 24
+ImGuiStyleVar_SeparatorTextBorderSize       = 25
+ImGuiStyleVar_SeparatorTextAlign            = 26
+ImGuiStyleVar_SeparatorTextPadding          = 27
+ImGuiStyleVar_COUNT                         = 28
 
 ImGuiCol_Text                               = 0
 ImGuiCol_TextDisabled                       = 1
@@ -671,17 +739,24 @@ ImGuiCol_TabHovered                         = 34
 ImGuiCol_TabActive                          = 35
 ImGuiCol_TabUnfocused                       = 36
 ImGuiCol_TabUnfocusedActive                 = 37
-ImGuiCol_PlotLines                          = 38
-ImGuiCol_PlotLinesHovered                   = 39
-ImGuiCol_PlotHistogram                      = 40
-ImGuiCol_PlotHistogramHovered               = 41
-ImGuiCol_TextSelectedBg                     = 42
-ImGuiCol_DragDropTarget                     = 43
-ImGuiCol_NavHighlight                       = 44
-ImGuiCol_NavWindowingHighlight              = 45
-ImGuiCol_NavWindowingDimBg                  = 46
-ImGuiCol_ModalWindowDimBg                   = 47
-ImGuiCol_COUNT                              = 48
+ImGuiCol_DockingPreview                     = 38
+ImGuiCol_DockingEmptyBg                     = 39
+ImGuiCol_PlotLines                          = 40
+ImGuiCol_PlotLinesHovered                   = 41
+ImGuiCol_PlotHistogram                      = 42
+ImGuiCol_PlotHistogramHovered               = 43
+ImGuiCol_TableHeaderBg                      = 44
+ImGuiCol_TableBorderStrong                  = 45
+ImGuiCol_TableBorderLight                   = 46
+ImGuiCol_TableRowBg                         = 47
+ImGuiCol_TableRowBgAlt                      = 48
+ImGuiCol_TextSelectedBg                     = 49
+ImGuiCol_DragDropTarget                     = 50
+ImGuiCol_NavHighlight                       = 51
+ImGuiCol_NavWindowingHighlight              = 52
+ImGuiCol_NavWindowingDimBg                  = 53
+ImGuiCol_ModalWindowDimBg                   = 54
+ImGuiCol_COUNT                              = 55
 
 ImGuiWindowFlags_None                       = 0
 ImGuiWindowFlags_NoTitleBar                 = 1 << 0
@@ -715,30 +790,31 @@ ImGuiCond_Once          = 1 << 1
 ImGuiCond_FirstUseEver  = 1 << 2
 ImGuiCond_Appearing     = 1 << 3
 
-ImGuiInputTextFlags_None                = 0
-ImGuiInputTextFlags_CharsDecimal        = 1 << 0
-ImGuiInputTextFlags_CharsHexadecimal    = 1 << 1
-ImGuiInputTextFlags_CharsUppercase      = 1 << 2
-ImGuiInputTextFlags_CharsNoBlank        = 1 << 3
-ImGuiInputTextFlags_AutoSelectAll       = 1 << 4
-ImGuiInputTextFlags_EnterReturnsTrue    = 1 << 5
-ImGuiInputTextFlags_CallbackCompletion  = 1 << 6
-ImGuiInputTextFlags_CallbackHistory     = 1 << 7
-ImGuiInputTextFlags_CallbackAlways      = 1 << 8
-ImGuiInputTextFlags_CallbackCharFilter  = 1 << 9
-ImGuiInputTextFlags_AllowTabInput       = 1 << 10
-ImGuiInputTextFlags_CtrlEnterForNewLine = 1 << 11
-ImGuiInputTextFlags_NoHorizontalScroll  = 1 << 12
-ImGuiInputTextFlags_AlwaysInsertMode    = 1 << 13
-ImGuiInputTextFlags_ReadOnly            = 1 << 14
-ImGuiInputTextFlags_Password            = 1 << 15
-ImGuiInputTextFlags_NoUndoRedo          = 1 << 16
-ImGuiInputTextFlags_CharsScientific     = 1 << 17
-ImGuiInputTextFlags_CallbackResize      = 1 << 18
-ImGuiInputTextFlags_CallbackEdit        = 1 << 19
+ImGuiInputTextFlags_None                    = 0
+ImGuiInputTextFlags_CharsDecimal            = 1 << 0
+ImGuiInputTextFlags_CharsHexadecimal        = 1 << 1
+ImGuiInputTextFlags_CharsUppercase          = 1 << 2
+ImGuiInputTextFlags_CharsNoBlank            = 1 << 3
+ImGuiInputTextFlags_AutoSelectAll           = 1 << 4
+ImGuiInputTextFlags_EnterReturnsTrue        = 1 << 5
+ImGuiInputTextFlags_CallbackCompletion      = 1 << 6
+ImGuiInputTextFlags_CallbackHistory         = 1 << 7
+ImGuiInputTextFlags_CallbackAlways          = 1 << 8
+ImGuiInputTextFlags_CallbackCharFilter      = 1 << 9
+ImGuiInputTextFlags_AllowTabInput           = 1 << 10
+ImGuiInputTextFlags_CtrlEnterForNewLine     = 1 << 11
+ImGuiInputTextFlags_NoHorizontalScroll      = 1 << 12
+ImGuiInputTextFlags_AlwaysOverwrite         = 1 << 13
+ImGuiInputTextFlags_ReadOnly                = 1 << 14
+ImGuiInputTextFlags_Password                = 1 << 15
+ImGuiInputTextFlags_NoUndoRedo              = 1 << 16
+ImGuiInputTextFlags_CharsScientific         = 1 << 17
+ImGuiInputTextFlags_CallbackResize          = 1 << 18
+ImGuiInputTextFlags_CallbackEdit            = 1 << 19
+ImGuiInputTextFlags_EscapeClearsAll         = 1 << 20
 
 ImGuiSliderFlags_None                   = 0
-ImGuiSliderFlags_ClampOnInput           = 1 << 4 
+ImGuiSliderFlags_AlwaysClamp            = 1 << 4 
 ImGuiSliderFlags_Logarithmic            = 1 << 5 
 ImGuiSliderFlags_NoRoundToFormat        = 1 << 6 
 ImGuiSliderFlags_NoInput                = 1 << 7 
@@ -764,27 +840,38 @@ ImGuiTabItemFlags_SetSelected                   = 1 << 1
 ImGuiTabItemFlags_NoCloseWithMiddleMouseButton  = 1 << 2
 ImGuiTabItemFlags_NoPushId                      = 1 << 3
 ImGuiTabItemFlags_NoTooltip                     = 1 << 4
+ImGuiTabItemFlags_NoReorder                     = 1 << 5
+ImGuiTabItemFlags_Leading                       = 1 << 6
+ImGuiTabItemFlags_Trailing                      = 1 << 7
 
-ImGuiMouseButton_Left = 0
-ImGuiMouseButton_Right = 1
-ImGuiMouseButton_Middle = 2
+ImGuiMouseButton_Left                           = 0
+ImGuiMouseButton_Right                          = 1
+ImGuiMouseButton_Middle                         = 2
 
-ImGuiHoveredFlags_None                          = 0
-ImGuiHoveredFlags_ChildWindows                  = 1 << 0
-ImGuiHoveredFlags_RootWindow                    = 1 << 1
-ImGuiHoveredFlags_AnyWindow                     = 1 << 2
-ImGuiHoveredFlags_AllowWhenBlockedByPopup       = 1 << 3
---ImGuiHoveredFlags_AllowWhenBlockedByModal     = 1 << 4   // Return true even if a modal popup window is normally blocking access to this item/window. FIXME-TODO: Unavailable yet.
-ImGuiHoveredFlags_AllowWhenBlockedByActiveItem  = 1 << 5
-ImGuiHoveredFlags_AllowWhenOverlapped           = 1 << 6
-ImGuiHoveredFlags_AllowWhenDisabled             = 1 << 7
-ImGuiHoveredFlags_RectOnly                      = ImGuiHoveredFlags_AllowWhenBlockedByPopup | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem | ImGuiHoveredFlags_AllowWhenOverlapped
-ImGuiHoveredFlags_RootAndChildWindows           = ImGuiHoveredFlags_RootWindow | ImGuiHoveredFlags_ChildWindows
+ImGuiHoveredFlags_None                      = 0
+ImGuiHoveredFlags_ChildWindows              = 1 << 0
+ImGuiHoveredFlags_RootWindow                = 1 << 1
+ImGuiHoveredFlags_AnyWindow                 = 1 << 2
+ImGuiHoveredFlags_NoPopupHierarchy          = 1 << 3
+ImGuiHoveredFlags_DockHierarchy             = 1 << 4
+ImGuiHoveredFlags_AllowWhenBlockedByPopup   = 1 << 5
+--ImGuiHoveredFlags_AllowWhenBlockedByModal = 1 << 6
+ImGuiHoveredFlags_AllowWhenBlockedByActiveItem= 1 << 7
+ImGuiHoveredFlags_AllowWhenOverlapped       = 1 << 8
+ImGuiHoveredFlags_AllowWhenDisabled         = 1 << 9
+ImGuiHoveredFlags_NoNavOverride             = 1 << 10
+ImGuiHoveredFlags_RectOnly                  = ImGuiHoveredFlags_AllowWhenBlockedByPopup | ImGuiHoveredFlags_AllowWhenBlockedByActiveItem | ImGuiHoveredFlags_AllowWhenOverlapped
+ImGuiHoveredFlags_RootAndChildWindows       = ImGuiHoveredFlags_RootWindow | ImGuiHoveredFlags_ChildWindows
+ImGuiHoveredFlags_DelayNormal               = 1 << 11
+ImGuiHoveredFlags_DelayShort                = 1 << 12
+ImGuiHoveredFlags_NoSharedDelay             = 1 << 13
     
-ImGuiFocusedFlags_None                          = 0
-ImGuiFocusedFlags_ChildWindows                  = 1 << 0
-ImGuiFocusedFlags_RootWindow                    = 1 << 1
-ImGuiFocusedFlags_AnyWindow                     = 1 << 2
-ImGuiFocusedFlags_RootAndChildWindows           = ImGuiFocusedFlags_RootWindow | ImGuiFocusedFlags_ChildWindows
+ImGuiFocusedFlags_None                      = 0
+ImGuiFocusedFlags_ChildWindows              = 1 << 0
+ImGuiFocusedFlags_RootWindow                = 1 << 1
+ImGuiFocusedFlags_AnyWindow                 = 1 << 2
+ImGuiFocusedFlags_NoPopupHierarchy          = 1 << 3
+ImGuiFocusedFlags_DockHierarchy             = 1 << 4
+ImGuiFocusedFlags_RootAndChildWindows       = ImGuiFocusedFlags_RootWindow | ImGuiFocusedFlags_ChildWindows
     
 return M

@@ -2320,6 +2320,9 @@
     <ClCompile Include="src\modules\ai\aiIntersection.cpp">
       <Filter>Source Files\modules\ai</Filter>
     </ClCompile>
+    <ClCompile Include="src\imgui\imgui_tables.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AGE.h">
