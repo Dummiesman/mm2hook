@@ -171,8 +171,14 @@ namespace MM2
     void Matrix34::Dot3x3(const Matrix34& rhs) {
         hook::Thunk<0x4BC970>::Call<void>(this, &rhs);
     }
+
     void Matrix34::Dot(const Matrix34& rhs) {
         hook::Thunk<0x4BC400>::Call<void>(this, &rhs);
+    }
+
+    void Matrix34::Inverse()
+    {
+        hook::Thunk<0x4BE720>::Call<void>(this);
     }
 
     void Matrix34::Scale(float amount) {
@@ -254,6 +260,14 @@ namespace MM2
         this->m20 = 0.0;
         this->m21 = 0.0;
         this->m22 = 1.0;
+    }
+
+    float Matrix34::Determinant() {
+        return hook::Thunk<0x4C1320>::Call<float>(this);
+    }
+
+    float Matrix34::Determinant3x3() {
+        return hook::Thunk<0x4BF010>::Call<float>(this);
     }
 
     void Matrix34::Transform(const Vector3& vector, Vector3& out) const
@@ -400,6 +414,9 @@ namespace MM2
 
             .addFunction("Identity", &Matrix34::Identity)
             .addFunction("Identity3x3", &Matrix34::Identity3x3)
+            .addFunction("Determinant", &Matrix34::Determinant)
+            .addFunction("Determinant3x3", &Matrix34::Determinant3x3)
+            .addFunction("Inverse", &Matrix34::Inverse)
             .addFunction("Scale", static_cast<void(Matrix34::*)(float, float, float)>(&Matrix34::Scale))
             .addFunction("Normalize", &Matrix34::Normalize)
             .addFunction("Dot", &Matrix34::Dot)

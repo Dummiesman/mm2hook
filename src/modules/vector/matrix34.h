@@ -54,12 +54,15 @@ namespace MM2
         void Zero();
         void Dot(const Matrix34& rhs);
         void Dot3x3(const Matrix34& rhs);
+        void Inverse();
         void Scale(float amount);
         void Scale(float xAmount, float yAmount, float zAmount);
         void ScaleFull(float amount);
         void ScaleFull(float xAmount, float yAmount, float zAmount);
         void Identity();
         void Identity3x3();
+        float Determinant();
+        float Determinant3x3();
         void Transform(const Vector3& vector, Vector3& out) const;
         Vector3 Transform(const Vector3& vector) const;
         void Transform3x3(const Vector3& vector, Vector3& out) const;
