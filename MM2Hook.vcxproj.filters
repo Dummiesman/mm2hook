@@ -1603,6 +1603,9 @@
     <ClInclude Include="src\handlers\feature_handlers\FadeHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\CityListHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2324,6 +2327,9 @@
     </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\FadeHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\CityListHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

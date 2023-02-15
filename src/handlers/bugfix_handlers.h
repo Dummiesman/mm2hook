@@ -13,6 +13,7 @@
 #include "bugfix_handlers/asMeshCardInfoHandler.h"
 #include "bugfix_handlers/audManagerHandler.h"
 #include "bugfix_handlers/cityLevelBugfixHandler.h"
+#include "bugfix_handlers/CityListHandler.h"
 #include "bugfix_handlers/fxShardManagerBugfixHandler.h"
 #include "bugfix_handlers/gfxImageHandler.h"
 #include "bugfix_handlers/lvlSkyHandler.h"

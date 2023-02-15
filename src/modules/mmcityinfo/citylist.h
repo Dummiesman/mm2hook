@@ -16,6 +16,8 @@ namespace MM2
         int numCities;
         int curCity;
     public:
+        ANGEL_ALLOCATOR
+
         AGE_API mmCityList(void) {
             scoped_vtable x(this);
             hook::Thunk<0x524160>::Call<void>(this);

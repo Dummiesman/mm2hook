@@ -42,6 +42,7 @@ static init_handler g_bugfix_handlers[] = {
     CreateHandler<modShaderHandler>("modShader"),
 
     CreateHandler<cityLevelBugfixHandler>("cityLevelBugfixHandler"),
+    CreateHandler<CityListHandler>("CityListHandler"),
 
     CreateHandler<mpConsistencyHandler>("mpConsistencyHandler"),
     CreateHandler<mmMultiCRHandler>("mmMultiCR"),
