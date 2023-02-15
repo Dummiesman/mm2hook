@@ -60,7 +60,7 @@ void mmSingleRoamHandler::ResetToNearestLocation() {
 
     // move player to the closest intersection if we can
     if (closestIntersection >= 0) {
-        auto oldResetPos = carsim->GetResetPosition();
+        auto oldResetPos = carsim->GetResetPos();
 
         // set to closest intersection
         carsim->SetResetPos(AIMAP->intersections[closestIntersection]->GetCenter());

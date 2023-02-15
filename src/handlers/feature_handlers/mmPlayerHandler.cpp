@@ -72,7 +72,7 @@ void mmPlayerHandler::Zoink() {
 
     // move player to the closest intersection if we can
     if (closestIntersection >= 0) {
-        Vector3 originalResetPos = car->GetCarSim()->GetResetPosition();
+        Vector3 originalResetPos = car->GetCarSim()->GetResetPos();
         car->GetCarSim()->SetResetPos(AIMAP->Intersection(closestIntersection)->GetCenter());
         car->Reset();
         car->GetCarSim()->SetResetPos(originalResetPos);

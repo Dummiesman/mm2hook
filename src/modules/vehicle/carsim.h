@@ -182,12 +182,16 @@ namespace MM2
             return this->SpeedInMph;
         };
 
-        Vector3 GetResetPosition() const {
-            return this->ResetPosition;
+        Vector3 GetResetPos() const {
+            return this->ResetPosition - this->CenterOfGravity;
         }
 
         float GetResetRotation() const {
             return this->ResetRotation;
+        }
+
+        void SetResetRotation(float rotation) {
+            this->ResetRotation = rotation;
         }
 
         lvlInstance * GetInstance() {
@@ -288,7 +292,6 @@ namespace MM2
                 .addPropertyReadOnly("FrontAxle", &GetFrontAxle)
                 .addPropertyReadOnly("RearAxle", &GetRearAxle)
                 .addPropertyReadOnly("Transmission", &GetTransmission)
-                .addPropertyReadOnly("ResetPosition", &GetResetPosition)
                 .addPropertyReadOnly("Engine", &GetEngine)
                 .addPropertyReadOnly("Speed", &GetSpeedMPH)
 
@@ -305,6 +308,9 @@ namespace MM2
                 .addProperty("BoundElasticity", &GetBoundElasticity, &SetBoundElasticity)
                 .addProperty("DrivetrainType", &GetDrivetrainType, &SetDrivetrainType)
                 
+                .addProperty("ResetRotation", &GetResetRotation, &SetResetRotation)
+                .addProperty("ResetPosition", &GetResetPos, &SetResetPos)
+
                 .addProperty("Steering", &GetSteering, &SetSteering)
                 .addProperty("Brake", &GetBrake, &SetBrake)
                 .addProperty("Handbrake", &GetHandbrake, &SetHandbrake)
