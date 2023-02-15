@@ -35,21 +35,23 @@ namespace MM2Lua
     void TryCallFunction(LuaRef func);
 
     //events
-    void OnChatMessage(char* message);
-    void OnGameEnd();
-    void OnGamePreInit();
-    void OnGamePostInit();
+    void OnChatMessage(const char* message);
     void OnReset();
     void OnDisconnect();
-    void OnSessionCreate(char *sessionName, char *sessionPassword, int sessionMaxPlayers, MM2::NETSESSION_DESC *sessionData);
-    void OnSessionJoin(char *a2, GUID *a3, char *a4);
+    void OnSessionCreate();
+    void OnSessionJoin();
     
+    void OnStateBegin();
+    void OnStateEnd();
+
     void OnTick();
+    void OnStartup();
     void OnShutdown();
-    void OnKeyPress(DWORD vKey);
 
     void OnInitializeUi();
     void OnRenderUi();
+
+    void OnKeyPress(DWORD vKey);
 
     void SendCommand(LPCSTR command);
 }

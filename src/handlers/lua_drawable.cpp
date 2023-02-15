@@ -1,3 +1,4 @@
+#include <events\dispatcher.h>
 #include "lua_drawable.h"
 
 using namespace MM2;
@@ -112,4 +113,6 @@ void luaDrawableHandler::Install()
             cb::jmp(0x465460),
         }
     );
+
+    GameEventDispatcher::RegisterStateEndCallback(ResetLuaCallbacks);
 }

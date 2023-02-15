@@ -1,3 +1,4 @@
+#include <events\dispatcher.h>
 #include "dgBangerInstanceHandler.h"
 
 using namespace MM2;
@@ -64,5 +65,7 @@ void dgBangerInstanceHandler::Install()
             cb::call(0x53CCFD),
         }
     );
+
+    GameEventDispatcher::RegisterStateEndCallback(Reset);
 }
 

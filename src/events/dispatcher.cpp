@@ -1,66 +1,89 @@
 #include "dispatcher.h"
-#include "..\..\discord-rpc\discord-presence.h"
 #include "..\mm2_network.h"
-#include "..\handlers\feature_handlers.h"
 
 using namespace MM2;
 
+std::vector<void(*)(bool)> GameEventDispatcher::beginPhaseCallbacks = {};
+std::vector<void(*)()> GameEventDispatcher::endPhaseCallbacks = {};
+std::vector<void(*)()> GameEventDispatcher::stateEndCallbacks = {};
+std::vector<void(*)()> GameEventDispatcher::stateBeginCallbacks = {};
+std::vector<void(*)(const char*)> GameEventDispatcher::chatMessageCallbacks = {};
+std::vector<void(*)()> GameEventDispatcher::resetCallbacks = {};
+
 /*
-    thiscall hooked functions
+    Registry
 */
-void GameEventDispatcher::onGameInitHook()
+void GameEventDispatcher::RegisterBeginPhaseCallback(void(*cb)(bool))
 {
-    GameEventDispatcher::onGamePreInit();
-    get<mmGame>()->mmGame::Init();
-    GameEventDispatcher::onGamePostInit();
+    beginPhaseCallbacks.push_back(cb);
 }
 
-void GameEventDispatcher::onGameEndHook(int a1)
+void GameEventDispatcher::RegisterEndPhaseCallback(void(*cb)())
 {
-    GameEventDispatcher::onGameEnd(a1);
+    endPhaseCallbacks.push_back(cb);
+}
+
+void GameEventDispatcher::RegisterStateEndCallback(void(*cb)())
+{
+    stateEndCallbacks.push_back(cb);
+}
+
+void GameEventDispatcher::RegisterStateBeginCallback(void(*cb)())
+{
+    stateBeginCallbacks.push_back(cb);
+}
+
+void GameEventDispatcher::RegisterChatMessageCallback(void(*cb)(const char*))
+{
+    chatMessageCallbacks.push_back(cb);
+}
+
+void GameEventDispatcher::RegisterOnResetCallback(void(*cb)())
+{
+    resetCallbacks.push_back(cb);
 }
 
 /*
     Dispatcher static functions
 */
-
-void GameEventDispatcher::onGameEnd(int a1)
+void GameEventDispatcher::BeginPhase(bool a1)
 {
-    MM2Lua::OnGameEnd();
-    TextureVariantHandler::Reset();
-    cityTimeWeatherLightingHandler::Reset();
-    luaDrawableHandler::ResetLuaCallbacks();
+    for (auto cb : beginPhaseCallbacks) cb(a1);
+    MM2Lua::OnStartup();
 }
 
-void GameEventDispatcher::onGamePreInit()
+void GameEventDispatcher::EndPhase()
 {
-    MM2Lua::OnGamePreInit();
+    for (auto cb : endPhaseCallbacks) cb();
+    MM2Lua::OnShutdown();
 }
 
-void GameEventDispatcher::onGamePostInit()
+void GameEventDispatcher::onStateBegin()
 {
-    MM2Lua::OnGamePostInit();
-    dgBangerInstanceHandler::Reset();
+    for (auto cb : stateBeginCallbacks) cb();
+    MM2Lua::OnStateBegin();
 }
 
-void GameEventDispatcher::onChatMessage(char * message)
+void GameEventDispatcher::onStateEnd()
 {
+    for (auto cb : stateEndCallbacks) cb();
+    MM2Lua::OnStateEnd();
+}
+
+void GameEventDispatcher::onChatMessage(const char * message)
+{
+    for (auto cb : chatMessageCallbacks) cb(message);
     MM2Lua::OnChatMessage(message);
 }
 
-void GameEventDispatcher::onTick()
+void GameEventDispatcher::onSessionCreate() 
 {
-    MM2Lua::OnTick();
+    MM2Lua::OnSessionCreate();
 }
 
-void GameEventDispatcher::onSessionCreate(char *sessionName, char *sessionPassword, int sessionMaxPlayers, NETSESSION_DESC *sessionData) 
+void GameEventDispatcher::onSessionJoin() 
 {
-    MM2Lua::OnSessionCreate(sessionName, sessionPassword, sessionMaxPlayers, sessionData);
-}
-
-void GameEventDispatcher::onSessionJoin(char *a2, GUID *a3, char *a4) 
-{
-    MM2Lua::OnSessionJoin(a2, a3, a4);
+    MM2Lua::OnSessionJoin();
 }
 
 void GameEventDispatcher::onDisconnect()
@@ -69,11 +92,8 @@ void GameEventDispatcher::onDisconnect()
 }
 
 void GameEventDispatcher::onReset() {
+    for (auto cb : resetCallbacks) cb();
     MM2Lua::OnReset();
-
-    //do fade (maybe move this eventually)
-    gfxPipeline::SetFade(0xFF000000);
-    gfxPipeline::StartFade(0x00000000, 1.f);
 
     //call original
     auto game = mmGameManager::Instance->getGame();
@@ -81,18 +101,6 @@ void GameEventDispatcher::onReset() {
 }
 
 void GameEventDispatcher::Install() {
-    InstallCallback("mmGame::Init", "Register onGameInitHook with dispatcher.",
-        &onGameInitHook, {
-            cb::jmp(0x433AA0),      //mmGameSingle::Init
-            cb::call(0x438F81),     //mmGameMulti::Init
-        }
-    );
-    InstallCallback("mmGame::BeDone", "Register onGameEndHook with dispatcher.",
-        &onGameEndHook, {
-            cb::jmp(0x414DF1),      //end of mmGame::BeDone
-        }
-    );
-
     InstallCallback("mmGame::Reset", "Register onGameReset with dispatcher.",
         &GameEventDispatcher::onReset, {
             cb::call(0x433B3C),      //mmGameSingle::Reset

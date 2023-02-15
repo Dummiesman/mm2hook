@@ -5,7 +5,6 @@
 #include "handlers\feature_handlers.h"
 
 #include "handlers\print_handler.h"
-#include "handlers\time_handler.h"
 
 #include <discord-presence.h>
 
@@ -547,7 +546,6 @@ private:
 
         InstallHandler<CallbackHandler>("Generic callbacks");
         InstallHandler<PrintHandler>("Print system");
-        InstallHandler<TimeHandler>("Time manager");
         InstallHandler<StackHandler>("Stack information");
 
         InstallHandler<GameEventDispatcher>("Event dispatcher");
@@ -634,46 +632,35 @@ public:
         }
     }
 
-    static void Reset(bool restarting) {
-        LogFile::Write("Hook reset request received: ");
-        LogFile::WriteLine((restarting) ? "leaving GameLoop" : "entering GameLoop");
-    }
-
-    // TODO: fix this horrible logic
     static void Update(bool parsedStateArgs) {
-        Reset(false);
-
-        // GameLoop
-        hook::StaticThunk<0x401A00>::Call<void>(parsedStateArgs);
-
-        Reset(true);
+        GameEventDispatcher::onStateBegin();
+        hook::StaticThunk<0x401A00>::Call<void>(parsedStateArgs); // GameLoop
+        GameEventDispatcher::onStateEnd();
     }
 
     static void BeginPhase(bool a1) {
         //call original
         hook::StaticThunk<0x401AA0>::Call<void>(a1);
 
-        //initialize lua
-        MM2Lua::Initialize();
-        
-
         //initialize imgui
         auto imguiNode = new mmImGuiManager();
         MM2::ROOT->AddChild(imguiNode);
+
+        //initialize lua
+        MM2Lua::Initialize();
+        GameEventDispatcher::BeginPhase(a1);
     }
 
     static void EndPhase() {
+        GameEventDispatcher::EndPhase();
+        
         // shutdown imgui
         if (mmImGuiManager::Instance != nullptr) {
             delete mmImGuiManager::Instance;
         }
 
-        //shutdown lua (therefore releasing all memory)
-        MM2Lua::OnShutdown();
-
         //call original
         hook::StaticThunk<0x401FC0>::Call<void>();
-
     }
 
     static void Shutdown() {

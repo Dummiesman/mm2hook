@@ -1,0 +1,12 @@
+#pragma once
+#include "common.h"
+#include "patch.h"
+#include "mm2.h"
+
+class FadeHandler {
+public:
+    static void DoFade();
+
+    static void Install();
+};
+

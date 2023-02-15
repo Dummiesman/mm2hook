@@ -1,3 +1,4 @@
+#include <events\dispatcher.h>
 #include "cityTimeWeatherLightingHandler.h"
 
 using namespace MM2;
@@ -43,8 +44,10 @@ BOOL CanDrawNightTrafficGlows() {
 }
 
 void cityTimeWeatherLightingHandler::Reset() {
-    TimeWeather->FlatColorIntensity = 1.0;
-    TimeWeather->ApplyFlatColor();
+    if (cityTimeWeatherLightingHandler::TimeWeather != nullptr) {
+        TimeWeather->FlatColorIntensity = 1.0;
+        TimeWeather->ApplyFlatColor();
+    }
 }
 
 void cityTimeWeatherLightingHandler::LoadCityTimeWeatherLighting() {
@@ -106,5 +109,7 @@ void cityTimeWeatherLightingHandler::Install() {
     InstallCallback(&FileIO, {
         cb::call(0x443584),
     }, "Custom FileIO for cityTimeWeatherLighting.");
+
+    GameEventDispatcher::RegisterStateEndCallback(Reset);
 }
 

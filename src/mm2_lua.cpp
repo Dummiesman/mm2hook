@@ -11,6 +11,7 @@ using namespace MM2;
 LuaState L;
 bool isMainLuaLoaded = false;
 bool isStateInitialized;
+int gameState;
 
 /*
     luaCallback
@@ -224,10 +225,6 @@ void LoadMainScript() {
         if (isMainLuaLoaded = (status == LUA_OK))
         {
             LogFile::Format(" - Loaded script file: %s\n", lua_file);
-
-            //call init
-            LuaRef func(L, "init");
-            MM2Lua::TryCallFunction(func);
         }
     }
     else
@@ -320,49 +317,26 @@ void MM2Lua::Reset()
         luaSetGlobals();
 }
 
-void MM2Lua::OnChatMessage(char* message) {
+void MM2Lua::OnChatMessage(const char* message) {
     if (IsInitialized()) {
         LuaRef func(L, "onChatMessage");
         TryCallFunction<void>(func, message);
     }
 }
 
-void MM2Lua::OnGameEnd() {
-    if (IsInitialized()) {
-        LuaRef func(L, "onGameEnd");
-        TryCallFunction(func);
-    }
-}
-
-void MM2Lua::OnGamePreInit() {
-    if (IsInitialized()) {
-        luaSetGlobals();
-        LuaRef func(L, "onGamePreInit");
-        TryCallFunction(func);
-    }
-}
-
-void MM2Lua::OnGamePostInit() {
-    if (IsInitialized()) {
-        luaSetGlobals();
-        LuaRef func(L, "onGamePostInit");
-        TryCallFunction(func);
-    }
-}
-
-void MM2Lua::OnSessionCreate(char * sessionName, char * sessionPassword, int sessionMaxPlayers, NETSESSION_DESC * sessionData)
+void MM2Lua::OnSessionCreate()
 {
     if (IsInitialized()) {
         LuaRef func(L, "onSessionCreate");
-        TryCallFunction<void>(func, sessionName, sessionPassword, sessionMaxPlayers, sessionData);
+        TryCallFunction(func);
     }
 }
 
-void MM2Lua::OnSessionJoin(char * a2, GUID * a3, char * a4)
+void MM2Lua::OnSessionJoin()
 {
     if (IsInitialized()) {
         LuaRef func(L, "onSessionJoin");
-        TryCallFunction<void>(func, a2, a3, a4);
+        TryCallFunction(func);
     }
 }
 
@@ -389,6 +363,32 @@ void MM2Lua::OnTick()
         TryCallFunction(tickFunction);
         Lua::setGlobal(L, "lastKey", -1); // reset lastKey
     }        
+}
+
+void MM2Lua::OnStateBegin()
+{
+    if (IsInitialized()) {
+        luaSetGlobals();
+        LuaRef func(L, "onStateBegin");
+        TryCallFunction(func);
+    }
+}
+
+void MM2Lua::OnStateEnd()
+{
+    if (IsInitialized()) {
+        LuaRef func(L, "onStateEnd");
+        TryCallFunction(func);
+    }
+}
+
+void MM2Lua::OnStartup()
+{
+    if (IsInitialized()) {
+        gameState = (&MMSTATE)->NextState;
+        LuaRef func(L, "startup");
+        TryCallFunction(func);
+    }
 }
 
 void MM2Lua::OnShutdown()
@@ -423,8 +423,6 @@ void MM2Lua::OnRenderUi()
 void MM2Lua::OnKeyPress(DWORD vKey)
 {
     if (IsInitialized()) {
-        Lua::setGlobal(L, "lastKey", vKey);
-
         if (vKey == VK_F5) {
             ReloadScript();
         }

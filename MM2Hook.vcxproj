@@ -182,6 +182,7 @@
     <ClInclude Include="src\handlers\feature_handlers\dgBangerInstanceHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\dgPhysManagerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\Dialog_NewPlayerHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\FadeHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\fxTexelDamageHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gettexHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gfxPipelineHandler.h" />
@@ -222,7 +223,6 @@
     <ClInclude Include="src\handlers\feature_handlers\vehWheelHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\vglHandler.h" />
     <ClInclude Include="src\handlers\print_handler.h" />
-    <ClInclude Include="src\handlers\time_handler.h" />
     <ClInclude Include="src\hook.h" />
     <ClInclude Include="src\handlers\lua_drawable.h" />
     <ClInclude Include="src\imgui\imconfig.h" />
@@ -619,6 +619,7 @@
     <ClCompile Include="src\handlers\feature_handlers\dgBangerInstanceHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\dgPhysManagerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\Dialog_NewPlayerHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\FadeHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\fxTexelDamageHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gettexHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gfxPipelineHandler.cpp" />
@@ -659,7 +660,6 @@
     <ClCompile Include="src\handlers\feature_handlers\vehWheelHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\vglHandler.cpp" />
     <ClCompile Include="src\handlers\print_handler.cpp" />
-    <ClCompile Include="src\handlers\time_handler.cpp" />
     <ClCompile Include="src\hook.cpp" />
     <ClCompile Include="src\handlers\lua_drawable.cpp" />
     <ClCompile Include="src\imgui\imgui.cpp" />

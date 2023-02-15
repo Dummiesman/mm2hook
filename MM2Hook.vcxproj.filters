@@ -1518,9 +1518,6 @@
     <ClInclude Include="src\handlers\print_handler.h">
       <Filter>Source Files\handlers</Filter>
     </ClInclude>
-    <ClInclude Include="src\handlers\time_handler.h">
-      <Filter>Source Files\handlers</Filter>
-    </ClInclude>
     <ClInclude Include="src\modules\gfx\loadimg.h" />
     <ClInclude Include="src\handlers\feature_handlers\gettexHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
@@ -1600,7 +1597,12 @@
     <ClInclude Include="src\modules\mmcityinfo\racedata.h">
       <Filter>Source Files\modules\mmcityinfo</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmwidget\manager.h">
       <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\FadeHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2227,9 +2229,6 @@
     <ClCompile Include="src\handlers\print_handler.cpp">
       <Filter>Source Files\handlers</Filter>
     </ClCompile>
-    <ClCompile Include="src\handlers\time_handler.cpp">
-      <Filter>Source Files\handlers</Filter>
-    </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\gettexHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
@@ -2322,6 +2321,9 @@
     </ClCompile>
     <ClCompile Include="src\imgui\imgui_tables.cpp">
       <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\FadeHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

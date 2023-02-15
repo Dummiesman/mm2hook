@@ -1,4 +1,5 @@
 #include "TextureVariantHandler.h"
+#include <events\dispatcher.h>
 #include <vector>
 using namespace MM2;
 
@@ -203,6 +204,8 @@ void TextureVariantHandler::Install()
             cb::call(0x401599),
         }, "Installs new texture variant handler."
     );
+
+    GameEventDispatcher::RegisterStateEndCallback(Reset);
 
     // handled by cityTimeWeatherLightingHandler
     // leaving this here in case something goes wrong

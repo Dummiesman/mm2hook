@@ -31,6 +31,8 @@ static init_handler g_feature_handlers[] = {
     CreateHandler<gizFerryHandler>("gizFerry"),
     CreateHandler<gizParkedCarMgrHandler>("gizParkedCarMgr"),
 
+    CreateHandler<FadeHandler>("FadeHandler"),
+
     CreateHandler<mmHudMapFeatureHandler>("mmHudMapFeatureHandler"),
     CreateHandler<mmIconsHandler>("mmIconsHandler"),
     CreateHandler<mmDashViewHandler>("mmDashView"),

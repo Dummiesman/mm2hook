@@ -20,6 +20,7 @@
 #include "feature_handlers/dgBangerInstanceHandler.h"
 #include "feature_handlers/dgPhysManagerHandler.h"
 #include "feature_handlers/Dialog_NewPlayerHandler.h"
+#include "feature_handlers/FadeHandler.h"
 #include "feature_handlers/fxTexelDamageHandler.h"
 #include "feature_handlers/gettexHandler.h"
 #include "feature_handlers/gfxPipelineHandler.h"
