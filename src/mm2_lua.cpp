@@ -115,8 +115,6 @@ void luaAddModule_Vector(lua_State *L)
 
 void luaSetGlobals()
 {
-    LogFile::Write("Updating Lua globals...");
-
     mmGameManager *gameMgr = mmGameManager::Instance;
 
     auto pGame = (gameMgr != NULL) ? gameMgr->getGame() : NULL;
@@ -133,8 +131,6 @@ void luaSetGlobals()
     Lua::setGlobal(L, "AIMAP", aiMap::GetInstance());
     Lua::setGlobal(L, "VehicleList", VehicleListPtr.get());
     Lua::setGlobal(L, "CityList", CityListPtr.get());
-
-    LogFile::WriteLine("Done!");
 }
 
 LUAMOD_API int luaopen_MM2(lua_State *L)
@@ -351,6 +347,7 @@ void MM2Lua::OnDisconnect()
 void MM2Lua::OnReset() 
 {
     if (IsInitialized()) {
+        luaSetGlobals();
         LuaRef func(L, "onReset");
         TryCallFunction(func);
     }
