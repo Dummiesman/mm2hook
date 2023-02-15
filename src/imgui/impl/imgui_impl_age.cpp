@@ -36,7 +36,7 @@ struct ImGui_ImplAGE_Data
     ImGui_ImplAGE_Data() { memset((void*)this, 0, sizeof(*this)); }
 };
 
-static ImGui_ImplAGE_Data* ImGui_ImplAGE_GetBackendData() { return ImGui::GetCurrentContext() ? (ImGui_ImplAGE_Data*)ImGui::GetIO().BackendPlatformUserData : nullptr; }
+static ImGui_ImplAGE_Data* ImGui_ImplAGE_GetBackendData() { return ImGui::GetCurrentContext() ? (ImGui_ImplAGE_Data*)ImGui::GetIO().BackendRendererUserData : nullptr; }
 
 static void ImGui_ImplAGE_SetupRenderState(ImDrawData* draw_data)
 {
@@ -59,8 +59,10 @@ static void ImGui_ImplAGE_SetupRenderState(ImDrawData* draw_data)
 void ImGui_ImplAGE_RenderDrawData(ImDrawData* draw_data)
 {
     // Avoid rendering when minimized
-    if (draw_data->DisplaySize.x <= 0.0f || draw_data->DisplaySize.y <= 0.0f)
+    if (draw_data->DisplaySize.x <= 0.0f || draw_data->DisplaySize.y <= 0.0f) {
+        Errorf("ImGui_ImplAGE_RenderDrawData: invalid display size (%f, %f)", draw_data->DisplaySize.x, draw_data->DisplaySize.y);
         return;
+    }
 
     // Backup AGE state that will be modified
     auto prevVP = gfxCurrentViewport.get();
@@ -133,6 +135,11 @@ void ImGui_ImplAGE_RenderDrawData(ImDrawData* draw_data)
                 vglBindTexture((gfxTexture*)pcmd->TextureId); 
 
                 vglBegin(MM2::gfxDrawMode::DRAWMODE_TRIANGLELIST, 0); //This doesn't render anything. But it does flush the render state for us!
+
+                //TEST
+                //g_Viewport->SetWindow(pcmd->ClipRect.x, pcmd->ClipRect.y, pcmd->ClipRect.z - pcmd->ClipRect.x, pcmd->ClipRect.w - pcmd->ClipRect.y, 0, 1);
+
+                //
                 lpD3DDev->DrawIndexedPrimitive(D3DPRIMITIVETYPE::D3DPT_TRIANGLELIST, 
                                                D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1,
                                                (LPVOID)&vertices[pcmd->VtxOffset],
@@ -140,7 +147,6 @@ void ImGui_ImplAGE_RenderDrawData(ImDrawData* draw_data)
                                                (LPWORD)&indices[pcmd->IdxOffset],
                                                pcmd->ElemCount,
                                                0);
-              
             }
         }
     }
@@ -176,6 +182,10 @@ bool ImGui_ImplAGE_CreateDeviceObjects()
     io.Fonts->TexID = (void*)tex;
     bd->Texture = tex;
 
+    if (tex == nullptr)
+    {
+        Warningf("gfxTexture::Create failure! (creating texture with %i, %i dimensions)", width, height);
+    }
     return true;
 }
 
@@ -194,12 +204,14 @@ void ImGui_ImplAGE_InvalidateDeviceObjects()
 
 bool ImGui_ImplAGE_Init(gfxViewport *viewport)
 {
-    // Setup back-end capabilities flags
     ImGuiIO& io = ImGui::GetIO();
-    io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;       // We can honor GetMouseCursor() values (optional)
-    io.BackendPlatformName = io.BackendRendererName = "imgui_impl_AGE";
-    io.BackendPlatformUserData = (void*)IM_NEW(ImGui_ImplAGE_Data)();
+    IM_ASSERT(io.BackendRendererUserData == nullptr && "Already initialized a renderer backend!");
 
+    // Setup back-end capabilities flags
+    io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;       // We can honor GetMouseCursor() values (optional)
+    io.BackendRendererName = io.BackendRendererName = "imgui_impl_AGE";
+    io.BackendRendererUserData = (void*)IM_NEW(ImGui_ImplAGE_Data)();
+    
     // Set data
     ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
     bd->Viewport = viewport;
@@ -213,8 +225,8 @@ void ImGui_ImplAGE_Shutdown()
     ImGuiIO& io = ImGui::GetIO();
     ImGui_ImplAGE_InvalidateDeviceObjects();
 
-    io.BackendPlatformUserData = nullptr;
-    io.BackendPlatformName = io.BackendRendererName = nullptr;
+    io.BackendRendererUserData = nullptr;
+    io.BackendRendererName = nullptr;
     IM_DELETE(bd);
 }
 
