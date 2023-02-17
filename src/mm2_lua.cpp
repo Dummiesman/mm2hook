@@ -11,7 +11,7 @@ using namespace MM2;
 LuaState L;
 bool isMainLuaLoaded = false;
 bool isStateInitialized;
-int gameState;
+bool bFirstReset = false;
 
 /*
     luaCallback
@@ -346,8 +346,13 @@ void MM2Lua::OnDisconnect()
 
 void MM2Lua::OnReset() 
 {
+    // skip the first reset as it happens before the onStateBegin event
+    if (!bFirstReset)
+    {
+        bFirstReset = true;
+        return;
+    }
     if (IsInitialized()) {
-        luaSetGlobals();
         LuaRef func(L, "onReset");
         TryCallFunction(func);
     }
@@ -382,7 +387,6 @@ void MM2Lua::OnStateEnd()
 void MM2Lua::OnStartup()
 {
     if (IsInitialized()) {
-        gameState = (&MMSTATE)->NextState;
         LuaRef func(L, "startup");
         TryCallFunction(func);
     }

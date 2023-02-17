@@ -55,6 +55,12 @@ namespace MM2
             return this->Init(name, position, positionFacing, 0, nullptr);
         }
     public:
+        aiTrafficLightInstance::aiTrafficLightInstance()
+        {
+            // aiTrafficLightInstance ctor got inlined
+            // but the inlined constructor implies flag 1 was set in it
+            this->SetFlags(this->GetFlags() | 0x1);
+        }
         /*
             lvlInstance virtuals
         */
