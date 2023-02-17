@@ -713,6 +713,9 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("AddCircleFilled", &ImDrawList::AddCircleFilled, LUA_ARGS(const ImVec2&, float, ImU32, _def<int, 0>))
         .addFunction("AddNgon", &ImDrawList::AddNgon, LUA_ARGS(const ImVec2&, float, ImU32, _def<int, 0>, _def<float, 1>))
         .addFunction("AddNgonFilled", &ImDrawList::AddNgonFilled, LUA_ARGS(const ImVec2&, float, ImU32, _def<int, 0>))
+        .addFunction("AddRect", &ImDrawList::AddRect, LUA_ARGS(const ImVec2&, const ImVec2&, ImU32, _def<float, 0>, _def<int, 0>, _def<float, 1>))
+        .addFunction("AddRectFilled", &ImDrawList::AddRectFilled, LUA_ARGS(const ImVec2&, const ImVec2&, ImU32, _def<float, 0>, _def<int, 0>))
+        .addFunction("AddRectFilledMultiColor", &ImDrawList::AddRectFilledMultiColor, LUA_ARGS(const ImVec2&, const ImVec2&, ImU32, ImU32, ImU32, ImU32))
         .endClass();
 
     LuaBinding(L).beginModule("ImPlot")
