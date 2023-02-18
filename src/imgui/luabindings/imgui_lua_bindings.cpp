@@ -549,7 +549,9 @@ static ImFont* ImFontAtlas_AddFontFromFileTTF(ImFontAtlas& atlas, const char* fi
 
 static ImFont* ImFontAtlas_AddFontFromMemoryTTF(ImFontAtlas& atlas, const char* data, int dataSize, float size_pixels)
 {
-    return atlas.AddFontFromMemoryTTF((void*)data, dataSize, size_pixels);
+    auto ownedFontData = IM_ALLOC(dataSize);
+    memcpy(ownedFontData, data, dataSize);
+    return atlas.AddFontFromMemoryTTF(ownedFontData, dataSize, size_pixels);
 }
 
 static ImFont* ImFontAtlas_AddFontFromMemoryCompressedBase85TTF(ImFontAtlas& atlas, const char* data, float size_pixels)
