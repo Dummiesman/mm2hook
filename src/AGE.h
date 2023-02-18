@@ -34,6 +34,9 @@
 #  define DIRECTSOUND_VERSION DIRECTX_VERSION
 # endif
 #endif
+#ifndef MMNOSOUND
+# define MMNOSOUND
+#endif
 
 #include <d3d.h>
 #include <ddraw.h>
