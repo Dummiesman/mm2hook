@@ -9,14 +9,11 @@
 
 #include <stdio.h>
 #include <stdarg.h>
-#include <windows.h>
-#include <windowsx.h>
-
-#include <Shlwapi.h>
-#include <ShlObj.h>
 
 #include <vector>
 #include <map>
+
+#include <Windows.h>
 
 /*
     Yeah because it's not like GetClassName would ever be used anywhere...*stares at Microsoft*

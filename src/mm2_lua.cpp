@@ -1,9 +1,9 @@
 #include "mm2.h"
 #include "mm2_lua.h"
-#include "mm2_network.h"
 #include "luafilesystem/lfs.h"
-#include <discord-presence.h>
 #include <imgui\luabindings\imgui_lua_bindings.cpp>
+#include <discord-presence.h>
+#include <Shlwapi.h>
 
 using namespace LuaIntf;
 using namespace MM2;
@@ -284,6 +284,7 @@ void MM2Lua::Initialize() {
 
         L = LuaState::newState();
         isStateInitialized = true;
+        bFirstReset = false;
 
         L.openLibs();
         L.require("MM2", luaopen_MM2);
