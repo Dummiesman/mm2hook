@@ -38,9 +38,14 @@ namespace MM2
         float dword80;
         uint32_t dword84;
         const char *Background;
-
-        AGE_API UIButton * AddButton(int unk, LocString *name, float f1, float f2, float f3, float f4, int i1, int i2, MM2::datCallback callback, int i3) {
-            return hook::Thunk<0x4E1A90>::Call<UIButton*>(this, unk, name, f1, f2, f3, f4, i1, i2, callback, i3);
+    public:
+        AGE_API UIButton * AddButton(int id, LocString *text, float x, float y, float w, float h, int fontNum, int type, MM2::datCallback callback, int i3) {
+            return hook::Thunk<0x4E1A90>::Call<UIButton*>(this, id, text, x, y, w, h, fontNum, type, callback, i3);
         };
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<UIMenu, asNode>("UIMenu")
+                .endClass();
+        }
     };
 }
