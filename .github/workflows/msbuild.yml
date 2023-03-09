@@ -34,7 +34,7 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Get Windows SDK
-    - uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.11
+      uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.11
       with:
         sdk-version: 18362
 
