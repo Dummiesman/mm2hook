@@ -131,6 +131,7 @@ void luaSetGlobals()
     Lua::setGlobal(L, "AIMAP", aiMap::GetInstance());
     Lua::setGlobal(L, "VehicleList", VehicleListPtr.get());
     Lua::setGlobal(L, "CityList", CityListPtr.get());
+    Lua::setGlobal(L, "Input", mmInput::GameInputPtr.get());
 }
 
 LUAMOD_API int luaopen_MM2(lua_State *L)
