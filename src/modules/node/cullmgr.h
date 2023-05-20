@@ -94,6 +94,7 @@ namespace MM2
                 .addFunction("DeclareCullable", &DeclareCullable)
                 .addFunction("DeclareCullable2D", &DeclareCullable2D)
                 .addFunction("DeclareCullable2DFG", &DeclareCullable2DFG)
+                .addFunction("DeclareBitmap", &DeclareBitmap)
                 .endClass();
         }
     };
