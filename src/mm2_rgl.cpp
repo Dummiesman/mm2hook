@@ -35,6 +35,7 @@ void MM2::vglUnbindTexture()
 
 /* psdl.obj */
 
+void    MM2::vglTexCoord2f          (Vector2 uv)                                                { vglTexCoord2f(uv.X, uv.Y); }
 void    MM2::vglTexCoord2f          (float u, float v)                                          { return _StaticThunk<0x45CFD0>::Call<void>(u, v); }
 void    MM2::vglVertex3f            (float x, float y, float z)                                 { return _StaticThunk<0x45CFF0>::Call<void>(x, y, z); }
 void    MM2::vglVertex3f            (Vector3 position)                                          { return _StaticThunk<0x45D080>::Call<void>(position); }

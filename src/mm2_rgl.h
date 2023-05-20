@@ -15,7 +15,7 @@ namespace MM2
             .addFunction("vglVertex", [](float x, float y, float z) { vglVertex(x, y, z); })
             .addFunction("gfxDrawFont", &luaGfxDrawFont)
 
-            .addFunction("vglTexCoord2f", &vglTexCoord2f)
+            .addFunction("vglTexCoord2f", static_cast<void(*)(Vector2 vector)>(&vglTexCoord2f))
             .addFunction("vglVertex3f", static_cast<void(*)(Vector3 vector)>(&vglVertex3f))
             .addFunction("vglBegin", &vglBegin, LUA_ARGS(MM2::gfxDrawMode, _def<int, 0>))
             .addFunction("vglEnd", &vglEnd)
