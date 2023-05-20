@@ -9,6 +9,7 @@ namespace MM2
     enum rglToken;
 
     // External declarations
+    extern void vglTexCoord2f(Vector2 uv);
     extern void vglTexCoord2f(float u, float v);
     extern void vglVertex3f(float x, float y, float z);
     extern void vglVertex3f(Vector3 position);
