@@ -204,6 +204,8 @@ namespace MM2
             .addFunction("Approach", &Approach)
             .addFunction("Negate", &Negate)
 
+            .addFunction("RGBtoHSV", &RGBtoHSV)
+            .addFunction("HSVtoRGB", &HSVtoRGB)
 
             .endClass();
     }
