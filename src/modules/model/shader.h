@@ -16,22 +16,22 @@ namespace MM2
         gfxTexture *Texture;
         gfxMaterial *Material;
     public:
-        inline void setTexture(gfxTexture* texture)
+        void SetTexture(gfxTexture* texture)
         {
             this->Texture = texture;
         }
 
-        inline gfxTexture* getTexture()
+        gfxTexture* GetTexture()
         {
             return this->Texture;
         }
 
-        inline gfxMaterial* getMaterial()
+        gfxMaterial* GetMaterial()
         {
             return this->Material;
         }
 
-        inline void setMaterial(gfxMaterial* material)
+        void SetMaterial(gfxMaterial* material)
         {
             this->Material = material;
         }
@@ -55,8 +55,8 @@ namespace MM2
             LuaBinding(L).beginClass<modShader>("modShader")
                 .addStaticFunction("BeginEnvMap", &BeginEnvMap)
                 .addStaticFunction("EndEnvMap", &EndEnvMap)
-                .addPropertyReadOnly("Texture", &getTexture)
-                .addPropertyReadOnly("Material", &getMaterial)
+                .addProperty("Texture", &GetTexture, &SetTexture)
+                .addProperty("Material", &GetMaterial, &SetMaterial)
                 .endClass();
         }
     };
