@@ -129,11 +129,19 @@ namespace MM2
     */
     class gfxPipeline {
     public:
-        static float GetWidth() {
+        static int GetWidth() {
+            return window_iWidth.get();
+        }
+
+        static int GetHeight() {
+            return window_iHeight.get();
+        }
+
+        static float GetFWidth() {
             return window_fWidth.get();
         }
 
-        static float GetHeight() {
+        static float GetFHeight() {
             return window_fHeight.get();
         }
 
@@ -172,8 +180,8 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<gfxPipeline>("gfxPipeline")
                 .addStaticFunction("CopyBitmap", &CopyBitmap)
-                .addStaticProperty("Width", &GetWidth)
-                .addStaticProperty("Height", &GetHeight)
+                .addStaticProperty("Width", &GetFWidth)
+                .addStaticProperty("Height", &GetFHeight)
                 .endClass();
         }
     };
