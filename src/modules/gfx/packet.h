@@ -38,6 +38,27 @@ namespace MM2
         byte* unk_20;
         byte unk_24;
         uint unk_28;
+    private:
+        Vector3 getPositionLua(int index) 
+        {
+            Vector3 vec;
+            GetPosition(vec, index);
+            return vec;
+        }
+
+        Vector3 getNormalLua(int index)
+        {
+            Vector3 vec;
+            GetNormal(vec, index);
+            return vec;
+        }
+
+        Vector2 getTexCoordLua(int index)
+        {
+            Vector2 vec;
+            GetTexCoord(vec, index);
+            return vec;
+        }
     public:
         void DoLock()
         {
@@ -127,11 +148,11 @@ namespace MM2
                 .addFunction("DoLock", &DoLock)
                 .addFunction("DoUnlock", &DoUnlock)
                 .addFunction("SetPosition", &SetPosition)
-                .addFunction("GetPosition", &GetPosition)
+                .addFunction("GetPosition", &getPositionLua)
                 .addFunction("SetNormal", &SetNormal)
-                .addFunction("GetNormal", &GetNormal)
+                .addFunction("GetNormal", &getNormalLua)
                 .addFunction("SetTexCoord", &SetTexCoord)
-                .addFunction("GetTexCoord", &GetTexCoord)
+                .addFunction("GetTexCoord", &getTexCoordLua)
                 .endClass();
         }
     };
