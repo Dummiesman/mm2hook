@@ -114,6 +114,8 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmHudMap, asNode>("mmHudMap")
+                .addVariable("Position", &mmHudMap::Pos)
+                .addVariable("Size", &mmHudMap::Size)
                 .addPropertyReadOnly("NumOpponents", &GetOpponentCount)
                 .addFunction("GetOpponentIcon", &GetOpponentIcon)
                 .addProperty("ShowAllCops", &GetShowAllCops, &SetShowAllCops)
