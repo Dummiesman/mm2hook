@@ -15,6 +15,7 @@ namespace MM2
     // Lua initialization
     template<>
     void luaAddModule<module_model>(LuaState L) {
+        luaBind<modShader>(L);
         luaBind<modStatic>(L);
         luaBind<asMeshSetForm>(L);
 
