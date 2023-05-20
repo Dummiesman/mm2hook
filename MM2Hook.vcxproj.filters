@@ -150,6 +150,9 @@
     <Filter Include="Source Files\modules\audio">
       <UniqueIdentifier>{45b5a56b-9d87-4fad-9f19-f7b023180b24}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\modules\mminput">
+      <UniqueIdentifier>{ecd7b809-791d-4957-9824-faacb21daf40}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -1606,6 +1609,12 @@
     <ClInclude Include="src\handlers\bugfix_handlers\CityListHandler.h">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mminput\input.h">
+      <Filter>Source Files\modules\mminput</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mminput.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2330,6 +2339,9 @@
     </ClCompile>
     <ClCompile Include="src\handlers\bugfix_handlers\CityListHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mminput.cpp">
+      <Filter>Source Files\modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
