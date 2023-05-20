@@ -22,7 +22,7 @@ void memMemoryAllocatorHandler::Install()
     );
     InstallCallback("operator new[]", "Null out allocated memory.",
         &Allocate, {
-            cb::call(0x005773AF),
+            cb::call(0x5773AF),
         }
     );
 }
