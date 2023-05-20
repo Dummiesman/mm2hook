@@ -15,6 +15,7 @@
 #include "mmgame\mmgamemusicdata.h"
 #include "mmgame\mirror.h"
 #include "mmgame\viewmgr.h"
+#include "mmgame\externalview.h"
 #include "mmgame\game.h"
 #include "mmgame\gamesingle.h"
 #include "mmgame\gamemulti.h"

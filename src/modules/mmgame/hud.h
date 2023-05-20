@@ -134,7 +134,13 @@ namespace MM2
         static hook::Field<0xA54, mmTimer> _timer;
         static hook::Field<0xA84, mmTimer> _countdownTimer;
         static hook::Field<0x9B4, mmCRHUD*> _crHud;
+        static hook::Field<0x6F8, mmExternalView> _externalView;
     public:
+        mmExternalView* GetExternalView()
+        {
+            return _externalView.ptr(this);
+        }
+
         mmCRHUD* GetCRHUD()
         {
             return _crHud.get(this);
@@ -211,6 +217,7 @@ namespace MM2
         AGE_API void Enable()                               { hook::Thunk<0x42D910>::Call<void>(this); }
         AGE_API void Disable(BOOL a2)                       { hook::Thunk<0x42D970>::Call<void>(this, a2); }
         AGE_API void Toggle()                               { hook::Thunk<0x42D9D0>::Call<void>(this); }
+        AGE_API void ToggleExternalView()                   { hook::Thunk<0x42D9F0>::Call<void>(this); }
         AGE_API void SetDash(BOOL active)                   { hook::Thunk<0x42DA90>::Call<void>(this, active); }
         AGE_API void ActivateDash()                         { hook::Thunk<0x42DAB0>::Call<void>(this); }
         AGE_API void DeactivateDash()                       { hook::Thunk<0x42DAE0>::Call<void>(this); }
@@ -237,6 +244,7 @@ namespace MM2
                 .addPropertyReadOnly("Arrow", &GetArrow)
                 .addPropertyReadOnly("Map", &GetHudMap)
                 .addPropertyReadOnly("CamView", &GetCamView)
+                .addPropertyReadOnly("ExternalView", &GetExternalView)
                 
                 .addPropertyReadOnly("Timer", &GetTimer)
                 .addPropertyReadOnly("CountdownTimer", &GetCountdownTimer)
@@ -252,6 +260,7 @@ namespace MM2
                 .addFunction("Enable", &Enable)
                 .addFunction("Disable", &Disable, LUA_ARGS(bool))
                 .addFunction("Toggle", &Toggle)
+                .addFunction("ToggleExternalView", &ToggleExternalView)
                 .addFunction("SetDash", &SetDash, LUA_ARGS(bool))
                 .addFunction("ActivateDash", &ActivateDash)
                 .addFunction("DeactivateDash", &DeactivateDash)
@@ -266,4 +275,5 @@ namespace MM2
             .endClass();
         }
     };
+    ASSERT_SIZEOF(mmHUD, 0xBD8);
 }

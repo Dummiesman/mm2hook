@@ -18,6 +18,11 @@ namespace MM2
         luaBind<mmMirror>(L);
         luaBind<mmGameHUD>(L);
         luaBind<mmCRHUD>(L);
+        luaBind<mmSpeedIndicator>(L);
+        luaBind<mmGearIndicator>(L);
+        luaBind<mmLinearGauge>(L);
+        luaBind<mmSlidingGauge>(L);
+        luaBind<mmExternalView>(L);
         luaBind<mmHUD>(L);
         luaBind<mmCDPlayer>(L);
         luaBind<OppIconInfo>(L);

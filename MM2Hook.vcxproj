@@ -378,6 +378,7 @@
     <ClInclude Include="src\modules\mmgame.h" />
     <ClInclude Include="src\modules\mmgame\cd.h" />
     <ClInclude Include="src\modules\mmgame\dash.h" />
+    <ClInclude Include="src\modules\mmgame\externalview.h" />
     <ClInclude Include="src\modules\mmgame\game.h" />
     <ClInclude Include="src\modules\mmgame\gameman.h" />
     <ClInclude Include="src\modules\mmgame\gamemulti.h" />
