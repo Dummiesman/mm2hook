@@ -141,6 +141,7 @@ namespace MM2
                 .addVariable("DownshiftBiasMax", &vehTransmission::DownshiftBiasMax)
                 .addVariable("DownshiftBiasMin", &vehTransmission::DownshiftBiasMin)
                 .addVariable("UpshiftBias", &vehTransmission::UpshiftBias)
+                .addPropertyReadOnly("IsAutomatic", &IsAuto)
                 .addProperty("Gear", &GetGear, &SetCurrentGear)
 
                 //functions
