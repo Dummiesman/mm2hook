@@ -109,7 +109,7 @@ void mmSingleRoamHandler::EscapeDeepWater() {
         car->GetSplash()->setActive(false);
         player->GetCamView()->SetCam(player->GetCurrentCameraPtr());
 
-        if (MMSTATE->ShowDash || *getPtr<int>(player, 0x880)) {
+        if (MMSTATE->DashEnabled || *getPtr<int>(player, 0x880)) {
             MMSTATE->ViewMode = 1;
             *getPtr<int>(player, 0xE48) = 1;
             player->GetCamView()->SetCam(player->GetDashCam());
@@ -120,7 +120,7 @@ void mmSingleRoamHandler::EscapeDeepWater() {
             player->GetHUD()->DeactivateDash();
         }
 
-        if (!MMSTATE->ShowDash) {
+        if (!MMSTATE->DashEnabled) {
             player->GetDashView()->Deactivate();
         }
 

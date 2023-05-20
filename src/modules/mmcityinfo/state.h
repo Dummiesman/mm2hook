@@ -151,12 +151,12 @@ namespace MM2
         byte ViewMode;
         byte MapMode;
         bool UseWideFOV;
-        bool ShowDash;
-
-        bool ShowMirror;
-        bool unk_371;
+        
+        bool DashEnabled;
+        bool MirrorEnabled;
+        bool HUDEnabled;
         bool unk_372;
-        bool ShowIcons;
+        bool IconsEnabled;
 
         bool unk_374;
         bool unk_375;
@@ -223,9 +223,16 @@ namespace MM2
                 .addVariable("TimeLimit", &mmStatePack::TimeLimit)
                 .addVariable("TimeLimitOverride", &mmStatePack::TimeLimitOverride)
                 .addProperty("UsePortals", &getUsePortals, &setUsePortals)
+                .addVariable("NextState", &mmStatePack::NextState)
+
+                .addVariable("InputDevice", &mmStatePack::InputDevice, false)
                 .addVariable("ViewMode", &mmStatePack::ViewMode, false)
                 .addVariable("MapMode", &mmStatePack::MapMode, false)
-                .addVariable("NextState", &mmStatePack::NextState)
+                .addVariable("DashEnabled", &mmStatePack::DashEnabled, false)
+                .addVariable("HUDEnabled", &mmStatePack::HUDEnabled, false)
+                .addVariable("MirrorEnabled", &mmStatePack::MirrorEnabled, false)
+                .addVariable("IconsEnabled", &mmStatePack::IconsEnabled, false)
+                
                 .endClass();
         }
     };

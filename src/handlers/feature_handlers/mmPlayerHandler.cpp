@@ -149,7 +149,7 @@ void mmPlayerHandler::Update() {
     if (cfgEnableMissingDashboardFix.Get()) {
         string_buf<80> buffer("%s_dash", basename);
         if (!datAssetManager::Exists("geometry", buffer, "pkg")) {
-            if (MMSTATE->ShowDash) {
+            if (MMSTATE->DashEnabled) {
                 player->GetHUD()->DeactivateDash();
                 player->GetCamView()->SetCam(player->GetPovCam());
             }

@@ -31,7 +31,7 @@ void mmViewMgrBugfixHandler::SetViewSetting_Mirror(int a1)
     auto viewmgr = reinterpret_cast<mmViewMgr*>(this);
     auto mirror = viewmgr->GetMirror();
     auto state = &MMSTATE;
-    state->ShowMirror = mirror->isActive();
+    state->MirrorEnabled = mirror->isActive();
 }
 
 void mmViewMgrBugfixHandler::Install()
