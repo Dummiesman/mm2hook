@@ -152,14 +152,14 @@ namespace MM2
             char numShadersPerVariant;
             char numShaders;
 
-            inline modStatic * GetLOD(int lod) const {
+            modStatic * GetLOD(int lod) const {
                 if (lod < 0 || lod > 3)
                     return nullptr;
 
                 return this->LOD[lod];
             }
 
-            inline modStatic * GetHighestLOD() const {
+            modStatic * GetHighestLOD() const {
                 for (int i = 3; i >= 0; i--) {
                     if (this->LOD[i] != nullptr)
                         return this->LOD[i];
@@ -167,7 +167,7 @@ namespace MM2
                 return nullptr;
             }
 
-            inline modStatic * GetLowestLOD() const {
+            modStatic * GetLowestLOD() const {
                 for (int i = 0; i < 4; i++) {
                     if (this->LOD[i] != nullptr)
                         return this->LOD[i];
@@ -175,27 +175,27 @@ namespace MM2
                 return nullptr;
             }
 
-            inline modStatic * GetVeryLowLOD() const {
+            modStatic * GetVeryLowLOD() const {
                 return this->LOD[0];
             }
 
-            inline modStatic * GetLowLOD() const {
+            modStatic * GetLowLOD() const {
                 return this->LOD[1];
             }
 
-            inline modStatic * GetMedLOD() const {
+            modStatic * GetMedLOD() const {
                 return this->LOD[2];
             }
 
-            inline modStatic * GetHighLOD() const {
+            modStatic * GetHighLOD() const {
                 return this->LOD[3];
             }
 
-            inline float GetRadius() const {
+            float GetRadius() const {
                 return Radius;
             }
 
-            inline phBound* GetBound() const {
+            phBound* GetBound() const {
                 return this->Bound;
             }
 
