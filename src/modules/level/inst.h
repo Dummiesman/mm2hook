@@ -149,8 +149,8 @@ namespace MM2
             modShader **pShaders;
             phBound *Bound;
             float Radius;
+            char numShadersPerVariant;
             char numShaders;
-            char numShadersPerPaintjob;
 
             inline modStatic * GetLOD(int lod) const {
                 if (lod < 0 || lod > 3)
@@ -334,17 +334,17 @@ namespace MM2
         }
 
         modShader* GetShader(int index) const {
-            if (GeomIndex == 0 || index >= this->GetShaderCount())
+            if (GeomIndex == 0 || index >= this->GetVariantCount() || index < 0)
                 return nullptr;
             return (&lvlInstance::GetGeomTablePtr()[GeomIndex - 1])->pShaders[index];
         }
 
         int GetShaderCount() const {
-            return this->GeomIndex == 0 ? 0 : (&lvlInstance::GetGeomTablePtr()[GeomIndex - 1])->numShaders;
+            return this->GeomIndex == 0 ? 0 : (&lvlInstance::GetGeomTablePtr()[GeomIndex - 1])->numShadersPerVariant;
         }
 
         int GetVariantCount() const {
-            return this->GeomIndex == 0 ? 1 : (&lvlInstance::GetGeomTablePtr()[GeomIndex - 1])->numShadersPerPaintjob;
+            return this->GeomIndex == 0 ? 1 : (&lvlInstance::GetGeomTablePtr()[GeomIndex - 1])->numShaders;
         }
 
         static AGE_API bool ComputeShadowMatrix(Matrix34 *outMatrix, int room, Matrix34 const *inMatrix)

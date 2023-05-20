@@ -456,7 +456,7 @@ namespace MM2
             {
                 this->texelDamage = new fxTexelDamage();
 
-                if (!texelDamage->Init(bodyEntry->GetHighLOD(), bodyEntry->pShaders[this->GetVariant()], bodyEntry->numShaders)) 
+                if (!texelDamage->Init(bodyEntry->GetHighLOD(), bodyEntry->pShaders[this->GetVariant()], bodyEntry->numShadersPerVariant)) 
                 {
                     delete texelDamage;
                     texelDamage = nullptr;
