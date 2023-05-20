@@ -19,17 +19,23 @@ namespace MM2
 
         ColorARGB Color; // 32-bit diffuse color
 
+        gfxMaterial() {
+            Reset();
+        }
+
         AGE_API void Reset(void) {
             hook::Thunk<0x4B1BB0>::Call<void>(this);
         };
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<gfxMaterial>("gfxMaterial")
+                .addConstructor(LUA_ARGS())
                 .addVariable("Diffuse", &gfxMaterial::Diffuse)
                 .addVariable("Ambient", &gfxMaterial::Ambient)
                 .addVariable("Specular", &gfxMaterial::Specular)
                 .addVariable("Emissive", &gfxMaterial::Emissive)
                 .addVariable("Shininess", &gfxMaterial::Shininess)
+                .addFunction("Reset", &Reset)
                 .endClass();
         }
     };
