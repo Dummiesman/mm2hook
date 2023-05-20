@@ -1,5 +1,6 @@
 #pragma once
 #include <modules\phys\bound.h>
+#include <modules\model\shader.h>
 #include <modules\model\package.h>
 
 namespace MM2
@@ -250,6 +251,13 @@ namespace MM2
             matrix.SetRow(3, position);
             this->SetMatrix(matrix);
         }
+
+        modShader* getShaderLua(int variant, int index)
+        {
+            if (variant < 0 || variant >= this->GetVariantCount()) return nullptr;
+            if (index < 0 || index >= this->GetShaderCount()) return nullptr;
+            return &this->GetShader(variant)[index];
+        }
     public:
         LEVEL_ALLOCATOR
 
@@ -478,6 +486,7 @@ namespace MM2
                 .addPropertyReadOnly("CurrentRoom", &GetRoomId)
                 .addPropertyReadOnly("NumShaders", &GetShaderCount)
                 .addPropertyReadOnly("NumVariants", &GetVariantCount)
+                .addPropertyReadOnly("Name", &GetName)
 
                 //statics
                 .addStaticProperty("GeomTableSize", &GetGeomSetCount)
@@ -505,7 +514,7 @@ namespace MM2
                 .addFunction("Optimize", &Optimize)
                 .addFunction("GetGeom", &GetGeom)
                 .addFunction("GetGeomBase", &GetGeomBase, LUA_ARGS(_def<int, 0>))
-                .addFunction("GetShader", &GetShader)
+                .addFunction("GetShader", &getShaderLua, LUA_ARGS(int, _def<int, 0>))
 
                 //virtuals
                 .addFunction("Reset", &Reset)
