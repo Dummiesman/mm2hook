@@ -30,6 +30,47 @@ namespace MM2
             return nullptr;
     }
 
+    int aiPath::GetLaneCount(int side) const
+    {
+        if (side == 0)
+            return _lNumLanes.get(this);
+        else
+            return _rNumLanes.get(this);
+    }
+
+    Vector3 aiPath::GetLaneVertex(int section, int lane, int side) const
+    {
+        if (side == 0)
+            return _lLaneVertices.get(this)[section + (lane * this->NumVerts())];
+        else
+            return _rLaneVertices.get(this)[section + (lane * this->NumVerts())];
+    }
+
+    Vector3 aiPath::GetCenterVertex(int section) const
+    {
+        return _sectionVerts.get(this)[section];
+    }
+
+    Vector3 aiPath::GetSideDirection(int section) const
+    {
+        return _sectionOriX.get(this)[section];
+    }
+
+    Vector3 aiPath::GetUpDirection(int section) const
+    {
+        return _sectionOriY.get(this)[section];
+    }
+
+    Vector3 aiPath::GetForwardDirection(int section) const
+    {
+        return _sectionOriZ.get(this)[section];
+    }
+
+    float aiPath::GetWidth() const
+    {
+        return _halfWidth.get(this) * 2.0f;
+    }
+
     AGE_API float aiPath::CenterLength(int startIdx, int endIdx)  const 
     {
         return hook::Thunk<0x547340>::Call<float>(this, startIdx, endIdx); 
@@ -62,7 +103,7 @@ namespace MM2
 
     AGE_API int aiPath::NumVerts() const 
     {
-        return _numVerts.get(this); 
+        return _numSections.get(this); 
     }
     
     AGE_API int aiPath::Lane(Vector3& pos, int roadSide) const 
@@ -79,6 +120,7 @@ namespace MM2
         LuaBinding(L).beginClass<aiPath>("aiPath")
             .addPropertyReadOnly("ID", &GetId)
             .addPropertyReadOnly("NumVerts", &NumVerts)
+            .addPropertyReadOnly("Width", &GetWidth)
             .addFunction("GetIntersection", &GetIntersection)
             .addFunction("CenterLength", &CenterLength)
             .addFunction("ClearAmbients", &ClearAmbients)
@@ -88,6 +130,12 @@ namespace MM2
             .addFunction("IsPosOnRoad", &luaIsPosOnRoad)
             .addFunction("Lane", &Lane)
             .addFunction("UpdatePedestrians", &UpdatePedestrians)
+            .addFunction("GetLaneCount", &GetLaneCount)
+            .addFunction("GetLaneVertex", &GetLaneVertex)
+            .addFunction("GetCenterVertex", &GetCenterVertex)
+            .addFunction("GetSideDirection", &GetSideDirection)
+            .addFunction("GetUpDirection", &GetUpDirection)
+            .addFunction("GetForwardDirection", &GetForwardDirection)
             .endClass();
     }
 }
