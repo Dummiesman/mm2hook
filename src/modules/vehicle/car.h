@@ -58,6 +58,8 @@ namespace MM2
             this->SetDrivable(drivable ? TRUE : FALSE, mode);
         }
     public:
+        ANGEL_ALLOCATOR
+
         AGE_API vehCar(BOOL a1)                             { hook::Thunk<0x42BAB0>::Call<void>(this, a1); }
         AGE_API ~vehCar()                                   { hook::Thunk<0x42BCC0>::Call<void>(this); }
 
@@ -107,9 +109,9 @@ namespace MM2
 
         AGE_API void ClearDamage()                          { hook::Thunk<0x42C450>::Call<void>(this); }
         AGE_API bool IsPlayer()                             { return hook::Thunk<0x42C890>::Call<bool>(this); }
-        AGE_API void Init(char const *a1, int a2, int a3, bool a4, bool a5)
-                                                            { hook::Thunk<0x42BE10>::Call<void>(this, a1, a2, a3, a4, a5); }
-        AGE_API void InitAudio(char const *a1, int a2)      { hook::Thunk<0x42C1F0>::Call<void>(this, a1, a2); }
+        AGE_API void Init(char const *basename, int variant, int colliderID, bool useFullBound, bool hasTrailer)
+                                                            { hook::Thunk<0x42BE10>::Call<void>(this, basename, variant, colliderID, useFullBound, hasTrailer); }
+        AGE_API void InitAudio(char const *basename, int audioType)      { hook::Thunk<0x42C1F0>::Call<void>(this, basename, audioType); }
         AGE_API void SetDrivable(BOOL drivable, int mode)   { hook::Thunk<0x42C2C0>::Call<void>(this, drivable, mode); }
 
         /*
