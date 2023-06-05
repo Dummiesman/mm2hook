@@ -131,7 +131,7 @@ void luaSetGlobals()
     Lua::setGlobal(L, "AIMAP", aiMap::GetInstance());
     Lua::setGlobal(L, "VehicleList", VehicleListPtr.get());
     Lua::setGlobal(L, "CityList", CityListPtr.get());
-    Lua::setGlobal(L, "Input", mmInput::GameInputPtr.get());
+    Lua::setGlobal(L, "Input", GameInputPtr.get());
     Lua::setGlobal(L, "PHYS", dgPhysManager::Instance.get());
 }
 

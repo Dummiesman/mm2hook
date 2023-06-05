@@ -66,7 +66,5 @@ namespace MM2
                 .endClass();
         }
     };
-
-    // Lua initialization
-
+    declhook(0x6B1CF0, _Type<mmInput*>, GameInputPtr);
 }
