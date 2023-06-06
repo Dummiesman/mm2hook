@@ -23,8 +23,10 @@ namespace MM2
         static hook::Field<0x13C, aiIntersection*> _intersectionB;
         static hook::Field<0x74, Vector3*> _lLaneVertices;
         static hook::Field<0x38, short> _lNumLanes;
+        static hook::Field<0x3E, short> _lNumSidewalks;
         static hook::Field<0xD8, Vector3*> _rLaneVertices;
         static hook::Field<0x9C, short> _rNumLanes;
+        static hook::Field<0xA2, short> _rNumSidewalks;
         static hook::Field<0x104, Vector3*> _sectionVerts;
         static hook::Field<0x108, Vector3*> _sectionOriX;
         static hook::Field<0x10C, Vector3*> _sectionOriY;
@@ -39,8 +41,10 @@ namespace MM2
         float GetBaseSpeedLimit() const;
         int GetId() const;
         aiIntersection* GetIntersection(int num) const;
+        int GetSidewalkCount(int side) const;
         int GetLaneCount(int side) const;
         Vector3 GetLaneVertex(int section, int lane, int side) const;
+        Vector3 GetSidewalkVertex(int section, int lane, int side) const;
         Vector3 GetCenterVertex(int section) const;
         Vector3 GetSideDirection(int section) const;
         Vector3 GetUpDirection(int section) const;

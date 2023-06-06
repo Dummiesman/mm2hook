@@ -30,6 +30,14 @@ namespace MM2
             return nullptr;
     }
 
+    int aiPath::GetSidewalkCount(int side) const
+    {
+        if (side == 0)
+            return _lNumSidewalks.get(this);
+        else
+            return _rNumSidewalks.get(this);
+    }
+
     int aiPath::GetLaneCount(int side) const
     {
         if (side == 0)
@@ -44,6 +52,14 @@ namespace MM2
             return _lLaneVertices.get(this)[section + (lane * this->NumVerts())];
         else
             return _rLaneVertices.get(this)[section + (lane * this->NumVerts())];
+    }
+
+    Vector3 aiPath::GetSidewalkVertex(int section, int lane, int side) const
+    {
+        if (side == 0)
+            return _lLaneVertices.get(this)[section + ((lane + GetLaneCount(side)) * this->NumVerts())];
+        else
+            return _rLaneVertices.get(this)[section + ((lane + GetLaneCount(side)) * this->NumVerts())];
     }
 
     Vector3 aiPath::GetCenterVertex(int section) const
@@ -130,8 +146,10 @@ namespace MM2
             .addFunction("IsPosOnRoad", &luaIsPosOnRoad)
             .addFunction("Lane", &Lane)
             .addFunction("UpdatePedestrians", &UpdatePedestrians)
+            .addFunction("GetSidewalkCount", &GetSidewalkCount)
             .addFunction("GetLaneCount", &GetLaneCount)
             .addFunction("GetLaneVertex", &GetLaneVertex)
+            .addFunction("GetSidewalkVertex", &GetSidewalkVertex)
             .addFunction("GetCenterVertex", &GetCenterVertex)
             .addFunction("GetSideDirection", &GetSideDirection)
             .addFunction("GetUpDirection", &GetUpDirection)
