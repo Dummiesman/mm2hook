@@ -54,7 +54,7 @@ namespace MM2
                                                             { hook::Thunk<0x4CF740>::Call<void>(this); }
         AGE_API char* GetClassName() override               { return hook::Thunk<0x4CF880>::Call<char*>(this); }
 
-        //lua helpres
+        
         int GetGear() const {
             return this->CurrentGear;
         };
