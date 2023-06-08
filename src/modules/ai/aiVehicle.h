@@ -94,7 +94,7 @@ namespace MM2
     private:
         __int16 Id;
         __int16 FID;
-        int NextAtStopSign;
+        aiVehicle* NextAtStopSign;
     public:
         aiVehicle(void)                                     DONOTCALL;
         aiVehicle(const aiVehicle &&)                       DONOTCALL;
