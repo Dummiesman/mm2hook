@@ -14,7 +14,7 @@ namespace MM2
 
     class aiVehiclePlayer : public aiVehicle {
     private:
-        byte _buffer[0x2C];
+        byte _buffer[0x20];
     protected:
         static hook::Field<0x14, class vehCar *> _vehCar;
     public:

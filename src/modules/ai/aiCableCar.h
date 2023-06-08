@@ -15,7 +15,7 @@ namespace MM2
 
     class aiCableCar : public aiVehicle {
     private:
-        byte _buffer[0x180];
+        byte _buffer[0x174];
     public:
         aiCableCar(void)                                    DONOTCALL;
         aiCableCar(const aiCableCar &&)                     DONOTCALL;

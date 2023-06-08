@@ -31,7 +31,7 @@ namespace MM2
 
     class aiVehiclePhysics : public aiVehicle {
     private:
-        byte _buffer[0x976C];
+        byte _buffer[0x9760];
     protected:
         static hook::Field<0x10, vehCar> _vehCar;
         static hook::Field<0x27C, unsigned short> _state;

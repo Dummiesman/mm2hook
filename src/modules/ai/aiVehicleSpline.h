@@ -16,7 +16,7 @@ namespace MM2
 
     class aiVehicleSpline : public aiVehicle {
     private:
-        byte _buffer[0x186];
+        byte _buffer[0x17A];
     protected:
         static hook::Field<0x10, aiRailSet> _railSet;
         static hook::Field<0xD4, aiVehicleInstance*> _vehicleInstance;

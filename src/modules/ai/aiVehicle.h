@@ -66,6 +66,8 @@ namespace MM2
     };
 
     class aiObstacle {
+    private:
+        aiObstacle* Next;
     public:
         aiObstacle(void)                                    DONOTCALL;
         aiObstacle(const aiObstacle&&)                      DONOTCALL;
@@ -89,6 +91,10 @@ namespace MM2
     };
 
     class aiVehicle : public aiObstacle {
+    private:
+        __int16 Id;
+        __int16 FID;
+        int NextAtStopSign;
     public:
         aiVehicle(void)                                     DONOTCALL;
         aiVehicle(const aiVehicle &&)                       DONOTCALL;
