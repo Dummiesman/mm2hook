@@ -45,6 +45,7 @@ namespace MM2
             return _vehiclePhysics.ptr(this)->GetState();
         }
 
+        AGE_API void Init(int id, const char* raceDir)          { hook::Thunk<0x53D060>::Call<void>(this, id, raceDir);}
         AGE_API int Finished()                                  { return hook::Thunk<0x53D6E0>::Call<int>(this); }
         AGE_API void RegisterRoute(short* intersectionIDs, short numIntersections, Vector3 const & endPosition, Vector3 const & endOrientation,
                                    short numLaps = 0, float targetSpeed = 9999.0f, float a8 = 0.0f, bool unkFlag = false, bool avoidTraffic = true, bool avoidProps = true, bool avoidPlayers = true,
@@ -55,12 +56,14 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiRouteRacer>("aiRouteRacer")
-                .addFunction("Finished", &Finished)
-                .addFunction("RegisterRoute", &registerRouteLua)
-
                 .addPropertyReadOnly("ID", &GetId)
                 .addPropertyReadOnly("Car", &GetCar)
                 .addPropertyReadOnly("State", &GetState)
+
+                .addFunction("Init", &Init)
+
+                .addFunction("Finished", &Finished)
+                .addFunction("RegisterRoute", &registerRouteLua)
             .endClass();
         }
     };
