@@ -53,107 +53,47 @@ namespace MM2
             2 - Brake input is forced to 1.0. Other inputs are cleared.
             3 - Like mode 2, additionally neutral transmission set on function call, but not enforced. 
         */
-        void setDrivable(bool drivable, int mode)
-        {
-            this->SetDrivable(drivable ? TRUE : FALSE, mode);
-        }
+        void setDrivable(bool drivable, int mode);
     public:
         ANGEL_ALLOCATOR
 
-        AGE_API vehCar(BOOL a1)                             { hook::Thunk<0x42BAB0>::Call<void>(this, a1); }
-        AGE_API ~vehCar()                                   { hook::Thunk<0x42BCC0>::Call<void>(this); }
+        AGE_API vehCar(BOOL a1);
+        AGE_API ~vehCar();
 
         static hook::Type<bool> sm_DrawHeadlights;
 
-        vehCarDamage * GetCarDamage(void) const {
-            return _damage.get(this);
-        };
+        vehCarDamage* GetCarDamage(void) const;
+        vehCarSim* GetCarSim() const;
+        vehCarModel* GetModel() const;
+        vehSplash* GetSplash() const;
+        vehCarAudioContainer* GetCarAudioContainerPtr() const;
+        vehTrailer* GetTrailer() const;
+        vehSiren* GetSiren() const;
+        vehWheelPtx* GetWheelPtx() const;
+        vehGyro* GetGyro() const;
+        vehStuck* GetStuck() const;
 
-        vehCarSim * GetCarSim() const {
-            return _sim.get(this);
-        }
+        AGE_API void Reset();
 
-        vehCarModel * GetModel() const {
-            return _model.get(this);
-        }
-
-        vehSplash * GetSplash() const {
-            return _splash.get(this);
-        }
-
-        vehCarAudioContainer * GetCarAudioContainerPtr() const {
-            return _audio.get(this);
-        }
-
-        vehTrailer * GetTrailer() const {
-            return _trailer.get(this);
-        }
-
-        vehSiren * GetSiren() const {
-            return _siren.get(this);
-        }
-
-        vehWheelPtx * GetWheelPtx() const {
-            return _wheelPtx.get(this);
-        }
-
-        vehGyro * GetGyro() const {
-            return _gyro.get(this);
-        }
-
-        vehStuck * GetStuck() const {
-            return _stuck.get(this);
-        }
-
-        AGE_API void Reset()                                { hook::Thunk<0x42C330>::Call<void>(this); }
-
-        AGE_API void ClearDamage()                          { hook::Thunk<0x42C450>::Call<void>(this); }
-        AGE_API bool IsPlayer()                             { return hook::Thunk<0x42C890>::Call<bool>(this); }
-        AGE_API void Init(char const *basename, int variant, int colliderID, bool useFullBound, bool hasTrailer)
-                                                            { hook::Thunk<0x42BE10>::Call<void>(this, basename, variant, colliderID, useFullBound, hasTrailer); }
-        AGE_API void InitAudio(char const *basename, int audioType)      { hook::Thunk<0x42C1F0>::Call<void>(this, basename, audioType); }
-        AGE_API void SetDrivable(BOOL drivable, int mode)   { hook::Thunk<0x42C2C0>::Call<void>(this, drivable, mode); }
+        AGE_API void ClearDamage();
+        AGE_API bool IsPlayer();
+        AGE_API void Init(char const* basename, int variant, int colliderID, bool useFullBound, bool hasTrailer);
+        AGE_API void InitAudio(char const* basename, int audioType);
+        AGE_API void SetDrivable(BOOL drivable, int mode);
 
         /*
             dgPhysEntity virtuals
         */
 
-        AGE_API bool RequiresTerrainCollision() override
-                                                            { return hook::Thunk<0x42CA90>::Call<bool>(this); }
-        AGE_API lvlInstance* GetInst() override             { return hook::Thunk<0x42CA80>::Call<lvlInstance *>(this); }
-        AGE_API phInertialCS* GetICS()                      { return hook::Thunk<0x42CA70>::Call<phInertialCS *>(this); }
-        AGE_API void PostUpdate() override                  { hook::Thunk<0x42C8B0>::Call<void>(this); }
-        AGE_API void Update() override                      { hook::Thunk<0x42C690>::Call<void>(this); }
-        AGE_API void PreUpdate() override                   { hook::Thunk<0x42C480>::Call<void>(this); }
+        AGE_API bool RequiresTerrainCollision() override;
+                                                       
+        AGE_API lvlInstance* GetInst() override;
+        AGE_API phInertialCS* GetICS();
+        AGE_API void PostUpdate() override;
+        AGE_API void Update() override;
+        AGE_API void PreUpdate() override;
 
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<vehCar, dgPhysEntity>("vehCar")
-                .addFactory([]() {
-                return new vehCar(TRUE);
-                })
-
-                //properties
-                .addPropertyReadOnly("CarDamage", &GetCarDamage)
-                .addPropertyReadOnly("CarSim", &GetCarSim)
-                .addPropertyReadOnly("Splash", &GetSplash)
-                .addPropertyReadOnly("Audio", &GetCarAudioContainerPtr)
-                .addPropertyReadOnly("Trailer", &GetTrailer)
-                .addPropertyReadOnly("Siren", &GetSiren)
-                .addPropertyReadOnly("WheelPtx", &GetWheelPtx)
-                .addPropertyReadOnly("Gyro", &GetGyro)
-                .addPropertyReadOnly("Stuck", &GetStuck)
-
-                .addPropertyReadOnly("Instance", &GetModel)
-
-                //functions
-                .addFunction("Init", &Init)
-                .addFunction("InitAudio", &InitAudio)
-                .addFunction("Reset", &Reset)
-                .addFunction("ClearDamage", &ClearDamage)
-                .addFunction("SetDrivable", &setDrivable, LUA_ARGS(bool, _def<int, 3>))
-                .addFunction("IsPlayer", &IsPlayer)
-            .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     ASSERT_SIZEOF(vehCar, 0x258);

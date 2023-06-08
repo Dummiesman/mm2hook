@@ -2346,6 +2346,9 @@
     <ClCompile Include="src\modules\mminput.cpp">
       <Filter>Source Files\modules</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\vehicle\car.cpp">
+      <Filter>Source Files\modules\vehicle</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AGE.h">
