@@ -32,6 +32,11 @@ namespace MM2
     class aiVehiclePhysics : public aiVehicle {
     private:
         byte _buffer[0x9760];
+    private:
+        void initLua(int id, const char* basename, bool circuitMode, int audioType)
+        {
+            this->Init(id, basename, (circuitMode) ? 1 : 0, audioType);
+        }
     protected:
         static hook::Field<0x10, vehCar> _vehCar;
         static hook::Field<0x27C, unsigned short> _state;
@@ -48,6 +53,9 @@ namespace MM2
         {
             return _state.get(this);
         }
+
+        void Init(int id, const char* basename, short circuitMode, int audioType)
+                                                            { hook::Thunk<0x5593E0>::Call<void>(this, id, basename, circuitMode, audioType); }
 
         void Position(Vector3 &a1) override                 FORWARD_THUNK;
         float Speed(void) override                          FORWARD_THUNK;
@@ -72,6 +80,7 @@ namespace MM2
             LuaBinding(L).beginExtendClass<aiVehiclePhysics, aiVehicle>("aiVehiclePhysics")
                 .addPropertyReadOnly("Car", &GetCar)
                 .addPropertyReadOnly("State", &GetState)
+                .addFunction("Init", &initLua)
                 .endClass();
         }
     };
