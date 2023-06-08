@@ -131,7 +131,7 @@ namespace MM2
 
         short gameMode;
         short numLaps;
-        short numShortcuts; // educated guess
+        short numShortcuts;
         short numPlayers;
 
         aiVehiclePlayer players[4];
@@ -174,6 +174,7 @@ namespace MM2
         std::tuple<int, int, int> positionToAIMapCompLua(const Vector3& position);
     public:
         aiCityData* GetCityData() const;
+        aiRaceData* GetRaceData() const;
         aiPoliceForce* GetPoliceForce() const;
         int GetPoliceCount() const;
         int GetHookmanCount() const;

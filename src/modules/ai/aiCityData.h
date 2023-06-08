@@ -1,23 +1,16 @@
 #pragma once
 #include <mm2_common.h>
+#include "aiDataTypes.h"
 
 namespace MM2
 {
     // Forward declarations
     class aiCityData;
-    struct aiAmbientTypeData;
 
     // External declarations
 
 
     // Class definitions
-    struct aiAmbientTypeData
-    {
-        char Name[32];
-        float SpawnChance;
-        int dword_24;
-    };
-
     class aiCityData {
     private:
         bool AmbientsDriveOnLeft;
@@ -67,7 +60,7 @@ namespace MM2
                 .addVariable("AmbientsDriveOnLeft", &aiCityData::AmbientsDriveOnLeft, false)
                 .addVariable("SpeedLimit", &aiCityData::SpeedLimit, false)
                 .addVariable("PedPoolSize", &aiCityData::PedPoolSize, false)
-                .addVariable("NumPedTypes", &aiCityData::NumPedTypes, false)
+                .addPropertyReadOnly("NumPedTypes", &GetNumPedTypes)
                 .addFunction("GetGoodWeatherPedName", &GetGoodWeatherPedName)
                 .addFunction("GetBadWeatherPedName", &GetBadWeatherPedName)
                 .endClass();

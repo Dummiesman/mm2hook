@@ -12,7 +12,13 @@ namespace MM2
     void luaAddModule<module_ai>(LuaState L) {
         luaBind<aiPath>(L);
         luaBind<aiIntersection>(L);
+        luaBind<aiAmbientTypeData>(L);
+        luaBind<aiExceptionData>(L);
+        luaBind<HookmanData>(L);
+        luaBind<OpponentData>(L);
+        luaBind<PoliceData>(L);
         luaBind<aiCityData>(L);
+        luaBind<aiRaceData>(L);
         luaBind<aiPoliceForce>(L);
         luaBind<aiMapStats>(L);
         luaBind<aiObstacle>(L);

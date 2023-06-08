@@ -65,6 +65,10 @@ namespace MM2
         return (SignalClock.get() & 8) != 0;
     }
 
+    aiRaceData* aiMap::GetRaceData() const {
+        return raceData;
+    }
+
     aiCityData* aiMap::GetCityData() const {
         return cityData;
     }
@@ -173,6 +177,7 @@ namespace MM2
             .addFunction("Vehicle", &Vehicle)
             .addFunction("Intersection", &Intersection)
             .addPropertyReadOnly("CityData", &GetCityData)
+            .addPropertyReadOnly("RaceData", &GetRaceData)
             .addPropertyReadOnly("PoliceForce", &GetPoliceForce)
             .addPropertyReadOnly("Stats", &GetStats)
             .addPropertyReadOnly("NumAmbientVehicles", &GetAmbientCount)

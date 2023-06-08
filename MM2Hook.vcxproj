@@ -248,6 +248,7 @@
     <ClInclude Include="src\modules\ai\aiCityData.h" />
     <ClInclude Include="src\modules\ai\aiCTFRacer.h" />
     <ClInclude Include="src\modules\ai\aiData.h" />
+    <ClInclude Include="src\modules\ai\aiDataTypes.h" />
     <ClInclude Include="src\modules\ai\aiIntersection.h" />
     <ClInclude Include="src\modules\ai\aiMap.h" />
     <ClInclude Include="src\modules\ai\aiPath.h" />

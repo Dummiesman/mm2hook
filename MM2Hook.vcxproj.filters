@@ -1618,6 +1618,9 @@
     <ClInclude Include="src\modules\mminput.h">
       <Filter>Source Files\modules</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\ai\aiDataTypes.h">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
