@@ -404,6 +404,7 @@
     <ClInclude Include="src\modules\mmgame\singleroam.h" />
     <ClInclude Include="src\modules\mmgame\singlestunt.h" />
     <ClInclude Include="src\modules\mmgame\viewmgr.h" />
+    <ClInclude Include="src\modules\mmgame\waypoints.h" />
     <ClInclude Include="src\modules\mmgame\wphud.h" />
     <ClInclude Include="src\modules\mmgame\wpinst.h" />
     <ClInclude Include="src\modules\mminput.h" />

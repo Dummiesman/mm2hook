@@ -1621,6 +1621,9 @@
     <ClInclude Include="src\modules\ai\aiDataTypes.h">
       <Filter>Source Files\modules\ai</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmgame\waypoints.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
