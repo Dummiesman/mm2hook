@@ -51,7 +51,8 @@ namespace MM2
         virtual AGE_API void NextRace() override            { hook::Thunk<0x41DBC0>::Call<void>(this); };
         virtual AGE_API void HitWaterHandler() override     { hook::Thunk<0x41CAA0>::Call<void>(this); };
         virtual AGE_API void SwitchState(int a1) override   { hook::Thunk<0x41D690>::Call<void>(this, a1); };
-        virtual AGE_API void* GetWaypoints() override       { return hook::Thunk<0x41DF20>::Call<void*>(this); };
+        virtual AGE_API mmWaypoints* GetWaypoints() override       
+                                                            { return hook::Thunk<0x41DF20>::Call<mmWaypoints*>(this); };
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmSingleCircuit, mmGameSingle>("mmSingleCircuit")

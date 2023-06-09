@@ -10,6 +10,7 @@ namespace MM2
     extern class mmPlayer;
     extern class mmPopup;
     extern class gizBridgeMgr;
+    extern class mmWaypoints;
 
     // Class definitions
     class mmGame : public asNode {
@@ -82,7 +83,7 @@ namespace MM2
         virtual AGE_API void SendChatMessage(char *message) { hook::Thunk<0x414E50>::Call<void>(this, message); };
         virtual AGE_API void SwitchState(int)               PURE;
         virtual AGE_API void BeDone(int p1)                 { hook::Thunk<0x414D30>::Call<void>(this, p1); };
-        virtual AGE_API void * GetWaypoints(void)           PURE;
+        virtual AGE_API mmWaypoints * GetWaypoints(void)    PURE;
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmGame, asNode>("mmGame")
@@ -92,6 +93,7 @@ namespace MM2
                 .addPropertyReadOnly("Popup", &GetPopup)
                 .addPropertyReadOnly("Icons", &GetIcons)
                 .addPropertyReadOnly("ViewManager", &GetViewManager)
+                .addPropertyReadOnly("Waypoints", &GetWaypoints)
                 .addFunction("BeDone", &BeDone, LUA_ARGS(_def<int, 0>))
             .endClass();
         }

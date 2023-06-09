@@ -49,7 +49,8 @@ namespace MM2
         virtual AGE_API void HitWaterHandler() override     { hook::Thunk<0x4253A0>::Call<void>(this); }
         virtual AGE_API void DropThruCityHandler() override { hook::Thunk<0x425460>::Call<void>(this); }
         virtual AGE_API void SwitchState(int a1) override   { hook::Thunk<0x425390>::Call<void>(this, a1); };
-        virtual AGE_API void* GetWaypoints() override       { return hook::Thunk<0x427510>::Call<void*>(this); };
+        virtual AGE_API mmWaypoints* GetWaypoints() override       
+                                                            { return hook::Thunk<0x427510>::Call<mmWaypoints*>(this); };
 
         /*
             mmGameMulti overrides

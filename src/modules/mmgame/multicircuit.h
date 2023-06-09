@@ -47,7 +47,8 @@ namespace MM2
                                                             { hook::Thunk<0x422DA0>::Call<void>(this, a1); }
         virtual AGE_API void UpdateGame() override          { hook::Thunk<0x422570>::Call<void>(this); }
         virtual AGE_API void SwitchState(int a1) override   { hook::Thunk<0x422D90>::Call<void>(this, a1); };
-        virtual AGE_API void* GetWaypoints() override       { return hook::Thunk<0x4236A0>::Call<void*>(this); };
+        virtual AGE_API mmWaypoints* GetWaypoints() override       
+                                                            { return hook::Thunk<0x4236A0>::Call<mmWaypoints*>(this); };
 
         /*
             mmGameMulti overrides
