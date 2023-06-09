@@ -19,7 +19,7 @@ namespace MM2
         int unk_0x00;
         Vector3 Position;
         float Angle;
-        int unk_14;
+        float Distance;
         short unk_18;
         short RoadVertexIndex;
         short unk_1C;
