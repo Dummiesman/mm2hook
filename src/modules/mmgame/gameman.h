@@ -27,6 +27,18 @@ namespace MM2
         mmMultiBlitz* m_MultiBlitzGame;
         int NumUpdateCallsSinceReset;
     public:
+        bool isCurrentGameSingleGame() const {
+            auto game = getGame();
+            return (game != nullptr && (game == m_SingleRoamGame || game == m_SingleRaceGame || game == m_SingleStuntGame
+                                        || game == m_SingleCircuitGame || game == m_SingleBlitzGame));
+        }
+
+        bool isCurrentGameMultiGame() const {
+            auto game = getGame();
+            return (game != nullptr && (game == m_MultiRaceGame || game == m_MultiRoamGame || game == m_MultiCRGame
+                                        || game == m_MultiCircuitGame || game == m_MultiBlitzGame));
+        }
+
         mmGame* getGame() const {
             return this->m_CurrentGame;
         };

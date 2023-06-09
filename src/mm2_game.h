@@ -9,6 +9,8 @@ namespace MM2
     template<>
     void luaAddModule<module_game>(LuaState L) {
         luaBind<mmGame>(L);
+        luaBind<mmGameSingle>(L);
+        luaBind<mmGameMulti>(L);
         luaBind<mmGameManager>(L);
         luaBind<mmTimer>(L);
         luaBind<mmArrow>(L);
