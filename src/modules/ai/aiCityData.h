@@ -35,6 +35,11 @@ namespace MM2
             return this->NumPedTypes;
         }
 
+        int GetNumAmbientTypes() const
+        {
+            return this->NumAmbientTypes;
+        }
+
         LPCSTR GetGoodWeatherPedName(int num) const {
             if (num < 0 || num >= NumPedTypes)
                 return nullptr;
@@ -55,12 +60,21 @@ namespace MM2
             return this->BadWeatherPedNames;
         }
 
+        aiAmbientTypeData* GetAmbientTypeData(int index)
+        {
+            if (index < 0 || index >= this->GetNumAmbientTypes())
+                return nullptr;
+            return &this->AmbientTypeData[index];
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiCityData>("aiCityData")
                 .addVariable("AmbientsDriveOnLeft", &aiCityData::AmbientsDriveOnLeft, false)
                 .addVariable("SpeedLimit", &aiCityData::SpeedLimit, false)
                 .addVariable("PedPoolSize", &aiCityData::PedPoolSize, false)
                 .addPropertyReadOnly("NumPedTypes", &GetNumPedTypes)
+                .addPropertyReadOnly("NumAmbientTypes", &GetNumAmbientTypes)
+                .addFunction("GetAmbientType", &GetAmbientTypeData)
                 .addFunction("GetGoodWeatherPedName", &GetGoodWeatherPedName)
                 .addFunction("GetBadWeatherPedName", &GetBadWeatherPedName)
                 .endClass();

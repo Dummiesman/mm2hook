@@ -74,6 +74,16 @@ namespace MM2
             return this->PoliceCount;
         }
 
+        int GetExceptionCount() const
+        {
+            return this->ExceptionCount;
+        }
+
+        int GetNumAmbientTypes() const
+        {
+            return this->NumAmbientTypes;
+        }
+
         OpponentData* GetOpponentData(int index)
         {
             if (index < 0 || index >= this->GetOpponentCount())
@@ -95,6 +105,19 @@ namespace MM2
             return &this->PoliceDatas[index];
         }
 
+        aiExceptionData* GetExceptionData(int index)
+        {
+            if (index < 0 || index >= this->GetExceptionCount())
+                return nullptr;
+            return &this->ExceptionData[index];
+        }
+
+        aiAmbientTypeData* GetAmbientTypeData(int index)
+        {
+            if (index < 0 || index >= this->GetNumAmbientTypes())
+                return nullptr;
+            return &this->AmbientTypeData[index];
+        }
 
         //lua
         static void BindLua(LuaState L) {
@@ -102,11 +125,15 @@ namespace MM2
                 .addPropertyReadOnly("NumOpponents", &GetOpponentCount)
                 .addPropertyReadOnly("NumPolice", &GetPoliceCount)
                 .addPropertyReadOnly("NumHookmen", &GetHookmanCount)
+                .addPropertyReadOnly("NumExceptions", &GetExceptionCount)
+                .addPropertyReadOnly("NumAmbientTypes", &GetNumAmbientTypes)
+                .addFunction("GetAmbientType", &GetAmbientTypeData)
                 .addVariable("CopChaseDistance", &aiRaceData::CopChaseDistance)
                 .addVariable("AmbientLaneChanges", &aiRaceData::AmbientLaneChanges)
                 .addFunction("GetOpponent", &GetOpponentData)
                 .addFunction("GetHookman", &GetHookmanData)
                 .addFunction("GetPolice", &GetPoliceData)
+                .addFunction("GetException", &GetExceptionData)
                 .addPropertyReadOnly("NumPedTypes", &GetNumPedTypes)
                 .addFunction("GetGoodWeatherPedName", &GetGoodWeatherPedName)
                 .addFunction("GetBadWeatherPedName", &GetBadWeatherPedName)
