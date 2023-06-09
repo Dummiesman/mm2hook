@@ -39,6 +39,8 @@ namespace MM2
         static hook::Field<0x1D70, camCarCS> _preCam;
         static hook::Field<0x1E98, camCarCS> _postCam;
         static hook::Field<0x1FBC, camPolarCS> _mpPostCam;
+
+        static hook::Field<0x2254, int> _currentWaypoint;
     public:
         vehCar * GetCar() const                  { return _car.ptr(this); }
         mmHUD * GetHUD() const                   { return _hud.ptr(this); }
@@ -75,6 +77,8 @@ namespace MM2
         AGE_API void SetWideFOV(bool a1)                    { hook::Thunk<0x404580>::Call<void>(this, a1); }
         AGE_API void ReInit(const char *basename)           { hook::Thunk<0x4039B0>::Call<void>(this, basename); }
 
+        int GetCurrentWaypoint() const                      { return _currentWaypoint.get(this); }
+
         /*
             asNode virtuals
         */
@@ -103,6 +107,7 @@ namespace MM2
                 .addPropertyReadOnly("ThrillCam", &GetThrillCam)
                 .addPropertyReadOnly("XCam", &GetXCam)
                 .addPropertyReadOnly("MPPostCam", &GetMPPostCam)
+                .addPropertyReadOnly("CurrentWaypoint", &GetCurrentWaypoint)
 
                 //functions
                 .addFunction("EnableRegen", &EnableRegen)

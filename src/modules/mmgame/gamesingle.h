@@ -11,6 +11,9 @@ namespace MM2
 
     // Class definitions
     class mmGameSingle : public mmGame {
+    protected:
+        static hook::Field<0x76D0, short> _opponentFinishPositions;
+        static hook::Field<0x768C, int> _opponentCurrentWaypoint;
     public:
         AGE_API mmGameSingle(void) {
             scoped_vtable x(this);
@@ -42,9 +45,37 @@ namespace MM2
         virtual AGE_API void UpdateGame() override          { hook::Thunk<0x433CA0>::Call<void>(this); }
         virtual AGE_API void HitWaterHandler() override     { hook::Thunk<0x433C70>::Call<void>(this); };
         virtual AGE_API mmWaypoints* GetWaypoints() override
+                                                            { return hook::Thunk<0x41ABA0>::Call<mmWaypoints*>(this); }
+
+        /*
+            mmGameSingle
+        */
+        int GetOpponentWaypointNumber(int oppNum)
+        {
+            if (oppNum < 0 || oppNum >= 8)
+                return 0;
+            return _opponentCurrentWaypoint.ptr(this)[oppNum];
+        }
+
+        int GetOpponentFinishPosition(int oppNum)
+        {
+            if (oppNum < 0 || oppNum >= 8)
+                return 0;
+            return _opponentFinishPositions.ptr(this)[oppNum];
+        }
+
+        bool HasOpponentFinished(int oppNum)
+        {
+            if (oppNum < 0 || oppNum >= 8)
+                return false;
+            return GetOpponentFinishPosition(oppNum) != 0;
+        }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmGameSingle, mmGame>("mmGameSingle")
+                .addFunction("GetOpponentFinishPosition", &GetOpponentFinishPosition)
+                .addFunction("HasOpponentFinished", &HasOpponentFinished)
+                .addFunction("GetOpponentWaypoint", &GetOpponentWaypointNumber)
                 .endClass();
         }
     };
