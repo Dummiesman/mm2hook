@@ -46,6 +46,14 @@ void LuaCallback::BindLua(LuaState L) {
 /*
     mm2_lua
 */
+
+std::vector<Base*> MM2Lua::dirtyLaundry;
+
+void MM2Lua::MarkForCleanupOnShutdown(Base* object)
+{
+    dirtyLaundry.push_back(object);
+}
+
 void mm2L_error(LPCSTR message)
 {
     MM2::Errorf("[Lua] Error -- %s", message);
@@ -308,6 +316,9 @@ void MM2Lua::Initialize() {
         ImguiBindLua(L);
         luaSetGlobals();
 
+        //init laundry list
+        MM2Lua::dirtyLaundry = std::vector<Base*>();
+
         //set LFS path
         LogFile::WriteLine("Setting lfs path...");
         char execPath[MAX_PATH];
@@ -415,6 +426,13 @@ void MM2Lua::OnShutdown()
             TryCallFunction(func);
         }
         L.close();
+
+        for (auto *laundry : dirtyLaundry)
+        {
+            delete laundry;
+        }
+        dirtyLaundry.clear();
+
         isStateInitialized = false;
         isMainLuaLoaded = false;
     }

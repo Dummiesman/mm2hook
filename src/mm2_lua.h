@@ -8,50 +8,56 @@ static ConfigValue<bool> cfgEnableLua   ("EnableLua", true);
 class LuaCallback
 {
 private:
-    LuaRef self;
-    LuaRef function;
+    LuaIntf::LuaRef self;
+    LuaIntf::LuaRef function;
 public:
-    LuaCallback(LuaRef self, LuaRef function);
+    LuaCallback(LuaIntf::LuaRef self, LuaIntf::LuaRef function);
     void Call();
     void Release();
-    static void BindLua(LuaState L);
+    static void BindLua(LuaIntf::LuaState L);
 };
 
-namespace MM2Lua
+class MM2Lua
 {
-    //
-    LuaState * GetState();
-
-    //
-    bool IsInitialized();
-    bool IsEnabled();
-
-    void Initialize();
-    void Reset();
-
+private:
+    //cleanup list
+    static std::vector<MM2::Base*> dirtyLaundry;
+public:
     //helper functions
     template <class retType, typename... T>
-    retType TryCallFunction(LuaRef func, T&&... args);
-    void TryCallFunction(LuaRef func);
+    static retType TryCallFunction(LuaIntf::LuaRef func, T&&... args);
+    static void TryCallFunction(LuaIntf::LuaRef func);
+public:
+    static LuaState* GetState();
+
+    //
+    static bool IsInitialized();
+    static bool IsEnabled();
+
+    static void Initialize();
+    static void Reset();
+
+    //cleanup
+    static void MarkForCleanupOnShutdown(MM2::Base* object);
 
     //events
-    void OnChatMessage(const char* message);
-    void OnReset();
-    void OnDisconnect();
-    void OnSessionCreate();
-    void OnSessionJoin();
-    
-    void OnStateBegin();
-    void OnStateEnd();
+    static void OnChatMessage(const char* message);
+    static void OnReset();
+    static void OnDisconnect();
+    static void OnSessionCreate();
+    static void OnSessionJoin();
 
-    void OnTick();
-    void OnStartup();
-    void OnShutdown();
+    static void OnStateBegin();
+    static void OnStateEnd();
 
-    void OnInitializeUi();
-    void OnRenderUi();
+    static void OnTick();
+    static void OnStartup();
+    static void OnShutdown();
 
-    void OnKeyPress(DWORD vKey);
+    static void OnInitializeUi();
+    static void OnRenderUi();
 
-    void SendCommand(LPCSTR command);
-}
+    static void OnKeyPress(DWORD vKey);
+
+    static void SendCommand(LPCSTR command);
+};
