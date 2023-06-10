@@ -21,7 +21,7 @@ namespace MM2
         ushort PoliceCount;
         ushort OpponentCount;
         ushort HookmanCount;
-        ushort AmbientTypeCount;
+        ushort NumAmbientTypes;
         aiAmbientTypeData* AmbientTypeData;
         aiExceptionData* ExceptionData;
         PoliceData* PoliceDatas;
