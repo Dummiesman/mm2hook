@@ -30,6 +30,8 @@ namespace MM2
 	protected:
 		static hook::Field<0x2C, int> _currentGoal;
 		static hook::Field<0x30, int> _waypointCount;
+		static hook::Field<0x3C, int> _lapCount;
+		static hook::Field<0x40, int> _currentLap;
 		static hook::Field<0x50, int> _numCleared;
 	public:
         /*
@@ -66,12 +68,27 @@ namespace MM2
 		{
 			return _numCleared.get(this);
 		}
+
+		int GetCurrentLap() const
+		{
+			// lap count starts at zero and ends at GetLapCount() only when the race is finished
+			// which is a bit unintuitive so we do it like aiVehiclePhysics instead
+			int lapCount = _currentLap.get(this);
+			return min(GetLapCount(), lapCount + 1);
+		}
+
+		int GetLapCount() const 
+		{
+			return _lapCount.get(this);
+		}
 		
 		static void BindLua(LuaState L) {
 			LuaBinding(L).beginExtendClass<mmWaypoints, asNode>("mmWaypoints")
 				.addPropertyReadOnly("NumWaypoints", &GetWaypointCount)
 				.addPropertyReadOnly("NumCleared", &GetClearedWaypointCount)
 				.addPropertyReadOnly("CurrentGoal", &GetCurrentGoal)
+				.addPropertyReadOnly("CurrentLap", &GetCurrentLap)
+				.addPropertyReadOnly("NumLaps", &GetLapCount)
 				.addFunction("DeactivateFinish", &DeactivateFinish)
 				.addFunction("GetWaypoint", &getWaypointLua)
 				.addFunction("GetHeading", &GetHeading)

@@ -41,12 +41,23 @@ namespace MM2
             return _vehiclePhysics.ptr(this)->GetState();
         }
 
+        int GetCurrentLap() const
+        {
+            return _vehiclePhysics.ptr(this)->GetCurrentLap();
+        }
+
+        int GetLapCount() const
+        {
+            return _vehiclePhysics.ptr(this)->GetLapCount();
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<mcHookman>("mcHookman")
                 .addPropertyReadOnly("ID", &GetId)
-
                 .addPropertyReadOnly("Car", &GetCar)
                 .addPropertyReadOnly("State", &GetState)
+                .addPropertyReadOnly("CurrentLap", &GetCurrentLap)
+                .addPropertyReadOnly("NumLaps", &GetLapCount)
 
                 .endClass();
         }

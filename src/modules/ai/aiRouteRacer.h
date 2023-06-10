@@ -45,6 +45,16 @@ namespace MM2
             return _vehiclePhysics.ptr(this)->GetState();
         }
 
+        int GetCurrentLap() const
+        {
+            return _vehiclePhysics.ptr(this)->GetCurrentLap();
+        }
+
+        int GetLapCount() const
+        {
+            return _vehiclePhysics.ptr(this)->GetLapCount();
+        }
+
         AGE_API void Init(int id, const char* raceDir)          { hook::Thunk<0x53D060>::Call<void>(this, id, raceDir);}
         AGE_API int Finished()                                  { return hook::Thunk<0x53D6E0>::Call<int>(this); }
         AGE_API void RegisterRoute(short* intersectionIDs, short numIntersections, Vector3 const & endPosition, Vector3 const & endOrientation,
@@ -59,6 +69,8 @@ namespace MM2
                 .addPropertyReadOnly("ID", &GetId)
                 .addPropertyReadOnly("Car", &GetCar)
                 .addPropertyReadOnly("State", &GetState)
+                .addPropertyReadOnly("CurrentLap", &GetCurrentLap)
+                .addPropertyReadOnly("NumLaps", &GetLapCount)
 
                 .addFunction("Init", &Init)
 

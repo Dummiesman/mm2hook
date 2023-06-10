@@ -55,6 +55,16 @@ namespace MM2
             return _vehiclePhysics.ptr(this)->GetState();
         }
 
+        int GetCurrentLap() const
+        {
+            return _vehiclePhysics.ptr(this)->GetCurrentLap();
+        }
+
+        int GetLapCount() const
+        {
+            return _vehiclePhysics.ptr(this)->GetLapCount();
+        }
+
         /// <summary>
         /// The state from aiPoliceForce::State
         /// </summary>        
@@ -76,6 +86,8 @@ namespace MM2
                 .addPropertyReadOnly("PoliceState", &GetPoliceState)
                 .addPropertyReadOnly("ApprehendState", &GetApprehendState)
                 .addPropertyReadOnly("ID", &GetId)
+                .addPropertyReadOnly("CurrentLap", &GetCurrentLap)
+                .addPropertyReadOnly("NumLaps", &GetLapCount)
 
                 .addPropertyReadOnly("Car", &GetCar)
                 .addPropertyReadOnly("State", &GetState)

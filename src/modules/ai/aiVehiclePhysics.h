@@ -40,6 +40,8 @@ namespace MM2
     protected:
         static hook::Field<0x10, vehCar> _vehCar;
         static hook::Field<0x27C, unsigned short> _state;
+        static hook::Field<0x9682, unsigned short> _currentLap;
+        static hook::Field<0x9684, unsigned short> _lapCount;
     public:
         aiVehiclePhysics(void)                              DONOTCALL;
         aiVehiclePhysics(const aiVehiclePhysics &&)         DONOTCALL;
@@ -52,6 +54,16 @@ namespace MM2
         unsigned short GetState() const
         {
             return _state.get(this);
+        }
+
+        int GetCurrentLap() const 
+        {
+            return _currentLap.get(this);
+        }
+
+        int GetLapCount() const
+        {
+            return _lapCount.get(this);
         }
 
         void Init(int id, const char* basename, short circuitMode, int audioType)
@@ -80,6 +92,8 @@ namespace MM2
             LuaBinding(L).beginExtendClass<aiVehiclePhysics, aiVehicle>("aiVehiclePhysics")
                 .addPropertyReadOnly("Car", &GetCar)
                 .addPropertyReadOnly("State", &GetState)
+                .addPropertyReadOnly("CurrentLap", &GetCurrentLap)
+                .addPropertyReadOnly("NumLaps", &GetLapCount)
                 .addFunction("Init", &initLua)
                 .endClass();
         }
