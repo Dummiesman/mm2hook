@@ -65,6 +65,11 @@ namespace MM2
             return _vehiclePhysics.ptr(this)->GetLapCount();
         }
 
+        void DrawRouteThroughTraffic()
+        {
+            this->GetVehiclePhysics()->DrawRouteThroughTraffic();
+        }
+
         /// <summary>
         /// The state from aiPoliceForce::State
         /// </summary>        
@@ -94,6 +99,7 @@ namespace MM2
 
                 .addFunction("StartSiren", &StartSiren)
                 .addFunction("StopSiren", &StopSiren)
+                .addFunction("DrawRouteThroughTraffic", &DrawRouteThroughTraffic)
 
                 .endClass();
         }

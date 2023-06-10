@@ -40,6 +40,10 @@ namespace MM2
     protected:
         static hook::Field<0x10, vehCar> _vehCar;
         static hook::Field<0x27C, unsigned short> _state;
+        static hook::Field<0x2D4, aiRouteNode> _routeNodes;
+        static hook::Field<0x9514, int> _activeRoute;
+        static hook::Field<0x95E0, int> _routeNodeCounts;
+        static hook::Field<0x9644, int> _routeCount;
         static hook::Field<0x9682, unsigned short> _currentLap;
         static hook::Field<0x9684, unsigned short> _lapCount;
     public:
@@ -88,6 +92,35 @@ namespace MM2
         void DrawId(void) override                          FORWARD_THUNK;
         void ReplayDebug(void) override                     FORWARD_THUNK;
 
+        void DrawRouteThroughTraffic()
+        {
+            int routeCount = _routeCount.get(this);
+            int currentRoute = _activeRoute.get(this);
+
+            rglPushMatrix();
+            rglWorldIdentity();
+            vglBindTexture(nullptr);
+
+            for (int i = 0; i < routeCount; i++)
+            {
+                int  routeNodeCount = _routeNodeCounts.ptr(this)[i];
+                
+                vglBegin(gfxDrawMode::DRAWMODE_LINESTRIP, routeNodeCount);
+                vglCurrentColor = mkfrgba(1.0f, (i == currentRoute) ? 1.0f : 0.0f, (i == currentRoute) ? 0.0f : 1.0f, 1.0f);
+
+                for (int j = 0; j < routeNodeCount; j++)
+                {
+                    int routeNodeIndex = (40 * i) + j;
+                    auto routeNode = _routeNodes.ptr(this)[routeNodeIndex];
+                    vglVertex3f(routeNode.Position);
+                }
+
+                vglEnd();
+            }
+
+            rglPopMatrix();
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<aiVehiclePhysics, aiVehicle>("aiVehiclePhysics")
                 .addPropertyReadOnly("Car", &GetCar)
@@ -95,6 +128,7 @@ namespace MM2
                 .addPropertyReadOnly("CurrentLap", &GetCurrentLap)
                 .addPropertyReadOnly("NumLaps", &GetLapCount)
                 .addFunction("Init", &initLua)
+                .addFunction("DrawRouteThroughTraffic", &DrawRouteThroughTraffic)
                 .endClass();
         }
     };

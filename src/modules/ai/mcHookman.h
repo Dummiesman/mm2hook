@@ -51,6 +51,11 @@ namespace MM2
             return _vehiclePhysics.ptr(this)->GetLapCount();
         }
 
+        void DrawRouteThroughTraffic()
+        {
+            this->GetVehiclePhysics()->DrawRouteThroughTraffic();
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<mcHookman>("mcHookman")
                 .addPropertyReadOnly("ID", &GetId)
@@ -58,7 +63,7 @@ namespace MM2
                 .addPropertyReadOnly("State", &GetState)
                 .addPropertyReadOnly("CurrentLap", &GetCurrentLap)
                 .addPropertyReadOnly("NumLaps", &GetLapCount)
-
+                .addFunction("DrawRouteThroughTraffic", &DrawRouteThroughTraffic)
                 .endClass();
         }
     };

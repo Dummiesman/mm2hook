@@ -64,6 +64,11 @@ namespace MM2
                                                                                                     numLaps, targetSpeed, a8, unkFlag, avoidTraffic, avoidProps, avoidPlayers,
                                                                                                     avoidOpponents, weirdPathfinding, a15, a16, a17, a18); }
 
+        void DrawRouteThroughTraffic() 
+        {
+            this->GetVehiclePhysics()->DrawRouteThroughTraffic();
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiRouteRacer>("aiRouteRacer")
                 .addPropertyReadOnly("ID", &GetId)
@@ -73,7 +78,7 @@ namespace MM2
                 .addPropertyReadOnly("NumLaps", &GetLapCount)
 
                 .addFunction("Init", &Init)
-
+                .addFunction("DrawRouteThroughTraffic", &DrawRouteThroughTraffic)
                 .addFunction("Finished", &Finished)
                 .addFunction("RegisterRoute", &registerRouteLua)
             .endClass();
