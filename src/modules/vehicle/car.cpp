@@ -78,7 +78,9 @@ AGE_API void vehCar::PreUpdate()                   { hook::Thunk<0x42C480>::Call
 void vehCar::BindLua(LuaState L) {
 	LuaBinding(L).beginExtendClass<vehCar, dgPhysEntity>("vehCar")
 		.addFactory([]() {
-			return vehCar(TRUE);
+			auto object = new vehCar(TRUE);
+			MM2Lua::MarkForCleanupOnShutdown(object);
+			return object;
 		})
 
 		//properties
