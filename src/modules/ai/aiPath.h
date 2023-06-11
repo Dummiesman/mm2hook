@@ -17,14 +17,19 @@ namespace MM2
     protected:
         static hook::Field<0x8, short> _numSections;
         static hook::Field<0xA, short> _id;
+        static hook::Field<0xC, short> _flags;
         static hook::Field<0x14, float> _halfWidth;
         static hook::Field<0x18, float> _baseSpeedLimit;
         static hook::Field<0x118, aiIntersection*> _intersectionA;
         static hook::Field<0x13C, aiIntersection*> _intersectionB;
         static hook::Field<0x74, Vector3*> _lLaneVertices;
+        static hook::Field<0x78, Vector3*> _lCableCarVertices;
+        static hook::Field<0x7C, Vector3*> _lSubwayVertices;
         static hook::Field<0x38, short> _lNumLanes;
         static hook::Field<0x3E, short> _lNumSidewalks;
         static hook::Field<0xD8, Vector3*> _rLaneVertices;
+        static hook::Field<0xDC, Vector3*> _rCableCarVertices;
+        static hook::Field<0xE0, Vector3*> _rSubwayVertices;
         static hook::Field<0x9C, short> _rNumLanes;
         static hook::Field<0xA2, short> _rNumSidewalks;
         static hook::Field<0x104, Vector3*> _sectionVerts;
@@ -40,9 +45,12 @@ namespace MM2
 
         float GetBaseSpeedLimit() const;
         int GetId() const;
+        int GetFlags() const;
         aiIntersection* GetIntersection(int num) const;
         int GetSidewalkCount(int side) const;
         int GetLaneCount(int side) const;
+        Vector3 GetCableCarVertex(int section, int side) const;
+        Vector3 GetSubwayVertex(int section, int side) const;
         Vector3 GetLaneVertex(int section, int lane, int side) const;
         Vector3 GetSidewalkVertex(int section, int lane, int side) const;
         Vector3 GetCenterVertex(int section) const;

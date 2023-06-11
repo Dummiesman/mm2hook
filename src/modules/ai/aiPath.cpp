@@ -20,6 +20,11 @@ namespace MM2
         return _id.get(this);
     }
 
+    int aiPath::GetFlags() const
+    {
+        return _flags.get(this);
+    }
+
     aiIntersection* aiPath::GetIntersection(int num) const
     {
         if (num == 0)
@@ -44,6 +49,30 @@ namespace MM2
             return _lNumLanes.get(this);
         else
             return _rNumLanes.get(this);
+    }
+
+    Vector3 aiPath::GetCableCarVertex(int section, int side) const
+    {
+        if (this->HasCableCarLine(side)) 
+        {
+            if (side == 0)
+                return _lCableCarVertices.get(this)[section];
+            else 
+                return _rCableCarVertices.get(this)[section];
+        }
+        return Vector3::ORIGIN;
+    }
+
+    Vector3 aiPath::GetSubwayVertex(int section, int side) const
+    {
+        if (this->HasSubwayLine(side))
+        {
+            if (side == 0)
+                return _lSubwayVertices.get(this)[section];
+            else
+                return _rSubwayVertices.get(this)[section];
+        }
+        return Vector3::ORIGIN;
     }
 
     Vector3 aiPath::GetLaneVertex(int section, int lane, int side) const
@@ -137,6 +166,7 @@ namespace MM2
             .addPropertyReadOnly("ID", &GetId)
             .addPropertyReadOnly("NumVerts", &NumVerts)
             .addPropertyReadOnly("Width", &GetWidth)
+            .addPropertyReadOnly("Flags", &GetFlags)
             .addFunction("GetIntersection", &GetIntersection)
             .addFunction("CenterLength", &CenterLength)
             .addFunction("ClearAmbients", &ClearAmbients)
@@ -150,6 +180,8 @@ namespace MM2
             .addFunction("GetLaneCount", &GetLaneCount)
             .addFunction("GetLaneVertex", &GetLaneVertex)
             .addFunction("GetSidewalkVertex", &GetSidewalkVertex)
+            .addFunction("GetCableCarVertex", &GetCableCarVertex)
+            .addFunction("GetSubwayVertex", &GetSubwayVertex)
             .addFunction("GetCenterVertex", &GetCenterVertex)
             .addFunction("GetSideDirection", &GetSideDirection)
             .addFunction("GetUpDirection", &GetUpDirection)
