@@ -77,6 +77,11 @@ namespace MM2
         return policeForce;
     }
 
+    int aiMap::GetCableCarCount() const
+    {
+        return numCableCars;
+    }
+
     int aiMap::GetPoliceCount() const  {
         return numCops;
     }
@@ -137,8 +142,9 @@ namespace MM2
     AGE_API void aiMap::Reset()               { hook::Thunk<0x536A30>::Call<void>(this); }
         
     // aiMap
-    AGE_API void aiMap::Dump()                              { hook::Thunk<0x538840>::Call<void>(this); }
+    AGE_API void aiMap::Dump()                                  { hook::Thunk<0x538840>::Call<void>(this); }
     AGE_API void aiMap::TestProbes(BOOL a2)                     { hook::Thunk<0x53B870>::Call<void>(this, a2); }
+    AGE_API aiCableCar* aiMap::CableCar(int num) const          { return hook::Thunk<0x534A30>::Call<aiCableCar *>(this, num); }
     AGE_API mcHookman * aiMap::Hookman(int num) const           { return hook::Thunk<0x5349E0>::Call<mcHookman *>(this, num); }
     AGE_API aiRouteRacer * aiMap::Opponent(int num) const       { return hook::Thunk<0x534940>::Call<aiRouteRacer *>(this, num); }
     AGE_API aiCTFRacer * aiMap::CTFOpponent(int num) const      { return hook::Thunk<0x534990>::Call<aiCTFRacer *>(this, num); }
@@ -184,6 +190,7 @@ namespace MM2
             .addPropertyReadOnly("NumPaths", &GetPathsCount)
             .addPropertyReadOnly("NumIntersections", &GetIntersectionCount)
             .addPropertyReadOnly("NumPedestrians", &GetPedestrianCount)
+            .addPropertyReadOnly("NumCableCars", &GetCableCarCount)
             .addPropertyReadOnly("NumHookmen", &GetHookmanCount)
             .addPropertyReadOnly("NumOpponents", &GetOpponentCount)
             .addPropertyReadOnly("NumPlayers", &GetPlayerCount)
