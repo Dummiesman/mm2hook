@@ -18,6 +18,8 @@ namespace MM2
         static hook::Field<0x8, short> _numSections;
         static hook::Field<0xA, short> _id;
         static hook::Field<0xC, short> _flags;
+        static hook::Field<0xE, short> _numRooms;
+        static hook::Field<0x10, short*> _rooms;
         static hook::Field<0x14, float> _halfWidth;
         static hook::Field<0x18, float> _baseSpeedLimit;
         static hook::Field<0x118, aiIntersection*> _intersectionA;
@@ -58,19 +60,25 @@ namespace MM2
         Vector3 GetUpDirection(int section) const;
         Vector3 GetForwardDirection(int section) const;
         float GetWidth() const;
+        int GetRoomCount() const;
+        int GetRoomId(int index) const;
 
         /*
             aiPath
         */
         AGE_API float CenterLength(int startIdx, int endIdx) const;
+        AGE_API int CenterIndex(float distance) const;
         AGE_API void ClearAmbients();
         AGE_API void ClearPeds();
         AGE_API bool HasCableCarLine(int roadSide) const;
         AGE_API bool HasSubwayLine(int roadSide) const;
         AGE_API int IsPosOnRoad(Vector3 const& pos, float margin, float* outDistanceFromCenter) const;
         AGE_API int NumVerts() const;
-        AGE_API int Lane(Vector3& pos, int roadSide) const;
+        AGE_API int Index(Vector3 const& pos) const;
+        AGE_API int Lane(Vector3 const& pos, int roadSide) const;
         AGE_API void UpdatePedestrians();
+        AGE_API int RoadVerticie(Vector3 const& position, int side) const;
+        AGE_API bool Direction(Matrix34 const& matrix) const;
 
         static void BindLua(LuaState L);
     };

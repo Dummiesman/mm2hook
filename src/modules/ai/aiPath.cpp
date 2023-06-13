@@ -116,9 +116,24 @@ namespace MM2
         return _halfWidth.get(this) * 2.0f;
     }
 
+    int aiPath::GetRoomCount() const
+    {
+        return _numRooms.get(this);
+    }
+
+    int aiPath::GetRoomId(int index) const
+    {
+        return _rooms.get(this)[index];
+    }
+
     AGE_API float aiPath::CenterLength(int startIdx, int endIdx)  const 
     {
         return hook::Thunk<0x547340>::Call<float>(this, startIdx, endIdx); 
+    }
+
+    AGE_API int aiPath::CenterIndex(float distance) const
+    {
+        return hook::Thunk<0x5475D0>::Call<int>(this, distance);
     }
 
     AGE_API void aiPath::ClearAmbients()
@@ -151,9 +166,14 @@ namespace MM2
         return _numSections.get(this); 
     }
     
-    AGE_API int aiPath::Lane(Vector3& pos, int roadSide) const 
+    AGE_API int aiPath::Lane(Vector3 const& pos, int roadSide) const 
     {
         return hook::Thunk<0x547900>::Call<int>(this, &pos, roadSide); 
+    }
+
+    AGE_API int aiPath::Index(Vector3 const& pos) const
+    {
+        return hook::Thunk<0x547820>::Call<int>(this, &pos);
     }
 
     AGE_API void aiPath::UpdatePedestrians() 
@@ -161,21 +181,34 @@ namespace MM2
         hook::Thunk<0x544150>::Call<void>(this); 
     }
 
+    AGE_API int aiPath::RoadVerticie(Vector3 const& position, int side) const
+    {
+        return hook::Thunk<0x5485E0>::Call<int>(this, &position, side);
+    }
+
+    AGE_API bool aiPath::Direction(Matrix34 const& matrix) const
+    {
+        return hook::Thunk<0x548320>::Call<bool>(this, &matrix);
+    }
     void aiPath::BindLua(LuaState L) {
         LuaBinding(L).beginClass<aiPath>("aiPath")
             .addPropertyReadOnly("ID", &GetId)
             .addPropertyReadOnly("NumVerts", &NumVerts)
+            .addPropertyReadOnly("NumRooms", &GetRoomCount)
             .addPropertyReadOnly("Width", &GetWidth)
             .addPropertyReadOnly("Flags", &GetFlags)
             .addFunction("GetIntersection", &GetIntersection)
             .addFunction("CenterLength", &CenterLength)
+            .addFunction("CenterIndex", &CenterIndex)
             .addFunction("ClearAmbients", &ClearAmbients)
             .addFunction("ClearPeds", &ClearPeds)
             .addFunction("HasCableCarLine", &HasCableCarLine)
             .addFunction("HasSubwayLine", &HasSubwayLine)
             .addFunction("IsPosOnRoad", &luaIsPosOnRoad)
             .addFunction("Lane", &Lane)
-            .addFunction("UpdatePedestrians", &UpdatePedestrians)
+            .addFunction("Index", &Index)
+            .addFunction("RoadVerticie", &RoadVerticie)
+            .addFunction("Direction", &Direction)
             .addFunction("GetSidewalkCount", &GetSidewalkCount)
             .addFunction("GetLaneCount", &GetLaneCount)
             .addFunction("GetLaneVertex", &GetLaneVertex)
@@ -186,6 +219,7 @@ namespace MM2
             .addFunction("GetSideDirection", &GetSideDirection)
             .addFunction("GetUpDirection", &GetUpDirection)
             .addFunction("GetForwardDirection", &GetForwardDirection)
+            .addFunction("GetRoomID", &GetRoomId)
             .endClass();
     }
 }
