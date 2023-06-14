@@ -32,6 +32,8 @@ namespace MM2
 
         AGE_API int NumSources() const;
         AGE_API int NumSinks() const;
+        void DrawId() const;
+        void DrawPaths() const;
 
         int GetPathCount() const;
         aiPath* GetPath(int id) const;

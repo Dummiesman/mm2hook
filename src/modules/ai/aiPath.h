@@ -79,6 +79,9 @@ namespace MM2
         AGE_API void UpdatePedestrians();
         AGE_API int RoadVerticie(Vector3 const& position, int side) const;
         AGE_API bool Direction(Matrix34 const& matrix) const;
+        void Draw() const;
+        void DrawNormals() const;
+        void DrawId() const;
 
         static void BindLua(LuaState L);
     };

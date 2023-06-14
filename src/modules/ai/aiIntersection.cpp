@@ -1,5 +1,5 @@
 #include "aiIntersection.h"
-
+#include "..\rgl.h"
 
 namespace MM2
 {
@@ -11,6 +11,20 @@ namespace MM2
     AGE_API int aiIntersection::NumSinks() const
     {
         return hook::Thunk<0x549D90>::Call<int>(this); 
+    }
+
+    void aiIntersection::DrawId() const
+    {
+        Vector3 drawPos = Vector3(this->center.X, this->center.Y + 3.0f, this->center.Z);
+        vglDrawLabelf(drawPos, "%d", this->GetId());
+    }
+
+    void aiIntersection::DrawPaths() const
+    {
+        for (int i = 0; i < this->GetPathCount(); i++)
+        {
+            this->GetPath(i)->Draw();
+        }
     }
 
     int aiIntersection::GetPathCount() const 
@@ -43,13 +57,15 @@ namespace MM2
     void aiIntersection::BindLua(LuaState L) 
     {
         LuaBinding(L).beginClass<aiIntersection>("aiIntersection")
-            .addFunction("GetPath", &GetPath)
             .addPropertyReadOnly("ID", &GetId)
             .addPropertyReadOnly("RoomId", &GetRoomId)
             .addPropertyReadOnly("Center", &GetCenter)
             .addPropertyReadOnly("NumPaths", &GetPathCount)
             .addPropertyReadOnly("NumSinks", &NumSinks)
             .addPropertyReadOnly("NumSources", &NumSources)
+            .addFunction("DrawId", &DrawId)
+            .addFunction("DrawPaths", &DrawPaths)
+            .addFunction("GetPath", &GetPath)
             .endClass();
     }
 }

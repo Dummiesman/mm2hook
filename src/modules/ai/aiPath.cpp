@@ -1,5 +1,5 @@
 #include "aiPath.h"
-
+#include "..\rgl.h"
 
 namespace MM2 
 {
@@ -190,6 +190,83 @@ namespace MM2
     {
         return hook::Thunk<0x548320>::Call<bool>(this, &matrix);
     }
+
+    void aiPath::Draw() const
+    {
+        Vector3 drawOffset = Vector3(0.0f, 0.5f, 0.0f);
+
+        for (int side = 0; side <= 1; side++) 
+        {
+            for (int j = 0; j < this->GetLaneCount(side) + this->GetSidewalkCount(side); j++)
+            {
+                vglBegin(gfxDrawMode::DRAWMODE_LINELIST, this->NumVerts() * 2);
+                for (int i = 0; i < this->NumVerts() - 1; i++)
+                {
+                    if (i == 0 || i == this->NumVerts() - 2)
+                    {
+                        vglCurrentColor = mkfrgba(1.0f, 0.0f, 0.0f, 1.0f);
+                    }
+                    else if (i % 2)
+                    {
+                        vglCurrentColor = mkfrgba(0.0f, 0.0f, 1.0f, 1.0f);
+                    }
+                    else
+                    {
+                        vglCurrentColor = mkfrgba(0.0f, 1.0f, 0.0f, 1.0f);
+                    }
+
+                    vglVertex3f(this->GetLaneVertex(i, j, side) + drawOffset);
+                    vglVertex3f(this->GetLaneVertex(i + 1, j, side) + drawOffset);
+                }
+                vglEnd();
+            }
+        }
+
+        vglBegin(gfxDrawMode::DRAWMODE_LINELIST, this->NumVerts() * 2);
+        for (int i = 0; i < this->NumVerts() - 1; i++)
+        {
+            if (i == 0 || i == this->NumVerts() - 2)
+            {
+                vglCurrentColor = mkfrgba(1.0f, 0.0f, 0.0f, 1.0f);
+            }
+            else if (i % 2)
+            {
+                vglCurrentColor = mkfrgba(0.0f, 0.0f, 1.0f, 1.0f);
+            }
+            else
+            {
+                vglCurrentColor = mkfrgba(0.0f, 1.0f, 0.0f, 1.0f);
+            }
+
+            vglVertex3f(this->GetCenterVertex(i) + drawOffset);
+            vglVertex3f(this->GetCenterVertex(i + 1) + drawOffset);
+        }
+        vglEnd();
+    }
+
+    void aiPath::DrawNormals() const
+    {
+        vglBegin(gfxDrawMode::DRAWMODE_LINELIST, this->NumVerts() * 2);
+        vglCurrentColor = mkfrgba(1.0f, 1.0f, 0.0f, 1.0f);
+
+        for (int i = 0; i < this->NumVerts(); i++)
+        {
+            Vector3 centerPos = this->GetCenterVertex(i);
+            Vector3 upDirection = this->GetUpDirection(i);
+            vglVertex3f(centerPos);
+            vglVertex3f(centerPos + (upDirection * 5.0f));
+        }
+
+        vglEnd();
+    }
+
+    void aiPath::DrawId() const
+    {
+        Vector3 drawPos = this->GetCenterVertex(1);
+        drawPos.Y += 3.0f;
+        vglDrawLabelf(drawPos, "%d", this->GetId());
+    }
+
     void aiPath::BindLua(LuaState L) {
         LuaBinding(L).beginClass<aiPath>("aiPath")
             .addPropertyReadOnly("ID", &GetId)
@@ -197,6 +274,9 @@ namespace MM2
             .addPropertyReadOnly("NumRooms", &GetRoomCount)
             .addPropertyReadOnly("Width", &GetWidth)
             .addPropertyReadOnly("Flags", &GetFlags)
+            .addFunction("Draw", &Draw)
+            .addFunction("DrawNormals", &DrawNormals)
+            .addFunction("DrawId", &DrawId)
             .addFunction("GetIntersection", &GetIntersection)
             .addFunction("CenterLength", &CenterLength)
             .addFunction("CenterIndex", &CenterIndex)
