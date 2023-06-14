@@ -152,6 +152,7 @@ void luaSetGlobals()
     Lua::setGlobal(L, "VehicleList", VehicleListPtr.get());
     Lua::setGlobal(L, "CityList", CityListPtr.get());
     Lua::setGlobal(L, "Input", GameInputPtr.get());
+    Lua::setGlobal(L, "Level", (cityLevel*)lvlLevel::GetSingleton());
     Lua::setGlobal(L, "PHYS", dgPhysManager::Instance.get());
 }
 
