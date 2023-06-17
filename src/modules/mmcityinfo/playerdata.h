@@ -12,7 +12,18 @@ namespace MM2
     // Class definitions
     class mmPlayerData : public mmInfoBase {
     private:
-        char _buf[0x158];
+        char Name[40];
+        char NetName[40];
+        char FileName[40];
+        char dword_100[40];
+        char SkillLevel;
+        float TagID;
+        char VehicleName[80];
+        int VehiclePaintjob;
+        int GameMode;
+        int RaceId;
+        char char_18C;
+        char City[80];
     public:
         AGE_API mmPlayerData(void) {
             scoped_vtable x(this);
@@ -37,9 +48,12 @@ namespace MM2
         int ResolveCheckpointProgress(const char* city)          { return hook::Thunk<0x527890>::Call<int>(this, city); }
         int ResolveCrashProgress(const char* city)               { return hook::Thunk<0x5279D0>::Call<int>(this, city); }
 
+        LPCSTR GetName()                                         { return Name; }
+
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmPlayerData, mmInfoBase>("mmPlayerData")
+                .addPropertyReadOnly("Name", &GetName)
                 .addProperty("TagID", &GetTagID, &SetTagID)
                 .addFunction("GetProgress", &GetProgress)
                 .addFunction("GetPassedMask", &GetPassedMask)
