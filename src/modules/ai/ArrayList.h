@@ -15,7 +15,7 @@ namespace MM2
     class CArrayList {
     private:
         short count;
-        int *data;
+        short *data;
     public:
         CArrayList(void) {
             count = 0;
@@ -27,11 +27,11 @@ namespace MM2
             data = nullptr;
         }
 
-        inline int Count() const {
+        int Count() const {
             return count;
         }
 
-        inline int Get(int index) {
+        short Get(int index) const {
             return data[index];
         }
 
