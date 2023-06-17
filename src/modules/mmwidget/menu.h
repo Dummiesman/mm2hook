@@ -39,12 +39,18 @@ namespace MM2
         uint32_t dword84;
         const char *Background;
     public:
+        AGE_API UIMenu(BOOL autoAddToManager) {
+            scoped_vtable x(this);
+            hook::Thunk<0x4E0770>::Call<void>(this, autoAddToManager);
+        }
+
         AGE_API UIButton * AddButton(int id, LocString *text, float x, float y, float w, float h, int fontNum, int type, MM2::datCallback callback, int i3) {
             return hook::Thunk<0x4E1A90>::Call<UIButton*>(this, id, text, x, y, w, h, fontNum, type, callback, i3);
         };
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<UIMenu, asNode>("UIMenu")
+                .addConstructor(LUA_ARGS(bool))
                 .endClass();
         }
     };

@@ -28,6 +28,7 @@ namespace MM2
             return _currentMenuId.get(this);
         }
 
+       int  AddMenu2(UIMenu* menu)                               { return hook::Thunk<0x4E5B20>::Call<int>(this, menu); }
        void Switch(int menuID)                                   { hook::Thunk<0x4E5A30>::Call<void>(this, menuID); }
        void OpenDialog(int menuID)                               { hook::Thunk<0x4E5110>::Call<void>(this, menuID); }
        void EnableNavBar()                                       { hook::Thunk<0x4E5270>::Call<void>(this); }
@@ -39,6 +40,7 @@ namespace MM2
            LuaBinding(L).beginExtendClass<MenuManager, asNode>("MenuManager")
                .addStaticProperty("Instance", &GetInstance)
                .addPropertyReadOnly("CurrentMenuID", &GetCurrentMenuID)
+               .addFunction("AddMenu2", &AddMenu2)
                .addFunction("Switch", &Switch)
                .addFunction("OpenDialog", &OpenDialog)
                .addFunction("EnableNavBar", &EnableNavBar)
