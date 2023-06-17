@@ -11,6 +11,7 @@
 namespace MM2
 {
     // Forward declarations
+    struct vehDamageImpactInfo;
     class vehCarDamage;
 
     // External declarations
@@ -18,8 +19,33 @@ namespace MM2
     extern class asParticles;
     extern class fxShardManager;
     extern class asLineSparks;
+    extern class phCollider;
 
     // Class definitions
+    struct vehDamageImpactInfo
+    {
+        phCollider* OtherCollider;
+        Vector3 LocalPosition;
+        Vector3 WorldPosition;
+        Vector3 Normal;
+        Vector3 Impulse; //unconfirmed
+        float Damage;
+        float TotalDamage;
+        float RelaxTime;
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<vehDamageImpactInfo>("vehDamageImpactInfo")
+                .addVariable("LocalPosition", &vehDamageImpactInfo::LocalPosition, false)
+                .addVariable("WorldPosition", &vehDamageImpactInfo::WorldPosition, false)
+                .addVariable("Normal", &vehDamageImpactInfo::Normal, false)
+                .addVariable("Impulse", &vehDamageImpactInfo::Impulse, false)
+                .addVariable("Damage", &vehDamageImpactInfo::Damage, false)
+                .addVariable("TotalDamage", &vehDamageImpactInfo::TotalDamage, false)
+                .addVariable("RelaxTime", &vehDamageImpactInfo::RelaxTime, false)
+                .addVariableRef("OtherCollider", &vehDamageImpactInfo::OtherCollider, false)
+                .endClass();
+        }
+    };
 
     class vehCarDamage : public asNode {
     private:
@@ -38,7 +64,7 @@ namespace MM2
         float MedDamage;
         float ImpactThreshold;
         float RegenerateRate;
-        byte ImpactsTable[768];
+        vehDamageImpactInfo ImpactsTable[12];
         float unk_344;
         Vector3 SmokeOffset;
         Vector3 SmokeOffset2;
@@ -55,6 +81,24 @@ namespace MM2
         bool m_TexelDamageFlag;
         byte pad2[3];
         Vector3 LastImpactPos;
+    private:
+        void setGameCallbackLua(LuaRef fn)
+        {
+            fn.checkFunction();
+            fn.pushToStack();
+            int m_ref = luaL_ref(fn.state(), LUA_REGISTRYINDEX);
+
+            delete GameCallback;
+
+            GameCallback = new datCallback([this, m_ref](void* param) {
+                auto state = MM2Lua::GetState();
+                state->getRef(m_ref);
+
+                auto ref = state->popValue<LuaRef>();
+                if (ref.isValid() && ref.isFunction())
+                    ref.call(this, (vehDamageImpactInfo*)param);
+            });
+        }
     public:
         static hook::Type<asBirthRule*> EngineSmokeRule;
     public:
@@ -122,6 +166,7 @@ namespace MM2
                 .addFunction("Reset", &Reset)
                 .addFunction("AddDamage", &AddDamage)
                 .addFunction("ClearDamage", &ClearDamage)
+                .addFunction("SetGameCallback", &setGameCallbackLua)
 
                 .addVariable("DamageAmount", &vehCarDamage::CurrentDamage)
 
@@ -136,6 +181,7 @@ namespace MM2
                 .addVariable("DoublePivot", &vehCarDamage::DoublePivot)
                 .addVariable("MirrorPivot", &vehCarDamage::MirrorPivot)
 
+                .addPropertyReadOnly("Car", &GetCar)
                 .addPropertyReadOnly("EngineSmokeParticles", &GetEngineSmokePtx)
                 .addPropertyReadOnly("Sparks", &GetSparkomatic)
                 .addPropertyReadOnly("Sparkomatic", &GetSparkomatic)
