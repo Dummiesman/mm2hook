@@ -111,6 +111,16 @@ namespace MM2
         return _sectionOriZ.get(this)[section];
     }
 
+    Vector3 aiPath::GetLeftBoundary(int section) const
+    {
+        return _lBoundaryVertices.get(this)[this->NumVerts() + section];
+    }
+
+    Vector3 aiPath::GetRightBoundary(int section) const
+    {
+        return _rBoundaryVertices.get(this)[this->NumVerts() + section];
+    }
+
     float aiPath::GetWidth() const
     {
         return _halfWidth.get(this) * 2.0f;
@@ -126,7 +136,12 @@ namespace MM2
         return _rooms.get(this)[index];
     }
 
-    AGE_API float aiPath::CenterLength(int startIdx, int endIdx)  const 
+    AGE_API float aiPath::CenterDist(Vector3 const& pos) const
+    {
+        return hook::Thunk<0x548850>::Call<float>(this, &pos);
+    }
+
+    AGE_API float aiPath::CenterLength(int startIdx, int endIdx)  const
     {
         return hook::Thunk<0x547340>::Call<float>(this, startIdx, endIdx); 
     }
@@ -278,6 +293,7 @@ namespace MM2
             .addFunction("DrawNormals", &DrawNormals)
             .addFunction("DrawId", &DrawId)
             .addFunction("GetIntersection", &GetIntersection)
+            .addFunction("CenterDist", &CenterDist)
             .addFunction("CenterLength", &CenterLength)
             .addFunction("CenterIndex", &CenterIndex)
             .addFunction("ClearAmbients", &ClearAmbients)
@@ -299,6 +315,8 @@ namespace MM2
             .addFunction("GetSideDirection", &GetSideDirection)
             .addFunction("GetUpDirection", &GetUpDirection)
             .addFunction("GetForwardDirection", &GetForwardDirection)
+            .addFunction("GetLeftBoundary", &GetLeftBoundary)
+            .addFunction("GetRightBoundary", &GetRightBoundary)
             .addFunction("GetRoomID", &GetRoomId)
             .endClass();
     }

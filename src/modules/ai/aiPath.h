@@ -22,22 +22,25 @@ namespace MM2
         static hook::Field<0x10, short*> _rooms;
         static hook::Field<0x14, float> _halfWidth;
         static hook::Field<0x18, float> _baseSpeedLimit;
-        static hook::Field<0x118, aiIntersection*> _intersectionA;
-        static hook::Field<0x13C, aiIntersection*> _intersectionB;
+        static hook::Field<0x24, int> _numSharpTurns;
         static hook::Field<0x74, Vector3*> _lLaneVertices;
         static hook::Field<0x78, Vector3*> _lCableCarVertices;
         static hook::Field<0x7C, Vector3*> _lSubwayVertices;
+        static hook::Field<0x80, Vector3*> _lBoundaryVertices;
         static hook::Field<0x38, short> _lNumLanes;
         static hook::Field<0x3E, short> _lNumSidewalks;
         static hook::Field<0xD8, Vector3*> _rLaneVertices;
         static hook::Field<0xDC, Vector3*> _rCableCarVertices;
         static hook::Field<0xE0, Vector3*> _rSubwayVertices;
+        static hook::Field<0xE4, Vector3*> _rBoundaryVertices;
         static hook::Field<0x9C, short> _rNumLanes;
         static hook::Field<0xA2, short> _rNumSidewalks;
         static hook::Field<0x104, Vector3*> _sectionVerts;
         static hook::Field<0x108, Vector3*> _sectionOriX;
         static hook::Field<0x10C, Vector3*> _sectionOriY;
         static hook::Field<0x110, Vector3*> _sectionOriZ;
+        static hook::Field<0x118, aiIntersection*> _intersectionA;
+        static hook::Field<0x13C, aiIntersection*> _intersectionB;
     private:
         //lua helper
         std::tuple<int, float> luaIsPosOnRoad(Vector3 const& pos, float margin) const;
@@ -59,6 +62,8 @@ namespace MM2
         Vector3 GetSideDirection(int section) const;
         Vector3 GetUpDirection(int section) const;
         Vector3 GetForwardDirection(int section) const;
+        Vector3 GetLeftBoundary(int section) const;
+        Vector3 GetRightBoundary(int section) const;
         float GetWidth() const;
         int GetRoomCount() const;
         int GetRoomId(int index) const;
@@ -66,6 +71,7 @@ namespace MM2
         /*
             aiPath
         */
+        AGE_API float CenterDist(Vector3 const& pos) const;
         AGE_API float CenterLength(int startIdx, int endIdx) const;
         AGE_API int CenterIndex(float distance) const;
         AGE_API void ClearAmbients();
