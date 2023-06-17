@@ -96,7 +96,6 @@ namespace MM2
 
         void Cull() override {
             MM2Lua::TryCallFunction(m_CullFunction);
-            //don't call base here because base does nothing
         }
 
         //lua
