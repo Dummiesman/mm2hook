@@ -1,4 +1,5 @@
 #pragma once
+#include "phcolliderbase.h"
 
 namespace MM2
 {
@@ -10,13 +11,20 @@ namespace MM2
 
     // Class definitions
 
-    class phCollider {
+    class phCollider : public phColliderBase {
     private:
-        byte unknown[0xB0];
+        InstanceData InstanceData;
+        int dword_a8;
+        phJoint* Joint;
     public:
         phJoint* GetJoint()
         {
             return *getPtr<phJoint*>(this, 0xAC);
+        }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<phCollider, phColliderBase>("phCollider")
+                .endClass();
         }
     };
 
