@@ -52,6 +52,11 @@ namespace MM2
         Vector3 GetDeliverPosition() const { return _deliverPosition.get(this); }
         void SetDeliverPosition(Vector3 pos) { _deliverPosition.set(this, pos); }
 
+        void EnterAcquireMode() { _ctfState.set(this, 0); }
+        void EnterDeliverMode() { _ctfState.set(this, 2); }
+
+        AGE_API void Reset() { hook::Thunk<0x554510>::Call<void>(this); }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<aiCTFRacer, Base>("aiCTFRacer")
                 .addPropertyReadOnly("Car", &GetCar)
@@ -59,6 +64,9 @@ namespace MM2
                 .addPropertyReadOnly("ID", &GetId)
                 .addProperty("FlagPosition", &GetFlagPosition, &SetFlagPosition)
                 .addProperty("DeliverPosition", &GetDeliverPosition, &SetDeliverPosition)
+                .addFunction("Acquire", &EnterAcquireMode)
+                .addFunction("Deliver", &EnterDeliverMode)
+                .addFunction("Reset", &Reset)
                 .endClass();
         }
 
