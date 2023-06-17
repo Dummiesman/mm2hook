@@ -18,6 +18,7 @@ namespace MM2
 
         static hook::Field<0x138, int> _currentMenuId;
         static hook::Field<0x114, int> _lastMenuId;
+        static hook::Field<0x10C, int> _menuCount;
     public:
         static MenuManager* GetInstance()
         {
@@ -26,6 +27,10 @@ namespace MM2
 
         int GetCurrentMenuID() const {
             return _currentMenuId.get(this);
+        }
+
+        int GetMenuCount() const {
+            return _menuCount.get(this);
         }
 
        int  AddMenu2(UIMenu* menu)                               { return hook::Thunk<0x4E5B20>::Call<int>(this, menu); }
@@ -40,6 +45,7 @@ namespace MM2
            LuaBinding(L).beginExtendClass<MenuManager, asNode>("MenuManager")
                .addStaticProperty("Instance", &GetInstance)
                .addPropertyReadOnly("CurrentMenuID", &GetCurrentMenuID)
+               .addPropertyReadOnly("NumMenus", &GetMenuCount)
                .addFunction("AddMenu2", &AddMenu2)
                .addFunction("Switch", &Switch)
                .addFunction("OpenDialog", &OpenDialog)

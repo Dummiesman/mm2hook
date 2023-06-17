@@ -39,18 +39,47 @@ namespace MM2
         uint32_t dword84;
         const char *Background;
     public:
-        AGE_API UIMenu(BOOL autoAddToManager) {
+        AGE_API UIMenu(int id) {
             scoped_vtable x(this);
-            hook::Thunk<0x4E0770>::Call<void>(this, autoAddToManager);
+            hook::Thunk<0x4E0770>::Call<void>(this, id);
         }
 
+        /*
+            asNode virtuals
+        */
+
+        AGE_API void Update() override                      { hook::Thunk<0x4E0A80>::Call<void>(this); }
+
+        /*
+            uiMenu virtuals
+        */
+
+        AGE_API virtual void PreSetup()                     { hook::Thunk<0x4E0A60>::Call<void>(this); }
+        AGE_API virtual void PostSetup()                    { hook::Thunk<0x4E0A70>::Call<void>(this); }
+        AGE_API virtual void BackUp()                       { hook::Thunk<0x4E0B10>::Call<void>(this); }
+        AGE_API virtual void CheckInput()                   { hook::Thunk<0x4E0DE0>::Call<void>(this); }
+        AGE_API virtual BOOL IsAnOptionMenu()               { return hook::Thunk<0x4E2D70>::Call<BOOL>(this); }
+
+        /*
+            uiMenu members
+        */
         AGE_API UIButton * AddButton(int id, LocString *text, float x, float y, float w, float h, int fontNum, int type, MM2::datCallback callback, int i3) {
             return hook::Thunk<0x4E1A90>::Call<UIButton*>(this, id, text, x, y, w, h, fontNum, type, callback, i3);
         };
 
+        AGE_API void AssignBackground(LPCSTR imageName)
+        {
+            hook::Thunk<0x4E0980>::Call<void>(this, imageName);
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<UIMenu, asNode>("UIMenu")
-                .addConstructor(LUA_ARGS(bool))
+                .addFactory([](int id) {
+                    auto object = new UIMenu(id);
+                    MM2Lua::MarkForCleanupOnShutdown(object);
+                    return object;
+                })
+                .addFunction("AssignBackground", &AssignBackground)
                 .endClass();
         }
     };
