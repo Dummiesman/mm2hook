@@ -32,8 +32,8 @@ namespace MM2
     class mmTextNode : public asNode {
     private:
         Vector2 Pos;
-        uint32_t EntryCount;
-        uint32_t MaxEntries;
+        int EntryCount;
+        int MaxEntries;
         uint32_t DrawBits;
         mmText dword2C;
         mmTextData *pTextEntries;
