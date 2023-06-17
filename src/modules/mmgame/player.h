@@ -64,6 +64,7 @@ namespace MM2
 
         camCarCS * GetCurrentCameraPtr() const   { return this->_GetCurrentCameraPtr(); }
 
+        AGE_API void FFImpactCallback(float damage)         { hook::Thunk<0x406240>::Call<void>(this, damage); }
         AGE_API void EnableRegen(bool a1)                   { hook::Thunk<0x406160>::Call<void>(this, a1); }
         AGE_API float FilterSteering(float a1)              { return hook::Thunk<0x404C90>::Call<float>(this, a1); }
         AGE_API bool IsMaxDamaged() const                   { return hook::Thunk<0x406140>::Call<bool>(this); }
@@ -110,6 +111,7 @@ namespace MM2
                 .addPropertyReadOnly("CurrentWaypoint", &GetCurrentWaypoint)
 
                 //functions
+                .addFunction("FFImpactCallback", &FFImpactCallback)
                 .addFunction("EnableRegen", &EnableRegen)
                 .addFunction("FilterSteering", &FilterSteering)
                 .addFunction("IsMaxDamaged", &IsMaxDamaged)
