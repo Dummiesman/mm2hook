@@ -17,8 +17,8 @@ public:
     UIButton* AddPauseButton(int id, LocString* text, float offsetX, float offsetY, float width, float height, int a7, int a8, datCallback cb, int a10) {
         offsetY += PauseMenuAdjustment;
 
-        Warningf("**** PUMenuHook::AddPauseButton(%d, \"%s\", %.2f, %.2f, %.2f, %.2f, %d, %d, <callback:%08X>, %d) ****",
-            id, text, offsetX, offsetY, width, height, a7, a8, cb.ptr(), a10);
+        Warningf("**** PUMenuHook::AddPauseButton(%d, \"%s\", %.2f, %.2f, %.2f, %.2f, %d, %d, %d) ****",
+            id, text, offsetX, offsetY, width, height, a7, a8, a10);
 
         UIButton* result = this->AddButton(id, text, offsetX, offsetY, width, height, a7, a8, cb, a10);
 

@@ -6,10 +6,26 @@ using namespace MM2;
     datCallbackExtensionHandler
 */
 
+template <typename Class>
+struct class_proxy
+{
+    template <typename... Args>
+    Class* ctor(Args... args)
+    {
+        return new (this) Class(std::forward<Args>(args)...);
+    }
+};
+
 void datCallbackExtensionHandler::Install() {
-    InstallPatch("datCallback Fix 1", { 0x00, 0x00, 0x00, 0x40 }, { 0x4C7A5B + 2, 0x4C7AC8 + 2, 0x4C7B70 + 1, 0x4C7BA6 + 1 });
-    InstallPatch("datCallback Fix 2", { 0x00, 0x00, 0x00, 0x80 }, { 0x4C7A90 + 2, 0x4C7AFB + 2, 0x4C7B7E + 1, 0x4C7BB4 + 1 });
-    InstallPatch("datCallback Fix 3", { 0x00, 0x00, 0x00, 0xC0 }, { 0x4C7AB0 + 2, 0x4C7B2B + 2, 0x4C7B90 + 1, 0x4C7BC9 + 1, 0x4C7B61 + 1 });
-    InstallPatch("datCallback Fix 4", { 0xFF, 0xFF, 0xFF, 0x3F }, { 0x4C7B5B + 2 });
-    InstallPatch("datCallback Code Cave", { 0xFF, 0xE1 }, { 0x4C7BE3 });
+    InstallCallback("datCallback", "Fix addresses", &class_proxy<datCallback>::ctor<>, { cb::jmp(0x4C7A40) });
+
+    InstallCallback("datCallback", "Fix addresses", &class_proxy<datCallback>::ctor<datCallback::Static0>, { cb::jmp(0x4C7AC0) });
+    InstallCallback("datCallback", "Fix addresses", &class_proxy<datCallback>::ctor<datCallback::Static1, void*>, { cb::jmp(0x4C7AF0) });
+    InstallCallback("datCallback", "Fix addresses", &class_proxy<datCallback>::ctor<datCallback::Static2, void*>, { cb::jmp(0x4C7B20) });
+
+    InstallCallback("datCallback", "Fix addresses", &class_proxy<datCallback>::ctor<datCallback::Member0, Base*>, { cb::jmp(0x4C7A50) });
+    InstallCallback("datCallback", "Fix addresses", &class_proxy<datCallback>::ctor<datCallback::Member1, Base*, void*>, { cb::jmp(0x4C7A80) });
+    InstallCallback("datCallback", "Fix addresses", &class_proxy<datCallback>::ctor<datCallback::Member2, Base*, void*>, { cb::jmp(0x4C7AA0) });
+
+    InstallCallback("datCallback", "Fix addresses", &datCallback::Call, { cb::jmp(0x4C7B50) });
 }
