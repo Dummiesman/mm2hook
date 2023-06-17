@@ -80,6 +80,7 @@ namespace MM2
         AGE_API void Init(char const* basename, int variant, int colliderID, bool useFullBound, bool hasTrailer);
         AGE_API void InitAudio(char const* basename, int audioType);
         AGE_API void SetDrivable(BOOL drivable, int mode);
+        AGE_API void SetColliderID(int id);
 
         /*
             dgPhysEntity virtuals

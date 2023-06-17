@@ -63,6 +63,11 @@ AGE_API void vehCar::InitAudio(char const *basename, int audioType)
 															{ hook::Thunk<0x42C1F0>::Call<void>(this, basename, audioType); }
 AGE_API void vehCar::SetDrivable(BOOL drivable, int mode)   { hook::Thunk<0x42C2C0>::Call<void>(this, drivable, mode); }
 
+AGE_API void MM2::vehCar::SetColliderID(int id)
+{
+	hook::Thunk<0x42C1D0>::Call<void>(this, id);
+}
+
 /*
 	dgPhysEntity virtuals
 */
@@ -103,5 +108,6 @@ void vehCar::BindLua(LuaState L) {
 		.addFunction("ClearDamage", &ClearDamage)
 		.addFunction("SetDrivable", &setDrivable, LUA_ARGS(bool, _def<int, 3>))
 		.addFunction("IsPlayer", &IsPlayer)
+		.addFunction("SetColliderID", &SetColliderID)
 	.endClass();
 }
