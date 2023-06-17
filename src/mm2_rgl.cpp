@@ -58,10 +58,11 @@ void    MM2::gfxDrawFont            (int x, int y, const char *text)            
 void MM2::vglDrawLabelf(const Vector3 &position, const char *format, ...) {
         va_list va;
         va_start(va, format);
-        char buffer[256];
+        char buffer[1024];
         vsprintf_s(buffer, format, va);
-        vglDrawLabel(position, buffer);
         va_end(va);
+
+        vglDrawLabel(position, buffer);
 }
 
 void    MM2::vglSetCloudMap         (const char *texture)                                       { return _StaticThunk<0x4A5D30>::Call<void>(texture); }
