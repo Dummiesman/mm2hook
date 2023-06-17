@@ -29,116 +29,99 @@ namespace MM2
             declhook(0x4C7B50, _MemberFunc<void>, Call);
         }
     }
+    
+    template <typename Func, typename = void>
+    struct CallbackInvoker
+    {
+        static void Invoke(void* context, void* /*param*/)
+        {
+            (*static_cast<Func*>(context))();
+        }
+    };
+
+    template <typename Func>
+    struct CallbackInvoker<Func, decltype(void(std::declval<Func&>()(std::declval<void*>())))>
+    {
+        static void Invoke(void* context, void* param)
+        {
+            (*static_cast<Func*>(context))(param);
+        }
+    };
 
     class datCallback
     {
     protected:
-        enum Flags
-        {
-            ParamCount0 = 0x40000000,
-            ParamCount1 = 0x80000000,
-            ParamCount2 = 0xC0000000,
-            ParamCountFlags = ParamCount0 | ParamCount1 | ParamCount2
+        enum : uint32_t {
+            // The highest bit of a function should never be set (unless perhaps the main executable is marked as /LARGEADDRESSAWARE)
+            CB_TYPE_GAME = 0x80000000,
+
+            // MM2 functions only use the lowest 23 bits (address range 0x400000 - 0x5B0000)
+            CB_TYPE_PARAM0 = CB_TYPE_GAME | 0x20000000,
+            CB_TYPE_PARAM1 = CB_TYPE_GAME | 0x40000000,
+            CB_TYPE_PARAM2 = CB_TYPE_GAME | 0x60000000,
+
+            CB_TYPE_MASK = 0xE0000000,
+            CB_FUNC_MASK = 0x1FFFFFFF,
         };
 
-        Base* _class;
-        unsigned int _callback;
-        void* _parameter;
-
-        unsigned int _get_flags()
-        {
-            return _callback & ParamCountFlags;
-        }
-
-        unsigned int _get_callback()
-        {
-            return _callback & ~ParamCountFlags;
-        }
-
-        unsigned int _combine_callback(void* callback, unsigned int flags)
-        {
-            return reinterpret_cast<unsigned int&>(callback) | flags;
-        }
-
-        template <typename ...TArgs>
-        void virtual_callback(uint callback, TArgs ...args) const {
-            (_class->*reinterpret_cast<VirtualCall<void, Base, TArgs...> &>(callback))(args...);
-        }
-
-        template <typename ...TArgs>
-        void method_callback(uint callback, TArgs ...args) const {
-            reinterpret_cast<MethodCall<void, TArgs...> &>(callback)(args...);
-        }
-
     public:
+        using Static0 = void (*)();
+        using Static1 = void (*)(void*);
+        using Static2 = void (*)(void*, void*);
+
+        using Member0 = void (Base::*)();
+        using Member1 = void (Base::*)(void*);
+        using Member2 = void (Base::*)(void*, void*);
+
         static hook::TypeProxy<datCallback> NullCallback;
 
-        inline unsigned int ptr() const {
-            return _callback & ~ParamCountFlags;
-        }
+        datCallback() = default;
 
-        AGE_API datCallback()
-            : _class(NULL)
-            , _callback(NULL)
-            , _parameter(NULL)
-        { }
-
-        AGE_API datCallback(void(*callback)())
-            : _class((Base*)callback)
-            , _callback(0x4C7BE3 | ParamCount0)
-            , _parameter(NULL)
-        { }
-        
-        AGE_API datCallback(void(__stdcall *callback)(void*), void* parameter)
-            : _class((Base*)callback)
-            , _callback(0x4C7BE3 | ParamCount1)
-            , _parameter(parameter)
-        { }
-
-        AGE_API datCallback(void(__stdcall *callback)())
-            : _class((Base*)callback)
-            , _callback(0x4C7BE3 | ParamCount0)
-            , _parameter(NULL)
-        { }
-
-        AGE_API datCallback(void(__stdcall *callback)(void*, void*), void* parameter)
-            : _class((Base*)callback)
-            , _callback(0x4C7BE3 | ParamCount2)
-            , _parameter(parameter)
-        { }
-
-        AGE_API void Call(void* parameter)
+        datCallback(std::nullptr_t)
         {
-            auto callback = _get_callback();
-            auto flags = _get_flags();
-
-            if (flags)
-            {
-                if (_class)
-                {
-                    switch (flags)
-                    {
-                        case ParamCount0: return virtual_callback(callback);
-                        case ParamCount1: return virtual_callback(callback, _parameter);
-                        case ParamCount2: return virtual_callback(callback, _parameter, parameter);
-                    }
-                } else
-                {
-                    switch (flags)
-                    {
-                        case ParamCount0: return method_callback(callback);
-                        case ParamCount1: return method_callback(callback, _parameter);
-                        case ParamCount2: return method_callback(callback, _parameter, parameter);
-                    }
-                }
-            }
         }
+
+        template <typename Func>
+        datCallback(Func func)
+            : invoke_(CallbackInvoker<Func>::Invoke)
+        {
+            new (data_) Func(func);
+            static_assert(sizeof(func) <= sizeof(data_));
+            static_assert(std::is_trivially_copyable_v<Func>);
+        }
+
+        // Deprecated, use lambdas.
+        explicit datCallback(Static0 func);
+        explicit datCallback(Static1 func, void* param);
+        explicit datCallback(Static2 func, void* param);
+        explicit datCallback(Member0 func, Base* base);
+        explicit datCallback(Member1 func, Base* base, void* param);
+        explicit datCallback(Member2 func, Base* base, void* param);
+
+        void Call(void* param = nullptr);
+        
+        union {
+            void(* invoke_)(void*, void*) {};
+            size_t raw_;
+        };
+
+        union {
+            alignas(void*) char data_[8] {};
+
+            struct {
+                Base* base_;
+                void* param_;
+            } game_;
+        };
 
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<datCallback>("datCallback")
                 .endClass();
         }
+
+    private:
+        explicit datCallback(size_t type, void* func, Base* base, void* param);
     };
 
     ASSERT_SIZEOF(datCallback, 0xC);
