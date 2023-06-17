@@ -213,6 +213,9 @@ void mmHudMapFeatureHandler::DrawPlayer() {
         *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
         DrawIcon(playerTriColor, playerMtx);
     }
+
+    // Hook to allow for custom icon drawing
+    MM2Lua::OnRenderHudmap();
 }
 
 void mmHudMapFeatureHandler::DrawCops() {

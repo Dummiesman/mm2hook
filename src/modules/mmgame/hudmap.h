@@ -49,6 +49,11 @@ namespace MM2
         int NumOpponents;
         asMeshSetForm* HudmapSquareModel;
         asMeshSetForm* HudmapTriModel;
+    private:
+        AGE_API void DrawIcon(int iconType, Matrix34 const & matrix)
+                                                            { hook::Thunk<0x42F580>::Call<void>(this, iconType, &matrix); }
+        AGE_API void DrawIndicator(int indicatorType, Vector3 const & position)
+                                                            { hook::Thunk<0x42F6F0>::Call<void>(this, indicatorType, &position); }
     protected:
         AGE_API int GetCurrentMapMode()                     { return hook::Thunk<0x42EF20>::Call<int>(this); }
         AGE_API int GetNextMapMode()                        { return hook::Thunk<0x42EF00>::Call<int>(this); }
@@ -131,6 +136,8 @@ namespace MM2
                 .addFunction("GetCurrentMapMode", &GetCurrentMapMode)
                 .addFunction("GetNextMapMode", &GetNextMapMode)
                 .addFunction("SetMapMode", &SetMapMode)
+                .addFunction("DrawIcon", &DrawIcon)
+                .addFunction("DrawIndicator", &DrawIndicator)
             .endClass();  
         }
     };

@@ -41,6 +41,7 @@ public:
     static void MarkForCleanupOnShutdown(MM2::Base* object);
 
     //events
+    static void OnRenderHudmap();
     static void OnChatMessage(const char* message);
     static void OnReset();
     static void OnDisconnect();

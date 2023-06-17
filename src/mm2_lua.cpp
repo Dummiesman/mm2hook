@@ -340,6 +340,14 @@ void MM2Lua::Reset()
         luaSetGlobals();
 }
 
+void MM2Lua::OnRenderHudmap()
+{
+    if (IsInitialized()) {
+        LuaRef func(L, "onRenderHudmap");
+        TryCallFunction<void>(func);
+    }
+}
+
 void MM2Lua::OnChatMessage(const char* message) {
     if (IsInitialized()) {
         LuaRef func(L, "onChatMessage");
