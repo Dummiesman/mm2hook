@@ -12,7 +12,7 @@ struct class_proxy
     template <typename... Args>
     Class* ctor(Args... args)
     {
-        return new (this) Class(std::forward<Args>(args)...);
+        return ::new (static_cast<void*>(this)) Class(std::forward<Args>(args)...);
     }
 };
 

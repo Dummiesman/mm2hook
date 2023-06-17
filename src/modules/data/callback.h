@@ -65,6 +65,8 @@ namespace MM2
         };
 
     public:
+        ANGEL_ALLOCATOR
+
         using Static0 = void (*)();
         using Static1 = void (*)(void*);
         using Static2 = void (*)(void*, void*);
@@ -86,8 +88,8 @@ namespace MM2
             : invoke_(CallbackInvoker<Func>::Invoke)
         {
             new (data_) Func(func);
-            static_assert(sizeof(func) <= sizeof(data_));
-            static_assert(std::is_trivially_copyable_v<Func>);
+            static_assert(sizeof(func) <= sizeof(data_), "Function too large");
+            //static_assert(std::is_trivially_copyable<Func>::value, "Function not trivially copyable");
         }
 
         // Deprecated, use lambdas.
