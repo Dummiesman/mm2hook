@@ -20,6 +20,7 @@
 #include "mmgame\gamesingle.h"
 #include "mmgame\gamemulti.h"
 #include "mmgame\wpinst.h"
+#include "mmgame\wpobject.h"
 #include "mmgame\waypoints.h"
 #include "mmgame\singleroam.h"
 #include "mmgame\singleblitz.h"

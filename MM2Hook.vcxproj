@@ -407,6 +407,7 @@
     <ClInclude Include="src\modules\mmgame\waypoints.h" />
     <ClInclude Include="src\modules\mmgame\wphud.h" />
     <ClInclude Include="src\modules\mmgame\wpinst.h" />
+    <ClInclude Include="src\modules\mmgame\wpobject.h" />
     <ClInclude Include="src\modules\mminput.h" />
     <ClInclude Include="src\modules\mminput\input.h" />
     <ClInclude Include="src\modules\mmnetwork.h" />
@@ -717,6 +718,7 @@
     <ClCompile Include="src\modules\mmeffects\meshform.cpp" />
     <ClCompile Include="src\modules\mmgame.cpp" />
     <ClCompile Include="src\modules\mmgame\mirror.cpp" />
+    <ClCompile Include="src\modules\mmgame\wpobject.cpp" />
     <ClCompile Include="src\modules\mminput.cpp" />
     <ClCompile Include="src\modules\mmnetwork.cpp" />
     <ClCompile Include="src\modules\mmwidget.cpp" />

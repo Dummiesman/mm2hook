@@ -19,6 +19,7 @@ namespace MM2
         luaBind<mmTextNode>(L);
         luaBind<mmMirror>(L);
         luaBind<mmWaypoints>(L);
+        luaBind<mmWaypointObject>(L);
         luaBind<mmGameHUD>(L);
         luaBind<mmCRHUD>(L);
         luaBind<mmSpeedIndicator>(L);
