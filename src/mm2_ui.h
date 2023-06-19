@@ -7,6 +7,7 @@ namespace MM2
 {
     template<>
     void luaAddModule<module_ui>(LuaState L) {
+        luaBind<UIIcon>(L);
         luaBind<mmPopup>(L);
         luaBind<MenuManager>(L);
     }
