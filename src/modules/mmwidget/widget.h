@@ -7,7 +7,8 @@ namespace MM2
     class mmWidget;
 
     // External declarations
-
+    extern class UIMenu;
+    extern class mmToolTip;
 
     // Class definitions
     class uiWidget : public asNode {
@@ -42,5 +43,14 @@ namespace MM2
         virtual AGE_API void SetPosition(float x, float y)
                                                             { hook::Thunk<0x4E73E0>::Call<void>(this, x, y); }
         virtual AGE_API float GetScreenHeight(void)         { return hook::Thunk<0x4E73F0>::Call<float>(this); }
+
+        static void BindLua(LuaState L) {            
+            LuaBinding(L).beginClass<uiWidget>("uiWidget")
+                .addFunction("Enable", &Enable)
+                .addFunction("Disable", &Disable)
+                .addFunction("TurnOn", &TurnOn)
+                .addFunction("TurnOff", &TurnOff)
+                .endClass();
+        }
     };
 }

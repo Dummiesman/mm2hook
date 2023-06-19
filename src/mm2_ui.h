@@ -7,6 +7,7 @@ namespace MM2
 {
     template<>
     void luaAddModule<module_ui>(LuaState L) {
+        luaBind<uiWidget>(L);
         luaBind<UIIcon>(L);
         luaBind<UIBMLabel>(L);
         luaBind<UISlider>(L);
