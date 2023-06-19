@@ -545,9 +545,7 @@ private:
         InstallHandler<CallbackHandler>("Generic callbacks");
         InstallHandler<PrintHandler>("Print system");
         InstallHandler<StackHandler>("Stack information");
-
         InstallHandler<GameEventDispatcher>("Event dispatcher");
-        InstallHandler<discordHandler>("Discord Rich Presence");
 
         /*
             Now install everything else

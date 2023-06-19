@@ -35,5 +35,4 @@ public:
     static void SetCurrentPartySize(int size);
 
     static void BindLua(lua_State* L);
-    static void Install(void);
 };
