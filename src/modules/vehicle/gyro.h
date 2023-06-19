@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\vehicle.h>
+#include <modules\node\node.h>
 
 namespace MM2
 {
@@ -7,7 +7,7 @@ namespace MM2
     class vehGyro;
 
     // External declarations
-
+    extern class vehCarSim;
 
     // Class definitions
     class vehGyro : public asNode

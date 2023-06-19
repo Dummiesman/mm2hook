@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\ped.h>
+#include <modules\phys\physentity.h>
 
 namespace MM2
 {

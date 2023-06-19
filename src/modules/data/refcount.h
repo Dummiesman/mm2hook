@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\data.h>
+#include <mm2_common.h>
 
 namespace MM2
 {

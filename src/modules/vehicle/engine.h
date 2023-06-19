@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\vehicle.h>
+#include <modules\node\node.h>
 
 namespace MM2
 {
