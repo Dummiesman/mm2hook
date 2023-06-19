@@ -29,16 +29,22 @@ namespace MM2
             asNode virtuals
         */
 
-        virtual AGE_API void Update(void)                   { hook::Thunk<0x4A0DB0>::Call<void>(this); };
+        virtual AGE_API void Update(void) override          { hook::Thunk<0x4A0DB0>::Call<void>(this); };
 
         /*
             uiWidget virtuals
         */
 
-        virtual AGE_API void Disable(void)                  { hook::Thunk<0x4ED1F0>::Call<void>(this); }
-        virtual AGE_API void Enable(void)                   { hook::Thunk<0x4ED1D0>::Call<void>(this); }
-        virtual AGE_API void SetReadOnly(BOOL readOnly)     { hook::Thunk<0x4ED090>::Call<void>(this, readOnly); }
-        virtual AGE_API void Action(eqEvent event)          { hook::Thunk<0x4ED040>::Call<void>(this, event); }
-        virtual AGE_API void Switch(int a1)                 { hook::Thunk<0x4ED0D0>::Call<void>(this, a1); }
+        virtual AGE_API void Disable(void) override         { hook::Thunk<0x4ED1F0>::Call<void>(this); }
+        virtual AGE_API void Enable(void) override          { hook::Thunk<0x4ED1D0>::Call<void>(this); }
+        virtual AGE_API void SetReadOnly(BOOL readOnly) override
+                                                            { hook::Thunk<0x4ED090>::Call<void>(this, readOnly); }
+        virtual AGE_API void Action(eqEvent event) override { hook::Thunk<0x4ED040>::Call<void>(this, event); }
+        virtual AGE_API void Switch(int a1) override        { hook::Thunk<0x4ED0D0>::Call<void>(this, a1); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<UIButton, uiWidget>("UIButton")
+                .endClass();
+        }
     };
 }
