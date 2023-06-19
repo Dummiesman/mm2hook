@@ -9,6 +9,7 @@ namespace MM2
     void luaAddModule<module_ui>(LuaState L) {
         luaBind<UIIcon>(L);
         luaBind<UIBMLabel>(L);
+        luaBind<UISlider>(L);
         luaBind<mmPopup>(L);
         luaBind<MenuManager>(L);
     }
