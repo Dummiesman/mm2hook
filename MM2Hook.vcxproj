@@ -633,6 +633,7 @@
     <ClCompile Include="src\handlers\feature_handlers\gfxPipelineHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gizFerryHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\ImGuiFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\InitMapHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\ltLensFlareHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\lvlHandler.cpp" />

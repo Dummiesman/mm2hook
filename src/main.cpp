@@ -8,8 +8,6 @@
 
 #include <discord-presence.h>
 
-#include <imgui\renderer\imgui_age_rendernode.h>
-
 using namespace MM2;
 
 static ConfigValue<int> cfgRandomSeed           ("RandomSeed",          "seed",             0);
@@ -634,17 +632,15 @@ public:
 
     static void Update(bool parsedStateArgs) {
         GameEventDispatcher::onStateBegin();
+
         hook::StaticThunk<0x401A00>::Call<void>(parsedStateArgs); // GameLoop
+
         GameEventDispatcher::onStateEnd();
     }
 
     static void BeginPhase(bool a1) {
         //call original
         hook::StaticThunk<0x401AA0>::Call<void>(a1);
-
-        //initialize imgui
-        auto imguiNode = new mmImGuiManager();
-        MM2::ROOT->AddChild(imguiNode);
 
         //initialize lua
         MM2Lua::Initialize();
@@ -653,11 +649,6 @@ public:
 
     static void EndPhase() {
         GameEventDispatcher::EndPhase();
-        
-        // shutdown imgui
-        if (mmImGuiManager::Instance != nullptr) {
-            delete mmImGuiManager::Instance;
-        }
 
         //call original
         hook::StaticThunk<0x401FC0>::Call<void>();

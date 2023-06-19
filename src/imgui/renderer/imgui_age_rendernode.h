@@ -18,6 +18,7 @@ public:
     static mmImGuiManager* Instance;
 private:
     gfxViewport* viewport;
+    bool renderAutomatically;
 private:
     //mmInput::PutEventInQueue called from mmInput::ProcessMouseEvents
     void PutMouseEventInQueue(long long a1)
@@ -77,7 +78,7 @@ private:
 public:
     ANGEL_ALLOCATOR 
 
-    mmImGuiManager::mmImGuiManager() 
+    mmImGuiManager::mmImGuiManager(bool renderAutomatically) 
     {
         // delete instance if we already have one
         if (mmImGuiManager::Instance != nullptr) {
@@ -138,6 +139,7 @@ public:
             }
         );
 
+        this->renderAutomatically = renderAutomatically;
         mmImGuiManager::Instance = this;
         asNode::asNode();
     }
@@ -174,8 +176,14 @@ public:
             ImGui::RenderPlatformWindowsDefault();
         }
 	}
-
+    
 	virtual void Update() override {
-        asCullManager::Instance.get()->DeclareCullable2DFG(this);
+        if (renderAutomatically)
+            Render();
 	}
+
+    void Render() 
+    {
+        asCullManager::Instance.get()->DeclareCullable2DFG(this);
+    }
 };
