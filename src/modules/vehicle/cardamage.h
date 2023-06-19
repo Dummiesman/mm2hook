@@ -33,18 +33,7 @@ namespace MM2
         float TotalDamage;
         float RelaxTime;
 
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<vehDamageImpactInfo>("vehDamageImpactInfo")
-                .addVariable("LocalPosition", &vehDamageImpactInfo::LocalPosition, false)
-                .addVariable("WorldPosition", &vehDamageImpactInfo::WorldPosition, false)
-                .addVariable("Normal", &vehDamageImpactInfo::Normal, false)
-                .addVariable("Impulse", &vehDamageImpactInfo::Impulse, false)
-                .addVariable("Damage", &vehDamageImpactInfo::Damage, false)
-                .addVariable("TotalDamage", &vehDamageImpactInfo::TotalDamage, false)
-                .addVariable("RelaxTime", &vehDamageImpactInfo::RelaxTime, false)
-                .addVariableRef("OtherCollider", &vehDamageImpactInfo::OtherCollider, false)
-                .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     class vehCarDamage : public asNode {
@@ -82,112 +71,49 @@ namespace MM2
         byte pad2[3];
         Vector3 LastImpactPos;
     private:
-        void setGameCallbackLua(LuaRef fn)
-        {
-            fn.checkFunction();
-            fn.pushToStack();
-            int m_ref = luaL_ref(fn.state(), LUA_REGISTRYINDEX);
-
-            delete GameCallback;
-
-            GameCallback = new datCallback([this, m_ref](void* param) {
-                auto state = MM2Lua::GetState();
-                state->getRef(m_ref);
-
-                auto ref = state->popValue<LuaRef>();
-                if (ref.isValid() && ref.isFunction())
-                    ref.call(this, (vehDamageImpactInfo*)param);
-            });
-        }
+        void setGameCallbackLua(LuaRef fn);
     public:
         static hook::Type<asBirthRule*> EngineSmokeRule;
     public:
-        AGE_API vehCarDamage()                              { hook::Thunk<0x4CA380>::Call<void>(this); }
-        AGE_API ~vehCarDamage()                             { hook::Thunk<0x4CA530>::Call<void>(this); }
-
-        AGE_API void AddDamage(float a1)                    { hook::Thunk<0x4CAEC0>::Call<void>(this, a1); }
-        AGE_API void ClearDamage()                          { hook::Thunk<0x4CAE80>::Call<void>(this); }
+        AGE_API vehCarDamage();
+        AGE_API ~vehCarDamage();
+                                                          
+        AGE_API void AddDamage(float a1);
+        AGE_API void ClearDamage();
 
         /*
             vehCarDamage virtuals
         */
 
-        virtual AGE_API float GetDamageModifier(phCollider* a1) 
-                                                            { return hook::Thunk<0x4CB650>::Call<float>(this, a1); }
+        virtual AGE_API float GetDamageModifier(phCollider* a1);
         
         /*
             asNode virtuals
         */
 
-        AGE_API void Update() override                      { hook::Thunk<0x5B2C30>::Call<void>(this); }
-        AGE_API void Reset() override                       { hook::Thunk<0x4CAE60>::Call<void>(this); }
-        AGE_API void FileIO(datParser &parser) override
-                                                            { hook::Thunk<0x4CB400>::Call<void>(this); }
-        AGE_API char* GetClassName() override               { return hook::Thunk<0x4CB640>::Call<char*>(this); }
-        AGE_API char const* GetDirName() override           { return hook::Thunk<0x4CA5F0>::Call<char const*>(this); }
+        AGE_API void Update() override;
+        AGE_API void Reset() override;
+        AGE_API void FileIO(datParser& parser) override;
+        AGE_API char* GetClassName() override;
+        AGE_API char const* GetDirName() override;
         
         /*
             vehCarDamage
         */
-        float GetCurDamage() const {
-            return this->CurrentDamage;
-        }
+        float GetCurDamage() const;
+        float GetMedDamage() const;
+        float GetMaxDamage() const;
+        float GetImpactThreshold() const;
+        void SetImpactThreshold(float threshold);
+        vehCar* GetCar() const;
+        asParticles* GetEngineSmokePtx() const;
+        asLineSparks* GetSparkomatic() const;
 
-        float GetMedDamage() const {
-            return this->MedDamage;
-        }
+        // TEMP DEBUG STUFF
+        int GetNumActiveImpacts() const;
+        const vehDamageImpactInfo* GetImpact(int id) const;
 
-        float GetMaxDamage() {
-            return this->MaxDamage;
-        }
-
-        float GetImpactThreshold() const {
-            return this->ImpactThreshold;
-        }
-
-        void SetImpactThreshold(float threshold) {
-            this->ImpactThreshold = threshold;
-        }
-
-        vehCar* GetCar() const {
-            return this->vehCarPtr;
-        }
-
-        asParticles* GetEngineSmokePtx() const {
-            return this->Particles;
-        }
-
-        asLineSparks* GetSparkomatic() const {
-            return this->Sparks;
-        }
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<vehCarDamage, asNode>("vehCarDamage")
-                .addFunction("Reset", &Reset)
-                .addFunction("AddDamage", &AddDamage)
-                .addFunction("ClearDamage", &ClearDamage)
-                .addFunction("SetGameCallback", &setGameCallbackLua)
-
-                .addVariable("DamageAmount", &vehCarDamage::CurrentDamage)
-
-                .addVariable("Enabled", &vehCarDamage::EnableDamage)
-                .addVariable("MedDamage", &vehCarDamage::MedDamage)
-                .addVariable("MaxDamage", &vehCarDamage::MaxDamage)
-                .addVariable("ImpactThreshold", &vehCarDamage::ImpactThreshold)
-                .addVariable("RegenerateRate", &vehCarDamage::RegenerateRate)
-                .addVariable("SmokeOffset", &vehCarDamage::SmokeOffset)
-                .addVariable("SmokeOffset2", &vehCarDamage::SmokeOffset2)
-                .addVariable("TextelDamageRadius", &vehCarDamage::TextelDamageRadius)
-                .addVariable("DoublePivot", &vehCarDamage::DoublePivot)
-                .addVariable("MirrorPivot", &vehCarDamage::MirrorPivot)
-
-                .addPropertyReadOnly("Car", &GetCar)
-                .addPropertyReadOnly("EngineSmokeParticles", &GetEngineSmokePtx)
-                .addPropertyReadOnly("Sparks", &GetSparkomatic)
-                .addPropertyReadOnly("Sparkomatic", &GetSparkomatic)
-                .addStaticProperty("EngineSmokeRule", [] { return EngineSmokeRule.get(); })
-            .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     ASSERT_SIZEOF(vehCarDamage, 0x3A4);
