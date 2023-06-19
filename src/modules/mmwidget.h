@@ -8,6 +8,10 @@
 #include "mmwidget\bm_button.h"
 #include "mmwidget\icon.h"
 #include "mmwidget\label.h"
+#include "mmwidget\bm_label.h"
+#include "mmwidget\slider.h"
+#include "mmwidget\textroller2.h"
+#include "mmwidget\textdrop.h"
 #include "mmwidget\menu.h"
 #include "mmwidget\manager.h"
 
