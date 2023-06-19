@@ -21,6 +21,10 @@ namespace MM2
         LuaRef m_ResChangeFunction;
         LuaRef m_CullFunction;
         bool m_AutoDeclareCullbale;
+    private:
+        LuaRef getNil() {
+            return LuaRef();
+        }
     public:
         ANGEL_ALLOCATOR
 
@@ -34,11 +38,6 @@ namespace MM2
 
             this->SetName(name);
             this->m_AutoDeclareCullbale = false;
-        }
-
-        //lua getter
-        LuaRef getNil() {
-            return LuaRef();
         }
 
         //lua setters
