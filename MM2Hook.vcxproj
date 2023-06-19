@@ -423,6 +423,7 @@
     <ClInclude Include="src\modules\mmwidget\manager.h" />
     <ClInclude Include="src\modules\mmwidget\menu.h" />
     <ClInclude Include="src\modules\mmwidget\slider.h" />
+    <ClInclude Include="src\modules\mmwidget\textdrop.h" />
     <ClInclude Include="src\modules\mmwidget\textroller2.h" />
     <ClInclude Include="src\modules\mmwidget\ttip.h" />
     <ClInclude Include="src\modules\mmwidget\widget.h" />
