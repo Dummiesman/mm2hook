@@ -1,4 +1,6 @@
 #include <modules\data.h>
+#include <mm2_lua.h>
+
 using namespace MM2;
 
 /*
@@ -21,6 +23,26 @@ inline To bit_cast(const From& src) noexcept
     typename std::aligned_storage<sizeof(To), alignof(To)>::type dst;
     memcpy(&dst, &src, sizeof(dst));
     return reinterpret_cast<To&>(dst);
+}
+
+datCallback* datCallback::CreateParamaterlessLuaCallback(LuaRef func)
+{
+    if (func.type() == LuaIntf::LuaTypeID::NIL)
+        return datCallback::NullCallback;
+
+    func.checkFunction();
+    func.pushToStack();
+    int m_ref = luaL_ref(func.state(), LUA_REGISTRYINDEX);
+
+    assert(func.state() == MM2Lua::GetState());
+
+    return new datCallback([m_ref](void* param) {
+        auto state = MM2Lua::GetState();
+        state->getRef(m_ref);
+
+        auto ref = state->popValue<LuaRef>();
+        MM2Lua::TryCallFunction(ref);
+    });
 }
 
 datCallback::datCallback(Static0 func)
