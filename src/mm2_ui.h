@@ -10,6 +10,7 @@ namespace MM2
         luaBind<UIIcon>(L);
         luaBind<UIBMLabel>(L);
         luaBind<UISlider>(L);
+        luaBind<UITextRoller2>(L);
         luaBind<mmPopup>(L);
         luaBind<MenuManager>(L);
     }

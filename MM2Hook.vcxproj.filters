@@ -1630,6 +1630,9 @@
     <ClInclude Include="src\modules\mmwidget\bm_label.h">
       <Filter>Source Files\modules\mmwidget</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmwidget\textroller2.h">
+      <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
     <ClInclude Include="src\modules\mmwidget\slider.h">
       <Filter>Source Files\modules\mmwidget</Filter>
     </ClInclude>
