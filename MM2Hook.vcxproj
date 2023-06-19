@@ -414,12 +414,16 @@
     <ClInclude Include="src\modules\mmnetwork\luasessinfo.h" />
     <ClInclude Include="src\modules\mmnetwork\network.h" />
     <ClInclude Include="src\modules\mmnetwork\zone.h" />
+    <ClInclude Include="src\modules\mmui.h" />
+    <ClInclude Include="src\modules\mmui\luaPopup.h" />
+    <ClInclude Include="src\modules\mmui\pu_menu.h" />
     <ClInclude Include="src\modules\mmwidget.h" />
     <ClInclude Include="src\modules\mmwidget\bm_button.h" />
     <ClInclude Include="src\modules\mmwidget\button.h" />
     <ClInclude Include="src\modules\mmwidget\bm_label.h" />
     <ClInclude Include="src\modules\mmwidget\icon.h" />
     <ClInclude Include="src\modules\mmwidget\label.h" />
+    <ClInclude Include="src\modules\mmwidget\luaMenu.h" />
     <ClInclude Include="src\modules\mmwidget\manager.h" />
     <ClInclude Include="src\modules\mmwidget\menu.h" />
     <ClInclude Include="src\modules\mmwidget\slider.h" />

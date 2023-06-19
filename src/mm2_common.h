@@ -102,6 +102,40 @@ namespace MM2 {
     extern void Quitf(LPCSTR str, ...);
     extern void Abortf(LPCSTR str, ...);
 
+    class IntBox {
+    private:
+        int m_Value;
+    public:
+        IntBox(int value) : m_Value(value) {}
+        IntBox() : m_Value(0) {}
+
+        int* GetBoxedValuePointer() { return &m_Value; }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<IntBox>("IntBox")
+                .addConstructor(LUA_ARGS(_opt<int>))
+                .addVariable("Value", &IntBox::m_Value)
+                .endClass();
+        }
+    };
+
+    class FloatBox {
+    private:
+        float m_Value;
+    public:
+        FloatBox(float value) : m_Value(value) {}
+        FloatBox() : m_Value(0) {}
+
+        float* GetBoxedValuePointer() { return &m_Value; }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<FloatBox>("FloatBox")
+                .addConstructor(LUA_ARGS(_opt<float>))
+                .addVariable("Value", &FloatBox::m_Value)
+                .endClass();
+        }
+    };
+
     class string {
     public:
         AGE_API string(const char *str)                     { hook::Thunk<0x505070>::Call<void>(this, str); }
@@ -194,7 +228,10 @@ namespace MM2 {
 
     template<>
     void luaAddModule<module_common>(LuaState L) {
-        typedef void(__cdecl *printer_type)(LPCSTR);
+        luaBind<IntBox>(L);
+        luaBind<FloatBox>(L);
+
+        typedef void(__cdecl* printer_type)(LPCSTR);
         LuaBinding(L)
             .addFunction("Printf", (printer_type)&Printf)
             .addFunction("Messagef", (printer_type)&Messagef)

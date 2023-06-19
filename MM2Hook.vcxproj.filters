@@ -1636,6 +1636,15 @@
     <ClInclude Include="src\modules\mmwidget\textdrop.h">
       <Filter>Source Files\modules\mmwidget</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmwidget\luaMenu.h">
+      <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmui\pu_menu.h">
+      <Filter>Source Files\modules\mmui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmui.h">
+      <Filter>Source Files\modules</Filter>
+    </ClInclude>
     <ClInclude Include="src\modules\mmwidget\slider.h">
       <Filter>Source Files\modules\mmwidget</Filter>
     </ClInclude>
@@ -2378,6 +2387,9 @@
     </ClCompile>
     <ClCompile Include="src\modules\vehicle\cardamage.cpp">
       <Filter>Source Files\modules\vehicle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mmwidget\menu.cpp">
+      <Filter>Source Files\modules\mmwidget</Filter>
     </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\ImGuiFeatureHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>

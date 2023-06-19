@@ -23,6 +23,10 @@
 #undef GetClassName
 #endif
 
+#ifdef LoadBitmap
+#undef LoadBitmap
+#endif
+
 #include "settings.h"
 
 #include "util.h"

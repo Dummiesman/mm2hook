@@ -2,6 +2,7 @@
 #include "mm2_game.h"
 
 #include <modules\mmwidget.h>
+#include <modules\mmui.h>
 
 namespace MM2
 {
@@ -18,6 +19,11 @@ namespace MM2
         luaBind<UITextDropdown>(L);
 
         luaBind<mmPopup>(L);
+        luaBind<UIMenu>(L);
+        luaBind<luaMenu>(L);
+        luaBind<PUMenuBase>(L);
+        luaBind<LuaPUMenu>(L);
         luaBind<MenuManager>(L);
     }
 }
+
