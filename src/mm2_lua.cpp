@@ -54,25 +54,9 @@ void MM2Lua::MarkForCleanupOnShutdown(Base* object)
     dirtyLaundry.push_back(object);
 }
 
-void mm2L_error(LPCSTR message)
+void MM2Lua::mm2L_error(LPCSTR message)
 {
     MM2::Errorf("[Lua] Error -- %s", message);
-}
-
-template <class retType, typename... T>
-retType MM2Lua::TryCallFunction(LuaRef func, T&&... args)
-{
-    if (func.isValid() && func.isFunction()) 
-    {
-        try 
-        {
-            return func.call<retType>(std::forward<T>(args)...);
-        }
-        catch (LuaException le) 
-        {
-            mm2L_error(le.what());
-        }
-    }
 }
 
 void MM2Lua::TryCallFunction(LuaRef func)

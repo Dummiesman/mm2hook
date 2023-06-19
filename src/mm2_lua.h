@@ -22,10 +22,26 @@ class MM2Lua
 private:
     //cleanup list
     static std::vector<MM2::Base*> dirtyLaundry;
+private:
+    static void mm2L_error(LPCSTR message);
 public:
     //helper functions
-    template <class retType, typename... T>
-    static retType TryCallFunction(LuaIntf::LuaRef func, T&&... args);
+    template <class retType = void, typename... T>
+    static retType TryCallFunction(LuaIntf::LuaRef func, T&&... args)
+    {
+        if (func.isValid() && func.isFunction())
+        {
+            try
+            {
+                return func.call<retType>(std::forward<T>(args)...);
+            }
+            catch (LuaException le)
+            {
+                mm2L_error(le.what());
+            }
+        }
+    }
+
     static void TryCallFunction(LuaIntf::LuaRef func);
 public:
     static LuaState* GetState();
