@@ -13,6 +13,7 @@ namespace MM2
         luaBind<UIIcon>(L);
         luaBind<UIBMLabel>(L);
         luaBind<UISlider>(L);
+        luaBind<UIBMButton>(L);
         luaBind<UITextRoller2>(L);
         luaBind<UITextDropdown>(L);
 
