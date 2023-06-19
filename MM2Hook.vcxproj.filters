@@ -1627,6 +1627,9 @@
     <ClInclude Include="src\modules\mmgame\wpobject.h">
       <Filter>Source Files\modules\mmgame</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmwidget\bm_label.h">
+      <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
     <ClInclude Include="src\handlers\feature_handlers\ImGuiFeatureHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>

@@ -417,6 +417,7 @@
     <ClInclude Include="src\modules\mmwidget.h" />
     <ClInclude Include="src\modules\mmwidget\bm_button.h" />
     <ClInclude Include="src\modules\mmwidget\button.h" />
+    <ClInclude Include="src\modules\mmwidget\bm_label.h" />
     <ClInclude Include="src\modules\mmwidget\icon.h" />
     <ClInclude Include="src\modules\mmwidget\label.h" />
     <ClInclude Include="src\modules\mmwidget\manager.h" />
