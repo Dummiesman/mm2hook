@@ -7,11 +7,6 @@ using namespace MM2;
 declfield(vehPoliceCarAudio::iNumCopsPursuingPlayer)(0x6AFFE4);
 
 /*
-    vehCarDamage
-*/
-declfield(vehCarDamage::EngineSmokeRule)(0x6AFED4);
-
-/*
     vehCarModel
 */
 bool vehCarModel::EnableSpinningWheels = true;
