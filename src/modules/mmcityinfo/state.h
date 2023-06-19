@@ -48,7 +48,7 @@ namespace MM2
         }
 
         void setNetName(LPCSTR name) {
-            memcpy(&NetName, name, sizeof(NetName) - 1);
+            strcpy(NetName, name);
         }
 
         LPCSTR getVehicleName() {
@@ -56,7 +56,7 @@ namespace MM2
         }
 
         void setVehicleName(LPCSTR name) {
-            memcpy(&VehicleName, name, sizeof(VehicleName) - 1);
+            strcpy(VehicleName, name);
         }
 
         LPCSTR getCityName() {
@@ -64,7 +64,7 @@ namespace MM2
         }
 
         void setCityName(LPCSTR name) {
-            memcpy(&CityName, name, sizeof(CityName) - 1);
+            strcpy(CityName, name);
         }
 
         LPCSTR getCityLocale() const {
@@ -72,7 +72,7 @@ namespace MM2
         }
 
         void setCityLocale(LPCSTR name) {
-            memcpy(&CityLocale, name, sizeof(CityLocale) - 1);
+            strcpy(CityLocale, name);
         }
     public:
         char CityName[40];
@@ -132,9 +132,9 @@ namespace MM2
         int CnRMode;
         int CnRLimitType;
         int CnRTeam;
-        float CnRTimeLimit;
+        float CnRTimeLimit; // in minutes
         int CnRPointLimit;
-        int CnRGoldMass;
+        int CnRGoldMass; // actual mass units
 
         /*
             Unknown settings (unused)
@@ -232,6 +232,13 @@ namespace MM2
                 .addVariable("HUDEnabled", &mmStatePack::HUDEnabled, false)
                 .addVariable("MirrorEnabled", &mmStatePack::MirrorEnabled, false)
                 .addVariable("IconsEnabled", &mmStatePack::IconsEnabled, false)
+
+                .addVariable("CnRGoldMass", &mmStatePack::CnRGoldMass)
+                .addVariable("CnRLimitType", &mmStatePack::CnRLimitType)
+                .addVariable("CnRMode", &mmStatePack::CnRMode)
+                .addVariable("CnRPointLimit", &mmStatePack::CnRPointLimit)
+                .addVariable("CnRTeam", &mmStatePack::CnRTeam)
+                .addVariable("CnRTimeLimit", &mmStatePack::CnRTimeLimit)
                 
                 .endClass();
         }
