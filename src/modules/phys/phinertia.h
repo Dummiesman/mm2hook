@@ -17,6 +17,7 @@ namespace MM2
         byte _buffer[0x1B4];
     protected:
         static hook::Field<0xC, float> _mass;
+        static hook::Field<0x14, Vector3> _angInertia;
         static hook::Field<0x2C, float> _maxVelocity;
         static hook::Field<0x30, Vector3> _maxAngularVelocity;
         static hook::Field<0x54, Matrix34> _matrix;
@@ -60,13 +61,14 @@ namespace MM2
         void SetImpulse(Vector3 const& impulse);
         Vector3 GetAngImpulse() const;
         void SetAngImpulse(Vector3 const& impulse);
+        Vector3 GetAngInertia() const;
 
         //members (not all here yet!)
         AGE_API void Zero();
         AGE_API void Reset();
         AGE_API void Freeze();
         AGE_API void ZeroForces();
-        AGE_API void Init(float mass, float inertiaTensorX, float inertiaTensorY, float inertiaTensorZ);
+        AGE_API void Init(float mass, float angInertiaX, float angInertiaY, float angInertiaZ);
         AGE_API void InitBoxMass(float mass, float inertiaBoxX, float inertiaBoxY, float inertiaBoxZ);
         AGE_API void Rotate(Vector3* angles);
         AGE_API void ClearInertialValues();
