@@ -15,24 +15,19 @@ namespace MM2
     private:
         byte _buffer[0x134];
     protected:
+        static hook::Field<0x08, short> _id;
+        static hook::Field<0x3C, Matrix34> _matrix;
+        static hook::Field<0x6C, Vector3> _targetPoint;
         static hook::Field<0xC0, aiPedAudio> _audio;
         static hook::Field<0x9C, aiPedestrianInstance *> _instance;
     public:
-        AGE_API void Update()                                   { hook::Thunk<0x54B9C0>::Call<void>(this); }
+        AGE_API void Update();
+        void DrawDebug() const;
 
-        inline aiPedestrianInstance * GetInstance(void) const {
-            return _instance.get(this);
-        }
+        aiPedestrianInstance* GetInstance() const;
+        aiPedAudio* GetAudio() const;
 
-        inline aiPedAudio * GetAudio(void) const {
-            return _audio.ptr(this);
-        };
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<aiPedestrian>("aiPedestrian")
-                .addPropertyReadOnly("Audio", &GetAudio)
-                .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     ASSERT_SIZEOF(aiPedestrian, 0x134);
