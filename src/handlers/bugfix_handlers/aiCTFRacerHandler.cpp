@@ -9,7 +9,8 @@ using namespace MM2;
 void aiCTFRacerHandler::Init(int id, char* basename)
 {
     //by default aiCTFRacer uses a hardcoded basename only present in Midnight Club
-    reinterpret_cast<aiCTFRacer*>(this)->aiCTFRacer::Init(id, "vpauditt");
+    LPCSTR aiType = aiMap::GetCTFOpponentType(id % aiMap::GetCTFOpponentTypeCount());
+    reinterpret_cast<aiCTFRacer*>(this)->aiCTFRacer::Init(id, aiType);
 }
 
 void aiCTFRacerHandler::Install()

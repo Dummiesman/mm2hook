@@ -168,11 +168,16 @@ namespace MM2
 
         short numAmbients;
     private:
+        static std::vector<std::string> ctfOpponentNames; // extension to allow specificying ctf opp names
         std::vector<int> calcRouteLua(const Matrix34& srcMatrix, const Vector3& destPosition, bool shortestPath);
         std::tuple<int, int> mapComponentTypeLua(int room);
         std::tuple<int, int> mapComponentLua(const Vector3& position, int room);
         std::tuple<int, int, int> positionToAIMapCompLua(const Vector3& position);
     public:
+        static int GetCTFOpponentTypeCount();
+        static LPCSTR GetCTFOpponentType(int id);
+        static void SetCTFOpponentTypes(std::vector<std::string> types);
+
         aiCityData* GetCityData() const;
         aiRaceData* GetRaceData() const;
         aiPoliceForce* GetPoliceForce() const;
