@@ -64,16 +64,18 @@ namespace MM2
             this->Init(reverse ? TRUE : FALSE, startTime, ticksMode ? TRUE : FALSE);
         }
     public:
-        inline bool GetCountdownMode() {
+        bool GetCountdownMode() const
+        {
             return this->ReverseMode == TRUE;
         }
 
-        inline void SetCountdownMode(bool mode) 
+        void SetCountdownMode(bool mode) 
         {
             this->ReverseMode = (mode) ? TRUE : FALSE;
         }
 
-        inline bool GetRunning() {
+        bool GetRunning() const
+        {
             return this->Running == TRUE;
         }
     public:
@@ -156,7 +158,7 @@ namespace MM2
             return _countdownTimer.ptr(this);
         }
 
-        bool GetUseCountdownTimer()
+        bool GetUseCountdownTimer() const
         {
             return _useCountdownTimer.get(this) == TRUE;
         }
@@ -166,7 +168,7 @@ namespace MM2
             _useCountdownTimer.set(this, (value) ? TRUE : FALSE);
         }
 
-        bool GetShowTimer()
+        bool GetShowTimer() const
         {
             return _showTimer.get(this) == TRUE;
         }
