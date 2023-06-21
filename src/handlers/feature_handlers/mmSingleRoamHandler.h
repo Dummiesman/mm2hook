@@ -8,6 +8,7 @@ public:
     void ResetToNearestLocation();
     void EscapeDeepWater();
     void HitWaterHandler();
+    void DropThruCityHandler();
     static void Install();
 };
 

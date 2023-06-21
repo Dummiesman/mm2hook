@@ -143,10 +143,21 @@ void mmSingleRoamHandler::HitWaterHandler() {
     }
 }
 
+void mmSingleRoamHandler::DropThruCityHandler()
+{
+    ResetToNearestLocation();
+}
+
 void mmSingleRoamHandler::Install() {
     InstallVTableHook("mmSingleRoam::HitWaterHandler",
         &HitWaterHandler, {
             0x5B0828
+        }
+    );
+
+    InstallVTableHook("mmSingleRoam::DropThruCityHandler",
+        &DropThruCityHandler, {
+            0x5B082C
         }
     );
 }
