@@ -17,6 +17,11 @@ namespace MM2
         uint32_t Flags;
         uint32_t State;
         float ElapsedTime;
+    private:
+        void setBlinkLua(bool blink)
+        {
+            SetBlink(blink ? TRUE : FALSE);
+        }
     public:
 
         /*
@@ -35,16 +40,21 @@ namespace MM2
         /*
             uiLabel members
         */
-        AGE_API void SetText(char* text) {
+        AGE_API void SetText(LPCSTR text) 
+        {
             hook::Thunk<0x4ED3A0>::Call<void>(this, text);
         }
 
-        AGE_API void SetBlink(bool blink) {
+        AGE_API void SetBlink(BOOL blink) 
+        {
             hook::Thunk<0x4ED400>::Call<void>(this, blink);
         }
 
-        static void BindLua(LuaState L) {
+        static void BindLua(LuaState L) 
+        {
             LuaBinding(L).beginExtendClass<UILabel, uiWidget>("UILabel")
+                .addFunction("SetText", &SetText)
+                .addFunction("SetBlink", &setBlinkLua)
                 .endClass();
         }
     };
