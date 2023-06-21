@@ -186,6 +186,10 @@ namespace MM2
             .addFunction("__mul", &Vector3::operator*)
             .addFunction("__eq", &Vector3::IsEqual)
 
+            .addStaticProperty("ORIGIN", []() { return Vector3::ORIGIN; })
+            .addStaticProperty("XAXIS", []() { return Vector3::XAXIS; })
+            .addStaticProperty("YAXIS", []() { return Vector3::YAXIS; })
+            .addStaticProperty("ZAXIS", []() { return Vector3::ZAXIS; })
             .addFunction("Cross", static_cast<void(Vector3::*)(const Vector3&)>(&Vector3::Cross))
             .addFunction("Normalize", &Normalize)
             .addFunction("Mag", &Mag)
