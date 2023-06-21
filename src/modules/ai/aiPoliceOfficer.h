@@ -11,6 +11,23 @@ namespace MM2
     extern class aiVehiclePhysics;
 
     // Class definitions
+    enum aiPoliceState : __int16
+    {
+        Idle = 0x0,
+        Apprehend = 0x1,
+        FollowPerp = 0x2,
+        Invalid = 0x5,
+        Incapacitated = 0xC,
+    };
+
+    enum aiPoliceApprehendState : __int16
+    {
+        PushLeft = 0x4,
+        PushRight = 0x5,
+        Block = 0x6,
+        BlockWait = 0x7,
+    };
+
 
     class aiPoliceOfficer {
     private:
@@ -19,90 +36,41 @@ namespace MM2
         static hook::Field<0x4, aiVehiclePhysics> _vehiclePhysics;
         static hook::Field<0x9774, vehCar*> _followedCar;
         static hook::Field<0x9778, unsigned short> _id;
-        static hook::Field<0x977E, unsigned short> _apprehendState;
-        static hook::Field<0x977A, unsigned short> _policeState;
+        static hook::Field<0x977E, aiPoliceApprehendState> _apprehendState;
+        static hook::Field<0x977A, aiPoliceState> _policeState;
+        static hook::Field<0x9794, float> _followedCarDistance;
+        static hook::Field<0x9798, short> _behaviorCount;
+        static hook::Field<0x979A, short> _behaviorList;
+        static hook::Field<0x97A2, short> _perpMapCompIndex;
+        static hook::Field<0x97A4, short> _perpMapCompType;
+    private:
+        AGE_API void FollowPerpetrator();
+        AGE_API void DetectPerpetrator();
+        AGE_API void PerpEscapes();
     public:
-        aiPoliceOfficer(void)                               DONOTCALL;
-        aiPoliceOfficer(const aiPoliceOfficer &&)           DONOTCALL;
+        aiPoliceOfficer(void);
+        aiPoliceOfficer(const aiPoliceOfficer&&);
 
-        int GetId() const
-        {
-            return _id.get(this);
-        }
+        void ChaseVehicle(vehCar* chaseMe);
+        int GetId() const;
+        aiVehiclePhysics* GetVehiclePhysics() const;
+        int GetApprehendState() const;
+        vehCar* GetFollowedCar() const;
+        vehCar* GetCar() const;
+        short GetState() const;
+        int GetCurrentLap() const;
+        int GetLapCount() const;
+        void DrawRouteThroughTraffic() const;
+        void DrawId() const;
+        int GetPoliceState() const;
 
-        aiVehiclePhysics* GetVehiclePhysics() const 
-        {
-            return _vehiclePhysics.ptr(this);
-        }
+        void ChooseRandomAppBehavior();
+        
+        AGE_API bool InPersuit() const;
+        AGE_API void StartSiren();
+        AGE_API void StopSiren();
 
-        int GetApprehendState() const
-        {
-            return _apprehendState.get(this);
-        }
-
-        vehCar* GetFollowedCar() const
-        {
-            return _followedCar.get(this);
-        }
-
-        vehCar* GetCar() const
-        {
-            return _vehiclePhysics.ptr(this)->GetCar();
-        }
-
-        unsigned short GetState() const
-        {
-            return _vehiclePhysics.ptr(this)->GetState();
-        }
-
-        int GetCurrentLap() const
-        {
-            return _vehiclePhysics.ptr(this)->GetCurrentLap();
-        }
-
-        int GetLapCount() const
-        {
-            return _vehiclePhysics.ptr(this)->GetLapCount();
-        }
-
-        void DrawRouteThroughTraffic()
-        {
-            this->GetVehiclePhysics()->DrawRouteThroughTraffic();
-        }
-
-        /// <summary>
-        /// The state from aiPoliceForce::State
-        /// </summary>        
-        int GetPoliceState() const
-        {
-            return _policeState.get(this);
-        }
-
-        AGE_API void StartSiren()                           { hook::Thunk<0x53DBF0>::Call<void>(this); }
-        AGE_API void StopSiren()                            { hook::Thunk<0x53DC40>::Call<void>(this); }
-
-        //usually private
-        AGE_API void DetectPerpetrator()                    { hook::Thunk<0x53DFD0>::Call<void>(this); }
-        AGE_API void PerpEscapes()                          { hook::Thunk<0x53F170>::Call<void>(this); }
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<aiPoliceOfficer>("aiPoliceOfficer")
-                .addPropertyReadOnly("FollowedCar", &GetFollowedCar)
-                .addPropertyReadOnly("PoliceState", &GetPoliceState)
-                .addPropertyReadOnly("ApprehendState", &GetApprehendState)
-                .addPropertyReadOnly("ID", &GetId)
-                .addPropertyReadOnly("CurrentLap", &GetCurrentLap)
-                .addPropertyReadOnly("NumLaps", &GetLapCount)
-
-                .addPropertyReadOnly("Car", &GetCar)
-                .addPropertyReadOnly("State", &GetState)
-
-                .addFunction("StartSiren", &StartSiren)
-                .addFunction("StopSiren", &StopSiren)
-                .addFunction("DrawRouteThroughTraffic", &DrawRouteThroughTraffic)
-
-                .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     ASSERT_SIZEOF(aiPoliceOfficer, 0x9870);
