@@ -114,14 +114,14 @@ void discordHandler::Initialize(int64_t appid)
 
     activity.SetType(discord::ActivityType::Playing);
 
-    auto result = discord::Core::Create(appid, DiscordCreateFlags_Default, &core);
     auto result = discord::Core::Create(appid, DiscordCreateFlags_NoRequireDiscord, &core);
     initialized = (result == discord::Result::Ok);
 
     if (result != discord::Result::Ok) 
     {
         MM2::Errorf("discordHandler::Initialize resulted in %s", TranslateResult(result));
-    }
+    }   
+}
 }
 
 void discordHandler::Update()
