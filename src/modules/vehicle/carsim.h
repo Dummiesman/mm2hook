@@ -247,7 +247,7 @@ namespace MM2
         AGE_API vehCarSim()                                 { hook::Thunk<0x4CB660>::Call<void>(this); }
         AGE_API ~vehCarSim()                                { hook::Thunk<0x4CB8E0>::Call<void>(this); }
 
-        AGE_API void Init(const char* basename, int colliderPtr, vehCarModel* carModelPtr)
+        AGE_API void Init(const char* basename, phColliderJointed* colliderPtr, vehCarModel* carModelPtr)
         {
             //Call original 
             hook::Thunk<0x4CBB80>::Call<void>(this, basename, colliderPtr, carModelPtr);
@@ -317,7 +317,8 @@ namespace MM2
                 .addProperty("Throttle", &GetThrottle, &SetThrottle)
 
                 .addFunction("GetWheel", &GetWheel)
-
+                
+                .addFunction("Init", &Init)
                 .addFunction("BottomedOut", &BottomedOut)
                 .addFunction("OnGround", &OnGround)
                 .addFunction("ReconfigureDrivetrain", &ReconfigureDrivetrain)
