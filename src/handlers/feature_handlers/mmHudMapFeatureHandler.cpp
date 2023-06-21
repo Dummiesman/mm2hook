@@ -25,9 +25,9 @@ static ConfigValue<int> cfgOpponentTriOutlineColor("OpponentTriOutlineColor", 0)
 hook::Type<unsigned int> HudmapIconColors(0x5C4740);
 Matrix34 mtx;
 
-void mmHudMapFeatureHandler::DrawColoredTri(unsigned int color, const Matrix34 *a2) {
+void mmHudMapFeatureHandler::DrawColoredTri(unsigned int color, const Matrix34& a2) {
     rglEnableDisable(RGL_DEPTH_TEST, false);
-    gfxRenderState::SetWorldMatrix(*a2);
+    gfxRenderState::SetWorldMatrix(a2);
     vglBindTexture(0);
     vglBegin(DRAWMODE_TRIANGLELIST, 0);
     vglCurrentColor = color;
@@ -38,48 +38,23 @@ void mmHudMapFeatureHandler::DrawColoredTri(unsigned int color, const Matrix34 *
     rglEnableDisable(RGL_DEPTH_TEST, true);
 }
 
-void mmHudMapFeatureHandler::DrawWhiteTri(const Matrix34 *a1) {
-    rglEnableDisable(RGL_DEPTH_TEST, false);
-    gfxRenderState::SetWorldMatrix(*a1);
-    vglBindTexture(0);
-    vglBegin(DRAWMODE_TRIANGLELIST, 0);
-    vglCurrentColor = 0xFFFFFFFF;
-    vglVertex(0.f, 0.f, -1.f);
-    vglVertex(-0.69999999f, 0.f, 1.f);
-    vglVertex(0.69999999f, 0.f, 1.f);
-    vglEnd();
-    rglEnableDisable(RGL_DEPTH_TEST, true);
+void mmHudMapFeatureHandler::DrawWhiteTri(const Matrix34& a1) 
+{
+    DrawColoredTri(0xFFFFFFFF, a1);
 }
 
-void mmHudMapFeatureHandler::DrawLightOrangeTri(const Matrix34 *a1) {
-    rglEnableDisable(RGL_DEPTH_TEST, false);
-    gfxRenderState::SetWorldMatrix(*a1);
-    vglBindTexture(0);
-    vglBegin(DRAWMODE_TRIANGLELIST, 0);
-    vglCurrentColor = 0xFFFDBF72;
-    vglVertex(0.f, 0.f, -1.f);
-    vglVertex(-0.69999999f, 0.f, 1.f);
-    vglVertex(0.69999999f, 0.f, 1.f);
-    vglEnd();
-    rglEnableDisable(RGL_DEPTH_TEST, true);
+void mmHudMapFeatureHandler::DrawLightOrangeTri(const Matrix34& a1) 
+{
+    DrawColoredTri(0xFFFDBF72, a1);
 }
 
-void mmHudMapFeatureHandler::DrawLightGreenTri(const Matrix34 *a1) {
-    rglEnableDisable(RGL_DEPTH_TEST, false);
-    gfxRenderState::SetWorldMatrix(*a1);
-    vglBindTexture(0);
-    vglBegin(DRAWMODE_TRIANGLELIST, 0);
-    vglCurrentColor = 0xFFC0EC42;
-    vglVertex(0.f, 0.f, -1.f);
-    vglVertex(-0.69999999f, 0.f, 1.f);
-    vglVertex(0.69999999f, 0.f, 1.f);
-    vglEnd();
-    rglEnableDisable(RGL_DEPTH_TEST, true);
+void mmHudMapFeatureHandler::DrawLightGreenTri(const Matrix34& a1) {
+    DrawColoredTri(0xFFC0EC42, a1);
 }
 
-void mmHudMapFeatureHandler::DrawIcon(int iconType, const Matrix34 *matrix) {
+void mmHudMapFeatureHandler::DrawIcon(int iconType, const Matrix34& matrix) {
     auto map = reinterpret_cast<mmHudMap*>(this);
-    mtx.Set(*matrix);
+    mtx.Set(matrix);
 
     mtx.SetRow(1, Vector3::YAXIS);
     mtx.Normalize();
@@ -90,14 +65,37 @@ void mmHudMapFeatureHandler::DrawIcon(int iconType, const Matrix34 *matrix) {
     uint color = *HudmapIconColors[iconType];
 
     if (iconType >= 0)
-        DrawColoredTri(color, &mtx);
+        DrawColoredTri(color, mtx);
     if (iconType < 0)
-        DrawWhiteTri(&mtx);
+        DrawWhiteTri(mtx);
 }
 
-void mmHudMapFeatureHandler::DrawNfsMwPlayerIcon(const Matrix34 *matrix) {
+void mmHudMapFeatureHandler::DrawOutlinedIcon(int iconType, int iconOutlineType, const MM2::Matrix34& matrix)
+{
+    Matrix34 tempMatrix;
+    tempMatrix.Set(matrix);
+
     auto map = reinterpret_cast<mmHudMap*>(this);
-    mtx.Set(*matrix);
+    float iconScaleOld = map->GetIconScale();
+    map->SetIconScale(iconScaleOld * 1.3f);
+
+    DrawIcon(iconOutlineType, tempMatrix);
+
+    map->SetIconScale(iconScaleOld);
+
+    tempMatrix.m31 += 1.1f;
+    DrawIcon(iconType, tempMatrix);
+}
+
+void mmHudMapFeatureHandler::DrawOutlinedIcon(int iconType, const MM2::Matrix34& matrix)
+{
+    DrawOutlinedIcon(iconType, 0, matrix);
+}
+
+
+void mmHudMapFeatureHandler::DrawNfsMwPlayerIcon(const Matrix34 &matrix) {
+    auto map = reinterpret_cast<mmHudMap*>(this);
+    mtx.Set(matrix);
 
     mtx.SetRow(1, Vector3::YAXIS);
     mtx.Normalize();
@@ -105,12 +103,12 @@ void mmHudMapFeatureHandler::DrawNfsMwPlayerIcon(const Matrix34 *matrix) {
     mtx.m31 += 15.f;
     mtx.Scale(map->GetIconScale());
 
-    DrawLightOrangeTri(&mtx);
+    DrawLightOrangeTri(mtx);
 }
 
-void mmHudMapFeatureHandler::DrawNfsMwOpponentIcon(const Matrix34 *matrix) {
+void mmHudMapFeatureHandler::DrawNfsMwOpponentIcon(const Matrix34 &matrix) {
     auto map = reinterpret_cast<mmHudMap*>(this);
-    mtx.Set(*matrix);
+    mtx.Set(matrix);
 
     mtx.SetRow(1, Vector3::YAXIS);
     mtx.Normalize();
@@ -118,10 +116,11 @@ void mmHudMapFeatureHandler::DrawNfsMwOpponentIcon(const Matrix34 *matrix) {
     mtx.m31 += 15.f;
     mtx.Scale(map->GetIconScale());
 
-    DrawLightGreenTri(&mtx);
+    DrawLightGreenTri(mtx);
 }
 
 void mmHudMapFeatureHandler::DrawPlayer() {
+    auto map = reinterpret_cast<mmHudMap*>(this);
     auto mgr = *mmGameManager::Instance;
     auto game = mgr->getGame();
     auto player = game->GetPlayer();
@@ -134,84 +133,84 @@ void mmHudMapFeatureHandler::DrawPlayer() {
     bool elapsedTime3 = fmod(datTimeManager::ElapsedTime, 0.5f) > 0.25f;
 
     // draw triangle outline
-    auto playerMtx = *getPtr<Matrix34*>(this, 0x48);
-    float triSize = *getPtr<float>(this, 0x64) * 1.3f;
-    auto sizeHandler = *getPtr<Matrix34*>(this, 0x64);
-    *getPtr<float>(this, 0x64) = triSize;
+    auto playerMtx = player->GetCar()->GetICS()->GetMatrix();;
+    float outlineSize = map->GetIconScale() * 1.3f;
+    auto oldSize = map->GetIconScale();
 
     if (hudMapColorStyle == 0) {
-        DrawIcon(0, playerMtx);
-        *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-        DrawIcon(5, playerMtx);
+        DrawOutlinedIcon(5, playerMtx);
     }
-    if (hudMapColorStyle == 1) {
-        if (audio->IsPolice(vehName)) {
-            DrawIcon(2, playerMtx);
-            *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-            DrawIcon(1, playerMtx);
+    if (hudMapColorStyle == 1) 
+    {
+        if (audio->IsPolice(vehName)) 
+        {
+            DrawOutlinedIcon(1, 2, playerMtx);
         }
-        else {
-            DrawIcon(-1, playerMtx);
-            *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-            DrawIcon(0, playerMtx);
+        else 
+        {
+            DrawOutlinedIcon(0, -1, playerMtx);
         }
     }
-    if (hudMapColorStyle == 2) {
-        DrawIcon(0, playerMtx);
-        *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
+    if (hudMapColorStyle == 2) 
+    {
+        int iconColor = 5;
         if (audio->IsPolice(vehName)) {
-            DrawIcon(2, playerMtx);
+            iconColor = 2;
             if (siren != nullptr && siren->Active) {
                 if (elapsedTime3)
-                    DrawIcon(1, playerMtx);
+                    iconColor = 1;
             }
         }
-        else {
-            DrawIcon(5, playerMtx);
-        }
+        DrawOutlinedIcon(iconColor, playerMtx);
     }
-    if (hudMapColorStyle == 3) {
+    if (hudMapColorStyle == 3) 
+    {
+        map->SetIconScale(outlineSize);
         DrawIcon(0, playerMtx);
-        *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-        if (audio->IsPolice(vehName)) {
-            if (siren != nullptr && siren->Active) {
+        map->SetIconScale(oldSize);
+
+        if (audio->IsPolice(vehName)) 
+        {
+            if (siren != nullptr && siren->Active) 
+            {
                 DrawIcon(2, playerMtx);
                 if (elapsedTime1)
                     DrawIcon(1, playerMtx);
                 if (elapsedTime2)
                     DrawIcon(-1, playerMtx);
             }
-            if (siren != nullptr && !siren->Active) {
+            if (siren != nullptr && !siren->Active) 
+            {
                 DrawIcon(-1, playerMtx);
             }
         }
-        else {
+        else 
+        {
             DrawNfsMwPlayerIcon(playerMtx);
         }
     }
-    if (hudMapColorStyle == 4) {
-        DrawIcon(0, playerMtx);
-        *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
+    if (hudMapColorStyle == 4) 
+    {
+        int iconIndex = 8;
         if (audio->IsPolice(vehName)) {
-            if (siren != nullptr && siren->Active) {
-                DrawIcon(2, playerMtx);
+            if (siren != nullptr && siren->Active) 
+            {
+                iconIndex = 2;
                 if (elapsedTime1)
-                    DrawIcon(1, playerMtx);
+                    iconIndex = 1;
                 if (elapsedTime2)
-                    DrawIcon(-1, playerMtx);
+                    iconIndex = -1;
             }
-            if (siren != nullptr && !siren->Active) {
-                DrawIcon(4, playerMtx);
+            if (siren != nullptr && !siren->Active) 
+            {
+                iconIndex = 4;
             }
         }
-        else {
-            DrawIcon(8, playerMtx);
-        }
+        DrawOutlinedIcon(iconIndex, playerMtx);
     }
-    if (hudMapColorStyle >= 5) {
-        DrawIcon(playerTriOutlineColor, playerMtx);
-        *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-        DrawIcon(playerTriColor, playerMtx);
+    if (hudMapColorStyle >= 5) 
+    {
+        DrawOutlinedIcon(playerTriColor, playerTriOutlineColor, playerMtx);
     }
 
     // Hook to allow for custom icon drawing
@@ -228,61 +227,48 @@ void mmHudMapFeatureHandler::DrawCops() {
 
     for (int i = 0; i < AIMAP->numCops; i++) {
         auto police = AIMAP->Police(i);
-        auto policeMtx = getPtr<Matrix34>(*getPtr<Matrix34*>(police, 0xCC), 0x6C);
+        auto policeMtx = police->GetCar()->GetICS()->GetMatrix();
         WORD policeState = police->GetPoliceState();
 
         // check if the cop in pursuit
         if (policeState || showAllCops) {
-            // draw triangle outline
-            float triSize = *getPtr<float>(this, 0x64) * 1.3f;
-            auto sizeHandler = *getPtr<Matrix34*>(this, 0x64);
-            *getPtr<float>(this, 0x64) = triSize;
-
             if (hudMapColorStyle == 0) {
-                DrawIcon(0, policeMtx);
-                *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                DrawIcon(1, policeMtx);
+
+                DrawOutlinedIcon(1, policeMtx);
             }
             if (hudMapColorStyle == 1) {
-                DrawIcon(2, policeMtx);
-                *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                DrawIcon(1, policeMtx);
+                DrawOutlinedIcon(1, 2, policeMtx);
             }
             if (hudMapColorStyle == 2) {
-                DrawIcon(0, policeMtx);
-                *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                DrawIcon(2, policeMtx);
+                int iconIndex = 2;
                 if (elapsedTime3)
-                    DrawIcon(1, policeMtx);
+                    iconIndex = 1;
                 if (policeState == 12 || policeState == 0)
-                    DrawIcon(2, policeMtx);
+                    iconIndex = 2;
+                DrawOutlinedIcon(iconIndex, policeMtx);
             }
             if (hudMapColorStyle == 3) {
-                DrawIcon(0, policeMtx);
-                *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                DrawIcon(2, policeMtx);
+                int iconIndex = 2;
                 if (elapsedTime1)
-                    DrawIcon(1, policeMtx);
+                    iconIndex = 1;
                 if (elapsedTime2)
-                    DrawIcon(-1, policeMtx);
+                    iconIndex = -1;
                 if (policeState == 12 || policeState == 0)
-                    DrawIcon(-1, policeMtx);
+                    iconIndex = -1;
+                DrawOutlinedIcon(iconIndex, policeMtx);
             }
             if (hudMapColorStyle == 4) {
-                DrawIcon(0, policeMtx);
-                *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                DrawIcon(2, policeMtx);
+                int iconIndex = 2;
                 if (elapsedTime1)
-                    DrawIcon(1, policeMtx);
+                    iconIndex = 1;
                 if (elapsedTime2)
-                    DrawIcon(-1, policeMtx);
+                    iconIndex = -1;
                 if (policeState == 12 || policeState == 0)
-                    DrawIcon(4, policeMtx);
+                    iconIndex = 4;
+                DrawOutlinedIcon(iconIndex, policeMtx);
             }
             if (hudMapColorStyle >= 5) {
-                DrawIcon(policeTriOutlineColor, policeMtx);
-                *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                DrawIcon(policeTriColor, policeMtx);
+                DrawOutlinedIcon(policeTriColor, policeTriOutlineColor, policeMtx);
             }
         }
     }
@@ -290,65 +276,56 @@ void mmHudMapFeatureHandler::DrawCops() {
 
 void mmHudMapFeatureHandler::DrawOpponents() {
     auto AIMAP = aiMap::GetInstance();
+    auto map = reinterpret_cast<mmHudMap*>(this);
 
-    for (int i = 0; i < *getPtr<__int16>(this, 0xBC); i++) {
-        int v2 = *getPtr<int>(this, 0x34) + (i * 0x28);
-        auto opponentMtx = *(Matrix34**)(v2 + 8);
+    float outlineSize = map->GetIconScale() * 1.3f;
+    auto oldSize = map->GetIconScale();
 
-        if (*(int*)(v2 + 4) && opponentMtx) {
-            // draw triangle outline
-            float triSize = *getPtr<float>(this, 0x64) * 1.3f;
-            auto sizeHandler = *getPtr<Matrix34*>(this, 0x64);
-            *getPtr<float>(this, 0x64) = triSize;
+    for (int i = 0; i < map->GetOpponentCount(); i++) {
+        auto iconInfo = map->GetOpponentIcon(i);
+        auto opponentMtx = *iconInfo->MatrixPtr;
 
+        if (iconInfo->Enabled) {
             // check if we're in multiplayer
-            if (MMSTATE->unk_EC) {
-                DrawIcon(0, opponentMtx);
-                *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                DrawIcon(i + 2, opponentMtx);
+            if (MMSTATE->unk_EC) 
+            {
+                DrawOutlinedIcon(i + 2, opponentMtx);
             } 
-            else {
+            else 
+            {
                 auto opponent = AIMAP->Opponent(i);
                 auto car = opponent->GetCar();
                 auto curDamage = car->GetCarDamage()->GetCurDamage();
                 auto maxDamage = car->GetCarDamage()->GetMaxDamage();
 
-                if (curDamage < maxDamage) {
+                if (curDamage < maxDamage) 
+                {
                     if (hudMapColorStyle == 0) {
-                        DrawIcon(0, opponentMtx);
-                        *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                        DrawIcon(7, opponentMtx);
+                        DrawOutlinedIcon(7, opponentMtx);
                     }
-                    if (hudMapColorStyle == 1) {
-                        DrawIcon(0, opponentMtx);
-                        *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                        DrawIcon(i + 2, opponentMtx);
+                    if (hudMapColorStyle == 1) 
+                    {
+                        DrawOutlinedIcon(i + 2, opponentMtx);
                     }
                     if (hudMapColorStyle == 2) {
-                        DrawIcon(0, opponentMtx);
-                        *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                        DrawIcon(3, opponentMtx);
+                        DrawOutlinedIcon(3, opponentMtx);
                     }
                     if (hudMapColorStyle == 3) {
+                        map->SetIconScale(outlineSize);
                         DrawIcon(0, opponentMtx);
-                        *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
+                        map->SetIconScale(oldSize);
                         DrawNfsMwOpponentIcon(opponentMtx);
                     }
                     if (hudMapColorStyle == 4) {
-                        DrawIcon(0, opponentMtx);
-                        *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                        DrawIcon(6, opponentMtx);
+                        DrawOutlinedIcon(6, opponentMtx);
                     }
                     if (hudMapColorStyle >= 5) {
-                        DrawIcon(opponentTriOutlineColor, opponentMtx);
-                        *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                        DrawIcon(opponentTriColor, opponentMtx);
+                        DrawOutlinedIcon(opponentTriColor, opponentTriOutlineColor, opponentMtx);
                     }
                 }
-                else {
-                    DrawIcon(0, opponentMtx);
-                    *getPtr<Matrix34*>(this, 0x64) = sizeHandler;
-                    DrawIcon(16, opponentMtx);
+                else 
+                {
+                    DrawOutlinedIcon(16, opponentMtx);
                 }
             }
         }
@@ -379,6 +356,12 @@ void mmHudMapFeatureHandler::Install() {
     InstallCallback("mmHudMap::DrawOpponents",
         &DrawOpponents, {
             cb::call(0x42F520),
+        }
+    );
+
+    InstallCallback("mmHudMap::DrawIcon", "Draw outline on any icon drawn via DrawIcon",
+        static_cast<void(mmHudMapFeatureHandler::*)(int, const Matrix34&)>(&DrawOutlinedIcon), {
+            cb::jmp(0x42F580),
         }
     );
 }
