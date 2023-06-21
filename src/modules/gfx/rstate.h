@@ -111,12 +111,14 @@ namespace MM2
         // educated guess -- applied to view?
         static hook::TypeProxy<Matrix44> sm_Transform;
     public:
+        static void Regenerate()                        { hook::StaticThunk<0x4B2820>::Call<void>(); }
+        static void SetCard(Vector3 const & pos)        { hook::StaticThunk<0x4B2680>::Call<void>(&pos); }
         static void SetCamera(Matrix44 const & mtx)     { hook::StaticThunk<0x4B2A20>::Call<void>(&mtx); }
         static void SetCamera(Matrix34 const & mtx)     { hook::StaticThunk<0x4B2970>::Call<void>(&mtx); }
         static void SetCameraFull(Matrix34 const & mtx) { hook::StaticThunk<0x4B2B50>::Call<void>(&mtx); }
         static void SetView(Matrix34 const & mtx)       { hook::StaticThunk<0x4B2A80>::Call<void>(&mtx); }
     public:
-        inline static D3DCULL SetCullMode(D3DCULL cullMode)
+        static D3DCULL SetCullMode(D3DCULL cullMode)
         {
             auto original = static_cast<D3DCULL>((&RSTATE->Data)->CullMode);
             if (original != cullMode) {
@@ -126,7 +128,7 @@ namespace MM2
             return original;
         }
 
-        inline static byte SetAlphaRef(byte alphaRef) 
+        static byte SetAlphaRef(byte alphaRef) 
         {
             auto original = (&RSTATE->Data)->AlphaRef;
             if (original != alphaRef) {
@@ -136,7 +138,7 @@ namespace MM2
             return original;
         }
 
-        inline static bool SetLighting(bool enabled)
+        static bool SetLighting(bool enabled)
         {
             auto original = (&RSTATE->Data)->Lighting;
             if (original != enabled) {
@@ -146,7 +148,7 @@ namespace MM2
             return original;
         }
 
-        inline static bool SetZWriteEnabled(bool enabled)
+        static bool SetZWriteEnabled(bool enabled)
         {
             auto original = (&RSTATE->Data)->ZWriteEnable;
             if (original != enabled) {
@@ -156,7 +158,7 @@ namespace MM2
             return original;
         }
 
-        inline static D3DZBUFFERTYPE SetZEnabled(D3DZBUFFERTYPE enabled)
+        static D3DZBUFFERTYPE SetZEnabled(D3DZBUFFERTYPE enabled)
         {
             auto original = static_cast<D3DZBUFFERTYPE>((&RSTATE->Data)->ZEnable);
             if (original != enabled) {
@@ -166,7 +168,7 @@ namespace MM2
             return original;
         }
 
-        inline static bool SetAlphaEnabled(bool enabled)
+        static bool SetAlphaEnabled(bool enabled)
         {
             auto original = (&RSTATE->Data)->AlphaEnable;
             if (original != enabled) {
@@ -176,7 +178,7 @@ namespace MM2
             return original;
         }
 
-        inline static bool SetClipping(bool enabled)
+        static bool SetClipping(bool enabled)
         {
             auto original = (&RSTATE->Data)->Clipping;
             if (original != enabled) {
@@ -186,7 +188,7 @@ namespace MM2
             return original;
         }
 
-        inline static bool SetFogEnabled(bool enabled)
+        static bool SetFogEnabled(bool enabled)
         {
             auto original = (&RSTATE->Data)->FogEnable;
             if (original != enabled) {
@@ -196,7 +198,7 @@ namespace MM2
             return original;
         }
 
-        inline static D3DCMPFUNC SetAlphaFunc(D3DCMPFUNC func) 
+        static D3DCMPFUNC SetAlphaFunc(D3DCMPFUNC func) 
         {
             auto original = static_cast<D3DCMPFUNC>((&RSTATE->Data)->AlphaFunc);
             if (original != func) {
@@ -206,7 +208,7 @@ namespace MM2
             return original;
         }
 
-        inline static float SetFogStart(float value)
+        static float SetFogStart(float value)
         {
             auto original = (&RSTATE->Data)->FogStart;
             if (original != value) {
@@ -216,7 +218,7 @@ namespace MM2
             return original;
         }
 
-        inline static float SetFogEnd(float value)
+        static float SetFogEnd(float value)
         {
             auto original = (&RSTATE->Data)->FogEnd;
             if (original != value) {
@@ -226,7 +228,7 @@ namespace MM2
             return original;
         }
 
-        inline static ColorARGB SetFogColor(ColorARGB color)
+        static ColorARGB SetFogColor(ColorARGB color)
         {
             auto original = (&RSTATE->Data)->FogColor;
             if (original != color) {
@@ -236,7 +238,7 @@ namespace MM2
             return original;
         }
 
-        inline static D3DFOGMODE SetFogVertexMode(D3DFOGMODE func)
+        static D3DFOGMODE SetFogVertexMode(D3DFOGMODE func)
         {
             auto original = static_cast<D3DFOGMODE>((&RSTATE->Data)->FogVertexMode);
             if (original != func) {
@@ -246,7 +248,7 @@ namespace MM2
             return original;
         }
 
-        inline static D3DCULL GetCullMode()
+        static D3DCULL GetCullMode()
         {
             return static_cast<D3DCULL>((&RSTATE->Data)->CullMode);
         }
@@ -256,12 +258,12 @@ namespace MM2
             return (&RSTATE->Data)->AlphaRef;
         }
 
-        inline static const Matrix44 & GetCameraMatrix()
+        static const Matrix44 & GetCameraMatrix()
         {
             return gfxRenderState::sm_Camera;
         }
 
-        inline static Matrix34 GetViewMatrix()
+        static Matrix34 GetViewMatrix()
         {
             Matrix44 fullView = gfxRenderState::sm_View;
             Matrix34 converted = Matrix34();
@@ -270,24 +272,29 @@ namespace MM2
             return converted;
         }
 
-        inline static const Matrix44 & GetWorldMatrix()
+        static const Matrix44 & GetWorldMatrix()
         {
             return gfxRenderState::sm_World;
         }
+        
+        static const Matrix44& GetFullComposite()
+        {
+            return gfxRenderState::sm_FullComposite;
+        }
 
-        inline static void SetWorldMatrix(const Matrix44& matrix)
+        static void SetWorldMatrix(const Matrix44& matrix)
         {
             gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
             memcpy(&gfxRenderState::sm_World, &matrix, sizeof(Matrix44));
         }
 
-        inline static void SetWorldMatrix(const Matrix34& matrix)
+        static void SetWorldMatrix(const Matrix34& matrix)
         {
             gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
             Matrix44::Convert(gfxRenderState::sm_World, matrix);
         }
 
-        inline static byte SetFillMode(byte fillMode)
+        static byte SetFillMode(byte fillMode)
         {
             auto original = (&RSTATE->Data)->FillMode;
             if (original != fillMode) {
