@@ -27,28 +27,29 @@ namespace MM2
         short FogNearClip[16];
         short FogFarClip[16];
     public:
-        int getShaderSet()
+        int GetShaderSet() const
         {
             return TimeWeatherType;
         }
 
-        std::tuple<byte, byte, byte, byte> getFogColor(int index) {
+        Vector4 GetFogColor(int index) const 
+        {
             if (index < 0 || index >= 16)
-                return std::make_tuple((byte)0, (byte)0, (byte)0, (byte) 0);
+                return Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 
             auto color = FogColors[index];
-            return std::make_tuple(color.r, color.g, color.b, color.a);
+            return Vector4(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
         }
 
-        inline short getFogNearClip(int index) {
+        int GetFogNearClip(int index) {
             return (index < 0 || index >= 16) ? 0 : this->FogNearClip[index];
         }
 
-        inline short getFogFarClip(int index) {
+        int GetFogFarClip(int index) {
             return (index < 0 || index >= 16) ? 0 : this->FogFarClip[index];
         }
 
-        inline float getRotation() {
+        float GetRotation() const {
             return this->CurrentRotation;
         }
 
@@ -75,7 +76,7 @@ namespace MM2
             myColor->b = b;
         }
 
-        void setRotation(float rotation)
+        void SetRotation(float rotation)
         {
             this->CurrentRotation = rotation;
         }
@@ -100,9 +101,9 @@ namespace MM2
                 .addVariable("RotationRate", &lvlSky::RotationRate)
                 .addVariable("YMultiplier", &lvlSky::YMultiplier)
                 .addVariable("HatYOffset", &lvlSky::HatYOffset)
-                .addFunction("GetFogColor", &getFogColor)
-                .addFunction("GetFogNearClip", &getFogNearClip)
-                .addFunction("GetFogFarClip", &getFogFarClip)
+                .addFunction("GetFogColor", &GetFogColor)
+                .addFunction("GetFogNearClip", &GetFogNearClip)
+                .addFunction("GetFogFarClip", &GetFogFarClip)
                 .addFunction("SetFogColor", &setFogColor)
                 .addFunction("SetFogNearClip", &setFogNearClip)
                 .addFunction("SetFogFarClip", &setFogFarClip)

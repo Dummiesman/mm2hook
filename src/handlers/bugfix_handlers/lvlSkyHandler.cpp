@@ -9,7 +9,7 @@ using namespace MM2;
 void lvlSkyHandler::ResetRot() {
     lvlSky* sky = cityLevel::Sky.ptr();
     if (sky != nullptr)
-        sky->setRotation(0.0f);
+        sky->SetRotation(0.0f);
 }
 
 void lvlSkyHandler::Install() {
