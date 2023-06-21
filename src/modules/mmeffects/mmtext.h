@@ -17,8 +17,8 @@ namespace MM2
         BYTE byte0;
         BYTE byte1;
     public:
-        AGE_API static void* CreateLocFont(LPCSTR locString, int screenSize)    { return hook::StaticThunk<0x5321C0>::Call<void*>(locString, screenSize); }
-        //AGE_API static void DeleteFont(void* font)                              { hook::StaticThunk<0x5322B0>::Call<void>(font); }
+        AGE_API static LocFont* CreateLocFont(LPCSTR locString, int screenSize)    { return hook::StaticThunk<0x5321C0>::Call<LocFont*>(locString, screenSize); }
+        AGE_API static void DeleteFont(LocFont* font)                              { hook::StaticThunk<0x5322B0>::Call<void>((void*)font); }
     };
 
     class mmTextData {

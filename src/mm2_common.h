@@ -94,6 +94,18 @@ namespace MM2 {
         char buffer[512];
     };
 
+    /// <summary>
+    /// Dummy structure for binding LocFonts to lua
+    /// In reality LocFonts are returned as void*
+    /// </summary>
+    class LocFont {
+    public:
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<LocFont>("LocFont")
+                .endClass();
+        }
+    };
+
     extern void Printf(LPCSTR str, ...);
     extern void Messagef(LPCSTR str, ...);
     extern void Displayf(LPCSTR str, ...);
@@ -230,6 +242,7 @@ namespace MM2 {
     void luaAddModule<module_common>(LuaState L) {
         luaBind<IntBox>(L);
         luaBind<FloatBox>(L);
+        luaBind<LocFont>(L);
 
         typedef void(__cdecl* printer_type)(LPCSTR);
         LuaBinding(L)
