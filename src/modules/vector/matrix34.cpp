@@ -407,6 +407,8 @@ namespace MM2
             .addVariable("m31", &Matrix34::m31)
             .addVariable("m32", &Matrix34::m32)
 
+            .addStaticProperty("I", []() { return Matrix34::I; })
+
             .addFunction("GetColumn", &GetColumn)
             .addFunction("GetRow", &GetRow)
             .addFunction("SetColumn", &SetColumn)

@@ -184,6 +184,8 @@ namespace MM2
             .addVariable("m33", &Matrix44::m33)
             .addStaticFunction("Convert", &Convert)
 
+            .addStaticProperty("I", []() { return Matrix44::I; })
+
             .addFunction("GetColumn", &GetColumn)
             .addFunction("GetRow", &GetRow)
             .addFunction("SetColumn", &SetColumn)
