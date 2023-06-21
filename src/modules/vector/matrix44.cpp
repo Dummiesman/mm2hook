@@ -130,6 +130,21 @@ namespace MM2
     AGE_API void Matrix44::Subtract(const Matrix44* a1)                              { hook::Thunk<0x4C0B70>::Call<void>(this, a1); }
     AGE_API void Matrix44::ToMatrix34(Matrix34 & a1) const                           { hook::Thunk<0x4C09E0>::Call<void>(this, &a1); }
     AGE_API void Matrix44::Transform4(const Vector3* a1, const Vector4* a2, int a3)  { hook::Thunk<0x4C1D60>::Call<void>(this, a1, a2, a3); }
+
+    void Matrix44::Transform3x3(const Vector3& vector, Vector3& out) const
+    {
+        out.X = this->m00 * vector.X + this->m10 * vector.Y + this->m20 * vector.Z;
+        out.Y = this->m01 * vector.X + this->m11 * vector.Y + this->m21 * vector.Z;
+        out.Z = this->m02 * vector.X + this->m12 * vector.Y + this->m22 * vector.Z;
+    }
+
+    Vector3 Matrix44::Transform3x3(const Vector3& vector) const
+    {
+        Vector3 returnVec;
+        Transform3x3(vector, returnVec);
+        return returnVec;
+    }
+
     AGE_API void Matrix44::Convert(Matrix44& output, const Matrix34& input)
     {
         hook::StaticThunk<0x42FCF0>::Call<void>(&output, &input);

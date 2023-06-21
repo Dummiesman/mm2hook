@@ -69,6 +69,8 @@ namespace MM2
         AGE_API void Subtract(const Matrix44* a1);
         AGE_API void ToMatrix34(Matrix34& a1) const;
         AGE_API void Transform4(const Vector3* a1, const Vector4* a2, int a3);
+        AGE_API void Transform3x3(const Vector3& vector, Vector3& out) const;
+        AGE_API Vector3 Transform3x3(const Vector3& vector) const;
         AGE_API static void Convert(Matrix44& output, const Matrix34& input);
 
         static void BindLua(LuaState L);
