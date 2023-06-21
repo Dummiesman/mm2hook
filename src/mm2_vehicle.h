@@ -23,6 +23,7 @@ namespace MM2
         luaBind<vehBreakableMgr>(L);
         luaBind<vehSplash>(L);
         luaBind<vehCar>(L);
+        luaBind<vehDamageImpactInfo>(L);
         luaBind<vehCarDamage>(L);
         luaBind<vehCarModel>(L);
         luaBind<vehEngine>(L);
