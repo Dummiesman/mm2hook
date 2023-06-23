@@ -138,6 +138,7 @@ void luaSetGlobals()
     Lua::setGlobal(L, "Input", GameInputPtr.get());
     Lua::setGlobal(L, "Level", (cityLevel*)lvlLevel::GetSingleton());
     Lua::setGlobal(L, "PHYS", dgPhysManager::Instance.get());
+    Lua::setGlobal(L, "Interface", mmInterface::GetInstance());
 }
 
 LUAMOD_API int luaopen_MM2(lua_State *L)

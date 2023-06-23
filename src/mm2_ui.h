@@ -24,6 +24,8 @@ namespace MM2
         luaBind<PUMenuBase>(L);
         luaBind<LuaPUMenu>(L);
         luaBind<MenuManager>(L);
+
+        luaBind<mmInterface>(L);
     }
 }
 

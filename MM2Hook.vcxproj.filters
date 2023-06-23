@@ -1648,6 +1648,9 @@
     <ClInclude Include="src\modules\mmwidget\slider.h">
       <Filter>Source Files\modules\mmwidget</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmgame\interface.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
     <ClInclude Include="src\handlers\feature_handlers\ImGuiFeatureHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
