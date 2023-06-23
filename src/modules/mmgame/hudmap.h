@@ -50,6 +50,11 @@ namespace MM2
         asMeshSetForm* HudmapSquareModel;
         asMeshSetForm* HudmapTriModel;
     private:
+        void registerOpponentsLua(LuaOppIconInfo& container)
+        {
+            RegisterOpponents(container.GetFirst(), container.GetIconCount());
+        }
+    private:
         AGE_API void DrawIcon(int iconType, Matrix34 const & matrix)
                                                             { hook::Thunk<0x42F580>::Call<void>(this, iconType, &matrix); }
         AGE_API void DrawIndicator(int indicatorType, Vector3 const & position)
@@ -67,6 +72,8 @@ namespace MM2
         AGE_API void ToggleMapRes()                         { hook::Thunk<0x42FA00>::Call<void>(this); }
         AGE_API bool GetOrient()                            { return hook::Thunk<0x42FA50>::Call<bool>(this); }
         AGE_API bool GetZoomIn()                            { return hook::Thunk<0x42FA30>::Call<bool>(this); }
+        AGE_API void RegisterOpponents(OppIconInfo* icons, short iconCount)
+                                                            { hook::Thunk<0x42EEA0>::Call<void>(this, icons, iconCount); };
 
         /*
             asNode virtuals
@@ -138,6 +145,7 @@ namespace MM2
                 .addFunction("SetMapMode", &SetMapMode)
                 .addFunction("DrawIcon", &DrawIcon)
                 .addFunction("DrawIndicator", &DrawIndicator)
+                .addFunction("RegisterOpponents", &registerOpponentsLua)
             .endClass();  
         }
     };
