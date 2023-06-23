@@ -48,9 +48,9 @@ namespace MM2
         const char *Background;
     private:
         // lua helpers
-        UIButton* AddButtonLua(int id, LPCSTR text, float x, float y, float w, float h, int fontNum, int type, LuaRef callback, int i3)
+        UIButton* AddButtonLua(int id, LPCSTR text, float x, float y, float w, float h, int fontNum, int type, LuaRef callback, bool unscaled)
         {
-            return this->AddButton(id, (LocString*)text, x, y, w, h, fontNum, type, *datCallback::CreateParamaterlessLuaCallback(callback), i3);
+            return this->AddButton(id, (LocString*)text, x, y, w, h, fontNum, type, *datCallback::CreateParamaterlessLuaCallback(callback), (unscaled) ? TRUE : FALSE);
         }
 
         UIBMLabel* AddBMLabelLua(int id, LPCSTR name, LPCSTR bitmapNames, float x, float y, IntBox* pBoxedValue)
@@ -109,8 +109,8 @@ namespace MM2
         /*
             uiMenu members
         */
-        AGE_API UIButton * AddButton(int id, LocString *text, float x, float y, float w, float h, int fontNum, int type, MM2::datCallback callback, int i3) {
-            return hook::Thunk<0x4E1A90>::Call<UIButton*>(this, id, text, x, y, w, h, fontNum, type, callback, i3);
+        AGE_API UIButton * AddButton(int id, LocString *text, float x, float y, float w, float h, int fontNum, int type, MM2::datCallback callback, BOOL unscaled) {
+            return hook::Thunk<0x4E1A90>::Call<UIButton*>(this, id, text, x, y, w, h, fontNum, type, callback, unscaled);
         };
 
         AGE_API UIIcon* AddIcon(int id, LPCSTR name, float x, float y) {
