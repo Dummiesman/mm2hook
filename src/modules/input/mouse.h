@@ -12,7 +12,7 @@ namespace MM2
     // Class definitions
 
     class ioMouse {
-    public:
+    private:
         static hook::Type<float> InvWidth;
         static hook::Type<float> InvHeight;
 
@@ -27,6 +27,26 @@ namespace MM2
     public:
         AGE_API static void Update() {
             hook::StaticThunk<0x4BB3A0>::Call<void>();
+        }
+
+        static int GetX() {
+            return m_X.get();
+        }
+
+        static int GetY() {
+            return m_Y.get();
+        }
+
+        static int GetXDelta() {
+            return m_dX.get();
+        }
+
+        static int GetYDelta() {
+            return m_dY.get();
+        }
+
+        static int GetScrollDelta() {
+            return m_dZ.get();
         }
 
         static bool GetButtonUp(int button) {
@@ -52,6 +72,10 @@ namespace MM2
             return current;
         }
 
+        static void SetRes(float width,float height) {
+            ioMouse::InvWidth = (1.0f / width);
+            ioMouse::InvHeight = (1.0f / height);
+        }
 
         static void ClearStates() {
             m_dX.set(0);
@@ -68,8 +92,8 @@ namespace MM2
                 .addStaticFunction("GetButtonUp", &GetButtonUp)
                 .addStaticFunction("GetButtonDown", &GetButtonDown)
                 .addStaticFunction("GetButton", &GetButton)
-                .addStaticProperty("x", [] { return m_X.get(); })
-                .addStaticProperty("y", [] { return m_Y.get(); })   
+                .addStaticProperty("x", &GetX)
+                .addStaticProperty("y", &GetY)   
                 .endClass();
         }
     };

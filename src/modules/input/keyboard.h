@@ -54,6 +54,11 @@ namespace MM2
             return ((getKeyState(false, keycode) ^ getKeyState(true, keycode)) & getKeyState(!getActiveFlag(), keycode)) != 0;
         }
 
+        static int GetBufferedInput(char* outKeyArray, int count)
+        {
+            return hook::StaticThunk<0x4BAC20>::Call<int>(outKeyArray, count);
+        }
+
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<ioKeyboard>("ioKeyboard")
