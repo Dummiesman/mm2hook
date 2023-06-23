@@ -1651,6 +1651,9 @@
     <ClInclude Include="src\handlers\feature_handlers\ImGuiFeatureHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmgame\luaoppicons.h">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
