@@ -8,10 +8,12 @@ namespace MM2 {
 }
 
 IMGUI_IMPL_API bool     ImGui_ImplAGE_Init(MM2::gfxViewport *viewport);
+IMGUI_IMPL_API bool     ImGui_ImplAGE_Init(MM2::gfxViewport* viewport, int resX, int resY);
 IMGUI_IMPL_API void     ImGui_ImplAGE_Shutdown();
 IMGUI_IMPL_API void     ImGui_ImplAGE_NewFrame();
 IMGUI_IMPL_API void     ImGui_ImplAGE_RenderDrawData(ImDrawData* draw_data);
 IMGUI_IMPL_API bool     ImGui_ImplAGE_ProcessEvent(void* event);
+IMGUI_IMPL_API void		ImGui_ImplAGE_UpdateInput();
 
 // Use if you want to reset your rendering device without losing Dear ImGui state.
 IMGUI_IMPL_API bool     ImGui_ImplAGE_CreateDeviceObjects();

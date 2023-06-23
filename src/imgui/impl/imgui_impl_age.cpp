@@ -10,6 +10,7 @@
 #include <mm2_common.h>
 #include <mm2_gfx.h>
 #include <mm2_data.h>
+#include <mm2_input.h>
 using namespace MM2;
 
 // Visual Studio warnings
@@ -32,6 +33,9 @@ struct ImGui_ImplAGE_Data
     gfxTexture* Texture;
     double Time;
     char* ClipboardTextData;
+    bool ScaledViewport;
+    int ViewportSizeX;
+    int ViewportSizeY;
 
     ImGui_ImplAGE_Data() { memset((void*)this, 0, sizeof(*this)); }
 };
@@ -55,6 +59,156 @@ static void ImGui_ImplAGE_SetupRenderState(ImDrawData* draw_data)
     gfxPipeline::ForceSetViewport(bd->Viewport);
 }
 
+// NEW: Input functions
+static ImGuiKey ImGui_ImplAGE_ConvertKeyCode(int keyCode)
+{
+    switch (keyCode) {
+        case DIK_ESCAPE: { return ImGuiKey_Escape; }
+        case DIK_1: { return ImGuiKey_1; }
+        case DIK_2: { return ImGuiKey_2; }
+        case DIK_3: { return ImGuiKey_3; }
+        case DIK_4: { return ImGuiKey_4; }
+        case DIK_5: { return ImGuiKey_5; }
+        case DIK_6: { return ImGuiKey_6; }
+        case DIK_7: { return ImGuiKey_7; }
+        case DIK_8: { return ImGuiKey_8; }
+        case DIK_9: { return ImGuiKey_9; }
+        case DIK_0: { return ImGuiKey_0; }
+        case DIK_MINUS: { return ImGuiKey_Minus; }
+        case DIK_EQUALS: { return ImGuiKey_Equal; }
+        case DIK_BACK: { return ImGuiKey_Backspace; }
+        case DIK_TAB: { return ImGuiKey_Tab; }
+        case DIK_Q: { return ImGuiKey_Q; }
+        case DIK_W: { return ImGuiKey_W; }
+        case DIK_E: { return ImGuiKey_E; }
+        case DIK_R: { return ImGuiKey_R; }
+        case DIK_T: { return ImGuiKey_T; }
+        case DIK_Y: { return ImGuiKey_Y; }
+        case DIK_U: { return ImGuiKey_U; }
+        case DIK_I: { return ImGuiKey_I; }
+        case DIK_O: { return ImGuiKey_O; }
+        case DIK_P: { return ImGuiKey_P; }
+        case DIK_LBRACKET: { return ImGuiKey_LeftBracket; }
+        case DIK_RBRACKET: { return ImGuiKey_RightBracket; }
+        case DIK_RETURN: { return ImGuiKey_Enter; }
+        case DIK_LCONTROL: { return ImGuiKey_LeftCtrl; }
+        case DIK_A: { return ImGuiKey_A; }
+        case DIK_S: { return ImGuiKey_S; }
+        case DIK_D: { return ImGuiKey_D; }
+        case DIK_F: { return ImGuiKey_F; }
+        case DIK_G: { return ImGuiKey_G; }
+        case DIK_H: { return ImGuiKey_H; }
+        case DIK_J: { return ImGuiKey_J; }
+        case DIK_K: { return ImGuiKey_K; }
+        case DIK_L: { return ImGuiKey_L; }
+        case DIK_SEMICOLON: { return ImGuiKey_Semicolon; }
+        case DIK_APOSTROPHE: { return ImGuiKey_Apostrophe; }
+        case DIK_GRAVE: { return ImGuiKey_GraveAccent; }
+        case DIK_LSHIFT: { return ImGuiKey_LeftShift; }
+        case DIK_BACKSLASH: { return ImGuiKey_Backslash; }
+        case DIK_Z: { return ImGuiKey_Z; }
+        case DIK_X: { return ImGuiKey_X; }
+        case DIK_C: { return ImGuiKey_C; }
+        case DIK_V: { return ImGuiKey_V; }
+        case DIK_B: { return ImGuiKey_B; }
+        case DIK_N: { return ImGuiKey_N; }
+        case DIK_M: { return ImGuiKey_M; }
+        case DIK_COMMA: { return ImGuiKey_Comma; }
+        case DIK_PERIOD: { return ImGuiKey_Period; }
+        case DIK_SLASH: { return ImGuiKey_Slash; }
+        case DIK_RSHIFT: { return ImGuiKey_RightShift; }
+        case DIK_MULTIPLY: { return ImGuiKey_KeypadMultiply; }
+        case DIK_LMENU: { return ImGuiKey_LeftAlt; }
+        case DIK_SPACE: { return ImGuiKey_Space; }
+        case DIK_CAPITAL: { return ImGuiKey_CapsLock; }
+        case DIK_F1: { return ImGuiKey_F1; }
+        case DIK_F2: { return ImGuiKey_F2; }
+        case DIK_F3: { return ImGuiKey_F3; }
+        case DIK_F4: { return ImGuiKey_F4; }
+        case DIK_F5: { return ImGuiKey_F5; }
+        case DIK_F6: { return ImGuiKey_F6; }
+        case DIK_F7: { return ImGuiKey_F7; }
+        case DIK_F8: { return ImGuiKey_F8; }
+        case DIK_F9: { return ImGuiKey_F9; }
+        case DIK_F10: { return ImGuiKey_F10; }
+        case DIK_NUMLOCK: { return ImGuiKey_NumLock; }
+        case DIK_SCROLL: { return ImGuiKey_ScrollLock; }
+        case DIK_NUMPAD7: { return ImGuiKey_Keypad7; }
+        case DIK_NUMPAD8: { return ImGuiKey_Keypad8; }
+        case DIK_NUMPAD9: { return ImGuiKey_Keypad9; }
+        case DIK_SUBTRACT: { return ImGuiKey_KeypadSubtract; }
+        case DIK_NUMPAD4: { return ImGuiKey_Keypad4; }
+        case DIK_NUMPAD5: { return ImGuiKey_Keypad5; }
+        case DIK_NUMPAD6: { return ImGuiKey_Keypad6; }
+        case DIK_ADD: { return ImGuiKey_KeypadAdd; }
+        case DIK_NUMPAD1: { return ImGuiKey_Keypad1; }
+        case DIK_NUMPAD2: { return ImGuiKey_Keypad2; }
+        case DIK_NUMPAD3: { return ImGuiKey_Keypad3; }
+        case DIK_NUMPAD0: { return ImGuiKey_Keypad0; }
+        case DIK_DECIMAL: { return ImGuiKey_Period; }
+        case DIK_F11: { return ImGuiKey_F11; }
+        case DIK_F12: { return ImGuiKey_F12; }
+        case DIK_NUMPADEQUALS: { return ImGuiKey_KeypadEqual; }
+        case DIK_NUMPADENTER: { return ImGuiKey_KeyPadEnter; }
+        case DIK_RCONTROL: { return ImGuiKey_RightCtrl; }
+        case DIK_DIVIDE: { return ImGuiKey_KeypadDivide; }
+        case DIK_RMENU: { return ImGuiKey_RightAlt; }
+        case DIK_PAUSE: { return ImGuiKey_Pause; }
+        case DIK_HOME: { return ImGuiKey_Home; }
+        case DIK_PRIOR: { return ImGuiKey_PageUp; }
+        case DIK_END: { return ImGuiKey_End; }
+        case DIK_NEXT: { return ImGuiKey_PageDown; }
+        case DIK_INSERT: { return ImGuiKey_Insert; }
+        case DIK_DELETE: { return ImGuiKey_Delete; }
+        case DIK_LWIN: { return ImGuiKey_LeftSuper; }
+        case DIK_RWIN: { return ImGuiKey_RightSuper; }
+    }
+    return ImGuiKey_None;
+}
+
+static void ImGui_ImplAGE_UpdateMouseInput()
+{
+    ImGuiIO& io = ImGui::GetIO();
+    for (int i = 0; i <= 2; i++)
+    {
+        if (ioMouse::GetButtonDown(i))
+            io.AddMouseButtonEvent(i, true);
+        else if (ioMouse::GetButtonUp(i))
+            io.AddMouseButtonEvent(i, false);
+    }
+
+    int scroll = ioMouse::GetScrollDelta();
+    if (scroll != 0)
+    {
+        io.AddMouseWheelEvent(0.0f, (float)scroll);
+    }
+
+    io.AddMousePosEvent(ioMouse::GetX(), ioMouse::GetY());    
+}
+
+static void ImGui_ImplAGE_UpdateKeyboardInput()
+{
+    ImGuiIO& io = ImGui::GetIO();
+
+    for (int i = 0; i < 256; i++)
+    {
+        ImGuiKey convertedKeycode = ImGui_ImplAGE_ConvertKeyCode(i);
+        if (convertedKeycode != ImGuiKey_None)
+        {
+            if (ioKeyboard::GetKeyDown(i))
+                io.AddKeyEvent(convertedKeycode, true);
+            else if(ioKeyboard::GetKeyUp(i))
+                io.AddKeyEvent(convertedKeycode, false);
+        }
+    }
+}
+
+void ImGui_ImplAGE_UpdateInput()
+{
+    ImGui_ImplAGE_UpdateMouseInput();
+    ImGui_ImplAGE_UpdateKeyboardInput();
+}
+
 // Render function.
 void ImGui_ImplAGE_RenderDrawData(ImDrawData* draw_data)
 {
@@ -63,6 +217,11 @@ void ImGui_ImplAGE_RenderDrawData(ImDrawData* draw_data)
         Errorf("ImGui_ImplAGE_RenderDrawData: invalid display size (%f, %f)", draw_data->DisplaySize.x, draw_data->DisplaySize.y);
         return;
     }
+
+    // Get vertex scaling factor
+    ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
+    float vertexScaleX = (bd->ScaledViewport) ? (draw_data->DisplaySize.x / bd->ViewportSizeX) : 1.0f;
+    float vertexScaleY = (bd->ScaledViewport) ? (draw_data->DisplaySize.y / bd->ViewportSizeY) : 1.0f;
 
     // Backup AGE state that will be modified
     auto prevVP = gfxCurrentViewport.get();
@@ -88,8 +247,8 @@ void ImGui_ImplAGE_RenderDrawData(ImDrawData* draw_data)
             const ImDrawVert* src_v = &cmd_list->VtxBuffer[i];
             ImDrawVertAGE* dst_v = &vertices[i];
             
-            dst_v->pos.X = src_v->pos.x;
-            dst_v->pos.Y = src_v->pos.y;
+            dst_v->pos.X = src_v->pos.x * vertexScaleX;
+            dst_v->pos.Y = src_v->pos.y * vertexScaleY;
             dst_v->pos.Z = 0.f;
 
             dst_v->uv.X = src_v->uv.x;
@@ -217,6 +376,16 @@ bool ImGui_ImplAGE_Init(gfxViewport *viewport)
     bd->Viewport = viewport;
 
     return true;
+}
+
+IMGUI_IMPL_API bool ImGui_ImplAGE_Init(MM2::gfxViewport* viewport, int resX, int resY)
+{
+    return ImGui_ImplAGE_Init(viewport);
+
+    ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
+    bd->ScaledViewport = true;
+    bd->ViewportSizeX = resX;
+    bd->ViewportSizeY = resY;
 }
 
 void ImGui_ImplAGE_Shutdown()

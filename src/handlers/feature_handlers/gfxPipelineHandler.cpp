@@ -67,8 +67,8 @@ bool gfxPipelineHandler::HandleKeyPress(DWORD vKey)
 
 LRESULT APIENTRY gfxPipelineHandler::gfxWindowProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam) {
     //IMGUI
-    extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
-    ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
+    //extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+    //ImGui_ImplWin32_WndProcHandler(hWnd, uMsg, wParam, lParam);
 
     //
     switch (uMsg)
@@ -246,8 +246,7 @@ void gfxPipelineHandler::SetRes(int width, int height, int cdepth, int zdepth, b
         }
     }
 
-    ioMouse::InvWidth = (1.0f / window_fWidth);
-    ioMouse::InvHeight = (1.0f / window_fHeight);
+    ioMouse::SetRes(window_fWidth, window_fHeight);
 }
 
 void gfxPipelineHandler::gfxWindowCreate(LPCSTR lpWindowName) {

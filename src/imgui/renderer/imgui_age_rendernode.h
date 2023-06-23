@@ -7,18 +7,18 @@
 
 #include <implot/implot.h>
 #include <imgui/imgui.h>
-#include <imgui/impl/imgui_impl_win32.h>
+//#include <imgui/impl/imgui_impl_win32.h>
 #include <imgui/impl/imgui_impl_age.h>
 
 using namespace MM2;
-extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
+//extern IMGUI_IMPL_API LRESULT ImGui_ImplWin32_WndProcHandler(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam);
 
 class mmImGuiManager : public asNode {
 public:
     static mmImGuiManager* Instance;
 private:
     gfxViewport* viewport;
-    bool renderAutomatically;
+    bool gameMode;
 private:
     //mmInput::PutEventInQueue called from mmInput::ProcessMouseEvents
     void PutMouseEventInQueue(long long a1)
@@ -61,16 +61,16 @@ private:
         auto io = ImGui::GetIO();
 
         //update mouse
-        if (!io.WantCaptureMouse)
+        //if (!io.WantCaptureMouse)
             ioMouse::Update();
-        else
-            ioMouse::ClearStates();
+        //else
+            //ioMouse::ClearStates();
 
         //update keyboard
-        if (!io.WantCaptureKeyboard)
+        //if (!io.WantCaptureKeyboard)
             ioKeyboard::Update();
-        else
-            ioKeyboard::ClearStates();
+        //else
+            //ioKeyboard::ClearStates();
 
         //update pad
         hook::StaticThunk<0x4BB7A0>::Call<void>(); //ioPad::UpdateAll
@@ -78,7 +78,7 @@ private:
 public:
     ANGEL_ALLOCATOR 
 
-    mmImGuiManager::mmImGuiManager(bool renderAutomatically) 
+    mmImGuiManager::mmImGuiManager(bool gameMode) 
     {
         // delete instance if we already have one
         if (mmImGuiManager::Instance != nullptr) {
@@ -99,47 +99,50 @@ public:
         io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;         // Enable Multi-Viewport / Platform Windows
 
         // Initialize helper Platform and Renderer bindings
-        ImGui_ImplWin32_Init(hWndMain.get());
-        ImGui_ImplAGE_Init(viewport);
+        //ImGui_ImplWin32_Init(hWndMain.get());
+
+        if (gameMode)
+            ImGui_ImplAGE_Init(viewport);
+        else
+            ImGui_ImplAGE_Init(viewport, 640, 480);
 
         // Steal input from game engine
         //mmInput:: ProcessXEvents hooks hook things like map key, toggle HUD key, etc.
         //ioInput:: hooks mainly the driving axes.  Accelerate, brake, etc.
         //ioEventQueue:: hooks the rest. Ex. mouse clicking used in menus
-        InstallCallback("mmInput::ProcessMouseEvents", "Rewire input through the imGuiManager",
-            &mmImGuiManager::PutMouseEventInQueue, {
-                cb::call(0x52CC4A),
-            }
-        );
+       //InstallCallback("mmInput::ProcessMouseEvents", "Rewire input through the imGuiManager",
+       //    &mmImGuiManager::PutMouseEventInQueue, {
+       //        cb::call(0x52CC4A),
+       //    }
+       //);
+       //
+       //InstallCallback("mmInput::ProcessKeyboardEvents", "Rewire input through the imGuiManager",
+       //    &mmImGuiManager::PutKeyboardEventInQueue, {
+       //        cb::call(0x52CC9F),
+       //    }
+       //);
+       //
+       //InstallCallback("ioInput::Update", "Rewire input through the imGuiManager",
+       //    &mmImGuiManager::IOInputHook, {
+       //        cb::call(0x4A916A),
+       //    }
+       //);
+       //
+       //InstallCallback("ioEventQueue::Queue", "Rewire input through the imGuiManager",
+       //    &mmImGuiManager::EventQueueQueue, {
+       //        cb::call(0x4BAD72),
+       //        cb::call(0x4BAD93),
+       //        cb::call(0x4BADDB),
+       //        cb::call(0x4BAE3D),
+       //        cb::call(0x4BAE89),
+       //        cb::call(0x4BAEDB),
+       //        cb::call(0x4BAF4E),
+       //        cb::call(0x4BAFA7),
+       //        cb::call(0x4BB044),
+       //    }
+       //);
 
-        InstallCallback("mmInput::ProcessKeyboardEvents", "Rewire input through the imGuiManager",
-            &mmImGuiManager::PutKeyboardEventInQueue, {
-                cb::call(0x52CC9F),
-            }
-        );
-
-        InstallCallback("ioInput::Update", "Rewire input through the imGuiManager",
-            &mmImGuiManager::IOInputHook, {
-                cb::call(0x4A916A),
-            }
-        );
-
-        InstallCallback("ioEventQueue::Queue", "Rewire input through the imGuiManager",
-            &mmImGuiManager::EventQueueQueue, {
-                cb::call(0x4BAA5D),
-                cb::call(0x4BAD72),
-                cb::call(0x4BAD93),
-                cb::call(0x4BADDB),
-                cb::call(0x4BAE3D),
-                cb::call(0x4BAE89),
-                cb::call(0x4BAEDB),
-                cb::call(0x4BAF4E),
-                cb::call(0x4BAFA7),
-                cb::call(0x4BB044),
-            }
-        );
-
-        this->renderAutomatically = renderAutomatically;
+        this->gameMode = gameMode;
         mmImGuiManager::Instance = this;
         asNode::asNode();
     }
@@ -148,7 +151,7 @@ public:
     {
         Displayf("Shutting down IMGUI");
         ImGui_ImplAGE_Shutdown();
-        ImGui_ImplWin32_Shutdown();
+        //ImGui_ImplWin32_Shutdown();
         ImPlot::DestroyContext();
         ImGui::DestroyContext();
         mmImGuiManager::Instance = nullptr;
@@ -159,7 +162,7 @@ public:
 	virtual void Cull() override {
         // Feed inputs to dear imgui, start new frame
         ImGui_ImplAGE_NewFrame();
-        ImGui_ImplWin32_NewFrame();
+        //ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
 
         // Lua
@@ -178,7 +181,8 @@ public:
 	}
     
 	virtual void Update() override {
-        if (renderAutomatically)
+        ImGui_ImplAGE_UpdateInput();
+        if (gameMode)
             Render();
 	}
 
