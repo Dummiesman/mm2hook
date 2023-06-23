@@ -69,8 +69,8 @@ namespace MM2
     private:
         aiObstacle* Next;
     public:
-        aiObstacle(void)                                    DONOTCALL;
-        aiObstacle(const aiObstacle&&)                      DONOTCALL;
+        aiObstacle(void)                                    {};
+        aiObstacle(const aiObstacle&&)                      {};
 
         virtual BOOL InAccident(void);
         virtual void Position(Vector3& a1)                  PURE;
@@ -96,8 +96,8 @@ namespace MM2
         __int16 FID;
         aiVehicle* NextAtStopSign;
     public:
-        aiVehicle(void)                                     DONOTCALL;
-        aiVehicle(const aiVehicle &&)                       DONOTCALL;
+        aiVehicle(void)                                     {};
+        aiVehicle(const aiVehicle &&)                       {};
 
         void PreAvoid(const Vector3& a1, const Vector3& a2, float a3, Vector3& a4, Vector3& a5) override;
         float IsBlockingTarget(const Vector3& a1, const Vector3& a2, float a3, float a4) override;

@@ -129,13 +129,18 @@ namespace MM2
         _angImpulse.set(this, impulse);
     }
 
+    Vector3 phInertialCS::GetAngInertia() const
+    {
+        return _angInertia.get(this);
+    }
+
     //members (not all here yet!)
     AGE_API void phInertialCS::Zero()                     { hook::Thunk<0x475DED>::Call<void>(this); }
     AGE_API void phInertialCS::Reset()                    { hook::Thunk<0x475E10>::Call<void>(this); }
     AGE_API void phInertialCS::Freeze()                   { hook::Thunk<0x475E20>::Call<void>(this); }
     AGE_API void phInertialCS::ZeroForces()               { hook::Thunk<0x475E60>::Call<void>(this); }
-    AGE_API void phInertialCS::Init(float mass, float inertiaTensorX, float inertiaTensorY, float inertiaTensorZ)
-                                            { hook::Thunk<0x475FC0>::Call<void>(this, mass, inertiaTensorX, inertiaTensorY, inertiaTensorZ); }
+    AGE_API void phInertialCS::Init(float mass, float angInertiaX, float angInertiaY, float angInertiaZ)
+                                            { hook::Thunk<0x475FC0>::Call<void>(this, mass, angInertiaX, angInertiaY, angInertiaZ); }
     AGE_API void phInertialCS::InitBoxMass(float mass, float inertiaBoxX, float inertiaBoxY, float inertiaBoxZ)
                                             { hook::Thunk<0x4760D0>::Call<void>(this, mass, inertiaBoxX, inertiaBoxY, inertiaBoxZ); }
     AGE_API void phInertialCS::Rotate(Vector3 *angles)    { hook::Thunk<0x476A00>::Call<void>(this, angles); }
@@ -165,6 +170,7 @@ namespace MM2
             .addProperty("AngVelocity", &GetAngVelocity, &SetAngVelocity)
             .addProperty("AngMomentum", &GetAngMomentum, &SetAngMomentum)
             .addProperty("AngImpulse", &GetAngImpulse, &SetAngImpulse)
+            .addPropertyReadOnly("AngInertia", &GetAngInertia)
 
             .addProperty("MaxSpeed", &GetMaxSpeed, &SetMaxSpeed)
             .addProperty("MaxAngSpeed", &GetMaxAngSpeed, &SetMaxAngSpeed)
@@ -172,8 +178,11 @@ namespace MM2
             .addProperty("Mass", &GetMass, &SetMass)
             .addProperty("Force", &GetForce, &SetForce)
             .addProperty("Torque", &GetTorque, &SetTorque)
-            .addProperty("Position", &GetPosition, &SetPosition)
-            .addProperty("Matrix", &GetMatrix, &SetMatrix)
+
+            .addFunction("GetPosition", &GetPosition)
+            .addFunction("SetPosition", &SetPosition)
+            .addFunction("GetMatrix", &GetMatrix)
+            .addFunction("SetMatrix", &SetMatrix)
         .endClass();
     }
 }

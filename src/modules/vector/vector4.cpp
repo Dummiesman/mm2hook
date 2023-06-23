@@ -117,6 +117,8 @@ namespace MM2
             .addVariable("z", &Vector4::Z)
             .addVariable("w", &Vector4::W)
 
+            .addFunction("Min", &Min)
+            .addFunction("Max", &Max)
             .addFunction("Set", static_cast<void(Vector4::*)(const Vector4&)>(&Vector4::Set))
             .endClass();
     }

@@ -5,6 +5,7 @@
 
 class mmIconsHandler {
 public:
+    void Cull();
     void RegisterOpponents(MM2::OppIconInfo *icons, int count, MM2::LocFont* a3);
     void RegisterOpponents_Blitz(MM2::OppIconInfo *icons, int count, MM2::LocFont* a3);
 

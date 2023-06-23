@@ -42,24 +42,32 @@ namespace MM2
             hook::Thunk<0x529770>::Call<void>(this);
         }
 
-        inline char * GetBaseName(void) {
+        char * GetBaseName() {
             return baseName;
         }
 
-        inline char * GetDescription(void) {
+        char * GetDescription() {
             return description;
         }
 
-        inline char * GetColors(void) {
+        char * GetColors() {
             return colors;
         }
 
-        inline int GetFlags(void) {
+        int GetFlags() const {
             return flags;
         }
 
-        inline unsigned int GetTuningCRC(void) {
+        unsigned int GetTuningCRC() const {
             return tuningCrc;
+        }
+
+        bool GetLocked() const {
+            return isLocked == TRUE;
+        }
+
+        void SetLocked(bool lock) {
+            isLocked = (lock) ? TRUE : FALSE;
         }
 
         //lua
@@ -68,6 +76,7 @@ namespace MM2
                 .addPropertyReadOnly("Colors", &GetColors)
                 .addPropertyReadOnly("Basename", &GetBaseName)
                 .addPropertyReadOnly("Description", &GetDescription)
+                .addProperty("Locked", &GetLocked, &SetLocked)
                 .addVariable("Flags", &mmVehInfo::flags, false)
                 .addVariable("Order", &mmVehInfo::order, false)
                 .addVariable("UnlockFlags", &mmVehInfo::unlockFlags, false)

@@ -54,6 +54,7 @@ namespace MM2
             3 - Like mode 2, additionally neutral transmission set on function call, but not enforced. 
         */
         void setDrivable(bool drivable, int mode);
+        phColliderJointed* getColliderLua() { return (phColliderJointed*)this->GetCollider(); }
     public:
         ANGEL_ALLOCATOR
 

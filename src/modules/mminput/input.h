@@ -19,6 +19,7 @@ namespace MM2
         }
     protected:
         static hook::Field<0x1D4, BOOL> _pedalsSwapped;
+        static hook::Field<0x1A8, BOOL> _autoReverse;
     public:
         static hook::Type<mmInput*> GameInputPtr;
     public:
@@ -48,7 +49,11 @@ namespace MM2
 
         AGE_API void PrintIODev()                                       { hook::Thunk<0x52E610>::Call<void>(this); }
         AGE_API void SaveCodeConfig()                                   { hook::Thunk<0x52E6E0>::Call<void>(this); } // Really int (Stream*) but always returns zero and doesn't use parameter
-        
+
+        void SwapBrakeAndThrottleInput(bool swap)                       { _pedalsSwapped.set(this, (swap) ? TRUE : FALSE); }
+        bool AutoReverseEnabled() const                                 { return _autoReverse.get(this) == TRUE; }
+        bool PedalsSwapped() const                                      { return _pedalsSwapped.get(this) == TRUE; }
+
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<mmInput>("mmInput")

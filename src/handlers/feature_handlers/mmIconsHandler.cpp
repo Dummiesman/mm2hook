@@ -41,7 +41,12 @@ unsigned int SemiTransIconColors[8] = {
     0x80FF0390, // Pink
 };
 
-void mmIconsHandler::RegisterOpponents(OppIconInfo *icons, int count, void *a3) {
+void mmIconsHandler::Cull()
+{
+    reinterpret_cast<mmIcons*>(this)->mmIcons::Cull();
+}
+
+void mmIconsHandler::RegisterOpponents(OppIconInfo *icons, int count, LocFont *a3) {
     for (int i = 0; i < count; i++) {
         if (opponentIconTransparency) {
             if (opponentIconStyle == 0) {
@@ -89,7 +94,7 @@ void mmIconsHandler::RegisterOpponents(OppIconInfo *icons, int count, void *a3) 
     reinterpret_cast<mmIcons*>(this)->RegisterOpponents(icons, count, a3);
 }
 
-void mmIconsHandler::RegisterOpponents_Blitz(OppIconInfo *icons, int count, void *a3) {
+void mmIconsHandler::RegisterOpponents_Blitz(OppIconInfo *icons, int count, LocFont *a3) {
     for (int i = 0; i < count; i++) {
         if (blitzIconTransparency) {
             if (blitzIconMultiColor) {
@@ -120,6 +125,18 @@ void mmIconsHandler::Install() {
     blitzIconColor = cfgBlitzIconColor.Get();
     blitzIconMultiColor = cfgBlitzIconMultiColor.Get();
     blitzIconTransparency = cfgBlitzIconTransparency.Get();
+    
+    // remove 10 player limit from mmIcons
+    InstallPatch({ 0xEB }, {
+        0x432303
+        });
+
+    // rewrite mmIcons
+    InstallVTableHook("mmIconsHandler::Cull",
+        &Cull, {
+            0x5B0E20, // mmIcons::Cull
+        }
+    );
 
     InstallCallback("mmIcons::RegisterOpponents",
         &RegisterOpponents, {

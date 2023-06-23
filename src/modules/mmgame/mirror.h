@@ -22,6 +22,14 @@ namespace MM2
         float NearClip;
         float FarClip;
     public:
+        // asNode overrides
+        virtual AGE_API void Cull() override;
+        virtual AGE_API void Reset() override;
+        virtual AGE_API void Update() override;
+        virtual AGE_API void FileIO(datParser& parser) override;
+        virtual AGE_API char* GetClassName() override;
+
+        // mmMirror members
         Vector3 GetPosition() const;
         void SetPosition(const Vector3& position);
 

@@ -15,7 +15,10 @@ namespace MM2
         luaBind<phInertialCS>(L);
         luaBind<dgPhysManager::CollisionTableEntry>(L);
         luaBind<dgPhysManager>(L);
+        luaBind<phColliderBase>(L);
+        luaBind<phCollider>(L);
         luaBind<phJoint>(L);
+        luaBind<phColliderJointed>(L);
         luaBind<dgTrailerJoint>(L);
         luaBind<dgPhysEntity>(L);
         luaBind<dgBangerData>(L);

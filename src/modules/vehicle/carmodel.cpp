@@ -79,7 +79,7 @@ namespace MM2
 
             GetPivot(outMatrix, basename, mtxName);
             this->GetSurfaceColor(sirenGeom, &siren->ltLightPool[siren->LightCount].Color);
-            siren->AddLight(&Vector3(outMatrix.m30, outMatrix.m31, outMatrix.m32), &siren->ltLightPool[siren->LightCount].Color);
+            siren->AddLight(outMatrix.GetRow(3), siren->ltLightPool[siren->LightCount].Color);
         }
             
     }
@@ -361,7 +361,6 @@ namespace MM2
             lvlInstance::AddGeom(basename, "whl5", 0);
 
             //NEW MM2HOOK OBJECTS
-            //ADD +8 to any ID after this
             lvlInstance::AddGeom(basename, "plighton", 0);
             lvlInstance::AddGeom(basename, "plightoff", 0);
 
@@ -400,23 +399,6 @@ namespace MM2
             lvlInstance::AddGeom(basename, "srn5", 0);
             lvlInstance::AddGeom(basename, "srn6", 0);
             lvlInstance::AddGeom(basename, "srn7", 0);
-            lvlInstance::AddGeom(basename, "srn8", 0);
-            lvlInstance::AddGeom(basename, "srn9", 0);
-            lvlInstance::AddGeom(basename, "srn10", 0);
-            lvlInstance::AddGeom(basename, "srn11", 0);
-            lvlInstance::AddGeom(basename, "srn12", 0);
-            lvlInstance::AddGeom(basename, "srn13", 0);
-            lvlInstance::AddGeom(basename, "srn14", 0);
-            lvlInstance::AddGeom(basename, "srn15", 0);
-            lvlInstance::AddGeom(basename, "srn16", 0);
-            lvlInstance::AddGeom(basename, "srn17", 0);
-            lvlInstance::AddGeom(basename, "srn18", 0);
-            lvlInstance::AddGeom(basename, "srn19", 0);
-            lvlInstance::AddGeom(basename, "srn20", 0);
-            lvlInstance::AddGeom(basename, "srn21", 0);
-            lvlInstance::AddGeom(basename, "srn22", 0);
-            lvlInstance::AddGeom(basename, "srn23", 0);
-
             lvlInstance::AddGeom(basename, "lightbar0", 0);
             lvlInstance::AddGeom(basename, "lightbar1", 0);
 
@@ -426,8 +408,8 @@ namespace MM2
             gfxPacket::gfxForceLVERTEX = false;
 
             //add variants
-            //supports up to 32 paintjobs
-            for (int i = 0; i < 32; i++)
+            //supports up to 16 paintjobs
+            for (int i = 0; i < 16; i++)
             {
                 string_buf<16> buffer("variant%d", i);
                 lvlInstance::AddGeom(basename, buffer, (i == this->variant) ? 2 : 8);
@@ -474,30 +456,14 @@ namespace MM2
         if (siren != nullptr) 
         {
             siren->Init();
-            InitSirenLight(basename, "srn0", 43);
-            InitSirenLight(basename, "srn1", 44);
-            InitSirenLight(basename, "srn2", 45);
-            InitSirenLight(basename, "srn3", 46);
-            InitSirenLight(basename, "srn4", 79);
-            InitSirenLight(basename, "srn5", 80);
-            InitSirenLight(basename, "srn6", 81);
-            InitSirenLight(basename, "srn7", 82);
-            InitSirenLight(basename, "srn8", 83);
-            InitSirenLight(basename, "srn9", 84);
-            InitSirenLight(basename, "srn10", 85);
-            InitSirenLight(basename, "srn11", 86);
-            InitSirenLight(basename, "srn12", 87);
-            InitSirenLight(basename, "srn13", 88);
-            InitSirenLight(basename, "srn14", 89);
-            InitSirenLight(basename, "srn15", 90);
-            InitSirenLight(basename, "srn16", 91);
-            InitSirenLight(basename, "srn17", 92);
-            InitSirenLight(basename, "srn18", 93);
-            InitSirenLight(basename, "srn19", 94);
-            InitSirenLight(basename, "srn20", 95);
-            InitSirenLight(basename, "srn21", 96);
-            InitSirenLight(basename, "srn22", 97);
-            InitSirenLight(basename, "srn23", 98);
+            InitSirenLight(basename, "srn0", SRN0_GEOM_ID);
+            InitSirenLight(basename, "srn1", SRN1_GEOM_ID);
+            InitSirenLight(basename, "srn2", SRN2_GEOM_ID);
+            InitSirenLight(basename, "srn3", SRN3_GEOM_ID);
+            InitSirenLight(basename, "srn4", SRN4_GEOM_ID);
+            InitSirenLight(basename, "srn5", SRN5_GEOM_ID);
+            InitSirenLight(basename, "srn6", SRN6_GEOM_ID);
+            InitSirenLight(basename, "srn7", SRN7_GEOM_ID);
         }
 
         //load headlights
@@ -596,18 +562,18 @@ namespace MM2
         this->genBreakableMgr->Init(this->carSim->GetWorldMatrix());
         this->genBreakableMgr->setVariant(this->variant);
 
-        InitBreakable(this->genBreakableMgr, basename, "break0", 30, 0);
-        InitBreakable(this->genBreakableMgr, basename, "break1", 31, 0);
-        InitBreakable(this->genBreakableMgr, basename, "break2", 32, 0);
-        InitBreakable(this->genBreakableMgr, basename, "break3", 33, 0);
-        InitBreakable(this->genBreakableMgr, basename, "break01", 34, 0);
-        InitBreakable(this->genBreakableMgr, basename, "break12", 35, 0);
-        InitBreakable(this->genBreakableMgr, basename, "break23", 36, 0);
-        InitBreakable(this->genBreakableMgr, basename, "break03", 37, 0);
-        InitBreakable(this->genBreakableMgr, basename, "lightbar0", 99, 1);
-        InitBreakable(this->genBreakableMgr, basename, "lightbar1", 100, 2);
+        InitBreakable(this->genBreakableMgr, basename, "break0", BREAK0_GEOM_ID, 0);
+        InitBreakable(this->genBreakableMgr, basename, "break1", BREAK1_GEOM_ID, 0);
+        InitBreakable(this->genBreakableMgr, basename, "break2", BREAK2_GEOM_ID, 0);
+        InitBreakable(this->genBreakableMgr, basename, "break3", BREAK3_GEOM_ID, 0);
+        InitBreakable(this->genBreakableMgr, basename, "break01", BREAK01_GEOM_ID, 0);
+        InitBreakable(this->genBreakableMgr, basename, "break12", BREAK12_GEOM_ID, 0);
+        InitBreakable(this->genBreakableMgr, basename, "break23", BREAK23_GEOM_ID, 0);
+        InitBreakable(this->genBreakableMgr, basename, "break03", BREAK03_GEOM_ID, 0);
+        InitBreakable(this->genBreakableMgr, basename, "lightbar0", LIGHTBAR0_GEOM_ID, 1);
+        InitBreakable(this->genBreakableMgr, basename, "lightbar1", LIGHTBAR1_GEOM_ID, 2);
             
-        int variantGeomId = this->variant + 103;
+        int variantGeomId = this->variant + VARIANT_BASE_GEOM_ID;
         string_buf<16> buffer("variant%d", this->variant);
         InitBreakable(this->genBreakableMgr, basename, buffer, variantGeomId, 0);
 
@@ -616,25 +582,25 @@ namespace MM2
         this->wheelBreakableMgr->Init(this->carSim->GetWorldMatrix());
         this->wheelBreakableMgr->setVariant(this->variant);
             
-        InitBreakable(this->wheelBreakableMgr, basename, "whl0", 26, 1 << 0);
-        InitBreakable(this->wheelBreakableMgr, basename, "hub0", 38, 1 << 1);
-        InitBreakable(this->wheelBreakableMgr, basename, "fndr0", 49, 1 << 2);
-        InitBreakable(this->wheelBreakableMgr, basename, "whl1", 27, 1 << 3);
-        InitBreakable(this->wheelBreakableMgr, basename, "hub1", 39, 1 << 4);
-        InitBreakable(this->wheelBreakableMgr, basename, "fndr1", 50, 1 << 5);
-        InitBreakable(this->wheelBreakableMgr, basename, "whl2", 28, 1 << 6);
-        InitBreakable(this->wheelBreakableMgr, basename, "hub2", 40, 1 << 7);
-        InitBreakable(this->wheelBreakableMgr, basename, "fndr2", 63, 1 << 8);
-        InitBreakable(this->wheelBreakableMgr, basename, "whl3", 29, 1 << 9);
-        InitBreakable(this->wheelBreakableMgr, basename, "hub3", 41, 1 << 10);
-        InitBreakable(this->wheelBreakableMgr, basename, "fndr3", 64, 1 << 11);
-        InitBreakable(this->wheelBreakableMgr, basename, "whl4", 51, 1 << 12);
-        InitBreakable(this->wheelBreakableMgr, basename, "hub4", 61, 1 << 13);
-        InitBreakable(this->wheelBreakableMgr, basename, "fndr4", 65, 1 << 14);
-        InitBreakable(this->wheelBreakableMgr, basename, "whl5", 52, 1 << 15);
-        InitBreakable(this->wheelBreakableMgr, basename, "hub5", 62, 1 << 16);
-        InitBreakable(this->wheelBreakableMgr, basename, "fndr5", 66, 1 << 17);
-        InitBreakable(this->wheelBreakableMgr, basename, "engine", 25, 1 << 18);
+        InitBreakable(this->wheelBreakableMgr, basename, "whl0", WHL0_GEOM_ID, 1 << 0);
+        InitBreakable(this->wheelBreakableMgr, basename, "hub0", HUB0_GEOM_ID, 1 << 1);
+        InitBreakable(this->wheelBreakableMgr, basename, "fndr0", FNDR0_GEOM_ID, 1 << 2);
+        InitBreakable(this->wheelBreakableMgr, basename, "whl1", WHL1_GEOM_ID, 1 << 3);
+        InitBreakable(this->wheelBreakableMgr, basename, "hub1", HUB1_GEOM_ID, 1 << 4);
+        InitBreakable(this->wheelBreakableMgr, basename, "fndr1", FNDR1_GEOM_ID, 1 << 5);
+        InitBreakable(this->wheelBreakableMgr, basename, "whl2", WHL2_GEOM_ID, 1 << 6);
+        InitBreakable(this->wheelBreakableMgr, basename, "hub2", HUB2_GEOM_ID, 1 << 7);
+        InitBreakable(this->wheelBreakableMgr, basename, "fndr2", FNDR2_GEOM_ID, 1 << 8);
+        InitBreakable(this->wheelBreakableMgr, basename, "whl3", WHL3_GEOM_ID, 1 << 9);
+        InitBreakable(this->wheelBreakableMgr, basename, "hub3", HUB3_GEOM_ID, 1 << 10);
+        InitBreakable(this->wheelBreakableMgr, basename, "fndr3", FNDR3_GEOM_ID, 1 << 11);
+        InitBreakable(this->wheelBreakableMgr, basename, "whl4", WHL4_GEOM_ID, 1 << 12);
+        InitBreakable(this->wheelBreakableMgr, basename, "hub4", HUB4_GEOM_ID, 1 << 13);
+        InitBreakable(this->wheelBreakableMgr, basename, "fndr4", FNDR4_GEOM_ID, 1 << 14);
+        InitBreakable(this->wheelBreakableMgr, basename, "whl5", WHL5_GEOM_ID, 1 << 15);
+        InitBreakable(this->wheelBreakableMgr, basename, "hub5", HUB5_GEOM_ID, 1 << 16);
+        InitBreakable(this->wheelBreakableMgr, basename, "fndr5", FNDR5_GEOM_ID, 1 << 17);
+        InitBreakable(this->wheelBreakableMgr, basename, "engine", ENGINE_GEOM_ID, 1 << 18);
 
         //load trailer hitch offset
         auto hitchGeom = this->GetGeom(3, TRAILER_HITCH_GEOM_ID);

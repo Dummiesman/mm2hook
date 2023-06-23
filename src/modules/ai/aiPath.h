@@ -71,6 +71,13 @@ namespace MM2
         /*
             aiPath
         */
+        //AGE_API float SharpTurnAngle(int turnIndex, bool oppositeWinding) const;
+        //AGE_API const Vector3 & SharpTurnCenter(int turnIndex, bool oppositeWinding) const;
+        //AGE_API float SharpTurnDir(int turnIndex, bool oppositeWinding) const;
+        //AGE_API const Vector3& SharpTurnStartDir(int turnIndex, bool oppositeWinding) const;
+        //AGE_API const Vector3& SharpTurnEndDir(int turnIndex, bool oppositeWinding) const;
+        
+
         AGE_API float CenterDist(Vector3 const& pos) const;
         AGE_API float CenterLength(int startIdx, int endIdx) const;
         AGE_API int CenterIndex(float distance) const;

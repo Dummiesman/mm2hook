@@ -21,6 +21,8 @@ namespace MM2
 
         char *name;
     public:
+        ANGEL_ALLOCATOR 
+
         AGE_API asNode() {
             scoped_vtable x(this);
             hook::Thunk<0x4A0CE0>::Call<void>(this);

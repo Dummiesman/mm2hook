@@ -41,6 +41,7 @@ namespace MM2
         static hook::Field<0x1FBC, camPolarCS> _mpPostCam;
 
         static hook::Field<0x2254, int> _currentWaypoint;
+        static hook::Field<0x2264, float> _steering;
     public:
         vehCar * GetCar() const                  { return _car.ptr(this); }
         mmHUD * GetHUD() const                   { return _hud.ptr(this); }
@@ -78,6 +79,7 @@ namespace MM2
         AGE_API void SetWideFOV(bool a1)                    { hook::Thunk<0x404580>::Call<void>(this, a1); }
         AGE_API void ReInit(const char *basename)           { hook::Thunk<0x4039B0>::Call<void>(this, basename); }
 
+        float GetSteering() const                           { return _steering.get(this); }
         int GetCurrentWaypoint() const                      { return _currentWaypoint.get(this); }
 
         /*

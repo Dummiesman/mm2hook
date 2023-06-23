@@ -10,6 +10,7 @@
 #include "ai\aiVehicle.h"
 #include "ai\aiBanger.h"
 #include "ai\aiVehiclePhysics.h"
+#include "ai\aiVehiclePhysicsWrapper.h"
 #include "ai\aiRouteRacer.h"
 #include "ai\aiCableCar.h"
 #include "ai\aiSubway.h"

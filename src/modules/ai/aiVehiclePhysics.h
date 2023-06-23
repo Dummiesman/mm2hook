@@ -14,6 +14,15 @@ namespace MM2
     extern class aiVehicle;
 
     // Class definitions
+    enum aiVehiclePhysicsState : short
+    {
+        Forward = 0x0,
+        Backup = 0x1,
+        Shortcut = 0x2,
+        Stop = 0x3,
+    };
+
+
     struct  aiRouteNode
     {
         int unk_0x00;
@@ -28,18 +37,14 @@ namespace MM2
         short unk_22;
     };
 
-
     class aiVehiclePhysics : public aiVehicle {
     private:
         byte _buffer[0x9760];
     private:
-        void initLua(int id, const char* basename, bool circuitMode, int audioType)
-        {
-            this->Init(id, basename, (circuitMode) ? 1 : 0, audioType);
-        }
+        void initLua(int id, const char* basename, bool circuitMode, int audioType);
     protected:
         static hook::Field<0x10, vehCar> _vehCar;
-        static hook::Field<0x27C, unsigned short> _state;
+        static hook::Field<0x27C, aiVehiclePhysicsState> _state;
         static hook::Field<0x2D4, aiRouteNode> _routeNodes;
         static hook::Field<0x9514, int> _activeRoute;
         static hook::Field<0x95E0, int> _routeNodeCounts;
@@ -47,90 +52,42 @@ namespace MM2
         static hook::Field<0x9682, unsigned short> _currentLap;
         static hook::Field<0x9684, unsigned short> _lapCount;
     public:
-        aiVehiclePhysics(void)                              DONOTCALL;
-        aiVehiclePhysics(const aiVehiclePhysics &&)         DONOTCALL;
+        aiVehiclePhysics(void);
+        ~aiVehiclePhysics();
 
-        vehCar * GetCar() const
-        {
-            return _vehCar.ptr(this);
-        }
+        vehCar* GetCar() const;
+        short GetState() const;
+        void SetState(aiVehiclePhysicsState state);
+        int GetCurrentLap() const;
+        int GetLapCount() const;
 
-        unsigned short GetState() const
-        {
-            return _state.get(this);
-        }
+        AGE_API void Init(int id, const char* basename, short circuitMode, int audioType);
+        AGE_API void RegisterRoute(short* intersectionIDs, short numIntersections, Vector3 const& endPosition, Vector3 const& endOrientation,
+            short numLaps = 0, float targetSpeed = 9999.0f, float finishRadius = 0.0f, bool unkFlag = false, bool avoidTraffic = true, bool avoidProps = true, bool avoidPlayers = true,
+            bool avoidOpponents = true, bool weirdPathfinding = false, float maxThrottle = 1.0f, float cornerSpeedMultiplier = 2.0f, float cornerBrakingThreshold = 0.7f, float someDistancePadding = 75.0f);
+        AGE_API void DriveRoute();
+        AGE_API void Mirror(vehCar* car);
 
-        int GetCurrentLap() const 
-        {
-            return _currentLap.get(this);
-        }
+        void Position(Vector3& a1) override;
+        float Speed(void) override;
+        int CurrentRoadIdx(aiPath** a1, const bool* a2, int* a3);
+        int CurrentRdVert(void) override;
 
-        int GetLapCount() const
-        {
-            return _lapCount.get(this);
-        }
+        void Reset(void) override;
+        int Type(void) override;
+        Matrix34 & GetMatrix(void) override;
+        float FrontBumperDistance(void) override;
+        float BackBumperDistance(void) override;
+        float LSideDistance(void) override;
+        float RSideDistance(void) override;
+        int CurrentLane(void) override;
+        int CurrentRoadId(void) override;
+        void DrawId(void) override;
+        void ReplayDebug(void) override;
 
-        void Init(int id, const char* basename, short circuitMode, int audioType)
-                                                            { hook::Thunk<0x5593E0>::Call<void>(this, id, basename, circuitMode, audioType); }
+        void DrawRouteThroughTraffic();
 
-        void Position(Vector3 &a1) override                 FORWARD_THUNK;
-        float Speed(void) override                          FORWARD_THUNK;
-        int CurrentRoadIdx(aiPath **a1, const bool *a2, int *a3) override
-                                                            FORWARD_THUNK;
-        int CurrentRdVert(void) override                    FORWARD_THUNK;
-
-        void Update(void) override                          FORWARD_THUNK;
-        void Reset(void) override                           FORWARD_THUNK;
-        int Type(void) override                             FORWARD_THUNK;
-        Matrix34 & GetMatrix(void) override                 FORWARD_THUNK;
-        float FrontBumperDistance(void) override            FORWARD_THUNK;
-        float BackBumperDistance(void) override             FORWARD_THUNK;
-        float LSideDistance(void) override                  FORWARD_THUNK;
-        float RSideDistance(void) override                  FORWARD_THUNK;
-        int CurrentLane(void) override                      FORWARD_THUNK;
-        int CurrentRoadId(void) override                    FORWARD_THUNK;
-        void DrawId(void) override                          FORWARD_THUNK;
-        void ReplayDebug(void) override                     FORWARD_THUNK;
-
-        void DrawRouteThroughTraffic()
-        {
-            int routeCount = _routeCount.get(this);
-            int currentRoute = _activeRoute.get(this);
-
-            rglPushMatrix();
-            rglWorldIdentity();
-            vglBindTexture(nullptr);
-
-            for (int i = 0; i < routeCount; i++)
-            {
-                int  routeNodeCount = _routeNodeCounts.ptr(this)[i];
-                
-                vglBegin(gfxDrawMode::DRAWMODE_LINESTRIP, routeNodeCount);
-                vglCurrentColor = mkfrgba(1.0f, (i == currentRoute) ? 1.0f : 0.0f, (i == currentRoute) ? 0.0f : 1.0f, 1.0f);
-
-                for (int j = 0; j < routeNodeCount; j++)
-                {
-                    int routeNodeIndex = (40 * i) + j;
-                    auto routeNode = _routeNodes.ptr(this)[routeNodeIndex];
-                    vglVertex3f(routeNode.Position);
-                }
-
-                vglEnd();
-            }
-
-            rglPopMatrix();
-        }
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<aiVehiclePhysics, aiVehicle>("aiVehiclePhysics")
-                .addPropertyReadOnly("Car", &GetCar)
-                .addPropertyReadOnly("State", &GetState)
-                .addPropertyReadOnly("CurrentLap", &GetCurrentLap)
-                .addPropertyReadOnly("NumLaps", &GetLapCount)
-                .addFunction("Init", &initLua)
-                .addFunction("DrawRouteThroughTraffic", &DrawRouteThroughTraffic)
-                .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     ASSERT_SIZEOF(aiVehiclePhysics, 0x9770);

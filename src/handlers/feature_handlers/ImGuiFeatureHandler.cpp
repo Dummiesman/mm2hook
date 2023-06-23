@@ -11,7 +11,8 @@ using namespace MM2;
 void ImGuiFeatureHandler::EndPhase()
 {
     // shutdown imgui
-    if (mmImGuiManager::Instance != nullptr) {
+    if (mmImGuiManager::Instance != nullptr) 
+    {
         delete mmImGuiManager::Instance;
     }
 }

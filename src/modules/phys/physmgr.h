@@ -100,7 +100,6 @@ namespace MM2
             void ClearCollidables();
             void Reset();
             void Set(dgPhysEntity* entity, lvlInstance* instance, short flags, byte priority);
-
             static void BindLua(LuaState L);
         };
     private:
@@ -144,6 +143,7 @@ namespace MM2
         static hook::Type<float> perfPostCollision;
 
         PhysicsStats GetStats();
+        void SanityCheck(LPCSTR title, bool checkDelayFlag);
 
         int GetLastActiveMoverCount() const;
         int GetActiveMoverCount() const;

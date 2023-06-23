@@ -25,6 +25,8 @@ namespace MM2
         luaBind<LuaPUMenu>(L);
         luaBind<MenuManager>(L);
 
+        luaBind<VehicleSelectBase>(L);
+        luaBind<Vehicle>(L);
         luaBind<mmInterface>(L);
     }
 }

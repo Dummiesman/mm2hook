@@ -22,7 +22,7 @@ namespace MM2
         uint32_t ActionSource;
         uint32_t ActionState;
         uint32_t dword20;
-        uint32_t MenuID;
+        int ID;
         uint32_t dword28;
         uint32_t WidgetCount;
         uint32_t dword30;
@@ -157,6 +157,11 @@ namespace MM2
             hook::Thunk<0x4E0930>::Call<void>(this, name);
         }
 
+        int GetID() const
+        {
+            return this->ID;
+        }
+
         void SetPreviousMenu(int ID)
         {
             this->PreviousMenu = ID;
@@ -168,6 +173,7 @@ namespace MM2
                     auto object = new UIMenu(id);
                     return object;
                 })
+                .addPropertyReadOnly("ID", &GetID)
                 .addFunction("SetPreviousMenu", &SetPreviousMenu)
                 .addFunction("AssignBackground", &AssignBackground)
                 .addFunction("AssignName", &AssignName)

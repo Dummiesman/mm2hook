@@ -19,6 +19,13 @@ namespace MM2
     public:
         AGE_API static LocFont* CreateLocFont(LPCSTR locString, int screenSize)    { return hook::StaticThunk<0x5321C0>::Call<LocFont*>(locString, screenSize); }
         AGE_API static void DeleteFont(LocFont* font)                              { hook::StaticThunk<0x5322B0>::Call<void>((void*)font); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<mmText>("mmText")
+                .addStaticFunction("CreateLocFont", &CreateLocFont)
+                .addStaticFunction("DeleteFont", &DeleteFont)
+                .endClass();
+        }
     };
 
     class mmTextData {

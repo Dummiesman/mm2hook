@@ -40,6 +40,7 @@
 #include "feature_handlers/mmGameMusicDataHandler.h"
 #include "feature_handlers/mmHudMapFeatureHandler.h"
 #include "feature_handlers/mmIconsHandler.h"
+#include "feature_handlers/mmInterfaceFeatureHandler.h"
 #include "feature_handlers/mmPlayerHandler.h"
 #include "feature_handlers/mmSingleRaceHandler.h"
 #include "feature_handlers/mmSingleRoamHandler.h"

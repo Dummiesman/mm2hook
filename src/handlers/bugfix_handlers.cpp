@@ -10,6 +10,7 @@ static init_handler g_bugfix_handlers[] = {
     CreateHandler<aiCTFRacerHandler>("aiCTFRacer"),
     CreateHandler<aiVehicleAmbientHandler>("aiVehicleAmbient"),
     CreateHandler<aiVehicleInstanceHandler>("aiVehicleInstance"),
+    CreateHandler<aiVehiclePhysicsHandler>("aiVehiclePhysicsHandler"),
     CreateHandler<aiGoalAvoidPlayerHandler>("aiGoalAvoidPlayer"),
     CreateHandler<aiRouteRacerHandler>("aiRouteRacer"),
 
@@ -46,6 +47,7 @@ static init_handler g_bugfix_handlers[] = {
 
     CreateHandler<mpConsistencyHandler>("mpConsistencyHandler"),
     CreateHandler<mmMultiCRHandler>("mmMultiCR"),
+    CreateHandler<NetSelectMenuHandler>("NetSelectMenuHandler"),
 
     CreateHandler<BugfixPatchHandler>("Bugfix patches"),
 
@@ -310,6 +312,19 @@ void aiPoliceOfficerHandler::Install() {
             0x53DCA7
         });
     }
+
+    // fix AIMAP.MapComponent calls mapping to the wrong values
+
+    InstallPatch("Fix cop AIMAP.MapComponent calls.", {
+    0x52 // push edx
+        }, {
+            0x53DD85,   // aiPoliceOfficer::Update
+        });
+    InstallPatch("Fix cop AIMAP.MapComponent calls.", {
+    0x51 // push ecx
+        }, {
+            0x53DD86,   // aiPoliceOfficer::Update
+        });
 }
 
 /*

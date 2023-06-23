@@ -16,8 +16,8 @@ void vehSirenHandler::Reset() {
     siren->vehSiren::Reset();
 }
 
-void vehSirenHandler::SizeOf() {
-    hook::StaticThunk<0x577360>::Call<vehSiren*>(0x164);
+void* vehSirenHandler::SizeOf() {
+    return hook::StaticThunk<0x577360>::Call<void*>(sizeof(vehSiren));
 }
 
 void vehSirenHandler::Install() {

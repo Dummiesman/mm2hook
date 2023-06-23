@@ -153,6 +153,9 @@
     <Filter Include="Source Files\modules\mminput">
       <UniqueIdentifier>{ecd7b809-791d-4957-9824-faacb21daf40}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\modules\mmui">
+      <UniqueIdentifier>{9565d755-55b6-4062-aa48-b94c21df9b22}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -1624,6 +1627,9 @@
     <ClInclude Include="src\modules\mmgame\waypoints.h">
       <Filter>Source Files\modules\mmgame</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\ai\aiVehiclePhysicsWrapper.h">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClInclude>
     <ClInclude Include="src\modules\mmgame\wpobject.h">
       <Filter>Source Files\modules\mmgame</Filter>
     </ClInclude>
@@ -1639,6 +1645,9 @@
     <ClInclude Include="src\modules\mmwidget\luaMenu.h">
       <Filter>Source Files\modules\mmwidget</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmui\vselect.h">
+      <Filter>Source Files\modules\mmui</Filter>
+    </ClInclude>
     <ClInclude Include="src\modules\mmui\pu_menu.h">
       <Filter>Source Files\modules\mmui</Filter>
     </ClInclude>
@@ -1651,11 +1660,26 @@
     <ClInclude Include="src\modules\mmgame\interface.h">
       <Filter>Source Files\modules\mmgame</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmui\luaPopup.h">
+      <Filter>Source Files\modules\mmui</Filter>
+    </ClInclude>
     <ClInclude Include="src\handlers\feature_handlers\ImGuiFeatureHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmui\vehicle.h">
+      <Filter>Source Files\modules\mmui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmInterfaceFeatureHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\aiVehiclePhysicsHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
     <ClInclude Include="src\modules\mmgame\luaoppicons.h">
       <Filter>Source Files\modules\mmgame</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\NetSelectMenuHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -2388,6 +2412,18 @@
     <ClCompile Include="src\modules\vehicle\car.cpp">
       <Filter>Source Files\modules\vehicle</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\ai\aiPoliceOfficer.cpp">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\ai\aiVehiclePhysics.cpp">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\ai\aiPedestrian.cpp">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\ai\aiVehiclePhysicsWrapper.cpp">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClCompile>
     <ClCompile Include="src\modules\mmgame\wpobject.cpp">
       <Filter>Source Files\modules\mmgame</Filter>
     </ClCompile>
@@ -2397,8 +2433,26 @@
     <ClCompile Include="src\modules\mmwidget\menu.cpp">
       <Filter>Source Files\modules\mmwidget</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\mmui.cpp">
+      <Filter>Source Files\modules</Filter>
+    </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\ImGuiFeatureHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mmgame\interface.cpp">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmInterfaceFeatureHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\aiVehiclePhysicsHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mmgame\icons.cpp">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\NetSelectMenuHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

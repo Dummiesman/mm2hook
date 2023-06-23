@@ -6,6 +6,9 @@
 
 using namespace MM2;
 
+LPCSTR lastCollidedInstance = "(null)";
+LPCSTR lastCollidedInstance2 = "(null)";
+
 /*
     LuaRaycastResult
 */
@@ -148,6 +151,40 @@ void dgPhysManager::CollisionTableEntry::Set(dgPhysEntity* entity, lvlInstance* 
     this->m_Instance = instance;
     this->m_Flags = flags;
     this->m_Priority = priority;
+}
+
+void MM2::dgPhysManager::SanityCheck(LPCSTR title, bool checkDelayFlag)
+{
+    for (int i = 0; i < NumActiveMovers; i++)
+    {
+        auto mover = &this->Table[i];
+        auto instance = mover->GetInstance();
+
+        if (instance == nullptr)
+        {
+            Abortf("dgPhysManager::SanityCheck FAILED at stage %s. nullptr instance in mover table at index %i. Current movers %i", title, i, NumActiveMovers);
+        }
+
+        if (mover->GetFlags() & 1)
+        {
+            auto entity = mover->GetEntity();
+
+            if (entity == nullptr)
+            {
+                Abortf("dgPhysManager::SanityCheck FAILED at stage %s. Active mover with no physentity. (instance %s), (last collided instances were %s, %s). Current movers %i", title, mover->GetInstance()->GetName(), lastCollidedInstance, lastCollidedInstance2, NumActiveMovers);
+            }
+        }
+
+        if (mover->GetFlags() & 256 && checkDelayFlag)
+        {
+            auto entity = mover->GetEntity();
+
+            if (entity == nullptr)
+            {
+                Abortf("dgPhysManager::SanityCheck FAILED at stage %s. Delayed active mover with no physentity. (instance %s), (last collided instances were %s, %s). Current movers %i", title, mover->GetInstance()->GetName(), lastCollidedInstance, lastCollidedInstance2, NumActiveMovers);
+            }
+        }
+    }        
 }
 
 void dgPhysManager::CollisionTableEntry::BindLua(LuaState L) {
@@ -509,9 +546,11 @@ void dgPhysManager::DeclareMover(lvlInstance* instance, int a3, int a4)
     }
 
     // find existing
-    for (int i = 0; i < NumActiveMovers; i++) {
+    for (int i = 0; i < NumActiveMovers; i++) 
+    {
         auto entry = &Table[i];
-        if (entry->GetInstance() == instance) {
+        if (entry->GetInstance() == instance) 
+        {
             entry->SetFlags(entry->GetFlags() | a4);
             return;
         }
@@ -692,8 +731,11 @@ void MM2::dgPhysManager::Update()
         {
             auto entry = &Table[j];
             
-            if (entry->GetFlags() & 0x2)
+            if (entry->GetFlags() & 0x2) 
+            {
+                lastCollidedInstance = entry->GetInstance()->GetName();
                 this->CollideTerrain(entry);
+            }
 
             // collide instances ahead
             if (entry->GetFlags() & 0x10)
@@ -712,8 +754,12 @@ void MM2::dgPhysManager::Update()
                         // don't collide instances attached to the same joint
                         if (joint == nullptr || joint->IsBroken() || joint != jointOther)
                         {
-                            if(this->TrivialCollideInstances(entry->GetInstance(), entryOther->GetInstance()))
+                            if (this->TrivialCollideInstances(entry->GetInstance(), entryOther->GetInstance())) 
+                            {
+                                lastCollidedInstance = entry->GetInstance()->GetName();
+                                lastCollidedInstance2 = entryOther->GetInstance()->GetName();
                                 this->CollideInstances(entry->GetInstance(), entryOther->GetInstance());
+                            }
                         }
                     }
                 }
@@ -727,6 +773,8 @@ void MM2::dgPhysManager::Update()
                     auto collidable = entry->GetCollidable(k);
                     if (collidable != nullptr)
                     {
+                        lastCollidedInstance = entry->GetInstance()->GetName();
+                        lastCollidedInstance2 = collidable->GetName();
                         this->CollideInstances(entry->GetInstance(), collidable);
                     }
                 }
@@ -744,6 +792,19 @@ void MM2::dgPhysManager::Update()
             entry->SetFlags(flags);
         }
 
+        // HACK: bangers do something weird in both the base game and my physmgr
+        // working around it but this should really be a proper fix
+        for (int j = 0; j < NumActiveMovers; j++)
+        {
+            auto entry = &Table[j];
+            short flags = entry->GetFlags();
+            if (flags & 1 && entry->GetEntity() == nullptr) 
+            {
+                Errorf("dgPhysManager hack fix was triggered for %s", entry->GetInstance()->GetName());
+                entry->SetFlags(0);
+            }
+        }
+
         // update collider matrix
         for (int j = 0; j < NumActiveMovers; j++)
         {
@@ -751,7 +812,7 @@ void MM2::dgPhysManager::Update()
             if (entry->GetFlags() & 1) 
             {
                 auto collider = entry->GetEntity()->GetCollider();
-                hook::Thunk<0x46D9E0>::ThisCall<void>(collider);
+                collider->UpdateMtx();
             }
         }
     }

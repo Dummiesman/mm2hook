@@ -7,7 +7,7 @@ class vehSirenHandler {
 public:
     void Update();
     void Reset();
-    void SizeOf();
+    void* SizeOf();
     static void Install();
 };
 

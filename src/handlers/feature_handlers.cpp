@@ -36,6 +36,7 @@ static init_handler g_feature_handlers[] = {
 
     CreateHandler<mmHudMapFeatureHandler>("mmHudMapFeatureHandler"),
     CreateHandler<mmIconsHandler>("mmIconsHandler"),
+    CreateHandler<mmInterfaceFeatureHandler>("mmInterfaceFeatureHandler"),
     CreateHandler<mmDashViewHandler>("mmDashView"),
     CreateHandler<mmExternalViewHandler>("mmExternalView"),
     CreateHandler<mmDirSndHandler>("mmDirSnd"),

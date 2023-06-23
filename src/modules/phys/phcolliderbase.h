@@ -63,6 +63,8 @@ namespace MM2
         /*
             phColliderBase members
         */
+        AGE_API void UpdateMtx()                            { hook::Thunk<0x46D9E0>::Call<void>(this); }
+
         int GetID() const
         {
             return this->pInstanceData->ID;

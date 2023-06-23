@@ -21,6 +21,11 @@ namespace MM2
         gfxBitmap* Bitmap;
         float Scale;
     public:
+        OppIconInfo() : Scale(1.0f), Enabled(true), Color(0xFFFFFFFF)
+        {
+
+        }
+
         LPCSTR GetText() const
         {
             return Text;
@@ -38,7 +43,7 @@ namespace MM2
             return vec;
         }
 
-        void SetColor(const Vector4& color)
+        void SetColor(Vector4 const & color)
         {
             this->Color = color.PackColorBGRA();
         }
@@ -49,7 +54,6 @@ namespace MM2
                 .addVariable("Enabled", &OppIconInfo::Enabled)
                 .addVariable("IconIndex", &OppIconInfo::IconIndex)
                 .addProperty("Text", &GetText, &SetText)
-                .addVariable("Bitmap", &OppIconInfo::Bitmap)
                 .addVariable("Scale", &OppIconInfo::Scale)
                 .endClass();
         }

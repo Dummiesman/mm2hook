@@ -20,11 +20,12 @@ namespace MM2
         static hook::Field<0x1C, Vector3> _deliverPosition;
         static hook::Field<0x028, aiVehiclePhysics> _physics;
         static hook::Field<0x979A, unsigned short> _id;
+        static hook::Field<0x979C, unsigned short> _ctfState;
     public:
         aiCTFRacer(void)                                    DONOTCALL;
         aiCTFRacer(const aiCTFRacer &&)                     DONOTCALL;
 
-        AGE_API void Init(int id, char* basename)           { hook::Thunk<0x554470>::Call<void>(this, id, basename); }
+        AGE_API void Init(int id, const char* basename)     { hook::Thunk<0x554470>::Call<void>(this, id, basename); }
 
         aiVehiclePhysics* GetVehiclePhysics() const
         {
@@ -41,7 +42,7 @@ namespace MM2
             return _id.get(this);
         }
 
-        int GetState() const
+        short GetState() const
         {
             return GetVehiclePhysics()->GetState();
         }

@@ -26,6 +26,7 @@ namespace MM2
         luaBind<aiVehicleSpline>(L);
         luaBind<aiVehicleAmbient>(L);
         luaBind<aiVehiclePhysics>(L);
+        luaBind<aiVehiclePhysicsWrapper>(L);
         luaBind<aiRouteRacer>(L);
         luaBind<aiCTFRacer>(L);
         luaBind<aiPoliceOfficer>(L);

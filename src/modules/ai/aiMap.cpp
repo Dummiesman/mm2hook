@@ -16,7 +16,32 @@ namespace MM2
 
     declfield(aiMap::SignalClock)(0x6B31F4);
     declfield(aiMap::Instance)(0x6B2E10);
+
+    // Extensions
+    std::vector<std::string> aiMap::ctfOpponentNames = { "vpauditt" };
     
+    int aiMap::GetCTFOpponentTypeCount()
+    {
+        return ctfOpponentNames.size();
+    }
+
+    LPCSTR aiMap::GetCTFOpponentType(int id)
+    {
+        return ctfOpponentNames.at(id).c_str();
+    }
+
+    void aiMap::SetCTFOpponentTypes(std::vector<std::string> types)
+    {
+        if (types.size() < 1)
+        {
+            Errorf("SetCTFOpponentTypes requires at least one type. (got %i types)", types.size());
+            return;
+        }
+
+        ctfOpponentNames.clear();
+        ctfOpponentNames.assign(types.begin(), types.end());
+    }
+
     // Lua Helpers
     static short routeCalcIntersections[1024];
     std::vector<int> aiMap::calcRouteLua(const Matrix34& srcMatrix, const Vector3& destPosition, bool shortestPath)
@@ -114,6 +139,10 @@ namespace MM2
         return numPaths;
     }
 
+    int aiMap::GetShortcutCount() const {
+        return numShortcuts;
+    }
+    
     int aiMap::GetIntersectionCount() const {
         return numIntersections;
     }
@@ -167,6 +196,7 @@ namespace MM2
 
     void aiMap::BindLua(LuaState L) {
         LuaBinding(L).beginExtendClass<aiMap, asNode>("aiMap")
+            .addStaticFunction("SetCTFOpponentTypes", &SetCTFOpponentTypes)
             .addFunction("CalcRoute", &calcRouteLua)
             .addFunction("MapComponentType", &mapComponentTypeLua)
             .addFunction("MapComponent", &mapComponentLua)
@@ -188,6 +218,7 @@ namespace MM2
             .addPropertyReadOnly("Stats", &GetStats)
             .addPropertyReadOnly("NumAmbientVehicles", &GetAmbientCount)
             .addPropertyReadOnly("NumPaths", &GetPathsCount)
+            .addPropertyReadOnly("NumShortcuts", &GetShortcutCount)
             .addPropertyReadOnly("NumIntersections", &GetIntersectionCount)
             .addPropertyReadOnly("NumPedestrians", &GetPedestrianCount)
             .addPropertyReadOnly("NumCableCars", &GetCableCarCount)

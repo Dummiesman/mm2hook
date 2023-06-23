@@ -48,7 +48,7 @@ namespace MM2
         }
 
         void setNetName(LPCSTR name) {
-            strcpy(NetName, name);
+            strncpy_s(NetName, name, sizeof(NetName));
         }
 
         LPCSTR getVehicleName() {
@@ -56,7 +56,7 @@ namespace MM2
         }
 
         void setVehicleName(LPCSTR name) {
-            strcpy(VehicleName, name);
+            strncpy_s(VehicleName, name, sizeof(VehicleName));
         }
 
         LPCSTR getCityName() {
@@ -64,7 +64,7 @@ namespace MM2
         }
 
         void setCityName(LPCSTR name) {
-            strcpy(CityName, name);
+            strncpy_s(CityName, name, sizeof(CityName));
         }
 
         LPCSTR getCityLocale() const {
@@ -72,7 +72,7 @@ namespace MM2
         }
 
         void setCityLocale(LPCSTR name) {
-            strcpy(CityLocale, name);
+            strncpy_s(CityLocale, name, sizeof(CityLocale));
         }
     public:
         char CityName[40];

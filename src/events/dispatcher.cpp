@@ -92,12 +92,12 @@ void GameEventDispatcher::onDisconnect()
 }
 
 void GameEventDispatcher::onReset() {
-    for (auto cb : resetCallbacks) cb();
-    MM2Lua::OnReset();
-
     //call original
     auto game = mmGameManager::Instance->getGame();
     hook::Thunk<0x413D40>::ThisCall<void>(game);
+
+    for (auto cb : resetCallbacks) cb();
+    MM2Lua::OnReset();
 }
 
 void GameEventDispatcher::Install() {

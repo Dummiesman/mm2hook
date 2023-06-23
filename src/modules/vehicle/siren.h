@@ -13,6 +13,8 @@ namespace MM2
     // Class definitions
     class vehSiren
     {
+    private:
+        static const int MAX_LIGHTS = 8;
     public:
         static float SirenRotationSpeed;
     public:
@@ -24,39 +26,37 @@ namespace MM2
         float RotationRate;
         ltLensFlare* LensFlarePtr;
         //EXTRA FIELD. The hook expands on this class, this is only possible because it's only used like a pointer in the original MM code
-        Vector3 extraLightPositions[24]; //SRN0-23
+        Vector3 extraLightPositions[vehSiren::MAX_LIGHTS]; //SRN0-7
 
         //lua helpers
-        inline bool getHasLights() const {
+        inline bool GetHasLights() const 
+        {
             return HasLights;
         }
 
-        inline int getLightCount() const {
+        inline int GetLightCount() const 
+        {
             return LightCount;
         }
 
-        inline ltLight* getLight(int index) const {
-            //cap index
-            if (index < 0 || index >= 24)
+        ltLight* GetLight(int index) const 
+        {
+            if (index < 0 || index >= vehSiren::MAX_LIGHTS)
                 return nullptr;
             return &ltLightPool[index];
         }
 
-        inline Vector3 getLightPosition(int index) const {
-            //cap index
-            if(index < 0)
-                index = 0;
-            if (index >= 24)
-                index = 23;
+        Vector3 GetLightPosition(int index) const 
+        {
+            if (index < 0 || index >= vehSiren::MAX_LIGHTS)
+                return Vector3::ORIGIN;
             return extraLightPositions[index];
         }
 
-        inline void setLightPosition(int index, Vector3 position) {
-            //cap index
-            if (index < 0)
-                index = 0;
-            if (index >= 24)
-                index = 23;
+        void SetLightPosition(int index, Vector3 position) 
+        {
+            if (index < 0 || index >= vehSiren::MAX_LIGHTS)
+                return;
             extraLightPositions[index] = position;
         }
 
@@ -65,7 +65,7 @@ namespace MM2
         {
             if (this->ltLightPool == nullptr)
             {
-                this->ltLightPool = new ltLight[24];
+                this->ltLightPool = new ltLight[vehSiren::MAX_LIGHTS];
             }
             if (this->LensFlarePtr == nullptr)
             {
@@ -74,14 +74,14 @@ namespace MM2
             return true;
         }
 
-        AGE_API bool AddLight(Vector3* position, Vector3* color)                    
+        AGE_API bool AddLight(Vector3 const & position, Vector3 const & color)                    
         { 
-            if (this->ltLightPool != nullptr && this->LightCount < 24)
+            if (this->ltLightPool != nullptr && this->LightCount < 8)
             {
                 this->HasLights = true;
                 ltLightPool[LightCount].Type = 1;
-                ltLightPool[LightCount].Color = *color;
-                extraLightPositions[LightCount] = *position;
+                ltLightPool[LightCount].Color = color;
+                extraLightPositions[LightCount] = position;
                 ltLightPool[LightCount].SpotExponent = 3.f;
                 ltLightPool[LightCount].Direction = Vector3(1.f, 0.f, 0.f);
                 ltLightPool[LightCount].Direction.RotateY(LightCount * 1.5707964f);
@@ -138,17 +138,15 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<vehSiren>("vehSiren")
                 //variables
-                .addPropertyReadOnly("HasLights", &getHasLights)
-                .addPropertyReadOnly("LightCount", &getLightCount)
+                .addPropertyReadOnly("HasLights", &GetHasLights)
+                .addPropertyReadOnly("LightCount", &GetLightCount)
                 .addVariable("Active", &vehSiren::Active)
                 .addVariable("RotationRate", &vehSiren::RotationRate)
 
-                //statics
-
                 //lua members
-                .addFunction("GetLight", &getLight)
-                .addFunction("GetLightPosition", &getLightPosition)
-                .addFunction("SetLightPosition", &setLightPosition)
+                .addFunction("GetLight", &GetLight)
+                .addFunction("GetLightPosition", &GetLightPosition)
+                .addFunction("SetLightPosition", &SetLightPosition)
 
                 //members
                 .addFunction("Init", &Init)
@@ -157,10 +155,9 @@ namespace MM2
                 .addFunction("Draw", &Draw)
                 .addFunction("Update", &Update)
               
-
                 .endClass();
         }
     };
 
-    ASSERT_SIZEOF(vehSiren, 0x44 + 0x120); //+1 extra field
+    ASSERT_SIZEOF(vehSiren, 0x44 + (sizeof(Vector3) * 8)); // Base size + extra lights size
 }

@@ -190,6 +190,7 @@ namespace MM2
         int GetOpponentCount() const;
         int GetAmbientCount() const;
         int GetPathsCount() const;
+        int GetShortcutCount() const;
         int GetIntersectionCount() const;
 
         aiMapStats GetStats() const;

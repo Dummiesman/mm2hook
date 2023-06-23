@@ -148,6 +148,7 @@
     <ClInclude Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiVehicleAmbientHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\aiVehicleInstanceHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\aiVehiclePhysicsHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\asMeshCardInfoHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\audManagerHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\cityLevelBugfixHandler.h" />
@@ -167,6 +168,7 @@
     <ClInclude Include="src\handlers\bugfix_handlers\mmViewMgrBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\modShaderHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\mpConsistencyHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\NetSelectMenuHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\CityListHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.h" />
@@ -189,6 +191,7 @@
     <ClInclude Include="src\handlers\feature_handlers\gfxPipelineHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gizFerryHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\ImGuiFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\InitMapHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\ltLensFlareHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\lvlHandler.h" />
@@ -202,6 +205,7 @@
     <ClInclude Include="src\handlers\feature_handlers\mmGameMusicDataHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmHudMapFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmIconsHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\mmInterfaceFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmPlayerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmSingleRaceHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmSingleRoamHandler.h" />
@@ -265,6 +269,7 @@
     <ClInclude Include="src\modules\ai\aiVehicleData.h" />
     <ClInclude Include="src\modules\ai\aiVehicleMGR.h" />
     <ClInclude Include="src\modules\ai\aiVehiclePhysics.h" />
+    <ClInclude Include="src\modules\ai\aiVehiclePhysicsWrapper.h" />
     <ClInclude Include="src\modules\ai\aiVehiclePlayer.h" />
     <ClInclude Include="src\modules\ai\aiVehicleSpline.h" />
     <ClInclude Include="src\modules\ai\ArrayList.h" />
@@ -362,6 +367,7 @@
     <ClInclude Include="src\modules\lights.h" />
     <ClInclude Include="src\modules\lights\flare.h" />
     <ClInclude Include="src\modules\lights\light.h" />
+    <ClInclude Include="src\modules\localize\localize.h" />
     <ClInclude Include="src\modules\mmcityinfo.h" />
     <ClInclude Include="src\modules\mmcityinfo\cityinfo.h" />
     <ClInclude Include="src\modules\mmcityinfo\citylist.h" />
@@ -419,6 +425,8 @@
     <ClInclude Include="src\modules\mmui.h" />
     <ClInclude Include="src\modules\mmui\luaPopup.h" />
     <ClInclude Include="src\modules\mmui\pu_menu.h" />
+    <ClInclude Include="src\modules\mmui\vehicle.h" />
+    <ClInclude Include="src\modules\mmui\vselect.h" />
     <ClInclude Include="src\modules\mmwidget.h" />
     <ClInclude Include="src\modules\mmwidget\bm_button.h" />
     <ClInclude Include="src\modules\mmwidget\button.h" />
@@ -602,6 +610,7 @@
     <ClCompile Include="src\handlers\bugfix_handlers\aiPoliceForceHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiVehicleAmbientHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\aiVehicleInstanceHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\aiVehiclePhysicsHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\asMeshCardInfoHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\audManagerHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\cityLevelBugfixHandler.cpp" />
@@ -621,6 +630,7 @@
     <ClCompile Include="src\handlers\bugfix_handlers\mmViewMgrBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\modShaderHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mpConsistencyHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\NetSelectMenuHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\CityListHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.cpp" />
@@ -704,7 +714,11 @@
     <ClCompile Include="src\modules\ai\aiIntersection.cpp" />
     <ClCompile Include="src\modules\ai\aiMap.cpp" />
     <ClCompile Include="src\modules\ai\aiPath.cpp" />
+    <ClCompile Include="src\modules\ai\aiPedestrian.cpp" />
+    <ClCompile Include="src\modules\ai\aiPoliceOfficer.cpp" />
     <ClCompile Include="src\modules\ai\aiVehicle.cpp" />
+    <ClCompile Include="src\modules\ai\aiVehiclePhysics.cpp" />
+    <ClCompile Include="src\modules\ai\aiVehiclePhysicsWrapper.cpp" />
     <ClCompile Include="src\modules\audio.cpp" />
     <ClCompile Include="src\modules\banger.cpp" />
     <ClCompile Include="src\modules\city.cpp" />
@@ -729,11 +743,15 @@
     <ClCompile Include="src\modules\mmeffects.cpp" />
     <ClCompile Include="src\modules\mmeffects\meshform.cpp" />
     <ClCompile Include="src\modules\mmgame.cpp" />
+    <ClCompile Include="src\modules\mmgame\icons.cpp" />
+    <ClCompile Include="src\modules\mmgame\interface.cpp" />
     <ClCompile Include="src\modules\mmgame\mirror.cpp" />
     <ClCompile Include="src\modules\mmgame\wpobject.cpp" />
     <ClCompile Include="src\modules\mminput.cpp" />
     <ClCompile Include="src\modules\mmnetwork.cpp" />
+    <ClCompile Include="src\modules\mmui.cpp" />
     <ClCompile Include="src\modules\mmwidget.cpp" />
+    <ClCompile Include="src\modules\mmwidget\menu.cpp" />
     <ClCompile Include="src\modules\model.cpp" />
     <ClCompile Include="src\modules\model\static2.cpp" />
     <ClCompile Include="src\modules\node.cpp" />

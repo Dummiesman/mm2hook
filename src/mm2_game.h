@@ -16,6 +16,7 @@ namespace MM2
         luaBind<mmArrow>(L);
         luaBind<mmNumberFont>(L);
         luaBind<mmNumber>(L);
+        luaBind<mmText>(L);
         luaBind<mmTextNode>(L);
         luaBind<mmMirror>(L);
         luaBind<mmWaypoints>(L);

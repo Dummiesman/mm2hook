@@ -36,7 +36,7 @@ namespace MM2
             return _vehiclePhysics.ptr(this)->GetCar();
         }
 
-        unsigned short GetState() const
+        short GetState() const
         {
             return _vehiclePhysics.ptr(this)->GetState();
         }
