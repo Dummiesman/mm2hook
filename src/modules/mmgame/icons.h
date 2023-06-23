@@ -1,6 +1,7 @@
 #pragma once
 #include <modules\node.h>
 #include "oppiconinfo.h"
+#include "luaoppicons.h"
 
 namespace MM2
 {
@@ -8,42 +9,38 @@ namespace MM2
     class mmIcons;
 
     // External declarations
+    extern class gfxTexture;
 
     // Class definitions
     class mmIcons : public asNode {
     private:
-        byte _buffer[0xA4];
+        gfxTexture* IconTexture;
+        Vector3 TriangleVerts[4];
+        Vector3 IconVerts[4];
+        Vector2 IconUVs[4];
+        int IconCount;
+        float MinDistance2;
+        float MaxDistance2;
+        Matrix34* CameraMatrixPtr;
+        OppIconInfo* IconInfo;
+        float UVFraction;
+        int IconMode;
+        BOOL DiamondPointers;
     private:
-        static hook::Field<0x9C, int> _iconCount;
-        static hook::Field<0xAC, OppIconInfo*> _icons;
+        void registerOpponentsLua(LuaOppIconInfo& container, LuaRef fontRef);
     public:
-        int GetIconCount() const { return _iconCount.get(this); }
-        OppIconInfo* GetIcon(int index) {
-            if (index < 0 || index >= GetIconCount())
-                return nullptr;
+        int GetIconCount() const;
+        OppIconInfo* GetIcon(int index);
 
-            auto icons = _icons.get(this); 
-            if (icons == nullptr)
-                return nullptr;
-            
-            return &icons[index];
-        }
-
-        AGE_API void RegisterOpponents(OppIconInfo* infos, int numInfos, void* font)
-                                                    { hook::Thunk<0x4322F0>::Call<void>(this, infos, numInfos, font); }
+        AGE_API void RegisterOpponents(OppIconInfo* infos, int numInfos, LocFont* font);
 
         /*
             asNode virtuals
         */        
-        AGE_API void Update() override              { hook::Thunk<0x432390>::Call<void>(this); }
-        AGE_API void Cull() override                { hook::Thunk<0x4323D0>::Call<void>(this); }
+        AGE_API void Update() override;
+        AGE_API void Cull() override;
 
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<mmIcons, asNode>("mmIcons")
-                .addPropertyReadOnly("NumIcons", &GetIconCount)
-                .addFunction("GetIcon", &GetIcon)
-                .endClass();
-        }
+        static void BindLua(LuaState L);
     };
     ASSERT_SIZEOF(mmIcons, 0xBC);
 }
