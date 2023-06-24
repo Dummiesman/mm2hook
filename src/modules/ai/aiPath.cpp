@@ -29,10 +29,8 @@ namespace MM2
     {
         if (num == 0)
             return _intersectionA.get(this);
-        else if (num == 1)
-            return _intersectionB.get(this);
         else
-            return nullptr;
+            return _intersectionB.get(this);
     }
 
     int aiPath::GetSidewalkCount(int side) const

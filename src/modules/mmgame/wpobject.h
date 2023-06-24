@@ -51,7 +51,7 @@ namespace MM2
         AGE_API void Activate();
         AGE_API void Deactivate();
         AGE_API BOOL RadiusHit(Vector3 pos);
-        AGE_API void SetRadius(float  radius);
+        AGE_API void SetRadius(float radius);
         AGE_API void SetPos(Vector3 pos);
         AGE_API void SetHeading(float heading);
         AGE_API void SetHeadingType(int type);

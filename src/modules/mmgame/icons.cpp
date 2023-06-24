@@ -56,13 +56,12 @@ AGE_API void mmIcons::Cull()
             // setup render state
             gfxRenderState::SetCard(icon.MatrixPtr->GetRow(3));
             vglBindTexture(nullptr);
+            vglCurrentColor = icon.Color;
 
             if (DiamondPointers == TRUE)
                 vglBegin(gfxDrawMode::DRAWMODE_TRIANGLESTRIP, 0);
             else
                 vglBegin(gfxDrawMode::DRAWMODE_TRIANGLELIST, 0);
-
-            vglCurrentColor = icon.Color;
                     
             // draw pointer
             Vector3 offset = Vector3(0.0f, 4.0f, 0.0f);
