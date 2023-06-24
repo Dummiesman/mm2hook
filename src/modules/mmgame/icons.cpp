@@ -112,18 +112,22 @@ AGE_API void mmIcons::Cull()
         gfxRenderState::SetWorldMatrix(Matrix34::I);
         gfxRenderState::Regenerate();
 
-        Vector4 tmp;
+        // we use the render state camera matrix as the one given to mmIcons
+        // points to the camera the player was using wen they *initially loaded*
+        auto cameraMatrix = gfxRenderState::GetCameraMatrix();
+        Vector3 cameraPosition = static_cast<Vector3>(cameraMatrix.GetRow(3));
 
         for (int i = 0; i < IconCount; i++)
         {
             auto icon = IconInfo[i];
             if (icon.Enabled && icon.MatrixPtr != nullptr)
             {
-                Vector3 camPosDiff = icon.MatrixPtr->GetRow(3) - CameraMatrixPtr->GetRow(3);
+                Vector3 camPosDiff = icon.MatrixPtr->GetRow(3) - cameraPosition;
                 float camDist2 = camPosDiff.Mag2();
                 
                 if (camDist2 < MaxDistance2)
                 {
+                    Vector4 tmp;
                     Vector4 textPosition = Vector4(icon.MatrixPtr->m30, icon.MatrixPtr->m31 + 2.0f, icon.MatrixPtr->m32, 1.0f);
                     tmp.Dot(textPosition, gfxRenderState::GetFullComposite());
 
