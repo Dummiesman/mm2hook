@@ -62,10 +62,8 @@ void mmHudMapFeatureHandler::DrawIcon(int iconType, const Matrix34& matrix) {
     mtx.m31 += 15.f;
     mtx.Scale(map->GetIconScale());
 
-    uint color = *HudmapIconColors[iconType];
-
     if (iconType >= 0)
-        DrawColoredTri(color, mtx);
+        DrawColoredTri(HudmapIconColors.ptr()[iconType], mtx);
     if (iconType < 0)
         DrawWhiteTri(mtx);
 }
@@ -274,24 +272,27 @@ void mmHudMapFeatureHandler::DrawCops() {
     }
 }
 
-void mmHudMapFeatureHandler::DrawOpponents() {
+void mmHudMapFeatureHandler::DrawOpponents() 
+{
     auto AIMAP = aiMap::GetInstance();
     auto map = reinterpret_cast<mmHudMap*>(this);
 
     float outlineSize = map->GetIconScale() * 1.3f;
     auto oldSize = map->GetIconScale();
 
-    for (int i = 0; i < map->GetOpponentCount(); i++) {
+    for (int i = 0; i < map->GetOpponentCount(); i++) 
+    {
         auto iconInfo = map->GetOpponentIcon(i);
-        auto opponentMtx = *iconInfo->MatrixPtr;
+        if (iconInfo->Enabled && iconInfo->MatrixPtr != nullptr) 
+        {
+            auto opponentMtx = *iconInfo->MatrixPtr;
 
-        if (iconInfo->Enabled) {
             // check if we're in multiplayer
             if (MMSTATE->unk_EC) 
             {
                 DrawOutlinedIcon(i + 2, opponentMtx);
-            } 
-            else 
+            }
+            else  
             {
                 auto opponent = AIMAP->Opponent(i);
                 auto car = opponent->GetCar();
@@ -300,27 +301,46 @@ void mmHudMapFeatureHandler::DrawOpponents() {
 
                 if (curDamage < maxDamage) 
                 {
-                    if (hudMapColorStyle == 0) {
-                        DrawOutlinedIcon(7, opponentMtx);
-                    }
-                    if (hudMapColorStyle == 1) 
+                    switch (hudMapColorStyle)
                     {
-                        DrawOutlinedIcon(i + 2, opponentMtx);
-                    }
-                    if (hudMapColorStyle == 2) {
-                        DrawOutlinedIcon(3, opponentMtx);
-                    }
-                    if (hudMapColorStyle == 3) {
-                        map->SetIconScale(outlineSize);
-                        DrawIcon(0, opponentMtx);
-                        map->SetIconScale(oldSize);
-                        DrawNfsMwOpponentIcon(opponentMtx);
-                    }
-                    if (hudMapColorStyle == 4) {
-                        DrawOutlinedIcon(6, opponentMtx);
-                    }
-                    if (hudMapColorStyle >= 5) {
-                        DrawOutlinedIcon(opponentTriColor, opponentTriOutlineColor, opponentMtx);
+                        case 0: 
+                        {
+                            DrawOutlinedIcon(7, opponentMtx);
+                            break;
+                        }
+                        case 1:
+                        {
+                            DrawOutlinedIcon(i + 2, opponentMtx);
+                            break;
+                        }
+                        case 2:
+                        {
+                            DrawOutlinedIcon(3, opponentMtx);
+                            break;
+                        }
+                        case 3:
+                        {
+                            map->SetIconScale(outlineSize);
+                            DrawIcon(0, opponentMtx);
+                            map->SetIconScale(oldSize);
+                            DrawNfsMwOpponentIcon(opponentMtx);
+                            break;
+                        }
+                        case 4:
+                        {
+                            DrawOutlinedIcon(6, opponentMtx);
+                            break; 
+                        }
+                        case 5:
+                        {
+                            DrawOutlinedIcon(opponentTriColor, opponentTriOutlineColor, opponentMtx);
+                            break;
+                        }
+                        default:
+                        {
+                            DrawOutlinedIcon(7, opponentMtx);
+                            break;
+                        }
                     }
                 }
                 else 
