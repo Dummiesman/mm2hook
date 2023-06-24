@@ -50,6 +50,11 @@ namespace MM2
         return Vector2(this->X * value, this->Y * value);
     }
 
+    Vector2::operator Vector3() const
+    {
+        return Vector3(this->X, this->Y, 0.0f);
+    }
+
     void Vector2::BindLua(LuaState L) {
         LuaBinding(L).beginClass<Vector2>("Vector2")
             .addFactory([](float x = 0.0, float y = 0.0) {

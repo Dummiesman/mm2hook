@@ -7,6 +7,7 @@ namespace MM2
     class Vector2;
 
     // External declarations
+    extern class Vector3;
 
     // Class definitions
     class Vector2 {
@@ -28,6 +29,8 @@ namespace MM2
         Vector2 operator-(const Vector2 vec) const;
         Vector2 operator/(float value) const;
         Vector2 operator*(float value) const;
+        
+        explicit operator Vector3() const;
 
         static void BindLua(LuaState L);
     };

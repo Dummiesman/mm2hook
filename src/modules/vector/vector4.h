@@ -35,6 +35,8 @@ namespace MM2
         AGE_API void Min(const Vector4& vec1, const Vector4& vec2);
         AGE_API void Max(const Vector4& vec1, const Vector4& vec2);
 
+        explicit operator Vector3() const;
+
         // not part of AGE, but useful to use Vector4 as a Color class from Lua
         unsigned int PackColorARGB() const;
         unsigned int PackColorABGR() const;

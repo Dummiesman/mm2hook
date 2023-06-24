@@ -30,6 +30,11 @@ namespace MM2
     AGE_API void Vector4::Min(const Vector4& vec1, const Vector4& vec2)                       { hook::Thunk<0x4C53F0>::Call<void>(this, &vec1, &vec2); }
     AGE_API void Vector4::Max(const Vector4& vec1, const Vector4& vec2)                       { hook::Thunk<0x4C5460>::Call<void>(this, &vec1, &vec2); }
 
+    Vector4::operator Vector3() const
+    {
+        return Vector3(this->X, this->Y, this->Z);
+    }
+
     unsigned int Vector4::PackColorARGB() const
     {
         uint32_t color = 0;

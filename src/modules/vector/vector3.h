@@ -7,6 +7,8 @@ namespace MM2
     class Vector3;
 
     // External declarations
+    extern class Vector4;
+    extern class Vector2;
     extern class Matrix34;
     extern class Matrix44;
 
@@ -67,6 +69,9 @@ namespace MM2
         AGE_API Vector3 operator/(float value) const;
         AGE_API Vector3 operator*(float value) const;
         AGE_API Vector3 operator%(const Vector3& vec) const;
+
+        explicit operator Vector2() const;
+        explicit operator Vector4() const;
 
         static void BindLua(LuaState L);
     };

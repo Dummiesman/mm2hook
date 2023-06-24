@@ -167,6 +167,16 @@ namespace MM2
         return hook::Thunk<0x541770>::Call<Vector3>(this, &vec);
     }
 
+    Vector3::operator Vector2() const
+    {
+        return Vector2(this->X, this->Y);
+    }
+
+    Vector3::operator Vector4() const
+    {
+        return Vector4(this->X, this->Y, this->Z, 0.0f);
+    }
+
     void Vector3::BindLua(LuaState L) {
         LuaBinding(L).beginClass<Vector3>("Vector3")
             .addFactory([](float x = 0.0, float y = 0.0, float z = 0.0) {
