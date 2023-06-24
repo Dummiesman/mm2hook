@@ -246,8 +246,7 @@ void gfxPipelineHandler::SetRes(int width, int height, int cdepth, int zdepth, b
         }
     }
 
-    ioMouse::InvWidth = (1.0f / window_fWidth);
-    ioMouse::InvHeight = (1.0f / window_fHeight);
+    ioMouse::SetRes(window_fWidth, window_fHeight);
 }
 
 void gfxPipelineHandler::gfxWindowCreate(LPCSTR lpWindowName) {
