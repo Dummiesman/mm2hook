@@ -63,7 +63,7 @@ namespace MM2
         AGE_API virtual void Draw(const gfxViewport& a1, uint a2) override;
         AGE_API virtual int FindRoomId(Vector3 const& a1, int a2) const override;
         AGE_API virtual int GetNeighborCount(int a1) const override;
-        AGE_API virtual int GetNeighbors(int* a1, int a2) const override;
+        AGE_API virtual int GetNeighbors(int* neighbourRooms, int room) const override;
         AGE_API virtual int GetTouchedNeighbors(int* a1, int a2, int a3, const Vector4& a4) override;
         AGE_API virtual int GetRoomPerimeter(int roomId, Vector3* out, int outSize) const override;
         AGE_API virtual int GetVisitList(int* a1, int a2, Vector3 const& a3, Vector3 const& a4, int a5, int a6) override;
@@ -86,7 +86,8 @@ namespace MM2
         AGE_API static void LoadPathSet(const char* a1, const char* a2);
         AGE_API static void LoadProp(int a1, const char* a2, const Matrix34& a3);
         AGE_API void DrawRooms(const gfxViewport* a1, uint a2, LPVOID a3, int a4); //should be protected but we use this in the hook
-
+        AGE_API static void SetupLighting(Vector3 const& multiplyColor);
+        
         /*
             Helpers
         */

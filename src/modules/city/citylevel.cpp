@@ -96,6 +96,11 @@ namespace MM2
         hook::Thunk<0x445820>::Call<void>(this, a1, a2, a3, a4);
     }
 
+    AGE_API void cityLevel::SetupLighting(Vector3 const& multiplyColor)
+    {
+        hook::StaticThunk<0x4436A0>::Call<void>(&multiplyColor);
+    }
+
     /*
         Helpers
     */
