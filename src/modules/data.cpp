@@ -25,7 +25,7 @@ inline To bit_cast(const From& src) noexcept
     return reinterpret_cast<To&>(dst);
 }
 
-datCallback* datCallback::CreateParamaterlessLuaCallback(LuaRef func)
+datCallback* datCallback::CreateParamaterlessLuaCallback(const LuaRef func)
 {
     if (func.type() == LuaIntf::LuaTypeID::NIL)
         return datCallback::NullCallback;
@@ -34,13 +34,13 @@ datCallback* datCallback::CreateParamaterlessLuaCallback(LuaRef func)
     func.pushToStack();
     int m_ref = luaL_ref(func.state(), LUA_REGISTRYINDEX);
 
-    assert(func.state() == MM2Lua::GetState());
+    assert(MM2Lua::GetState() == func.state());
 
     return new datCallback([m_ref](void* param) {
         auto state = MM2Lua::GetState();
-        state->getRef(m_ref);
+        state.getRef(m_ref);
 
-        auto ref = state->popValue<LuaRef>();
+        auto ref = state.popValue<LuaRef>();
         MM2Lua::TryCallFunction(ref);
     });
 }

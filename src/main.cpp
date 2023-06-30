@@ -171,7 +171,7 @@ public:
         {
             auto L = MM2Lua::GetState();
             
-            LuaRef func(*L, "GetLocaleString");
+            LuaRef func(L, "GetLocaleString");
             if (func.isFunction())
                 str = func.call<LPCSTR>();
         }

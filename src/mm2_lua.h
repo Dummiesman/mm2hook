@@ -44,7 +44,7 @@ public:
 
     static void TryCallFunction(LuaIntf::LuaRef func);
 public:
-    static LuaState* GetState();
+    static LuaState & GetState();
 
     //
     static bool IsInitialized();

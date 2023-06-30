@@ -266,8 +266,8 @@ void ReloadScript()
     }
 }
 
-LuaState * MM2Lua::GetState() {
-    return &L;
+LuaState & MM2Lua::GetState() {
+    return L;
 }
 
 bool MM2Lua::IsEnabled()

@@ -92,10 +92,10 @@ namespace MM2
             //static_assert(std::is_trivially_copyable<Func>::value, "Function not trivially copyable");
         }
 
-        static datCallback* CreateParamaterlessLuaCallback(LuaRef func);
+        static datCallback* CreateParamaterlessLuaCallback(const LuaRef func);
 
         template <typename TParam>
-        static datCallback* CreateLuaCallback(LuaRef func)
+        static datCallback* CreateLuaCallback(const LuaRef func)
         {
             if (func.type() == LuaIntf::LuaTypeID::NIL)
                 return datCallback::NullCallback;
@@ -108,16 +108,16 @@ namespace MM2
 
             return new datCallback([m_ref](void* param) {
                 auto state = MM2Lua::GetState();
-                state->getRef(m_ref);
+                state.getRef(m_ref);
 
-                auto ref = state->popValue<LuaRef>();
+                auto ref = state.popValue<LuaRef>();
                 auto value = (TParam)param;
                 MM2Lua::TryCallFunction(ref, value);
             });
         }
 
         template <typename TParam, typename TClass>
-        static datCallback* CreateLuaCallback(LuaRef func, TClass* _class)
+        static datCallback* CreateLuaCallback(const LuaRef func, TClass* _class)
         {
             if (func.type() == LuaIntf::LuaTypeID::NIL)
                 return datCallback::NullCallback;
@@ -130,9 +130,9 @@ namespace MM2
 
             return new datCallback([_class, m_ref](void* param) {
                 auto state = MM2Lua::GetState();
-                state->getRef(m_ref);
+                state.getRef(m_ref);
 
-                auto ref = state->popValue<LuaRef>();
+                auto ref = state.popValue<LuaRef>();
                 auto value = (TParam)param;
                 MM2Lua::TryCallFunction(ref, _class, value);
             });
