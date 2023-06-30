@@ -115,7 +115,7 @@ void mmIconsHandler::RegisterOpponents_Blitz(OppIconInfo *icons, int count, LocF
     }
 
     //call original
-    reinterpret_cast<mmIcons*>(this)->RegisterOpponents(icons, count, a3);
+    reinterpret_cast<mmIcons*>(this)->RegisterOpponents(icons, count, nullptr);
 }
 
 void mmIconsHandler::Install() {
