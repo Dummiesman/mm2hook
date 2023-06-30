@@ -104,7 +104,7 @@ namespace MM2
             func.pushToStack();
             int m_ref = luaL_ref(func.state(), LUA_REGISTRYINDEX);
 
-            assert(func.state() == MM2Lua::GetState());
+            assert(MM2Lua::GetState() == func.state());
 
             return new datCallback([m_ref](void* param) {
                 auto state = MM2Lua::GetState();
@@ -126,7 +126,7 @@ namespace MM2
             func.pushToStack();
             int m_ref = luaL_ref(func.state(), LUA_REGISTRYINDEX);
 
-            assert(func.state() == MM2Lua::GetState());
+            assert(MM2Lua::GetState() == func.state());
 
             return new datCallback([_class, m_ref](void* param) {
                 auto state = MM2Lua::GetState();
