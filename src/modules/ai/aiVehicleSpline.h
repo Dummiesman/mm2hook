@@ -20,6 +20,7 @@ namespace MM2
     protected:
         static hook::Field<0x10, aiRailSet> _railSet;
         static hook::Field<0xD4, aiVehicleInstance*> _vehicleInstance;
+        static hook::Field<0xD8, Matrix34*> _matrix;
         static hook::Field<0xF4, float> _curSpeed;
     public:
         aiVehicleSpline(void)                               DONOTCALL;
@@ -27,7 +28,7 @@ namespace MM2
 
         void UpdateObstacleMap(void)                        { hook::Thunk<0x568410>::Call<void>(this); }
 
-        void Position(Vector3 &a1) override                 FORWARD_THUNK;
+        void Position(Vector3 &a1) override                 { hook::Thunk<0x551C40>::Call<void>(this, &a1); }
         float Speed(void) override                          FORWARD_THUNK;
         int CurrentRoadIdx(aiPath **a1, const bool *a2, int *a3) override
                                                             FORWARD_THUNK;
@@ -36,7 +37,7 @@ namespace MM2
         void Update(void) override                          FORWARD_THUNK;
         void Reset(void) override                           FORWARD_THUNK;
         int Type(void) override                             FORWARD_THUNK;
-        Matrix34 & GetMatrix(void) override                 FORWARD_THUNK;
+        Matrix34 & GetMatrix(void) override                 { return hook::Thunk<0x551C80>::Call<Matrix34&>(this); }
         float FrontBumperDistance(void) override            FORWARD_THUNK;
         float BackBumperDistance(void) override             FORWARD_THUNK;
         float LSideDistance(void) override                  FORWARD_THUNK;
@@ -51,24 +52,40 @@ namespace MM2
         virtual void StopVoice(void)                        { hook::Thunk<0x551CB0>::Call<void>(this); }
 
         //fields
-        inline float getCurSpeed()
+        float GetSpeed() const
         {
             return _curSpeed.get(this);
         }
 
-        inline aiRailSet* getRailSet()
+        void SetSpeed(float speed)
+        {
+            _curSpeed.set(this, speed);
+        }
+
+        aiRailSet* GetRailSet()
         {
             return _railSet.ptr(this);
         }
 
-        aiVehicleInstance * getVehicleInstance() const {
+        aiVehicleInstance * GetInst() const 
+        {
             return _vehicleInstance.get(this);
+        }
+
+        void SetMatrix(Matrix34 const& mtx)
+        {
+            _matrix.get(this)->Set(mtx);
+        }
+
+        void SolveYPositionAndOrientation()
+        {
+            hook::Thunk<0x5690C0>::Call<void>(this);
         }
 
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<aiVehicleSpline, aiVehicle>("aiVehicleSpline")
-                .addPropertyReadOnly("VehicleInstance", &getVehicleInstance)
+                .addPropertyReadOnly("VehicleInstance", &GetInst)
                 .endClass();
         }
     };

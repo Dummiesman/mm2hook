@@ -34,7 +34,7 @@ namespace MM2
         void Update(void) override                          FORWARD_THUNK;
         void Reset(void) override                           FORWARD_THUNK;
         int Type(void) override                             FORWARD_THUNK;
-        Matrix34 & GetMatrix(void) override                 FORWARD_THUNK;
+        Matrix34 & GetMatrix(void) override                 { return hook::Thunk<0x53F650>::Call<Matrix34 &>(this); }
         float FrontBumperDistance(void) override            FORWARD_THUNK;
         float BackBumperDistance(void) override             FORWARD_THUNK;
         float LSideDistance(void) override                  FORWARD_THUNK;

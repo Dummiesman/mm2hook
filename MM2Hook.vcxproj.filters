@@ -1681,6 +1681,12 @@
     <ClInclude Include="src\handlers\bugfix_handlers\NetSelectMenuHandler.h">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\ai\aiGoalAvoidPlayer.h">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\ai\aiGoal.h">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2453,6 +2459,9 @@
     </ClCompile>
     <ClCompile Include="src\handlers\bugfix_handlers\NetSelectMenuHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\ai\aiGoalAvoidPlayer.cpp">
+      <Filter>Source Files\modules\ai</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

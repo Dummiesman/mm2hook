@@ -617,9 +617,14 @@ void vehPoliceCarAudioBugfixHandler::Install() {
 
 void aiGoalAvoidPlayerHandler::Install() {
     // fixes traffic reactions when they avoid the player
-    InstallPatch({ 0x90, 0x90, 0x90 }, {
-        0x56B235,
-    });
+    //InstallPatch({ 0x90, 0x90, 0x90 }, {
+    //    0x56B235,
+    //});
+    InstallCallback("aiGoalAvoidPlayer", "Rewrite AvoidPlayer",
+        &aiGoalAvoidPlayer::AvoidPlayer, {
+            cb::call(0x56AF63), // aiGoalAvoidPlayer::Update
+        }
+    );
 }
 
 /*

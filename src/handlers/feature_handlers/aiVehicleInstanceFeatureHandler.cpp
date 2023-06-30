@@ -66,8 +66,8 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
     modStatic* tslight1 = inst->GetGeomBase(aiVehicleInstance::TSLIGHT1_GEOM_ID)->GetHighestLOD();
 
     //get lights stuff
-    float accel = inst->GetSpline()->getRailSet()->GetAccelFactor();
-    float speed = inst->GetSpline()->getCurSpeed();
+    float accel = inst->GetSpline()->GetRailSet()->GetAccelFactor();
+    float speed = inst->GetSpline()->GetSpeed();
 
     byte toggleSignal = *getPtr<byte>(this, 0x1A);
     int signalDelayTime = *getPtr<int>(this, 0x18); // adjusts the delay time for signal lights among traffic vehicles
