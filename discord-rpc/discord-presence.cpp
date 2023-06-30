@@ -122,7 +122,6 @@ void discordHandler::Initialize(int64_t appid)
         MM2::Errorf("discordHandler::Initialize resulted in %s", TranslateResult(result));
     }   
 }
-}
 
 void discordHandler::Update()
 {
