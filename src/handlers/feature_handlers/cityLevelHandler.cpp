@@ -21,6 +21,8 @@ hook::Type<float> sdl_MedThresh(0x5C5710);  // default: 50.0
 
 hook::Type<int> timeOfDay(0x62B068);
 
+static hook::Type<bool> sm_PerRoomLighting = 0x5C5720;
+
 /*
     cityLevelHandler
 */
@@ -65,20 +67,13 @@ static Vector3 intToColor(int value) {
 }
 
 
-void cityLevelHandler::DrawRooms(const gfxViewport* viewport, unsigned int p2, LPVOID roomRecs, int numRooms)
+void cityLevelHandler::UpdateLighting()
 {
-    cityLevelHandler::city_numRooms = numRooms;
-    cityLevelHandler::city_currentRoom = 0;
-
-    auto level = reinterpret_cast<cityLevel*>(this);
-    level->DrawRooms(viewport, p2, roomRecs, numRooms);
-}
-
-void cityLevelHandler::PostUpdate() {
-    // update the SDL lighting
+    // Originally the game calls UpdateLighting() here without first setting up the lights
+    reinterpret_cast<cityLevel*>(lvlLevel::GetSingleton())->SetupLighting(Vector3(1.0, 1.0, 1.0));
     sdlCommon::UpdateLighting();
 
-    // update our shaded lighting
+    // Calculate SDL lighting color
     // TODO: fix lighting quality not being taken into account (harder than it sounds)
     auto timeWeather = $::timeWeathers.ptr(timeOfDay);
 
@@ -100,6 +95,24 @@ void cityLevelHandler::PostUpdate() {
     vglHandler::vglResultColor.g = byte(vglShadedColor.Y * 255.999f);
     vglHandler::vglResultColor.b = byte(vglShadedColor.Z * 255.999f);
     vglHandler::vglResultColor.a = 255;
+}
+
+void cityLevelHandler::LightmapDelete(void* data)
+{
+    // Hooks the lmap data delete
+    hook::StaticThunk<0x577380>::Call<void>(data);
+
+    // Set perRoomLighting to TRUE when this happens as the LMAP exists
+    sm_PerRoomLighting.set(true);
+}
+
+void cityLevelHandler::DrawRooms(const gfxViewport* viewport, unsigned int p2, LPVOID roomRecs, int numRooms)
+{
+    cityLevelHandler::city_numRooms = numRooms;
+    cityLevelHandler::city_currentRoom = 0;
+
+    auto level = reinterpret_cast<cityLevel*>(this);
+    level->DrawRooms(viewport, p2, roomRecs, numRooms);
 }
 
 void cityLevelHandler::SetObjectDetail(int lod) {
@@ -186,11 +199,24 @@ void cityLevelHandler::Install() {
         }
     );
 
-    InstallCallback("cityLevel::Update", "Adds PostUpdate handler.",
-        &PostUpdate, {
-            cb::jmp(0x4452D0), // jump to PostUpdate at the very end
+    InstallCallback("cityLevel::Load", "Fix lighting being delayed by one load.",
+        &UpdateLighting, {
+            cb::call(0x444260),
         }
     );
+
+    InstallCallback("cityLevel::Load - operator delete", "Fix PerRoomLighting never getting reset to true",
+        &LightmapDelete, {
+            cb::call(0x4447B8),
+        }
+    );
+
+    // JMP over weird SetLight code with per room lighting
+    InstallPatch({
+        0xEB,
+        }, {
+            0x4458AD, // cityLevel::DrawRooms
+        });
 
     // moves ped lod threshold to writable memory
     mem::write(0x54BC3D + 2, &ped_LodThreshold);
