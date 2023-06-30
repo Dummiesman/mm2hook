@@ -29,6 +29,8 @@
 #include "ai\aiTrafficLight.h"
 #include "ai\aiPedAudio.h"
 #include "ai\ArrayList.h"
+#include "ai\aiGoal.h"
+#include "ai\aiGoalAvoidPlayer.h"
 #include "ai\aiVehicleSpline.h"
 #include "ai\aiVehicleData.h"
 #include "ai\aiMap.h"
