@@ -63,7 +63,6 @@ void LogFileStream::Flush(bool force)
 void LogFileStream::AppendLine(void)
 {
     fputs("\n", m_file);
-    Flush(true);
 }
 
 void LogFileStream::Format(LPCSTR format, ...)
@@ -112,10 +111,6 @@ void LogFile::Close(void) {
     g_logfile->Close();
 };
 
-void LogFile::Flush(bool force) {
-    g_logfile->Flush(force);
-}
-
 void LogFile::AppendLine(void) {
     g_logfile->AppendLine();
     ConsoleLog::AppendLine();
@@ -123,8 +118,6 @@ void LogFile::AppendLine(void) {
 
 void LogFile::Write(LPCSTR str) {
     g_logfile->Write(str);
-    g_logfile->Flush(false);
-
     ConsoleLog::Write(str);
 };
 
@@ -140,8 +133,6 @@ void LogFile::Format(LPCSTR format, ...) {
     va_end(va);
 
     g_logfile->Write(g_logfile_buffer);
-    g_logfile->Flush(true);
-
     ConsoleLog::Write(g_logfile_buffer);
 };
 
@@ -157,8 +148,6 @@ void LogFile::Print(int level, LPCSTR str) {
     sprintf_s(g_logfile_buffer, "%s%s", Prefixes[level], str);
 
     g_logfile->WriteLine(g_logfile_buffer);
-    g_logfile->Flush(true);
-
     ConsoleLog::Print(level, g_logfile_buffer);
 }
 

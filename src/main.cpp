@@ -74,7 +74,6 @@ public:
             auto logFile = reinterpret_cast<LogFileStream *>(handle);
 
             logFile->Write(buf);
-            logFile->Flush(false);
         }
         return length;
     }
