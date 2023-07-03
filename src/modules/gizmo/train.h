@@ -21,13 +21,19 @@ namespace MM2
         gizPathspline* Pathspline;
         int dword_5c;
     public:
+        AGE_API bool IsFirstStop()                          { return hook::Thunk<0x578B20>::Call<bool>(this); }
+        AGE_API bool IsLastStop()                           { return hook::Thunk<0x578B30>::Call<bool>(this); }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<gizTrainCar, dgUnhitMtxBangerInstance>("gizTrainCar")
+                .addPropertyReadOnly("AtFirstStop", &IsFirstStop)
+                .addPropertyReadOnly("AtLastStop", &IsLastStop)
                 .endClass();
         }
     };
 
-    class gizTrain {
+    class gizTrain 
+    {
     private:
         int State;
         char Direction;
@@ -47,9 +53,19 @@ namespace MM2
         Vector3 GetPosition()                               { return TrainCars[1].GetPosition(); }
         aiSubwayAudio* GetAudio()                           { return &Audio; }
 
+        gizTrainCar* GetCar(int num)
+        {
+            if (num < 0 || num >= 3)
+                return nullptr;
+            return &TrainCars[num];
+        }
+
         // lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<gizTrain>("gizTrain")
+                .addPropertyReadOnly("InStation", &InStation)
+                .addPropertyReadOnly("TimeInStation", &GetTimeInStation)
+                .addFunction("GetCar", &GetCar)
                 .addFunction("GetPosition", &GetPosition)
                 .endClass();
         }
