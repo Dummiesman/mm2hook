@@ -5,6 +5,7 @@
 #include "gizmo\pathspline.h"
 #include "gizmo\pathspline_wrapper.h"
 #include "gizmo\bridge.h"
+#include "gizmo\train.h"
 
 namespace MM2
 {

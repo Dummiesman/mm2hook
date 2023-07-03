@@ -10,8 +10,9 @@ namespace MM2
     extern class mmPlayer;
     extern class mmPopup;
     extern class gizBridgeMgr;
+    extern class gizTrainMgr;
     extern class mmWaypoints;
-
+    
     // Class definitions
     class mmGame : public asNode {
     protected:
@@ -20,6 +21,7 @@ namespace MM2
         static hook::Field<0x94, mmPopup *> _popup;
         static hook::Field<0x240, mmViewMgr> _viewManager;
         static hook::Field<0x767C, gizBridgeMgr*> _bridgeManager;
+        static hook::Field<0x7680, gizTrainMgr*> _trainManager;
     public:
         ANGEL_ALLOCATOR
 
@@ -51,6 +53,10 @@ namespace MM2
 
         gizBridgeMgr* GetBridgeManager(void) const {
             return _bridgeManager.get(this);
+        }
+
+        gizTrainMgr* GetTrainManager(void) const {
+            return _trainManager.get(this);
         }
 
         AGE_API void InitWeather(void)                      { hook::Thunk<0x413370>::Call<void>(this); }
@@ -88,6 +94,7 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmGame, asNode>("mmGame")
                 //properties
+                .addPropertyReadOnly("TrainManager", &GetTrainManager)
                 .addPropertyReadOnly("BridgeManager", &GetBridgeManager)
                 .addPropertyReadOnly("Player", &GetPlayer)
                 .addPropertyReadOnly("Popup", &GetPopup)

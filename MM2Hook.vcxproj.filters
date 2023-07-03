@@ -1687,6 +1687,9 @@
     <ClInclude Include="src\modules\ai\aiGoal.h">
       <Filter>Source Files\modules\ai</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\gizmo\train.h">
+      <Filter>Source Files\modules\gizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2465,6 +2468,9 @@
     </ClCompile>
     <ClCompile Include="src\modules\data\stack.cpp">
       <Filter>Source Files\modules\data</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\vehicle\aisubwayaudio.cpp">
+      <Filter>Source Files\modules\vehicle</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

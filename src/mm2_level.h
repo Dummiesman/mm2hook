@@ -19,5 +19,9 @@ namespace MM2
         luaBind<lvlLevel>(L);
         luaBind<gizBridge>(L);
         luaBind<gizBridgeMgr>(L);
+        luaBind<gizTrainCar>(L);
+        luaBind<gizTrain>(L);
+        luaBind<gizTrainMgr>(L);
+
     }
 }
