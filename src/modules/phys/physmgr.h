@@ -142,6 +142,8 @@ namespace MM2
         static hook::Type<float> perfTotalCollisionTime;
         static hook::Type<float> perfPostCollision;
 
+        static hook::Type<BOOL> sm_OpponentOptimization;
+
         PhysicsStats GetStats();
         void SanityCheck(LPCSTR title, bool checkDelayFlag);
 

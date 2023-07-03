@@ -213,6 +213,8 @@ declfield(dgPhysManager::perfPhysCollide)(0x655DB0);
 
 declfield(dgPhysManager::PlayerInst)(0x65D9E0);
 
+declfield(dgPhysManager::sm_OpponentOptimization)(0x660F20);
+
 static int physTotalProbes = 0;
 
 int dgPhysManager::collideLua(lua_State* L, Vector3 start, Vector3 end)
