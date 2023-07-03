@@ -7,6 +7,10 @@ using namespace MM2;
 /*
     datStack
 */
+declfield(datStack::MapInitialized)(0x6A3CEC);
+declfield(datStack::MapSymbolCount)(0x6A3CE8);
+declfield(datStack::MapSymbols)(0x6A3CE4);
+
 static BOOL DbgHelpLoaded = FALSE;
 
 void datStack::TracebackLua(int length)
@@ -25,6 +29,8 @@ AGE_API char const* datStack::GetTimestamp() {
 };
 
 AGE_API void datStack::LookupAddress(char* buf, int address) {
+    InitDebugSymbols();
+
     if (DbgHelpLoaded)
     {
         DWORD64 dwDisplacement = 0;
@@ -45,19 +51,32 @@ AGE_API void datStack::LookupAddress(char* buf, int address) {
 
             if (hide_module)
             {
-                sprintf(buf, "0x%08zX (%s + 0x%X)", address, pSymbol->Name, static_cast<unsigned int>(dwDisplacement));
+                sprintf(buf, "0x%08zx (%s + 0x%X)", address, pSymbol->Name, static_cast<unsigned int>(dwDisplacement));
             }
             else
             {
-                sprintf(buf, "0x%08zX (%s.%s + 0x%X)", address, module.ModuleName, pSymbol->Name, static_cast<unsigned int>(dwDisplacement));
+                sprintf(buf, "0x%08zx (%s.%s + 0x%X)", address, module.ModuleName, pSymbol->Name, static_cast<unsigned int>(dwDisplacement));
             }
-
             return;
         }
     }
 
     // Grab from map instead
-    hook::StaticThunk<0x4C7470>::Call<void>(buf, address);
+    auto symbol = LookupMapSymbol(address);
+    if (symbol != nullptr)
+    {
+        char undec_name[256];
+
+        const char* function_name =
+            UnDecorateSymbolName(symbol->Name, undec_name, sizeof(undec_name), UNDNAME_NAME_ONLY) ? undec_name
+            : symbol->Name;
+
+        sprintf(buf, "0x%08zx (%s + 0x%zx)", address, function_name, address - symbol->Address);
+        return;
+    }
+
+    // Not found at all
+    sprintf(buf, "0x%08zx (Unknown)", address);
 };
 
 AGE_API void datStack::DoTraceback(int length, DWORD* contextRecordEbpPtr, FILE* output, char const* lineSeperator) {
@@ -80,6 +99,25 @@ AGE_API void datStack::DoTraceback(int length, DWORD* contextRecordEbpPtr, FILE*
 AGE_API void datStack::Traceback(int length, FILE* output) {
     hook::StaticThunk<0x4C75C0>::Call<void>(length, output);
 };
+
+const MapSymbol* datStack::LookupMapSymbol(int address)
+{
+    InitDebugSymbols();
+
+    int symbolCount = MapSymbolCount.get();
+    MapSymbol* first = MapSymbols.get();
+
+    for (int i = 0; i < symbolCount; i++)
+    {
+        int addressRangeMin = (first + i)->Address;
+        int addressRangeMax = (i == (symbolCount - 1)) ? addressRangeMin + 64 : (first + i + 1)->Address;
+
+        if (address >= addressRangeMin && address < addressRangeMax)
+            return (first + i);
+    }
+
+    return nullptr;
+}
 
 //custom extension for exception filter
 int datStack::ExceptionFilter(EXCEPTION_POINTERS* eptrs) {
@@ -151,11 +189,18 @@ int datStack::ExceptionFilterCombined(EXCEPTION_POINTERS* eptrs) {
 
 void datStack::InitDebugSymbols()
 {
-    SymSetOptions(SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS);
-    DbgHelpLoaded = SymInitialize(GetCurrentProcess(), NULL, TRUE);
+    if (!MapInitialized.get()) 
+    {
+        // Init DbgHelp
+        SymSetOptions(SYMOPT_UNDNAME | SYMOPT_DEFERRED_LOADS);
+        DbgHelpLoaded = SymInitialize(GetCurrentProcess(), NULL, TRUE);
 
-    if (!DbgHelpLoaded)
-        Errorf("Failed to load debug symbols, error: 0x%08X (handle 0x%08X)", GetLastError(), GetCurrentProcess());
+        if (!DbgHelpLoaded)
+            Errorf("Failed to load debug symbols, error: 0x%08X (handle 0x%08X)", GetLastError(), GetCurrentProcess());
+
+        // InitMap
+        hook::StaticThunk<0x4C7130>::Call<void>();
+    }
 }
 
 //lua
