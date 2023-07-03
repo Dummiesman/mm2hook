@@ -62,7 +62,7 @@ void PrintHandler::Print(int level, const char* format, va_list args)
     if (datOutput::sm_Stream)
     {
         fprintf(datOutput::sm_Stream, "%s", PrintBuffer);
-        datOutput::sm_Stream->Flush();
+        if (level >= 5) datOutput::sm_Stream->Flush();
     }
 
     OutputDebugStringA(PrintBuffer);
