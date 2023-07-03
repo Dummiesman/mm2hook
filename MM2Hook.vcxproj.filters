@@ -1690,6 +1690,9 @@
     <ClInclude Include="src\modules\gizmo\train.h">
       <Filter>Source Files\modules\gizmo</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\gizTrainHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2469,8 +2472,14 @@
     <ClCompile Include="src\modules\data\stack.cpp">
       <Filter>Source Files\modules\data</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\ai\aiCTFRacer.cpp">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClCompile>
     <ClCompile Include="src\modules\vehicle\aisubwayaudio.cpp">
       <Filter>Source Files\modules\vehicle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\gizTrainHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

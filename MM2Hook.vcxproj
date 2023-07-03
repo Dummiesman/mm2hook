@@ -191,6 +191,7 @@
     <ClInclude Include="src\handlers\feature_handlers\gfxPipelineHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gizFerryHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\gizTrainHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\ImGuiFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\InitMapHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\ltLensFlareHandler.h" />
@@ -656,6 +657,7 @@
     <ClCompile Include="src\handlers\feature_handlers\gfxPipelineHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gizFerryHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\gizParkedCarMgrHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\gizTrainHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\ImGuiFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\InitMapHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\ltLensFlareHandler.cpp" />
@@ -774,6 +776,7 @@
     <ClCompile Include="src\modules\vector\vector4.cpp" />
     <ClCompile Include="src\modules\vehicle.cpp" />
     <ClCompile Include="src\modules\vehicle\aero.cpp" />
+    <ClCompile Include="src\modules\vehicle\aisubwayaudio.cpp" />
     <ClCompile Include="src\modules\vehicle\car.cpp" />
     <ClCompile Include="src\modules\vehicle\cardamage.cpp" />
     <ClCompile Include="src\modules\vehicle\carmodel.cpp" />

@@ -28,6 +28,7 @@ static init_handler g_feature_handlers[] = {
 
     CreateHandler<BridgeFerryHandler>("gizBridge/gizFerry"),
 
+    CreateHandler<gizTrainHandler>("gizTrain"),
     CreateHandler<gizFerryHandler>("gizFerry"),
     CreateHandler<gizParkedCarMgrHandler>("gizParkedCarMgr"),
 
