@@ -2463,6 +2463,9 @@
     <ClCompile Include="src\modules\ai\aiGoalAvoidPlayer.cpp">
       <Filter>Source Files\modules\ai</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\data\stack.cpp">
+      <Filter>Source Files\modules\data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AGE.h">
