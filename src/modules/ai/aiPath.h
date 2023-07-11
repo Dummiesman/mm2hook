@@ -90,7 +90,7 @@ namespace MM2
         AGE_API int Index(Vector3 const& pos) const;
         AGE_API int Lane(Vector3 const& pos, int roadSide) const;
         AGE_API void UpdatePedestrians();
-        AGE_API int RoadVerticie(Vector3 const& position, int side) const;
+        AGE_API int RoadVertice(Vector3 const& position, int side) const;
         AGE_API bool Direction(Matrix34 const& matrix) const;
         void Draw() const;
         void DrawNormals() const;

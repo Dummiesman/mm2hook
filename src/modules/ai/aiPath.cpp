@@ -194,7 +194,7 @@ namespace MM2
         hook::Thunk<0x544150>::Call<void>(this); 
     }
 
-    AGE_API int aiPath::RoadVerticie(Vector3 const& position, int side) const
+    AGE_API int aiPath::RoadVertice(Vector3 const& position, int side) const
     {
         return hook::Thunk<0x5485E0>::Call<int>(this, &position, side);
     }
@@ -301,7 +301,7 @@ namespace MM2
             .addFunction("IsPosOnRoad", &luaIsPosOnRoad)
             .addFunction("Lane", &Lane)
             .addFunction("Index", &Index)
-            .addFunction("RoadVerticie", &RoadVerticie)
+            .addFunction("RoadVertice", &RoadVertice)
             .addFunction("Direction", &Direction)
             .addFunction("GetSidewalkCount", &GetSidewalkCount)
             .addFunction("GetLaneCount", &GetLaneCount)
