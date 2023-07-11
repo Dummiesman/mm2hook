@@ -21,7 +21,7 @@ namespace MM2
         void Update(void) override                          FORWARD_THUNK;
         void Reset(void) override                           FORWARD_THUNK;
         int Type(void) override                             FORWARD_THUNK;
-        void DrawId(void) override                          FORWARD_THUNK;
+        void DrawId(void) const override                    FORWARD_THUNK;
         void ReplayDebug(void) override                     FORWARD_THUNK;
 
         void Impact(int a1) override                        FORWARD_THUNK;

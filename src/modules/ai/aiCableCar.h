@@ -37,7 +37,7 @@ namespace MM2
         float RSideDistance(void) override                  FORWARD_THUNK;
         int CurrentLane(void) override                      FORWARD_THUNK;
         int CurrentRoadId(void) override                    FORWARD_THUNK;
-        void DrawId(void) override                          FORWARD_THUNK;
+        void DrawId(void) const override                    FORWARD_THUNK;
     };
 
     ASSERT_SIZEOF(aiCableCar, 0x184);

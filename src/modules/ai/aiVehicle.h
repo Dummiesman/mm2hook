@@ -112,7 +112,7 @@ namespace MM2
         virtual float RSideDistance(void)                   PURE;
         virtual int CurrentLane(void)                       PURE;
         virtual int CurrentRoadId(void)                     PURE;
-        virtual void DrawId(void)                           PURE;
+        virtual void DrawId(void) const                     PURE;
         virtual void ReplayDebug(void);
 
         //lua

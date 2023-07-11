@@ -82,10 +82,10 @@ namespace MM2
         float RSideDistance(void) override;
         int CurrentLane(void) override;
         int CurrentRoadId(void) override;
-        void DrawId(void) override;
+        void DrawId(void) const override;
         void ReplayDebug(void) override;
 
-        void DrawRouteThroughTraffic();
+        void DrawRouteThroughTraffic() const;
 
         static void BindLua(LuaState L);
     };
