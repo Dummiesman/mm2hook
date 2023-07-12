@@ -21,7 +21,7 @@ namespace MM2
         aiVehiclePlayer(void)                               DONOTCALL;
         aiVehiclePlayer(const aiVehiclePlayer &&)           DONOTCALL;
 
-        inline class vehCar * getCar() {
+        vehCar * GetCar() {
             return _vehCar.get(this);
         }
 
