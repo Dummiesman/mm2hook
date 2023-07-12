@@ -44,7 +44,7 @@ namespace MM2
         float RSideDistance(void) override                  FORWARD_THUNK;
         int CurrentLane(void) override                      FORWARD_THUNK;
         int CurrentRoadId(void) override                    FORWARD_THUNK;
-        void DrawId(void) override                          FORWARD_THUNK;
+        void DrawId(void) const override                    FORWARD_THUNK;
 
         virtual void Impact(int a1)                         FORWARD_THUNK;
         virtual AudImpact * GetAudImpactPtr(void)           FORWARD_THUNK;
