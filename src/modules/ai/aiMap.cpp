@@ -1,4 +1,5 @@
 #include "aiMap.h"
+#include <modules\ai\aiCTFRacer.h>
 
 namespace MM2
 {
@@ -48,7 +49,7 @@ namespace MM2
     {
         Vector3 blank = Vector3();
         short numIntersections = 0;
-        this->CalcRoute(srcMatrix, destPosition, blank, routeCalcIntersections, &numIntersections, 0, 0, (shortestPath) ? TRUE : FALSE);
+        this->CalcRoute(srcMatrix, destPosition, blank, routeCalcIntersections, &numIntersections, 0, 0, shortestPath);
 
         std::vector<int> returnVec;
         for (int i = 0; i < (int)numIntersections; i++) {
@@ -176,7 +177,15 @@ namespace MM2
     AGE_API aiCableCar* aiMap::CableCar(int num) const          { return hook::Thunk<0x534A30>::Call<aiCableCar *>(this, num); }
     AGE_API mcHookman * aiMap::Hookman(int num) const           { return hook::Thunk<0x5349E0>::Call<mcHookman *>(this, num); }
     AGE_API aiRouteRacer * aiMap::Opponent(int num) const       { return hook::Thunk<0x534940>::Call<aiRouteRacer *>(this, num); }
-    AGE_API aiCTFRacer * aiMap::CTFOpponent(int num) const      { return hook::Thunk<0x534990>::Call<aiCTFRacer *>(this, num); }
+    
+    AGE_API aiCTFRacer* aiMap::CTFOpponent(int num) const
+    {
+        if (num >= 0 && num < this->numCTFRacers)
+            return &this->ctfRacers[num];
+        Warningf("Returning a NULL CTFOpponent. Idx: %d", num);
+        return nullptr;
+    }
+
     AGE_API aiPoliceOfficer * aiMap::Police(int num) const      { return hook::Thunk<0x5348F0>::Call<aiPoliceOfficer *>(this, num); }
     AGE_API aiVehiclePlayer * aiMap::Player(int num) const      { return hook::Thunk<0x534AF0>::Call<aiVehiclePlayer *>(this, num); }
     AGE_API aiVehicleAmbient * aiMap::Vehicle(int num) const    { return hook::Thunk<0x5348B0>::Call<aiVehicleAmbient *>(this, num); }
@@ -191,7 +200,7 @@ namespace MM2
     BOOL aiMap::PositionToAIMapComp(const Vector3& position, short* outId, short* outType, short* outRoom, short wantedRoadId)
                                                                 { return hook::Thunk<0x5377B0>::Call<BOOL>(this, &position, outId, outType, outRoom, wantedRoadId); }
     void aiMap::CalcRoute(const Matrix34& srcMatrix, const Vector3& destPosition, const Vector3& unused, short* outIntersectionIds,
-        short* outIntersectionCount, short sourceRoom, short destRoom, BOOL shortestPath)
+        short* outIntersectionCount, short sourceRoom, short destRoom, bool shortestPath)
                                                                 { hook::Thunk<0x53A7A0>::Call<void>(this, &srcMatrix, &destPosition, &unused, outIntersectionIds, outIntersectionCount, sourceRoom, destRoom, shortestPath); }
 
     void aiMap::BindLua(LuaState L) {

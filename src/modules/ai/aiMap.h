@@ -106,11 +106,11 @@ namespace MM2
         short numCopStartPos;
         short copStartPos[10];
 
-        aiRouteRacer **opponents;
+        aiRouteRacer *opponents;
         int numOpponents;
-        aiCTFRacer **ctfRacers;
+        aiCTFRacer *ctfRacers;
         int numCTFRacers;
-        mcHookman **hookmen;
+        mcHookman *hookmen;
         int numHookmen;
         
         aiPedestrian **pedestrians;
@@ -241,7 +241,7 @@ namespace MM2
         int MapComponent(const Vector3& position, short* outId, short* outType, int room);
         BOOL PositionToAIMapComp(const Vector3& position, short* outId, short* outType, short* outRoom, short wantedRoadId);
         void CalcRoute(const Matrix34& srcMatrix, const Vector3& destPosition, const Vector3& unused, short* outIntersectionIds,
-                       short* outIntersectionCount, short sourceRoom, short destRoom, BOOL shortestPath);
+                       short* outIntersectionCount, short sourceRoom, short destRoom, bool shortestPath);
 
         static void BindLua(LuaState L);
     };
