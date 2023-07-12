@@ -188,9 +188,30 @@ void cityLevelHandler::SetObjectDetail(int lod) {
         pedDrawThreshold);
 }
 
+MM2::gfxTexture* cityLevelHandler::GetEnvMap(int roomNumber, Vector3 const& position, float& intensity)
+{
+    auto level = reinterpret_cast<cityLevel*>(this);
+    auto room = level->GetRoomInfo(roomNumber);
+
+    if (room->Flags & 2)
+    {
+        // UNDERGROUND
+        intensity = 0.0f;
+        return nullptr; 
+    }
+    else 
+    {
+        return level->cityLevel::GetEnvMap(roomNumber, position, intensity);
+    }
+}
+
 void cityLevelHandler::Install() {
     InstallVTableHook("cityLevel::SetObjectDetail", &SetObjectDetail, {
         0x5B16E0
+    });
+
+    InstallVTableHook("cityLevel::GetEnvMap", &GetEnvMap, {
+        0x5B16F8
     });
 
     InstallCallback("cityLevel::DrawRooms", "Custom implementation to allow for getting the number of rooms.",
