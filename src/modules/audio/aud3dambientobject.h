@@ -12,7 +12,14 @@ namespace MM2
     // Class definitions
     class Aud3DAmbientObject : public Aud3DObject {
     private:
-        byte _buffer[0x20];
+        int NumSounds;
+        int AudibleArea;
+        char EchoOn;
+        float Attenuation;
+        float Doppler;
+        float Pan;
+        float Speed;
+        void** SoundData;
     public:
         AGE_API Aud3DAmbientObject() {
             scoped_vtable x(this);
@@ -42,8 +49,14 @@ namespace MM2
         AGE_API void Reset()                                     { hook::Thunk<0x5151B0>::Call<void>(this); }
         AGE_API void Update(float speed)                         { hook::Thunk<0x515BE0>::Call<void>(this, speed); }
 
+        int GetSoundCount() const 
+        {
+            return NumSounds;
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<Aud3DAmbientObject, Aud3DObject>("Aud3DAmbientObject")
+                .addPropertyReadOnly("NumSounds", &GetSoundCount)
                 .addFunction("ActivateSound", &ActivateSound)
                 .addFunction("DeactivateSound", &DeactivateSound)
                 .addFunction("GetSoundIndex", &GetSoundIndex)
