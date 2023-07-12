@@ -6,5 +6,6 @@
 class aiCTFRacerHandler {
 public:
     void Init(int id, char* basename);
+    static void* AllocHook(unsigned int size);
     static void Install();
 };
