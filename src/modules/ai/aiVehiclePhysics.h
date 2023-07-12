@@ -1,6 +1,7 @@
 #pragma once
 #include "aiVehicle.h"
 #include "aiPath.h"
+#include "aiMap.h"
 
 
 namespace MM2
@@ -49,6 +50,13 @@ namespace MM2
         static hook::Field<0x9514, int> _activeRoute;
         static hook::Field<0x95E0, int> _routeNodeCounts;
         static hook::Field<0x9644, int> _routeCount;
+        static hook::Field<0x9674, short*> _intersectionIds;
+        static hook::Field<0x9678, short> _numWayPts;
+        static hook::Field<0x967A, short> _curWayPt;
+
+        static hook::Field<0x9680, short> _curAiComponentIndex;
+        static hook::Field<0x967E, short> _curAiComponentType;
+
         static hook::Field<0x9682, unsigned short> _currentLap;
         static hook::Field<0x9684, unsigned short> _lapCount;
     public:
@@ -58,8 +66,13 @@ namespace MM2
         vehCar* GetCar() const;
         short GetState() const;
         void SetState(aiVehiclePhysicsState state);
+        int GetCurrentWaypoint() const;
+        int GetNumWaypoints() const;
+        int GetIntersection(int index) const;
         int GetCurrentLap() const;
         int GetLapCount() const;
+        aiMapComponentType GetCurrentComponentType() const;
+        int GetCurrentComponentIndex() const;
 
         AGE_API void Init(int id, const char* basename, short circuitMode, int audioType);
         AGE_API void RegisterRoute(short* intersectionIDs, short numIntersections, Vector3 const& endPosition, Vector3 const& endOrientation,

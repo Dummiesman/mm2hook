@@ -1,6 +1,7 @@
 #pragma once
 #include "aiVehiclePhysics.h"
 #include "..\rgl.h"
+#include <modules\vehicle\car.h>
 
 using namespace MM2;
 
@@ -36,6 +37,24 @@ void aiVehiclePhysics::SetState(aiVehiclePhysicsState state)
 	_state.set(this, state);
 }
 
+int MM2::aiVehiclePhysics::GetCurrentWaypoint() const
+{
+	return _curWayPt.get(this);
+}
+
+int MM2::aiVehiclePhysics::GetNumWaypoints() const
+{
+	return _numWayPts.get(this);
+}
+
+int MM2::aiVehiclePhysics::GetIntersection(int index) const
+{
+	auto intersections = _intersectionIds.get(this);
+	if (intersections == nullptr || index >= this->GetNumWaypoints() || index < 0)
+		return -1;
+	return intersections[index];
+}
+
 int aiVehiclePhysics::GetCurrentLap() const 
 {
 	return _currentLap.get(this);
@@ -44,6 +63,16 @@ int aiVehiclePhysics::GetCurrentLap() const
 int aiVehiclePhysics::GetLapCount() const
 {
 	return _lapCount.get(this);
+}
+
+aiMapComponentType MM2::aiVehiclePhysics::GetCurrentComponentType() const
+{
+	return static_cast<aiMapComponentType>(_curAiComponentType.get(this));
+}
+
+int MM2::aiVehiclePhysics::GetCurrentComponentIndex() const
+{
+	return _curAiComponentIndex.get(this);
 }
 
 AGE_API void aiVehiclePhysics::Init(int id, const char* basename, short canRepair, int audioType)
@@ -81,10 +110,16 @@ float aiVehiclePhysics::LSideDistance(void)                  { return hook::Thun
 float aiVehiclePhysics::RSideDistance(void)                  { return hook::Thunk<0x567BF0>::Call<float>(this); }
 int aiVehiclePhysics::CurrentLane(void)                      { return hook::Thunk<0x567BA0>::Call<int>(this); }
 int aiVehiclePhysics::CurrentRoadId(void)                    { return hook::Thunk<0x567C50>::Call<int>(this); }
-void aiVehiclePhysics::DrawId(void)                          { hook::Thunk<0x5677C0>::Call<void>(this); }
 void aiVehiclePhysics::ReplayDebug(void)                     { hook::Thunk<0x5679D0>::Call<void>(this); }
 
-void aiVehiclePhysics::DrawRouteThroughTraffic()
+void aiVehiclePhysics::DrawId(void)  const
+{
+	Vector3 position = this->GetCar()->GetICS()->GetPosition();
+	position.Y += 4.4f;
+	vglDrawLabelf(position, "%d", this->GetId());
+}
+
+void aiVehiclePhysics::DrawRouteThroughTraffic() const
 {
    int routeCount = _routeCount.get(this);
    int currentRoute = _activeRoute.get(this);
