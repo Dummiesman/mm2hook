@@ -51,58 +51,64 @@ void mmGameHandler::UpdateSteeringBrakes(void) {
     auto player = game->GetPlayer();
     auto car = player->GetCar();
     auto carsim = car->GetCarSim();
-    auto engine = carsim->GetEngine();
+    
+    
     auto transmission = carsim->GetTransmission();
-    auto curDamage = car->GetCarDamage()->GetCurDamage();
-    auto maxDamage = car->GetCarDamage()->GetMaxDamage();
-    auto inst = mmReplayManager::Instance;
+    int currentGear = transmission->GetGear();
 
-    void *gameInputPtr = *reinterpret_cast<void **>(0x6B1CF0); // pointer to mmInput
+    auto replayman = mmReplayManager::Instance;
+    auto input = GameInputPtr;
 
     int *vehCarPtr = *getPtr<int*>(player, 0x284);
-    int reverse = *getPtr<int>(vehCarPtr, 0x304);
-    int autoReverse = *getPtr<int>(gameInputPtr, 0x18C);
-    int *pedalsSwapped = getPtr<int>(gameInputPtr, 0x1D4); // swaps throttle and brake inputs if true
+    
+    //int *pedalsSwapped = getPtr<int>(gameInputPtr, 0x1D4); // swaps throttle and brake inputs if true
 
     float throttleLimit = *getPtr<float>(this, 0x40C);
     float v2 = *getPtr<float>(this, 0x68);
     float v3 = *getPtr<float>(this, 0x6C);
     float speedMPH = carsim->GetSpeedMPH();
-    float brakes = inst->GetBrakes();
-    float throttle = inst->GetThrottle();
-    float steering = inst->GetSteering();
-    float handbrakes = inst->GetHandBrakes();
+    float brakes = replayman->GetBrakes();
+    float throttle = replayman->GetThrottle();
+    float steering = replayman->GetSteering();
+    float handbrakes = replayman->GetHandBrakes();
 
     carsim->SetBrake(brakes);
     carsim->SetHandbrake(handbrakes);
     player->SetSteering(steering);
 
-    if (reverse >= 2)
+    auto engine = carsim->GetEngine();
+    if (currentGear >= 2)
         engine->SetThrottleInput(min(throttle, throttleLimit));
     else
         engine->SetThrottleInput(throttle);
 
-    if (transmission->IsAuto() && autoReverse) {
-        if (reverse) {
+    // handle auto reverse
+    if (transmission->IsAuto() && input->AutoReverseEnabled()) {
+        if (currentGear > 0) {
             if (speedMPH <= v3 && brakes >= v2 && throttle <= 0.1f) {
-                *pedalsSwapped = true;
+                input->SwapBrakeAndThrottleInput(true);
                 transmission->SetReverse();
             }
         }
-        else if (!reverse && *pedalsSwapped) {
+        else if (currentGear == 0 && input->PedalsSwapped()) {
             if (speedMPH <= v3 && brakes >= v2 && throttle <= 0.1f) {
-                *pedalsSwapped = false;
+                input->SwapBrakeAndThrottleInput(false);
                 transmission->SetForward();
             }
         }
-        else if (!reverse && !*pedalsSwapped) {
+        else if (currentGear == 0 && !input->PedalsSwapped()) {
             if (speedMPH <= v3 && brakes >= v2 && throttle <= 0.1f) {
-                *pedalsSwapped = true;
+                input->SwapBrakeAndThrottleInput(true);
             }
         }
+        
         // reset throttle and brake inputs when the vehicle is destroyed
-        if (curDamage >= maxDamage && *pedalsSwapped)
-            *pedalsSwapped = false;
+        auto curDamage = car->GetCarDamage()->GetCurDamage();
+        auto maxDamage = car->GetCarDamage()->GetMaxDamage();
+
+        if (curDamage >= maxDamage && input->PedalsSwapped()) {
+            input->SwapBrakeAndThrottleInput(false);
+        }
     }
 }
 
