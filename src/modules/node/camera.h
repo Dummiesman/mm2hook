@@ -182,7 +182,7 @@ namespace MM2
     class camCarCS : public camAppCS {
     protected:
         vehCar *car;
-        int unk_10C; // one of: -1, 0, 1?
+        int ReverseMode; // one of: -1, 0, 1?
     public:
         vehCar * getCar(void) const {
             return this->car;
@@ -207,6 +207,7 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camCarCS, camAppCS>("camCarCS")
                 .addPropertyReadOnly("Car", &getCar)
+                .addVariable("ReverseMode", &camCarCS::ReverseMode)
             .endClass();
         }
     };
