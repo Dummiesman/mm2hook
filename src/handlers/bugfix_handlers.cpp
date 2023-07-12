@@ -72,16 +72,16 @@ aiVehicle* findVehicle(vehCar *car) {
     auto AIMAP = aiMap::GetInstance();
 
     // check players
-    for (int i = 0; i < 4; i++) {
-        auto player = &AIMAP->players[i];
+    for (int i = 0; i < AIMAP->GetPlayerCount(); i++) {
+        auto player = AIMAP->Player(i);
 
-        if (player->getCar() == car)
+        if (player->GetCar() == car)
             return player;
     }
 
     // check opponents
-    for (int i = 0; i < AIMAP->numOpponents; i++) {
-        auto opponent = AIMAP->opponents[i];
+    for (int i = 0; i < AIMAP->GetOpponentCount(); i++) {
+        auto opponent = AIMAP->Opponent(i);
 
         if (opponent->GetCar() == car)
             return opponent->GetVehiclePhysics();
