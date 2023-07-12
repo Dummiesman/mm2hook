@@ -99,6 +99,8 @@ namespace MM2
         aiVehicle(void)                                     {};
         aiVehicle(const aiVehicle &&)                       {};
 
+        int GetId() const;
+
         void PreAvoid(const Vector3& a1, const Vector3& a2, float a3, Vector3& a4, Vector3& a5) override;
         float IsBlockingTarget(const Vector3& a1, const Vector3& a2, float a3, float a4) override;
         

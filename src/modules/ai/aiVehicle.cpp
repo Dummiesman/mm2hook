@@ -61,6 +61,12 @@ namespace MM2
     */
     void aiVehicle::PreAvoid(const Vector3& a1, const Vector3& a2, float a3, Vector3& a4, Vector3& a5)
         FORWARD_THUNK;
+
+    int aiVehicle::GetId() const
+    {
+        return this->Id;
+    }
+
     float aiVehicle::IsBlockingTarget(const Vector3& a1, const Vector3& a2, float a3, float a4)
     {  return hook::Thunk<0x556850>::Call<float>(this, &a1, &a2, a3, a4); }
 
