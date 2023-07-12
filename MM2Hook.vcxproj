@@ -716,6 +716,7 @@
     <ClCompile Include="src\events\dispatcher.cpp" />
     <ClCompile Include="src\mm2_replay.cpp" />
     <ClCompile Include="src\modules\ai.cpp" />
+    <ClCompile Include="src\modules\ai\aiCTFRacer.cpp" />
     <ClCompile Include="src\modules\ai\aiGoalAvoidPlayer.cpp" />
     <ClCompile Include="src\modules\ai\aiIntersection.cpp" />
     <ClCompile Include="src\modules\ai\aiMap.cpp" />
