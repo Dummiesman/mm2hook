@@ -94,9 +94,7 @@ void aiPoliceOfficer::DrawRouteThroughTraffic() const
 
 void MM2::aiPoliceOfficer::DrawId() const
 {
-	Vector3 drawPos = this->GetCar()->GetICS()->GetPosition();
-	drawPos.Y += 4.4f;
-	vglDrawLabelf(drawPos, "%d", this->GetId());
+	this->GetVehiclePhysics()->DrawId();
 }
 
 /// <summary>
