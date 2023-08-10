@@ -5,7 +5,7 @@
 namespace MM2
 {
     // Forward declarations
-    class audSoundBase;
+    class AudSoundBase;
 
     // External declarations
 
