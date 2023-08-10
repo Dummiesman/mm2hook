@@ -12,6 +12,19 @@ namespace MM2
 
     // Class definitions
     class uiWidget : public asNode {
+    private:
+        bool getEnabledLua()
+        {
+            return this->Enabled == TRUE;
+        }
+
+        void setEnabledLua(bool enabled)
+        {
+            if (enabled)
+                this->Enable();
+            else
+                this->Disable();
+        }
     public:
         UIMenu *pParent;
         Vector2 MinPos;
@@ -29,7 +42,7 @@ namespace MM2
         BOOL Enabled;
         uint32_t dword64;
         mmToolTip *pTooltip;
-
+    public:
         virtual AGE_API void Disable(void)                  { hook::Thunk<0x4E7330>::Call<void>(this); }
         virtual AGE_API void Enable(void)                   { hook::Thunk<0x4E7340>::Call<void>(this); }
         virtual AGE_API void TurnOn(void)                   { hook::Thunk<0x4E7350>::Call<void>(this); }
@@ -46,6 +59,7 @@ namespace MM2
 
         static void BindLua(LuaState L) {            
             LuaBinding(L).beginClass<uiWidget>("uiWidget")
+                .addProperty("Enabled", &getEnabledLua, &setEnabledLua)
                 .addFunction("Enable", &Enable)
                 .addFunction("Disable", &Disable)
                 .addFunction("TurnOn", &TurnOn)
