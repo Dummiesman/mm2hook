@@ -7,6 +7,7 @@ namespace MM2
     struct gfxInterface;
 
     // External declarations
+    extern class gfxViewport;
 
     // Statically available functions
     declhook(0x4ABE00, _Func<bool>, $gfxAutoDetect);
@@ -128,6 +129,14 @@ namespace MM2
       gfxPipeline
     */
     class gfxPipeline {
+    private:
+        static void luaStartFade(Vector4 color, float time) {
+            gfxPipeline::StartFade(color.PackColorBGRA(), time);
+        }
+
+        static void luaSetFade(Vector4 color) {
+            gfxPipeline::SetFade(color.PackColorBGRA());
+        }
     public:
         static int GetWidth() {
             return window_iWidth.get();
@@ -179,6 +188,8 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<gfxPipeline>("gfxPipeline")
+                .addStaticFunction("SetFade", &luaSetFade)
+                .addStaticFunction("StartFade", &luaStartFade)
                 .addStaticFunction("CopyBitmap", &CopyBitmap)
                 .addStaticProperty("Width", &GetFWidth)
                 .addStaticProperty("Height", &GetFHeight)
