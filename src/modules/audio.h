@@ -2,6 +2,7 @@
 #include <mm2_common.h>
 
 #include "audio\sound.h"
+#include "audio\speech.h"
 #include "audio\aud3dobject.h"
 #include "audio\audcreaturecontainer.h"
 #include "audio\aud3dambientobject.h"

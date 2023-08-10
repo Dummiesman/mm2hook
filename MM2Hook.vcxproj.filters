@@ -1693,6 +1693,9 @@
     <ClInclude Include="src\handlers\feature_handlers\gizTrainHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\audio\speech.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
