@@ -2,6 +2,7 @@
 #include <mm2_common.h>
 #include "texture.h"
 #include "material.h"
+#include "stats.h"
 
 namespace MM2
 {
@@ -97,8 +98,11 @@ namespace MM2
             0x80 | Should Regenerate (gfxRenderState::Regenerate())
         */
         static hook::Type<int> m_Touched;
+        static hook::Type<int> m_TouchedMask;
 
     private:
+        static bool sm_EnableTextures;
+
         static hook::TypeProxy<Matrix44> sm_Camera;
         static hook::TypeProxy<Matrix44> sm_World;
 
@@ -118,6 +122,38 @@ namespace MM2
         static void SetCameraFull(Matrix34 const & mtx) { hook::StaticThunk<0x4B2B50>::Call<void>(&mtx); }
         static void SetView(Matrix34 const & mtx)       { hook::StaticThunk<0x4B2A80>::Call<void>(&mtx); }
     public:
+        static void FlushMasked()
+        {
+            if ((gfxRenderState::m_TouchedMask & gfxRenderState::m_Touched) != 0)
+                RSTATE->DoFlush(&LASTRSTATE);
+        }
+
+        static gfxMaterial* SetMaterial(gfxMaterial* material)
+        {
+            auto original = (&RSTATE->Data)->Material;
+            if (original != material) {
+                (&RSTATE->Data)->Material = material;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x04;
+            }
+            return original;
+        }
+
+        static gfxTexture* SetTexture(int textureIndex, gfxTexture* texture)
+        {
+            assert(textureIndex == 0 || textureIndex == 1);
+
+            if(!gfxRenderState::sm_EnableTextures)
+                texture = nullptr;
+            
+            auto original = (&RSTATE->Data)->Texture[textureIndex];
+            if (original != texture) {
+                gfxTextureChanges++;
+                (&RSTATE->Data)->Texture[textureIndex] = texture;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x02;
+            }
+            return original;
+        }
+
         static D3DCULL SetCullMode(D3DCULL cullMode)
         {
             auto original = static_cast<D3DCULL>((&RSTATE->Data)->CullMode);
@@ -166,6 +202,11 @@ namespace MM2
                 gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
             }
             return original;
+        }
+
+        static bool GetAlphaEnabled()
+        {
+            return (&RSTATE->Data)->AlphaEnable;
         }
 
         static bool SetAlphaEnabled(bool enabled)
@@ -304,8 +345,14 @@ namespace MM2
             return original;
         }
 
+        void DoFlush(gfxRenderStateData* data)
+        {
+            hook::Thunk<0x4B4C40>::Call<void>(this, data);
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<gfxRenderState>("gfxRenderState")
+                .addStaticVariable("EnableTextures", &sm_EnableTextures)
                 .addStaticProperty("WorldMatrix", &GetWorldMatrix, static_cast<void(*)(const Matrix44 &)>(&gfxRenderState::SetWorldMatrix))
                 .addStaticProperty("ViewMatrix", &GetViewMatrix, &SetView)
                 .addStaticProperty("CameraMatrix", &GetCameraMatrix, static_cast<void(*)(const Matrix44&)>(&gfxRenderState::SetCamera))
