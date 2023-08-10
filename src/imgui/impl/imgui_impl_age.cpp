@@ -33,6 +33,11 @@ struct ImGui_ImplAGE_Data
     double Time;
     char* ClipboardTextData;
 
+    gfxViewport* PreviousViewport;
+    bool RSTATE_OldBlend;
+    bool RSTATE_OldLighting;
+    D3DCULL RSTATE_OldCull;
+
     ImGui_ImplAGE_Data() { memset((void*)this, 0, sizeof(*this)); }
 };
 
@@ -40,19 +45,44 @@ static ImGui_ImplAGE_Data* ImGui_ImplAGE_GetBackendData() { return ImGui::GetCur
 
 static void ImGui_ImplAGE_SetupRenderState(ImDrawData* draw_data)
 {
-    rglEnableDisable(rglToken::RGL_BLEND, true);
-    //rglEnableDisable(rglToken::RGL_DEPTH_TEST, false);
-    rglEnableDisable(rglToken::RGL_LIGHTING, false);
-    rglEnableDisable(rglToken::RGL_CULL_FACE, false);
+    ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
+
+    bd->RSTATE_OldBlend = gfxRenderState::SetAlphaEnabled(true);
+    bd->RSTATE_OldLighting = gfxRenderState::SetLighting(false);
+    bd->RSTATE_OldCull = gfxRenderState::SetCullMode(D3DCULL_NONE);
+    bd->PreviousViewport = gfxCurrentViewport.get();
 
     float L = draw_data->DisplayPos.x;
     float R = draw_data->DisplayPos.x + draw_data->DisplaySize.x;
     float T = draw_data->DisplayPos.y;
     float B = draw_data->DisplayPos.y + draw_data->DisplaySize.y;
 
+    auto currentViewport = gfxCurrentViewport.get();
+    if (currentViewport != bd->Viewport) 
+    {
+        bd->Viewport->Ortho(L, R, B, T, -1.0f, +1.0f);
+        gfxPipeline::ForceSetViewport(bd->Viewport);
+    }
+    
+    gfxRenderState::FlushMasked();
+}
+
+static void ImGuiImplAGE_RestoreRenderState()
+{
     ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
-    bd->Viewport->Ortho(L, R, B, T, -1.0f, +1.0f);
-    gfxPipeline::ForceSetViewport(bd->Viewport);
+
+    gfxRenderState::SetAlphaEnabled(bd->RSTATE_OldBlend);
+    gfxRenderState::SetLighting(bd->RSTATE_OldLighting);
+    gfxRenderState::SetCullMode(bd->RSTATE_OldCull);
+    gfxRenderState::SetTexture(0, nullptr);
+
+    auto currentViewport = gfxCurrentViewport.get();
+    if (currentViewport != bd->PreviousViewport)
+    {
+        gfxPipeline::ForceSetViewport(bd->PreviousViewport);
+    }
+
+    gfxRenderState::FlushMasked();
 }
 
 // Render function.
@@ -64,18 +94,14 @@ void ImGui_ImplAGE_RenderDrawData(ImDrawData* draw_data)
         return;
     }
 
-    // Backup AGE state that will be modified
-    auto prevVP = gfxCurrentViewport.get();
-
-    bool lastAlphaEnable = rglIsEnabled(rglToken::RGL_BLEND);
-    //bool lastZEnable = rglIsEnabled(rglToken::RGL_DEPTH_TEST);
-    bool lastLighting = rglIsEnabled(rglToken::RGL_LIGHTING);
-    bool lastCull = rglIsEnabled(rglToken::RGL_CULL_FACE);
-
     // Setup desired render state
     ImGui_ImplAGE_SetupRenderState(draw_data);
 
     // Render command lists
+    ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
+    Matrix34 invMatrix = Matrix34();
+    invMatrix.Identity();
+
     for (int n = 0; n < draw_data->CmdListsCount; n++)
     {
         const ImDrawList* cmd_list = draw_data->CmdLists[n];
@@ -132,14 +158,28 @@ void ImGui_ImplAGE_RenderDrawData(ImDrawData* draw_data)
             }
             else
             {
-                vglBindTexture((gfxTexture*)pcmd->TextureId); 
+                // Setup a virtual "scissor" viewport
+                // Currently negative values are not handled and left unclipped
+                if (pcmd->ClipRect.x < 0 || pcmd->ClipRect.y < 0)
+                {
+                    bd->Viewport->SetWindow(0, 0, draw_data->DisplaySize.x, draw_data->DisplaySize.y, 0, 1);
+                    invMatrix.Identity();
+                }
+                else 
+                {
+                    bd->Viewport->SetWindow(pcmd->ClipRect.x, pcmd->ClipRect.y, pcmd->ClipRect.z - pcmd->ClipRect.x, pcmd->ClipRect.w - pcmd->ClipRect.y, 0, 1);
+                    float invertScaleX = (draw_data->DisplaySize.x / (pcmd->ClipRect.z - pcmd->ClipRect.x));
+                    float invertScaleY = (draw_data->DisplaySize.y / (pcmd->ClipRect.w - pcmd->ClipRect.y));
+                    invMatrix.MakeScale(invertScaleX, invertScaleY, 1.0f);
+                    invMatrix.SetRow(3, Vector3(pcmd->ClipRect.x * invertScaleX * -1.0f, pcmd->ClipRect.y * invertScaleY * -1.0f, 0.0f));
+                }
 
-                vglBegin(MM2::gfxDrawMode::DRAWMODE_TRIANGLELIST, 0); //This doesn't render anything. But it does flush the render state for us!
+                // Setup the render state
+                gfxRenderState::SetWorldMatrix(invMatrix);
+                gfxRenderState::SetTexture(0, (gfxTexture*)pcmd->TextureId);
+                gfxRenderState::FlushMasked();
 
-                //TEST
-                //g_Viewport->SetWindow(pcmd->ClipRect.x, pcmd->ClipRect.y, pcmd->ClipRect.z - pcmd->ClipRect.x, pcmd->ClipRect.w - pcmd->ClipRect.y, 0, 1);
-
-                //
+                // Then render ImGui!
                 lpD3DDev->DrawIndexedPrimitive(D3DPRIMITIVETYPE::D3DPT_TRIANGLELIST, 
                                                D3DFVF_XYZ | D3DFVF_DIFFUSE | D3DFVF_TEX1,
                                                (LPVOID)&vertices[pcmd->VtxOffset],
@@ -151,13 +191,7 @@ void ImGui_ImplAGE_RenderDrawData(ImDrawData* draw_data)
         }
     }
 
-    rglEnableDisable(rglToken::RGL_BLEND, lastAlphaEnable);
-    //rglEnableDisable(rglToken::RGL_DEPTH_TEST, lastZEnable);
-    rglEnableDisable(rglToken::RGL_LIGHTING, lastLighting);
-    rglEnableDisable(rglToken::RGL_CULL_FACE, lastCull);
-
-    if (gfxCurrentViewport.get() != prevVP)
-        gfxPipeline::ForceSetViewport(prevVP);
+    ImGuiImplAGE_RestoreRenderState();
 }
 
 bool ImGui_ImplAGE_CreateDeviceObjects()
