@@ -148,6 +148,30 @@ namespace MM2 {
         }
     };
 
+    class CharBox {
+    private:
+        int size;
+        char* text;
+    public:
+        CharBox(int size) 
+        {
+            this->size = size;
+            this->text = (char*)malloc(size+1);
+        }
+
+        char* GetBoxedValuePointer() { return text; }
+        LPCSTR GetConstBoxedValuePointer() { return text; }
+        void SetText(LPCSTR text) { strcpy_s(this->text, size, text); }
+
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<CharBox>("CharBox")
+                .addConstructor(LUA_ARGS(int))
+                .addProperty("Value", &GetConstBoxedValuePointer, &SetText)
+                .endClass();
+        }
+    };
+
     class string {
     public:
         AGE_API string(const char *str)                     { hook::Thunk<0x505070>::Call<void>(this, str); }
@@ -241,6 +265,7 @@ namespace MM2 {
     template<>
     void luaAddModule<module_common>(LuaState L) {
         luaBind<IntBox>(L);
+        luaBind<CharBox>(L);
         luaBind<FloatBox>(L);
         luaBind<LocFont>(L);
 
