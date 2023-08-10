@@ -23,7 +23,7 @@ namespace MM2
         int TimeWeatherType;
         int ShaderCount;
         bool DrawEnabled;
-        ColorARGB FogColors[16];
+        unsigned int FogColors[16];
         short FogNearClip[16];
         short FogFarClip[16];
     public:
@@ -38,7 +38,10 @@ namespace MM2
                 return Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 
             auto color = FogColors[index];
-            return Vector4(color.r / 255.0f, color.g / 255.0f, color.b / 255.0f, color.a / 255.0f);
+            
+            Vector4 vec;
+            vec.UnpackColorBGRA(color);
+            return vec;
         }
 
         int GetFogNearClip(int index) {
@@ -53,27 +56,23 @@ namespace MM2
             return this->CurrentRotation;
         }
 
-        void setFogNearClip(int index, short clip) {
+        void SetFogNearClip(int index, short clip) {
             if (index < 0 || index >= 16)
                 return;
             this->FogNearClip[index] = clip;
         }
 
-        void setFogFarClip(int index, short clip) {
+        void SetFogFarClip(int index, short clip) {
             if (index < 0 || index >= 16)
                 return;
             this->FogFarClip[index] = clip;
         }
 
-        void setFogColor(int index, byte r, byte g, byte b, byte a) {
+        void SetFogColor(int index, Vector4 color) {
             if (index < 0 || index >= 16)
                 return;
 
-            auto myColor = &this->FogColors[index];
-            myColor->a = a;
-            myColor->r = r;
-            myColor->g = g;
-            myColor->b = b;
+            this->FogColors[index] = color.PackColorBGRA();
         }
 
         void SetRotation(float rotation)
@@ -104,9 +103,9 @@ namespace MM2
                 .addFunction("GetFogColor", &GetFogColor)
                 .addFunction("GetFogNearClip", &GetFogNearClip)
                 .addFunction("GetFogFarClip", &GetFogFarClip)
-                .addFunction("SetFogColor", &setFogColor)
-                .addFunction("SetFogNearClip", &setFogNearClip)
-                .addFunction("SetFogFarClip", &setFogFarClip)
+                .addFunction("SetFogColor", &SetFogColor)
+                .addFunction("SetFogNearClip", &SetFogNearClip)
+                .addFunction("SetFogFarClip", &SetFogFarClip)
                 .endClass();
         }
     };
