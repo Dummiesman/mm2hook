@@ -245,7 +245,7 @@ namespace hook {
     private:
         template<typename TRet, class TThis, typename ...TArgs>
         static INLINE_CONSTEXPR const TRet _ConstCall(int callback, const TThis *This, TArgs ...args) {
-            return (This->*reinterpret_cast<VirtualCall<const TRet, const TThis, TArgs...> &>(callback))(args...);
+            return (const_cast<TThis*>(This)->*reinterpret_cast<VirtualCall<TRet, const TThis, TArgs...> &>(callback))(args...);
         };
 
         template<typename TRet, class TThis, typename ...TArgs>
