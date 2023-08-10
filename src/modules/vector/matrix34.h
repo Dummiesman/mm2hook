@@ -72,6 +72,7 @@ namespace MM2
         void SetColumn(int column, const Vector4& value);
         void SetRow(int row, const Vector3& value);
         AGE_API void Set(const Matrix34 &a1);
+        AGE_API void Print(LPCSTR caption);
 
         static void BindLua(LuaState L);
     };

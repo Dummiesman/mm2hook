@@ -135,6 +135,16 @@ namespace MM2
         return vec.X == this->X && vec.Y == this->Y && vec.Z == this->Z;
     }
 
+    AGE_API void Vector3::Print() const
+    {
+        Printf("%f,%f,%f", this->X, this->Y, this->Z);
+    }
+
+    AGE_API void Vector3::Print(LPCSTR caption)
+    {
+        Printf("%s: %f,%f,%f", caption, this->X, this->Y, this->Z);
+    }
+
     AGE_API void Vector3::operator*=(const Vector3& vec) {
         hook::Thunk<0x43DD50>::Call<void>(this, &vec);
     }
@@ -180,10 +190,7 @@ namespace MM2
     void Vector3::BindLua(LuaState L) {
         LuaBinding(L).beginClass<Vector3>("Vector3")
             .addFactory([](float x = 0.0, float y = 0.0, float z = 0.0) {
-            auto vec = Vector3();
-            vec.X = x;
-            vec.Y = y;
-            vec.Z = z;
+            auto vec = Vector3(x, y, z);
             return vec;
         }, LUA_ARGS(_opt<float>, _opt<float>, _opt<float>))
             .addVariable("x", &Vector3::X)
@@ -217,6 +224,7 @@ namespace MM2
             .addFunction("FlatDist", &FlatDist)
             .addFunction("Approach", &Approach)
             .addFunction("Negate", &Negate)
+            .addFunction("Print", static_cast<void(Vector3::*)(LPCSTR)>(&Vector3::Print))
 
             .addFunction("RGBtoHSV", &RGBtoHSV)
             .addFunction("HSVtoRGB", &HSVtoRGB)

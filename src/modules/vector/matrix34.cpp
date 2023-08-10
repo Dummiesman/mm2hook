@@ -384,6 +384,11 @@ namespace MM2
 
     AGE_API void Matrix34::Set(const Matrix34 &a1) { hook::Thunk<0x4BBFB0>::Call<void>(this, &a1); }
 
+    AGE_API void Matrix34::Print(LPCSTR caption)
+    {
+        hook::Thunk<0x4BF150>::Call<void>(this, caption);
+    }
+
     void Matrix34::BindLua(LuaState L) {
         LuaBinding(L).beginClass<Matrix34>("Matrix34")
             .addFactory([](float m00 = 1.0, float m01 = 0.0, float m02 = 0.0,
@@ -442,6 +447,7 @@ namespace MM2
             .addFunction("LookAt", &Matrix34::LookAt)
 
             .addFunction("Set", &Matrix34::Set)
+            .addFunction("Print", &Matrix34::Print)
             .endClass();
     }
 }

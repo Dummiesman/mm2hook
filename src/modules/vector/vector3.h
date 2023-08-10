@@ -59,6 +59,8 @@ namespace MM2
         AGE_API void HSVtoRGB();
         AGE_API void RGBtoHSV();
         AGE_API bool IsEqual(const Vector3& vec) const;
+        AGE_API void Print() const;
+        AGE_API void Print(LPCSTR caption);
         AGE_API void operator*=(const Vector3& vec);
         AGE_API void operator+=(const Vector3& vec);
         AGE_API void operator-=(const Vector3& vec);

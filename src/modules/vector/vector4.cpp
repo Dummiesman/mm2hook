@@ -30,6 +30,16 @@ namespace MM2
     AGE_API void Vector4::Min(const Vector4& vec1, const Vector4& vec2)                       { hook::Thunk<0x4C53F0>::Call<void>(this, &vec1, &vec2); }
     AGE_API void Vector4::Max(const Vector4& vec1, const Vector4& vec2)                       { hook::Thunk<0x4C5460>::Call<void>(this, &vec1, &vec2); }
 
+    AGE_API void Vector4::Print() const
+    {
+        Printf("%f,%f,%f,%f", this->X, this->Y, this->Z, this->W);
+    }
+
+    AGE_API void Vector4::Print(LPCSTR caption)
+    {
+        Printf("%s: %f,%f,%f,%f", caption, this->X, this->Y, this->Z,this->W);
+    }
+
     Vector4::operator Vector3() const
     {
         return Vector3(this->X, this->Y, this->Z);
@@ -125,6 +135,7 @@ namespace MM2
             .addFunction("Min", &Min)
             .addFunction("Max", &Max)
             .addFunction("Set", static_cast<void(Vector4::*)(const Vector4&)>(&Vector4::Set))
+            .addFunction("Print", static_cast<void(Vector4::*)(LPCSTR)>(&Vector4::Print))
             .endClass();
     }
 }
