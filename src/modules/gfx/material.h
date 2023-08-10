@@ -10,6 +10,9 @@ namespace MM2
 
     // Class definitions
     struct gfxMaterial {
+    public:
+        static hook::Type<gfxMaterial> FlatWhite;
+    public:
         Vector4 Diffuse;
         Vector4 Ambient;
         Vector4 Specular;
