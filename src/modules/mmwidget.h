@@ -12,6 +12,7 @@
 #include "mmwidget\slider.h"
 #include "mmwidget\textroller2.h"
 #include "mmwidget\textdrop.h"
+#include "mmwidget\textfield.h"
 #include "mmwidget\menu.h"
 #include "mmwidget\luaMenu.h"
 #include "mmwidget\manager.h"

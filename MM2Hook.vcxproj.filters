@@ -1696,6 +1696,9 @@
     <ClInclude Include="src\modules\audio\speech.h">
       <Filter>Source Files\modules\audio</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmwidget\textfield.h">
+      <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">

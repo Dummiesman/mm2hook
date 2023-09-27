@@ -17,6 +17,7 @@ namespace MM2
         luaBind<UIBMButton>(L);
         luaBind<UITextRoller2>(L);
         luaBind<UITextDropdown>(L);
+        luaBind<UITextField>(L);
 
         luaBind<mmPopup>(L);
         luaBind<UIMenu>(L);
