@@ -1,4 +1,5 @@
 #pragma once
+#include <mm2_common.h>
 
 namespace MM2
 {
@@ -14,8 +15,8 @@ namespace MM2
     private:  
         Matrix44 m_Projection;
         Matrix44 m_ViewModel;
-        Matrix44 Camera;
-        Matrix44 World;
+        Matrix44 m_Camera;
+        Matrix44 m_World;
         int field_100;
         int field_104;
         int field_108;
@@ -61,6 +62,38 @@ namespace MM2
         AGE_API void SetWindow(int left, int top, int width, int height, float dvMinZ, float dvMaxZ)
         {
             hook::Thunk<0x4B14C0>::Call<void>(this, left, top, width, height, dvMinZ, dvMaxZ);
+        }
+
+        Matrix44 GetProjectionMatrix()
+        {
+            return m_Projection;
+        }
+
+        Matrix44 GetViewMatrix()
+        {
+            Matrix44 view = Matrix44();
+            view.FastInverse(m_Camera);
+            view.Dot(Matrix44::ScaleZ);
+            return view;
+        }
+
+        Matrix44 GetCameraMatrix()
+        {
+            return m_Camera;
+        }
+
+        Vector4 GetWindowRect()
+        {
+            return Vector4(static_cast<float>(m_Viewport.dwX), static_cast<float>(m_Viewport.dwY), static_cast<float>(m_Viewport.dwWidth), static_cast<float>(m_Viewport.dwHeight));
+        }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<gfxViewport>("gfxViewport")
+                .addPropertyReadOnly("CameraMatrix", &GetCameraMatrix)
+                .addPropertyReadOnly("ViewMatrix", &GetViewMatrix)
+                .addPropertyReadOnly("ProjectionMatrix", &GetProjectionMatrix)
+                .addPropertyReadOnly("WindowRect", &GetWindowRect)
+                .endClass();
         }
     };
 
