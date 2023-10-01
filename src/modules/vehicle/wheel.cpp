@@ -129,6 +129,7 @@ namespace MM2
             .addProperty("Radius", &GetRadius, &SetRadius)
             .addProperty("Width", &GetWidth, &SetWidth)
                 
+            .addPropertyReadOnly("IsGrounded", &IsGrounded)
             .addPropertyReadOnly("CurrentPhysicsMaterial", &GetCurrentPhysicsMaterial)
             .addPropertyReadOnly("LatSlipPercent", &GetLatSlipPercent)
             .addPropertyReadOnly("LongSlipPercent", &GetLongSlipPercent)
