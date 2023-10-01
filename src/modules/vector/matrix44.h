@@ -36,6 +36,7 @@ namespace MM2
         float m33;
     public:
         const static Matrix44 I;
+        const static Matrix44 ScaleZ; // Not the most appropriate place for it but it's being used in multiple places
     public:
         Matrix44();
         Matrix44(float m00, float m01, float m02, float m03, 
@@ -57,8 +58,8 @@ namespace MM2
         AGE_API float Determinant(void) const;
         AGE_API void Add(const Matrix44* a1);
         AGE_API void AddScaled(const Matrix44* a1, float a2);
-        AGE_API void Dot(const Matrix44* a1);
-        AGE_API void FastInverse(const Matrix44* a1);
+        AGE_API void Dot(const Matrix44& a1);
+        AGE_API void FastInverse(const Matrix44& a1);
         AGE_API void FromMatrix34(const Matrix34& a1);
         AGE_API void InvertTo(const Matrix44* a1);
         AGE_API void MakeRotX(float a1);

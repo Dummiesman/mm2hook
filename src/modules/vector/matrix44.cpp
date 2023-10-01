@@ -13,6 +13,7 @@ namespace MM2
           m30(m30), m31(m31), m32(m32), m33(m33) {}
 
     const Matrix44 Matrix44::I = Matrix44(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0 ,0.0, 0.0, 0.0, 1.0);
+    const Matrix44 Matrix44::ScaleZ = Matrix44(1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, -1.0, 0.0, 0.0, 0.0, 0.0, 1.0);
 
     Matrix34 Matrix44::toMatrix34Lua() const
     {
@@ -118,8 +119,8 @@ namespace MM2
     AGE_API float Matrix44::Determinant(void) const                                  { return hook::Thunk<0x4C134A>::Call<float>(this); }
     AGE_API void Matrix44::Add(const Matrix44* a1)                                   { hook::Thunk<0x4C0A30>::Call<void>(this, a1); }
     AGE_API void Matrix44::AddScaled(const Matrix44* a1, float a2)                   { hook::Thunk<0x4C0CB0>::Call<void>(this, a1, a2); }
-    AGE_API void Matrix44::Dot(const Matrix44* a1)                                   { hook::Thunk<0x4C0D50>::Call<void>(this, a1); }
-    AGE_API void Matrix44::FastInverse(const Matrix44* a1)                           { hook::Thunk<0x4C1260>::Call<void>(this, a1); }
+    AGE_API void Matrix44::Dot(const Matrix44& a1)                                   { hook::Thunk<0x4C0D50>::Call<void>(this, &a1); }
+    AGE_API void Matrix44::FastInverse(const Matrix44& a1)                           { hook::Thunk<0x4C1260>::Call<void>(this, &a1); }
     AGE_API void Matrix44::FromMatrix34(const Matrix34 & a1)                         { hook::Thunk<0x4C0970>::Call<void>(this, &a1); }
     AGE_API void Matrix44::InvertTo(const Matrix44* a1)                              { hook::Thunk<0x4C1510>::Call<void>(this, a1); }
     AGE_API void Matrix44::MakeRotX(float a1)                                        { hook::Thunk<0x4C1C00>::Call<void>(this, a1); }
