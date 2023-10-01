@@ -46,19 +46,31 @@ namespace MM2
 
     class dgBangerActiveManager : public asNode {
     private:
-        dgBangerActive** ActiveInstances[32];
+        dgBangerActive* ActiveInstances[32];
         dgBangerActive BangerPool[32];
         int NumActive;
     protected:
         static hook::Type<dgBangerActiveManager*> Instance;
     public:
-        inline static dgBangerActiveManager* GetInstance()
+        static dgBangerActiveManager* GetInstance()
         {
             return Instance.get();
         }
 
-        inline int GetNumActive() const {
+        int GetNumActive() const {
             return this->NumActive;
+        }
+
+        dgBangerActive* Get(int num) {
+            return ActiveInstances[num];
+        }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<dgBangerActiveManager, asNode>("dgBangerActiveManager")
+                .addStaticProperty("Instance", &GetInstance)
+                .addPropertyReadOnly("NumActive", &GetNumActive)
+                .addFunction("Get", &Get)
+                .endClass();
         }
 
     };
