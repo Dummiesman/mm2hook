@@ -7,8 +7,10 @@
 #include "..\..\implot\implot.h"
 #include "..\..\imgui\gizmo\ImGuizmo.h"
 #include "..\misc\cpp\imgui_stdlib.h"
-#include <mm2_gfx.h>
-
+#include "..\node\imgui_node_editor.h"
+#include "..\node\blueprint\builders.h"
+#include "..\node\blueprint\widgets.h"
+#include <modules\gfx\texture.h>
 using namespace LuaIntf;
 
 //Helpers for us
