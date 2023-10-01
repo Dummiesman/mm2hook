@@ -65,9 +65,9 @@ static int ImGuiVSliderIntLua(const char* label, const ImVec2& size, int value, 
     return value;
 }
 
-static float ImGuiVSliderFloatLua(const char* label, const ImVec2& size, float value, float min, float max, ImGuiSliderFlags flags)
+static float ImGuiVSliderFloatLua(const char* label, const ImVec2& size, float value, float min, float max, const char* format, ImGuiSliderFlags flags)
 {
-    ImGui::VSliderFloat(label, size, &value, min, max, "%.3f", flags);
+    ImGui::VSliderFloat(label, size, &value, min, max, format, flags);
     return value;
 }
 
@@ -98,30 +98,30 @@ static std::tuple<int, int, int, int> ImGuiSliderInt4Lua(const char* label, int 
     return std::make_tuple(intArray[0], intArray[1], intArray[2], intArray[3]);
 }
 
-static float ImGuiSliderFloatLua(const char* label, float value, float min, float max, ImGuiSliderFlags flags) 
+static float ImGuiSliderFloatLua(const char* label, float value, float min, float max, const char* format, ImGuiSliderFlags flags)
 {
-    ImGui::SliderFloat(label, &value, min, max, "%.3f", flags);
+    ImGui::SliderFloat(label, &value, min, max, format, flags);
     return value;
 }
 
-static std::tuple<float, float> ImGuiSliderFloat2Lua(const char* label, float x, float y, float min, float max, ImGuiSliderFlags flags)
+static std::tuple<float, float> ImGuiSliderFloat2Lua(const char* label, float x, float y, float min, float max, const char* format, ImGuiSliderFlags flags)
 {
     float floatArray[2] = { x, y };
-    ImGui::SliderFloat2(label, floatArray, min, max, "%.3f", flags);
+    ImGui::SliderFloat2(label, floatArray, min, max, format, flags);
     return std::make_tuple(floatArray[0], floatArray[1]);
 }
 
-static std::tuple<float, float, float> ImGuiSliderFloat3Lua(const char* label, float x, float y, float z, float min, float max, ImGuiSliderFlags flags)
+static std::tuple<float, float, float> ImGuiSliderFloat3Lua(const char* label, float x, float y, float z, float min, float max, const char* format, ImGuiSliderFlags flags)
 {
     float floatArray[3] = { x, y ,z };
-    ImGui::SliderFloat3(label, floatArray, min, max, "%.3f", flags);
+    ImGui::SliderFloat3(label, floatArray, min, max, format, flags);
     return std::make_tuple(floatArray[0], floatArray[1], floatArray[2]);
 }
 
-static std::tuple<float, float, float, float> ImGuiSliderFloat4Lua(const char* label, float x, float y, float z, float w, float min, float max, ImGuiSliderFlags flags)
+static std::tuple<float, float, float, float> ImGuiSliderFloat4Lua(const char* label, float x, float y, float z, float w, float min, float max, const char* format, ImGuiSliderFlags flags)
 {
     float floatArray[4] = { x, y ,z,w };
-    ImGui::SliderFloat4(label, floatArray, min, max, "%.3f", flags);
+    ImGui::SliderFloat4(label, floatArray, min, max, format, flags);
     return std::make_tuple(floatArray[0], floatArray[1], floatArray[2], floatArray[3]);
 }
 
@@ -183,9 +183,9 @@ static bool ImGuiDownArrowButtonLua() {
     return ImGui::ArrowButton("##down", ImGuiDir_Down);
 }
 
-static float ImGuiDragFloatLua(const char* label, float value, float speed, float min, float max, ImGuiSliderFlags flags)
+static float ImGuiDragFloatLua(const char* label, float value, float speed, float min, float max, const char* format, ImGuiSliderFlags flags)
 {
-    ImGui::DragFloat(label, &value, speed, min, max, "%.3f", flags);
+    ImGui::DragFloat(label, &value, speed, min, max, format, flags);
     return value;
 }
 
@@ -297,25 +297,25 @@ static std::tuple<float, float, float>ImGuiColorEdit3Lua(const char* label, floa
     return std::make_tuple(colorArray[0], colorArray[1], colorArray[2]);
 }
 
-static std::tuple<float, float, float, float>ImGuiDragFloat4Lua(const char* label, float x, float y, float z, float w, float speed, float min, float max, ImGuiSliderFlags flags)
+static std::tuple<float, float, float, float>ImGuiDragFloat4Lua(const char* label, float x, float y, float z, float w, float speed, float min, float max, const char* format, ImGuiSliderFlags flags)
 {
     float floatArray[4] = { x, y, z, w };
-    bool changed = ImGui::DragFloat4(label, floatArray, speed, min, max, "%.3f", flags);
+    bool changed = ImGui::DragFloat4(label, floatArray, speed, min, max, format, flags);
     return std::make_tuple(floatArray[0], floatArray[1], floatArray[2], floatArray[3]);
 }
 
 
-static std::tuple<float, float, float>ImGuiDragFloat3Lua(const char* label, float x, float y, float z, float speed, float min, float max, ImGuiSliderFlags flags)
+static std::tuple<float, float, float>ImGuiDragFloat3Lua(const char* label, float x, float y, float z, float speed, float min, float max, const char* format, ImGuiSliderFlags flags)
 {
     float floatArray[3] = { x, y, z };
-    bool changed = ImGui::DragFloat3(label, floatArray, speed, min, max, "%.3f", flags);
+    bool changed = ImGui::DragFloat3(label, floatArray, speed, min, max, format, flags);
     return std::make_tuple(floatArray[0], floatArray[1], floatArray[2]);
 }
 
-static std::tuple<float, float>ImGuiDragFloat2Lua(const char* label, float x, float y, float speed, float min, float max, ImGuiSliderFlags flags)
+static std::tuple<float, float>ImGuiDragFloat2Lua(const char* label, float x, float y, float speed, float min, float max, const char* format, ImGuiSliderFlags flags)
 {
     float floatArray[2] = { x, y };
-    bool changed = ImGui::DragFloat2(label, floatArray, speed, min, max, "%.3f", flags);
+    bool changed = ImGui::DragFloat2(label, floatArray, speed, min, max, format, flags);
     return std::make_tuple(floatArray[0], floatArray[1]);
 }
 
@@ -374,10 +374,52 @@ static int ImGuiInputIntLua(const char* label, int v, int step, int step_fast, I
     return v;
 }
 
-static float ImGuiInputFloatLua(const char* label, float v, float step, float step_fast, ImGuiInputTextFlags flags)
+static std::tuple<int, int> ImGuiInputInt2Lua(const char* label, int x, int y, ImGuiInputTextFlags flags)
 {
-    ImGui::InputFloat(label, &v, step, step_fast, "%.3f", flags);
+    int intArray[2] = { x, y };
+    ImGui::InputInt2(label, intArray, flags);
+    return std::make_tuple(intArray[0], intArray[1]);
+}
+
+static std::tuple<int, int, int> ImGuiInputInt3Lua(const char* label, int x, int y, int z, ImGuiInputTextFlags flags)
+{
+    int intArray[3] = { x, y, z };
+    ImGui::InputInt3(label, intArray, flags);
+    return std::make_tuple(intArray[0], intArray[1], intArray[2]);
+}
+
+static std::tuple<int, int, int, int> ImGuiInputInt4Lua(const char* label, int x, int y, int z, int w, ImGuiInputTextFlags flags)
+{
+    int intArray[4] = { x, y, z, w};
+    ImGui::InputInt4(label, intArray, flags);
+    return std::make_tuple(intArray[0], intArray[1], intArray[2], intArray[3]);
+}
+
+static float ImGuiInputFloatLua(const char* label, float v, float step, float step_fast, const char* format, ImGuiInputTextFlags flags)
+{
+    ImGui::InputFloat(label, &v, step, step_fast, format, flags);
     return v;
+}
+
+static std::tuple<float, float> ImGuiInputFloat2Lua(const char* label, float x, float y, const char* format, ImGuiInputTextFlags flags)
+{
+    float floatArray[2] = { x, y };
+    ImGui::InputFloat2(label, floatArray, format, flags);
+    return std::make_tuple(floatArray[0], floatArray[1]);
+}
+
+static std::tuple<float, float, float> ImGuiInputFloat3Lua(const char* label, float x, float y, float z, const char* format, ImGuiInputTextFlags flags)
+{
+    float floatArray[3] = { x, y, z };
+    ImGui::InputFloat3(label, floatArray, format, flags);
+    return std::make_tuple(floatArray[0], floatArray[1], floatArray[2]);
+}
+
+static std::tuple<float, float, float, float> ImGuiInputFloat4Lua(const char* label, float x, float y, float z, float w, const char* format, ImGuiInputTextFlags flags)
+{
+    float floatArray[4] = { x, y, z, w };
+    ImGui::InputFloat4(label, floatArray, format, flags);
+    return std::make_tuple(floatArray[0], floatArray[1], floatArray[2], floatArray[3]);
 }
 
 static void ImGuiPlotHistogramLua(const char* label, LuaRef values, int offset, const char* overlayText, float scale_min, float scale_max, ImVec2 size, int stride)
