@@ -27,11 +27,11 @@ namespace MM2
         AGE_API int GetAdjunctCount(void) const;
         AGE_API void CopyFrom(const modStatic *mod);
         AGE_API modStatic * Clone(void) const;
-        AGE_API void Optimize(modShader *shader);
-        AGE_API void Draw(modShader *shader) const;
-        AGE_API void DrawNoAlpha(modShader *shader) const;
-        AGE_API void DrawEnvMapped(modShader *shader, gfxTexture *tex, float a3) const;
-        AGE_API void DrawOrthoMapped(modShader *shader, gfxTexture *tex, float a3, uint a4) const;
+        AGE_API void Optimize(modShader *shaders);
+        AGE_API void Draw(modShader *shaders) const;
+        AGE_API void DrawNoAlpha(modShader *shaders) const;
+        AGE_API void DrawEnvMapped(modShader *shaders, gfxTexture *envMap, float intensity) const;
+        AGE_API void DrawOrthoMapped(modShader *shaders, gfxTexture *tex, float a3, uint a4) const;
         AGE_API void DrawWithTexGenAndTexMatrix(void) const;
 
         int GetPacketCount() const;

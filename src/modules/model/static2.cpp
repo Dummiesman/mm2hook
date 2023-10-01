@@ -1,4 +1,9 @@
 #include "static2.h"
+#include <modules\gfx\rstate.h>
+#include <modules\gfx\packet.h>
+#include <modules\gfx\pipeline.h>
+#include <modules\model\shader.h>
+
 using namespace MM2;
 
 AGE_API int modStatic::GetTriCount(void) const	                    
@@ -26,9 +31,37 @@ AGE_API void modStatic::Optimize(modShader *shader)
 	return hook::Thunk<0x4A49A0>::Call<void>(this, shader); 
 }
 
-AGE_API void modStatic::Draw(modShader *shader) const	            
+AGE_API void modStatic::Draw(modShader *shaders) const	            
 { 
-	return hook::Thunk<0x4A4550>::Call<void>(this, shader); 
+	gfxRenderState::FlushMasked();
+	bool lastAlphaEnable = gfxRenderState::GetAlphaEnabled();
+	bool alphaEnabled = false;
+
+	for (int i = 0; i < this->PacketCount; i++)
+	{
+		if (shaders != nullptr)
+		{
+			auto shader = shaders[this->ShaderIndices[i]];
+			gfxRenderState::SetMaterial(shader.GetMaterial());
+			gfxRenderState::SetTexture(0, shader.GetTexture());
+			
+			/*if ((this->Flags & 2) != 0
+				&& !alphaEnabled
+				&& (shader.GetMaterial()->Diffuse.W != 1.0 || shader.GetTexture() && (shader.GetTexture()->TexEnv & 0x20000) != 0))*/
+			if (!alphaEnabled && (shader.GetTexture() && (shader.GetTexture()->TexEnv & 0x20000) != 0 || shader.GetMaterial()->Diffuse.W != 1.0))
+			{
+				gfxRenderState::SetAlphaEnabled(true);
+				alphaEnabled = true;
+			}
+
+			gfxRenderState::FlushMasked();
+		}
+
+		auto list = this->ppPacketLists[i];
+		gfxPacket::DrawList(list);
+	}
+
+	gfxRenderState::SetAlphaEnabled(lastAlphaEnable);
 }
 
 AGE_API void modStatic::DrawNoAlpha(modShader *shader) const	    
@@ -36,9 +69,24 @@ AGE_API void modStatic::DrawNoAlpha(modShader *shader) const
 	return hook::Thunk<0x4A4A20>::Call<void>(this, shader); 
 }
 
-AGE_API void modStatic::DrawEnvMapped(modShader *shader, gfxTexture *tex, float a3) const
+AGE_API void modStatic::DrawEnvMapped(modShader* shaders, gfxTexture* envMap, float intensity) const
 {
-	return hook::Thunk<0x4A4A50>::Call<void>(this, shader, tex, a3); 
+	gfxRenderState::SetTexture(0, envMap);
+	gfxRenderState::SetMaterial(gfxMaterial::FlatWhite.ptr());
+	gfxRenderState::FlushMasked();
+	gfxPacket::BeginRef();
+
+	for (int i = 0; i < this->PacketCount; i++)
+	{
+		auto shader = shaders[this->ShaderIndices[i]];
+		int shininess = (int)(shader.GetMaterial()->Shininess * intensity * 255.0f);
+		if (shininess > 0)
+		{
+			lpD3DDev->SetRenderState(D3DRENDERSTATE_AMBIENT, shininess | (((unsigned int)shininess | (((unsigned __int8)shininess | 0xFFFFFF00) << 8)) << 8));
+			auto list = this->ppPacketLists[i];
+			gfxPacket::DrawList(list);
+		}
+	}
 }
 
 AGE_API void modStatic::DrawOrthoMapped(modShader *shader, gfxTexture *tex, float a3, uint a4) const
