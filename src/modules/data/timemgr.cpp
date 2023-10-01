@@ -10,6 +10,7 @@ namespace MM2
     declfield(datTimeManager::Time)(0x6A3C48);
     declfield(datTimeManager::FrameCount)(0x6A3C50);
     declfield(datTimeManager::ElapsedTime)(0x6A3C40);
+    declfield(datTimeManager::PrevElapsedTime)(0x6A3C3C);
 
     AGE_API void datTimeManager::SetTempOversampling(bool a1, int a2)
     {
@@ -40,7 +41,8 @@ namespace MM2
             .addStaticProperty("ActualSeconds", [] {return ActualSeconds.get(); })
             .addStaticProperty("FrameCount", []() {return FrameCount.get(); })
             .addStaticProperty("ElapsedTime", []() {return ElapsedTime.get(); })
-            .addStaticFunction("FixedFrame", &FixedFrame)
+            .addStaticProperty("PrevElapsedTime", []() {return PrevElapsedTime.get(); })
+            .addStaticFunction("FixedFrame", &FixedFrame, LUA_ARGS(float, _def<int, 1>))
             .addStaticFunction("RealTime", &RealTime, LUA_ARGS(_def<float, 0>))
             .endClass();
     }

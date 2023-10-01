@@ -17,6 +17,7 @@ namespace MM2
         static hook::Type<float> Seconds;
         static hook::Type<float> ActualSeconds;
         static hook::Type<float> ElapsedTime;
+        static hook::Type<float> PrevElapsedTime;
         static hook::Type<unsigned int> FrameCount;
         static hook::Type<Timer> Time;
 
