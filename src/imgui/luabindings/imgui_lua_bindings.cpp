@@ -1036,5 +1036,15 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("ShowDemoWindow", &ImGuiShowDemoWindowLua)
         .addFunction("GetIO", &ImGui::GetIO)
         .addFunction("GetStyle", &ImGui::GetStyle)
+
+        // Stack Layout
+        .addFunction("SuspendLayout", &ImGui::SuspendLayout)
+        .addFunction("ResumeLayout", &ImGui::ResumeLayout)
+        .addFunction("BeginHorizontal", static_cast<void(*)(const char *, const ImVec2&, float)>(&ImGui::BeginHorizontal))
+        .addFunction("EndHorizontal", &ImGui::EndHorizontal)
+        .addFunction("BeginVertical", static_cast<void(*)(const char*, const ImVec2&, float)>(&ImGui::BeginVertical))
+        .addFunction("EndVertical", &ImGui::EndVertical)
+        .addFunction("Spring", &ImGui::Spring)
+
         .endModule();
 }
