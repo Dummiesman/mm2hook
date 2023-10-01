@@ -597,6 +597,19 @@ static ImVec4 ImGuiStyle_GetColor(ImGuiStyle& style, int index) {
         return ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
+// ImGuizmoStyle helpers
+static void ImGuizmoStyle_SetColor(ImGuizmo::Style& style, int index, ImVec4 color) {
+    if (index < ImGuizmo::COLOR::COUNT)
+        style.Colors[index] = color;
+}
+
+static ImVec4 ImGuizmoStyle_GetColor(ImGuizmo::Style& style, int index) {
+    if (index < ImGuizmo::COLOR::COUNT)
+        return style.Colors[index];
+    else
+        return ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
+}
+
 // ImFontAtlas helpers
 static ImFont* ImFontAtlas_AddFontFromFileTTF(ImFontAtlas& atlas, const char* file, float size_pixels)
 {
