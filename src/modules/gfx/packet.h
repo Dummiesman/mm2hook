@@ -39,122 +39,28 @@ namespace MM2
         byte unk_24;
         uint unk_28;
     private:
-        Vector3 getPositionLua(int index) 
-        {
-            Vector3 vec;
-            GetPosition(vec, index);
-            return vec;
-        }
-
-        Vector3 getNormalLua(int index)
-        {
-            Vector3 vec;
-            GetNormal(vec, index);
-            return vec;
-        }
-
-        Vector2 getTexCoordLua(int index)
-        {
-            Vector2 vec;
-            GetTexCoord(vec, index);
-            return vec;
-        }
+        Vector3 getPositionLua(int index);
+        Vector3 getNormalLua(int index);
+        Vector2 getTexCoordLua(int index);
     public:
-        void DoLock()
-        {
-            hook::Thunk<0x4B4720>::Call<void>(this);
-        }
-
-        void DoUnlock()
-        {
-            hook::Thunk<0x4B4740>::Call<void>(this);
-        }
-
-        void GetPosition(Vector3 & out, int index)
-        {
-            hook::Thunk<0x4B3C10>::Call<void>(this, &out, index);
-        }
-
-        void GetNormal(Vector3 & out, int index) 
-        {
-            hook::Thunk<0x4B3CF0>::Call<void>(this, &out, index);
-        }
-
-        void GetTexCoord(Vector2 & out, int index)
-        {
-            hook::Thunk<0x4B3E20>::Call<void>(this, &out, index);
-        }
-
-        void GetTri(int* out, int index)
-        {
-            out[0] = Indices[(3 * index) + 0];
-            out[1] = Indices[(3 * index) + 1];
-            out[2] = Indices[(3 * index) + 2];
-        }
-
-        void SetNormal(const Vector3 & normal, int index) 
-        {
-            hook::Thunk<0x4B3D90>::Call<void>(this, &normal, index);
-        }
-
-        void SetPosition(const Vector3 & position, int index) 
-        {
-            hook::Thunk<0x4B3C70>::Call<void>(this, &position, index);
-        }
-
-        void SetTexCoord(const Vector2 & coord, int index) 
-        {
-            Vector2* texCoordPtr;
-            if (this->StartVertex < 0)
-            {
-                int offset = gfxFVFSize(this->VertexTypeDesc) * index;
-                texCoordPtr = (Vector2*)(this->Vertices + gfxFVFOffset(this->VertexTypeDesc, 0x100) + offset);
-            }
-            else 
-            {
-                int offset = gfxFVFSize(this->VertexTypeDesc) * (this->StartVertex + index);
-                texCoordPtr = (Vector2*)(this->Positions + gfxFVFOffset(this->VertexTypeDesc, 0x100) + offset);
-            }
-            
-            texCoordPtr->X = coord.X;
-            texCoordPtr->Y = coord.Y;
-        }
-
-        int GetStartVertex() 
-        {
-            return this->StartVertex;
-        }
-
-        unsigned int GetAdjunctCount() const
-        {
-            return this->AdjunctCount;
-        }
-
-        unsigned int GetTriangleCount() const
-        {
-            return this->TriCount;
-        }
-
-        gfxPacket* GetNext() 
-        {
-            return this->Next;
-        }
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<gfxPacket>("gfxPacket")
-                .addPropertyReadOnly("Next", &GetNext)
-                .addPropertyReadOnly("NumAdjuncts", &GetAdjunctCount)
-                .addPropertyReadOnly("NumTriangles", &GetTriangleCount)
-                .addFunction("DoLock", &DoLock)
-                .addFunction("DoUnlock", &DoUnlock)
-                .addFunction("SetPosition", &SetPosition)
-                .addFunction("GetPosition", &getPositionLua)
-                .addFunction("SetNormal", &SetNormal)
-                .addFunction("GetNormal", &getNormalLua)
-                .addFunction("SetTexCoord", &SetTexCoord)
-                .addFunction("GetTexCoord", &getTexCoordLua)
-                .endClass();
-        }
+        static void BeginRef();
+        void DoLock();
+        void DoUnlock();
+        void GetPosition(Vector3& out, int index);
+        void GetNormal(Vector3& out, int index);
+        void GetTexCoord(Vector2& out, int index);
+        void GetTri(int* out, int index);
+        void SetNormal(const Vector3& normal, int index);
+        void SetPosition(const Vector3& position, int index);
+        void SetTexCoord(const Vector2& coord, int index);
+        int GetStartVertex();
+        unsigned int GetAdjunctCount() const;
+        unsigned int GetTriangleCount() const;
+        gfxPacket* GetNext();
+        void Draw(int a2 = -1);
+        void Draw(const Matrix44* a2, int a3 = -1);
+        static void DrawList(gfxPacketList const* list);
+        static void BindLua(LuaState L);
     };
 
     // yes, this is actually how it is in MM2
