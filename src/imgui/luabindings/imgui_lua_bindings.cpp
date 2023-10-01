@@ -56,8 +56,9 @@ static bool ImGuiBegin2Lua(const char* name, ImGuiWindowFlags flags = 0)
     return ImGui::Begin(name, nullptr, flags);    
 }
 
-static std::tuple<bool, bool> ImGuiBeginLua(const char* name, bool bOpen, ImGuiWindowFlags flags = 0)
+static std::tuple<bool, bool> ImGuiBeginLua(const char* name, ImGuiWindowFlags flags = 0)
 {
+    bool bOpen = true;
     bool draw =  ImGui::Begin(name, &bOpen, flags);
     return std::make_tuple(draw, bOpen);
 }
@@ -134,7 +135,7 @@ static int ImGuiRadioButtonLua(const char* label, int selectedId, int id)
     return selectedId;
 }
 
-static void ImGuiPushIDLua(int id) 
+static void ImGuiPushIDLua(const char* id) 
 {
     ImGui::PushID(id);
 }
@@ -799,6 +800,19 @@ static ImFont* ImFontAtlas_AddFontFromMemoryCompressedBase85TTF(ImFontAtlas& atl
     return atlas.AddFontFromMemoryCompressedBase85TTF(data, size_pixels);
 }
 
+// ImFontGlyphRangesBuilder helpers
+static void ImFontGlyphRangesBuilder_AddText(ImFontGlyphRangesBuilder& builder, const char* text)
+{
+    builder.AddText(text);
+}
+
+static ImWchar* ImFontGlyphRangesBuilder_BuildRanges(ImFontGlyphRangesBuilder& builder)
+{
+    auto vec = ImVector<ImWchar>();
+    builder.BuildRanges(&vec);
+    return vec.begin();
+}
+
 //
 static void ImguiBindLua(LuaState L) {
     LuaBinding(L).beginClass<ImPlotPoint>("ImPlotPoint")
@@ -841,11 +855,27 @@ static void ImguiBindLua(LuaState L) {
     LuaBinding(L).beginClass<ImFont>("ImFont")
         .endClass();
 
+    LuaBinding(L).beginClass<ImFontGlyphRangesBuilder>("ImFontGlyphRangesBuilder")
+        .addConstructor(LUA_ARGS())
+        .addFunction("Clear", &ImFontGlyphRangesBuilder::Clear)
+        .endClass();
+
     LuaBinding(L).beginClass<ImFontConfig>("ImFontConfig")
+        .addVariableRef("GlyphRanges", &ImFontConfig::GlyphRanges)
+        .addConstructor(LUA_ARGS())
         .endClass();
 
     LuaBinding(L).beginClass<ImFontAtlas>("ImFontAtlas")
         .addFunction("Build", &ImFontAtlas::Build)
+        .addFunction("GetGlyphRangesDefault", &ImFontAtlas::GetGlyphRangesDefault)
+        .addFunction("GetGlyphRangesGreek", &ImFontAtlas::GetGlyphRangesGreek)
+        .addFunction("GetGlyphRangesKorean", &ImFontAtlas::GetGlyphRangesKorean)
+        .addFunction("GetGlyphRangesJapanese", &ImFontAtlas::GetGlyphRangesJapanese)
+        .addFunction("GetGlyphRangesChineseFull", &ImFontAtlas::GetGlyphRangesChineseFull)
+        .addFunction("GetGlyphRangesChineseSimplifiedCommon", &ImFontAtlas::GetGlyphRangesChineseSimplifiedCommon)
+        .addFunction("GetGlyphRangesCyrillic", &ImFontAtlas::GetGlyphRangesCyrillic)
+        .addFunction("GetGlyphRangesThai", &ImFontAtlas::GetGlyphRangesThai)
+        .addFunction("GetGlyphRangesVietnamese", &ImFontAtlas::GetGlyphRangesVietnamese)
         .addMetaFunction("AddFontFromFileTTF", &ImFontAtlas_AddFontFromFileTTF)
         .addMetaFunction("AddFontFromMemoryTTF", &ImFontAtlas_AddFontFromMemoryTTF)
         .addMetaFunction("AddFontFromMemoryCompressedBase85TTF", &ImFontAtlas_AddFontFromMemoryCompressedBase85TTF)
@@ -1111,6 +1141,8 @@ static void ImguiBindLua(LuaState L) {
         .endClass();
 
     LuaBinding(L).beginModule("ImGui")
+        .addFunction("ShowDemoWindow", &ImPlotShowDemoWindowLua)
+
         .addFunction("Button", &ImGui::Button)
         .addFunction("InvisibleButton", &ImGui::InvisibleButton)
         .addFunction("SmallButton", &ImGui::SmallButton)
@@ -1142,7 +1174,13 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("DragInt4", &ImGuiDragInt4Lua)
 
         .addFunction("InputInt", &ImGuiInputIntLua)
+        .addFunction("InputInt2", &ImGuiInputInt2Lua)
+        .addFunction("InputInt3", &ImGuiInputInt3Lua)
+        .addFunction("InputInt4", &ImGuiInputInt4Lua)
         .addFunction("InputFloat", &ImGuiInputFloatLua)
+        .addFunction("InputFloat2", &ImGuiInputFloat2Lua)
+        .addFunction("InputFloat3", &ImGuiInputFloat3Lua)
+        .addFunction("InputFloat4", &ImGuiInputFloat4Lua)
         .addFunction("InputText", &ImGuiInputTextLua)
         .addFunction("InputTextMultiline", &ImGuiInputTextMultilineLua)
         .addFunction("InputTextWithHint", &ImGuiInputTextWithHintLua)
@@ -1221,6 +1259,7 @@ static void ImguiBindLua(LuaState L) {
 
         .addFunction("TreeNode", &ImGuiTreeNodeLua)
         .addFunction("TreePop", &ImGui::TreePop)
+        .addFunction("TreePush", static_cast<void(*)(const char*)>(&ImGui::TreePush))
 
         .addFunction("Indent", &ImGui::Indent)
         .addFunction("Unindent", &ImGui::Unindent)
