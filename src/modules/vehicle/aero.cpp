@@ -40,7 +40,7 @@ namespace MM2
             .addProperty("AngCDamp", &GetAngCDamp, &SetAngCDamp)
             .addProperty("AngVelDamp", &GetAngVelDamp, &SetAngVelDamp)
             .addProperty("AngVel2Damp", &GetAngVel2Damp, &SetAngVel2Damp)
-            .addProperty("Drag", &GetDrag, &SetDown)
+            .addProperty("Drag", &GetDrag, &SetDrag)
             .addProperty("Down", &GetDown, &SetDown)
 
             .endClass();

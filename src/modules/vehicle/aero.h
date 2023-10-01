@@ -15,8 +15,8 @@ namespace MM2
     private:
         BOOL m_EnableAero;
         vehCarSim* m_CarSimPtr;
-        Vector3 m_AngCDamp;
-        Vector3 m_AngVelDamp;
+        Vector3 m_AngCDamp; // Ang Const
+        Vector3 m_AngVelDamp; // Ang
         Vector3 m_AngVel2Damp;
         float m_Drag;
         float m_Down;
