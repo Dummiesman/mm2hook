@@ -610,6 +610,149 @@ static void ImPlot_SetupAxisTicks(ImAxis idx, double v_min, double v_max, int n_
     ImPlot::SetupAxisTicks(idx, v_min, v_max, n_ticks, labels, show_default);
 }
 
+///////////////////////
+//IMNODEEDIT BINDINGS//
+///////////////////////
+static void ImNodeEditBeginPin(int id, int kind)
+{
+    ax::NodeEditor::BeginPin(id, static_cast<ax::NodeEditor::PinKind>(kind));
+}
+
+static void ImNodeEditBeginNode(int id)
+{
+    ax::NodeEditor::BeginNode(id);
+}
+
+static std::tuple<bool, int, int> ImNodeEditQueryNewLink()
+{
+    ax::NodeEditor::PinId a;
+    ax::NodeEditor::PinId b;
+    bool res = ax::NodeEditor::QueryNewLink(&a, &b);
+    return std::make_tuple(res, (res && a) ? static_cast<int>(a.Get()) : -1, (res && b) ? static_cast<int>(b.Get()) : -1);
+}
+
+static std::tuple<bool, int> ImNodeEditQueryNewNode()
+{
+    ax::NodeEditor::PinId pin;
+    bool res = ax::NodeEditor::QueryNewNode(&pin);
+    return std::make_tuple(res, (res && pin) ? static_cast<int>(pin.Get()) : -1);
+}
+
+
+static std::tuple<bool, int> ImNodeEditQueryDeletedLink()
+{
+    ax::NodeEditor::LinkId link;
+    bool res = ax::NodeEditor::QueryDeletedLink(&link);
+    return std::make_tuple(res, (res && link) ? static_cast<int>(link.Get()) : -1);
+}
+
+static std::tuple<bool, int> ImNodeEditQueryDeletedNode()
+{
+    ax::NodeEditor::NodeId id;
+    bool res = ax::NodeEditor::QueryDeletedNode(&id);
+    return std::make_tuple(res, (res && id) ? static_cast<int>(id.Get()) : -1);
+}
+
+static bool ImNodeEditLink(int linkid, int id1, int id2, const ImVec4 & color, float thickness)
+{
+    return ax::NodeEditor::Link(linkid, id1, id2, color, thickness);
+}
+
+static void ImNodeEditFlow(int id, ax::NodeEditor::FlowDirection direction)
+{
+    ax::NodeEditor::Flow(id, direction);
+}
+
+static void ImNodeEditCenterNodeOnScreen(int id)
+{
+    ax::NodeEditor::CenterNodeOnScreen(id);
+}
+
+static void ImNodeEditSelectLink(int id, bool append)
+{
+    ax::NodeEditor::SelectLink(id, append);
+}
+
+static void ImNodeEditSelectNode(int id, bool append)
+{
+    ax::NodeEditor::SelectNode(id, append);
+}
+
+static void ImNodeEditDeselectLink(int id)
+{
+    ax::NodeEditor::DeselectLink(id);
+}
+
+static void ImNodeEditDeselectNode(int id)
+{
+    ax::NodeEditor::DeselectNode(id);
+}
+
+static bool ImNodeEditIsLinkSelected(int id)
+{
+    return ax::NodeEditor::IsLinkSelected(id);
+}
+
+static bool ImNodeEditIsNodeSelected(int id)
+{
+    return ax::NodeEditor::IsNodeSelected(id);
+}
+
+static void ImNodeEditSetNodePosition(int id, const ImVec2& pos)
+{
+    ax::NodeEditor::SetNodePosition(id, pos);
+}
+
+static void ImNodeEditSetNodeZPosition(int id, float z)
+{
+    ax::NodeEditor::SetNodeZPosition(id, z);
+}
+
+static ImVec2 ImNodeEditGetNodePosition(int id)
+{
+    return ax::NodeEditor::GetNodePosition(id);
+}
+
+static ImVec2 ImNodeEditGetNodeSize(int id)
+{
+    return ax::NodeEditor::GetNodeSize(id);
+}
+
+static float ImNodeEditGetNodeZPosition(int id)
+{
+    return ax::NodeEditor::GetNodeZPosition(id);
+}
+
+static bool ImNodeEditNodeHasAnyLinks(int id)
+{
+    return ax::NodeEditor::HasAnyLinks(static_cast<ax::NodeEditor::NodeId>(id));
+}
+
+static bool ImNodeEditPinHasAnyLinks(int id)
+{
+    return ax::NodeEditor::HasAnyLinks(static_cast<ax::NodeEditor::PinId>(id));
+}
+
+static void BlueprintNodeBuilderBegin(ax::NodeEditor::Utilities::BlueprintNodeBuilder& builder, int id)
+{
+    builder.Begin(id);
+}
+
+static void BlueprintNodeBuilderInput(ax::NodeEditor::Utilities::BlueprintNodeBuilder& builder, int id)
+{
+    builder.Input(id);
+}
+
+static void BlueprintNodeBuilderOutput(ax::NodeEditor::Utilities::BlueprintNodeBuilder& builder, int id)
+{
+    builder.Output(id);
+}
+
+static void BlueprintNodeBuilderSetTexture(ax::NodeEditor::Utilities::BlueprintNodeBuilder& builder, MM2::gfxTexture* texture)
+{
+    builder.SetTexture((ImTextureID)texture, texture->Width, texture->Height);
+}
+
 // ImGuiStyle helpers
 static void ImGuiStyle_SetColor(ImGuiStyle& style, int index, ImVec4 color) {
     if(index < ImGuiCol_COUNT)
@@ -863,7 +1006,107 @@ static void ImguiBindLua(LuaState L) {
         //.addFunction("ShowDemoWindow", &ImPlot::ShowDemoWindow)
         .endModule();
 
+    LuaBinding(L).beginClass<ax::NodeEditor::Config>("ImNodeEditorConfig")
+        .addConstructor(LUA_ARGS())
+        .addVariable("SettingsFile", &ax::NodeEditor::Config::SettingsFile)
+        .endClass();
+
+    LuaBinding(L).beginClass<ax::NodeEditor::Utilities::BlueprintNodeBuilder>("BlueprintNodeBuilder")
+        .addFactory([]() {
+            ax::NodeEditor::Utilities::BlueprintNodeBuilder nh = ax::NodeEditor::Utilities::BlueprintNodeBuilder();
+            return nh;
+            })
+        .addMetaFunction("Begin", &BlueprintNodeBuilderBegin)
+        .addMetaFunction("Input", &BlueprintNodeBuilderInput)
+        .addMetaFunction("Output", &BlueprintNodeBuilderOutput)
+        .addFunction("Header", &ax::NodeEditor::Utilities::BlueprintNodeBuilder::Header)
+        .addFunction("Middle", &ax::NodeEditor::Utilities::BlueprintNodeBuilder::Middle)
+        .addFunction("EndInput", &ax::NodeEditor::Utilities::BlueprintNodeBuilder::EndInput)
+        .addFunction("EndOutput", &ax::NodeEditor::Utilities::BlueprintNodeBuilder::EndOutput)
+        .addFunction("EndHeader", &ax::NodeEditor::Utilities::BlueprintNodeBuilder::EndHeader)
+        .addFunction("End", &ax::NodeEditor::Utilities::BlueprintNodeBuilder::End)
+        .addMetaFunction("SetTexture", &BlueprintNodeBuilderSetTexture)
+        .endClass();
+
+    LuaBinding(L).beginModule("ImNodeEditor")
+        .addFunction("Icon", &ax::Widgets::Icon)
+
+        .addFunction("GetCurrentZoom", &ax::NodeEditor::GetCurrentZoom)
+        .addFunction("CreateEditor", &ax::NodeEditor::CreateEditor)
+        .addFunction("DestroyEditor", &ax::NodeEditor::DestroyEditor)
+        .addFunction("SetCurrentEditor", &ax::NodeEditor::SetCurrentEditor)
+        .addFunction("GetCurrentEditor", &ax::NodeEditor::GetCurrentEditor)
+        .addFunction("QueryNewLink", &ImNodeEditQueryNewLink)
+        .addFunction("QueryNewNode", &ImNodeEditQueryNewNode)
+        .addFunction("QueryDeletedLink", &ImNodeEditQueryDeletedLink)
+        .addFunction("QueryDeletedNode", &ImNodeEditQueryDeletedNode)
+        .addFunction("RejectNewItem", static_cast<void(*)()>(&ax::NodeEditor::RejectNewItem))
+        .addFunction("RejectDeletedItem", &ax::NodeEditor::RejectDeletedItem)
+        .addFunction("Link", &ImNodeEditLink)
+        .addFunction("Flow", &ImNodeEditFlow)
+
+        .addFunction("PushStyleVarFloat", static_cast<void(*)(ax::NodeEditor::StyleVar, float)>(&ax::NodeEditor::PushStyleVar))
+        .addFunction("PushStyleVarVec2", static_cast<void(*)(ax::NodeEditor::StyleVar, const ImVec2 &)>(&ax::NodeEditor::PushStyleVar))
+        .addFunction("PushStyleVarVec4", static_cast<void(*)(ax::NodeEditor::StyleVar, const ImVec4&)>(&ax::NodeEditor::PushStyleVar))
+        .addFunction("PushStyleColor", &ax::NodeEditor::PushStyleColor)
+        .addFunction("PopStyleVar", &ax::NodeEditor::PopStyleVar)
+        .addFunction("PopStyleColor", &ax::NodeEditor::PopStyleColor)
+
+        .addFunction("PinPivotRect", &ax::NodeEditor::PinPivotRect)
+        .addFunction("PinPivotAlignment", &ax::NodeEditor::PinPivotAlignment)
+        .addFunction("PinPivotScale", &ax::NodeEditor::PinPivotScale)
+        .addFunction("PinPivotSize", &ax::NodeEditor::PinPivotSize)
+
+        .addFunction("AcceptNewItem", static_cast<bool(*)()>(&ax::NodeEditor::AcceptNewItem))
+        .addFunction("AcceptDeletedItem", &ax::NodeEditor::AcceptDeletedItem)
+        .addFunction("AcceptCopy", &ax::NodeEditor::AcceptCopy)
+        .addFunction("AcceptCut", &ax::NodeEditor::AcceptCut)
+        .addFunction("AcceptDuplicate", &ax::NodeEditor::AcceptDuplicate)
+        .addFunction("AcceptPaste", &ax::NodeEditor::AcceptPaste)
+        .addFunction("AcceptCreateNode", &ax::NodeEditor::AcceptCreateNode)
+
+        .addFunction("AreShortcutsEnabled", &ax::NodeEditor::AreShortcutsEnabled)
+        .addFunction("EnableShortcuts", &ax::NodeEditor::EnableShortcuts)
+        .addFunction("CanvasToScreen", &ax::NodeEditor::CanvasToScreen)
+        .addFunction("CenterNodeOnScreen", &ImNodeEditCenterNodeOnScreen)
+
+        .addFunction("ClearSelection", &ax::NodeEditor::ClearSelection)
+        .addFunction("SelectLink", &ImNodeEditSelectLink)
+        .addFunction("SelectNode", &ImNodeEditSelectNode)
+        .addFunction("DeselectLink", &ImNodeEditDeselectLink)
+        .addFunction("DeselectNode", &ImNodeEditDeselectNode)
+        .addFunction("IsLinkSelected", &ImNodeEditIsLinkSelected)
+        .addFunction("IsNodeSelected", &ImNodeEditIsNodeSelected)
+
+        .addFunction("GetNodePosition", &ImNodeEditGetNodePosition)
+        .addFunction("GetNodeSize", &ImNodeEditGetNodeSize)
+        .addFunction("GetNodeZPosition", &ImNodeEditGetNodeZPosition)
+        .addFunction("SetNodePosition", &ImNodeEditSetNodePosition)
+        .addFunction("SetNodeZPosition", &ImNodeEditSetNodeZPosition)
+        
+        .addFunction("NodeHasAnyLinks", &ImNodeEditNodeHasAnyLinks)
+        .addFunction("PinHasAnyLinks", &ImNodeEditPinHasAnyLinks)
+
+        .addFunction("Begin", &ax::NodeEditor::Begin)
+        .addFunction("BeginCreate", &ax::NodeEditor::BeginCreate)
+        .addFunction("BeginDelete", &ax::NodeEditor::BeginDelete)
+        .addFunction("BeginShortcut", &ax::NodeEditor::BeginShortcut)
+        .addFunction("BeginNode", &ImNodeEditBeginNode)
+        .addFunction("BeginPin", &ImNodeEditBeginPin)
+        .addFunction("EndNode", &ax::NodeEditor::EndNode)
+        .addFunction("EndPin", &ax::NodeEditor::EndPin)
+        .addFunction("EndShortcut", &ax::NodeEditor::EndShortcut)
+        .addFunction("EndDelete", &ax::NodeEditor::EndDelete)
+        .addFunction("EndCreate", &ax::NodeEditor::EndCreate)
+        .addFunction("End", &ax::NodeEditor::End)
+
+        .addFunction("Suspend", &ax::NodeEditor::Suspend)
+        .addFunction("Resume", &ax::NodeEditor::Resume)
+        .addFunction("IsSuspended", &ax::NodeEditor::IsSuspended)
         .endModule();
+
+    LuaBinding(L).beginClass<ax::NodeEditor::EditorContext>("ImNodeEditorContext")
+        .endClass();
 
     LuaBinding(L).beginModule("ImGui")
         .addFunction("Button", &ImGui::Button)
