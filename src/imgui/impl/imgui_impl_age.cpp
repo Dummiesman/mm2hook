@@ -50,14 +50,14 @@ static void ImGui_ImplAGE_SetupRenderState(ImDrawData* draw_data)
     bd->RSTATE_OldBlend = gfxRenderState::SetAlphaEnabled(true);
     bd->RSTATE_OldLighting = gfxRenderState::SetLighting(false);
     bd->RSTATE_OldCull = gfxRenderState::SetCullMode(D3DCULL_NONE);
-    bd->PreviousViewport = gfxCurrentViewport.get();
+    bd->PreviousViewport = gfxPipeline::GetCurrentViewport();
 
     float L = draw_data->DisplayPos.x;
     float R = draw_data->DisplayPos.x + draw_data->DisplaySize.x;
     float T = draw_data->DisplayPos.y;
     float B = draw_data->DisplayPos.y + draw_data->DisplaySize.y;
 
-    auto currentViewport = gfxCurrentViewport.get();
+    auto currentViewport = gfxPipeline::GetCurrentViewport();
     if (currentViewport != bd->Viewport) 
     {
         bd->Viewport->Ortho(L, R, B, T, -1.0f, +1.0f);
@@ -76,7 +76,7 @@ static void ImGuiImplAGE_RestoreRenderState()
     gfxRenderState::SetCullMode(bd->RSTATE_OldCull);
     gfxRenderState::SetTexture(0, nullptr);
 
-    auto currentViewport = gfxCurrentViewport.get();
+    auto currentViewport = gfxPipeline::GetCurrentViewport();
     if (currentViewport != bd->PreviousViewport)
     {
         gfxPipeline::ForceSetViewport(bd->PreviousViewport);
