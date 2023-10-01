@@ -70,9 +70,10 @@ namespace MM2
         AGE_API void ZeroForces();
         AGE_API void Init(float mass, float angInertiaX, float angInertiaY, float angInertiaZ);
         AGE_API void InitBoxMass(float mass, float inertiaBoxX, float inertiaBoxY, float inertiaBoxZ);
-        AGE_API void Rotate(Vector3* angles);
+        AGE_API void Rotate(Vector3 const & angles);
         AGE_API void ClearInertialValues();
-        
+        AGE_API void CalcNetPush(Vector3 const & amount);
+
         AGE_API void MoveICS();
 
         //lua

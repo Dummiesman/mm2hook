@@ -135,18 +135,19 @@ namespace MM2
     }
 
     //members (not all here yet!)
-    AGE_API void phInertialCS::Zero()                     { hook::Thunk<0x475DED>::Call<void>(this); }
-    AGE_API void phInertialCS::Reset()                    { hook::Thunk<0x475E10>::Call<void>(this); }
-    AGE_API void phInertialCS::Freeze()                   { hook::Thunk<0x475E20>::Call<void>(this); }
-    AGE_API void phInertialCS::ZeroForces()               { hook::Thunk<0x475E60>::Call<void>(this); }
+    AGE_API void phInertialCS::Zero()                               { hook::Thunk<0x475DED>::Call<void>(this); }
+    AGE_API void phInertialCS::Reset()                              { hook::Thunk<0x475E10>::Call<void>(this); }
+    AGE_API void phInertialCS::Freeze()                             { hook::Thunk<0x475E20>::Call<void>(this); }
+    AGE_API void phInertialCS::ZeroForces()                         { hook::Thunk<0x475E60>::Call<void>(this); }
     AGE_API void phInertialCS::Init(float mass, float angInertiaX, float angInertiaY, float angInertiaZ)
-                                            { hook::Thunk<0x475FC0>::Call<void>(this, mass, angInertiaX, angInertiaY, angInertiaZ); }
+                                                                    { hook::Thunk<0x475FC0>::Call<void>(this, mass, angInertiaX, angInertiaY, angInertiaZ); }
     AGE_API void phInertialCS::InitBoxMass(float mass, float inertiaBoxX, float inertiaBoxY, float inertiaBoxZ)
-                                            { hook::Thunk<0x4760D0>::Call<void>(this, mass, inertiaBoxX, inertiaBoxY, inertiaBoxZ); }
-    AGE_API void phInertialCS::Rotate(Vector3 *angles)    { hook::Thunk<0x476A00>::Call<void>(this, angles); }
-    AGE_API void phInertialCS::ClearInertialValues()      { hook::Thunk<0x476B20>::Call<void>(this); }
+                                                                    { hook::Thunk<0x4760D0>::Call<void>(this, mass, inertiaBoxX, inertiaBoxY, inertiaBoxZ); }
+    AGE_API void phInertialCS::Rotate(Vector3 const & angles)       { hook::Thunk<0x476A00>::Call<void>(this, &angles); }
+    AGE_API void phInertialCS::CalcNetPush(Vector3 const & amount)  { hook::Thunk<0x478700>::Call<void>(this, &amount); }
+    AGE_API void phInertialCS::ClearInertialValues()                { hook::Thunk<0x476B20>::Call<void>(this); }
         
-    AGE_API void phInertialCS::MoveICS()                  { hook::Thunk<0x478680>::Call<void>(this); }
+    AGE_API void phInertialCS::MoveICS()                            { hook::Thunk<0x478680>::Call<void>(this); }
 
     //lua
     void phInertialCS::BindLua(LuaState L) {
@@ -159,6 +160,7 @@ namespace MM2
             .addFunction("InitBoxMass", &InitBoxMass)
             .addFunction("Rotate", &Rotate)
             .addFunction("ClearInertialValues", &ClearInertialValues)
+            .addFunction("CalcNetPush", &CalcNetPush)
             .addFunction("MoveICS", &MoveICS)
 
             .addFunction("AddForce", &AddForce)
