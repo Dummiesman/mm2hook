@@ -9,6 +9,13 @@ namespace MM2
 
     const Matrix34 Matrix34::I = Matrix34(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0);
 
+    Matrix44 Matrix34::toMatrix44Lua() const
+    {
+        Matrix44 returnMtx = Matrix44();
+        this->ToMatrix44(returnMtx);
+        return returnMtx;
+    }
+
     void Matrix34::MakeRotate(Vector3 const& axis, float angle)
     {
         hook::Thunk<0x4BCFA0>::Call<void>(this, &axis, angle);
@@ -176,6 +183,11 @@ namespace MM2
         hook::Thunk<0x4BC400>::Call<void>(this, &rhs);
     }
 
+    void Matrix34::FastInverse()
+    {
+        hook::Thunk<0x4BE8B0>::Call<void>(this);
+    }
+
     void Matrix34::Inverse()
     {
         hook::Thunk<0x4BE720>::Call<void>(this);
@@ -268,6 +280,11 @@ namespace MM2
 
     float Matrix34::Determinant3x3() {
         return hook::Thunk<0x4BF010>::Call<float>(this);
+    }
+
+    void Matrix34::ToMatrix44(Matrix44& a1) const
+    {
+        Matrix44::Convert(a1, *this);
     }
 
     void Matrix34::Transform(const Vector3& vector, Vector3& out) const
@@ -423,6 +440,7 @@ namespace MM2
             .addFunction("Identity3x3", &Matrix34::Identity3x3)
             .addFunction("Determinant", &Matrix34::Determinant)
             .addFunction("Determinant3x3", &Matrix34::Determinant3x3)
+            .addFunction("FastInverse", &Matrix34::FastInverse)
             .addFunction("Inverse", &Matrix34::Inverse)
             .addFunction("Scale", static_cast<void(Matrix34::*)(float, float, float)>(&Matrix34::Scale))
             .addFunction("Normalize", &Matrix34::Normalize)
@@ -438,6 +456,7 @@ namespace MM2
             .addFunction("MakeRotate", &Matrix34::MakeRotate)
             .addFunction("Transform", static_cast<Vector3(Matrix34::*)(const Vector3&)const>(&Matrix34::Transform))
             .addFunction("Transform3x3", static_cast<Vector3(Matrix34::*)(const Vector3&)const>(&Matrix34::Transform3x3))
+            .addFunction("ToMatrix44", &toMatrix44Lua)
             .addFunction("RotateX", &Matrix34::RotateX)
             .addFunction("RotateY", &Matrix34::RotateY)
             .addFunction("RotateZ", &Matrix34::RotateZ)

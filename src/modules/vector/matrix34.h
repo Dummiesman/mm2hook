@@ -12,6 +12,8 @@ namespace MM2
 
     // Class definitions
     class Matrix34 {
+    private:
+        Matrix44 toMatrix44Lua() const;
     public:
         float m00;
         float m01;
@@ -54,6 +56,7 @@ namespace MM2
         void Zero();
         void Dot(const Matrix34& rhs);
         void Dot3x3(const Matrix34& rhs);
+        void FastInverse();
         void Inverse();
         void Scale(float amount);
         void Scale(float xAmount, float yAmount, float zAmount);
@@ -63,6 +66,7 @@ namespace MM2
         void Identity3x3();
         float Determinant();
         float Determinant3x3();
+        void ToMatrix44(Matrix44& a1) const;
         void Transform(const Vector3& vector, Vector3& out) const;
         Vector3 Transform(const Vector3& vector) const;
         void Transform3x3(const Vector3& vector, Vector3& out) const;
