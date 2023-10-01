@@ -65,7 +65,7 @@ namespace MM2
         int TachNeedleModStatic;
         int WheelModStatic;
         int ShaderSet;
-        bool IsLoaded;
+        bool m_IsLoaded;
         byte byte_605;
         byte byte_606;
         byte byte_607;
@@ -97,13 +97,25 @@ namespace MM2
         BOOL PivotDebug;
         int dword_6d8;
     public:
-        inline bool getIsLoaded(void) const {
-            return this->IsLoaded;
+        bool IsLoaded(void) const {
+            return this->m_IsLoaded;
         }
 
-        inline mmPlayer * getPlayer(void) const {
+        mmPlayer * GetPlayer(void) const {
             return this->m_PlayerPtr;
         };
+
+        RadialGauge * GetRPMGauge() {
+            return &this->RPMGauge;
+        }
+
+        RadialGauge* GetSpeedGauge() {
+            return &this->SpeedGauge;
+        }
+
+        RadialGauge* GetDamageGauge() {
+            return &this->DamageGauge;
+        }
 
         AGE_API void Activate()                     { hook::Thunk<0x430E80>::Call<void>(this); }
         AGE_API void Deactivate()                   { hook::Thunk<0x430EA0>::Call<void>(this); }
@@ -122,6 +134,22 @@ namespace MM2
             LuaBinding(L).beginExtendClass<mmDashView, asNode>("mmDashView")
                 .addFunction("Activate", &Activate)
                 .addFunction("Deactivate", &Deactivate)
+                .addPropertyReadOnly("IsLoaded", &IsLoaded)
+                .addPropertyReadOnly("RPMGauge", &GetRPMGauge)
+                .addPropertyReadOnly("DamageGauge", &GetDamageGauge)
+                .addPropertyReadOnly("SpeedGauge", &GetSpeedGauge)
+                .addVariable("DashPos", &mmDashView::DashPos)
+                .addVariable("RoofPos", &mmDashView::RoofPos)
+                .addVariable("WheelPos", &mmDashView::WheelPos)
+                .addVariable("DmgOffset", &mmDashView::DmgOffset)
+                .addVariable("SpeedOffset", &mmDashView::SpeedOffset)
+                .addVariable("TachOffset", &mmDashView::TachOffset)
+                .addVariable("DmgPivotOffset", &mmDashView::DmgPivotOffset)
+                .addVariable("SpeedPivotOffset", &mmDashView::SpeedPivotOffset)
+                .addVariable("TachPivotOffset", &mmDashView::TachPivotOffset)
+                .addVariable("WheelPivotOffset", &mmDashView::WheelPivotOffset)
+                .addVariable("GearPivotOffset", &mmDashView::GearPivotOffset)
+                .addVariable("WheelFact", &mmDashView::WheelFact)
                 .endClass();
         }
     };

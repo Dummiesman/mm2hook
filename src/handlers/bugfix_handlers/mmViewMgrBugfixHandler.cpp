@@ -15,7 +15,7 @@ void mmViewMgrBugfixHandler::SetViewSetting_Dash(int a1)
     auto player = mgr->getGame()->GetPlayer();
     auto dash = player->GetHUD()->GetDashView();
 
-    if (!dash->getIsLoaded())
+    if (!dash->IsLoaded())
         return;
 
     //call original
