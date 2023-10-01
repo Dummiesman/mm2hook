@@ -24,28 +24,6 @@ namespace MM2
             declhook(0x45CBC0, _Func<bool>, BACKFACE);
             declhook(0x448090, _Func<void>, UpdateLighting);
         }
-        namespace sdlPage16
-        {
-            declhook(0x45A4E0, _MemberFunc<void>, $$ctor);
-
-            declhook(0x448330, _MemberFunc<void>, Draw);
-
-            declhook(0x45A560, _MemberFunc<void>, ArcMap);
-            declhook(0x45A760, _MemberFunc<void>, WallMap);
-            declhook(0x45A900, _MemberFunc<bool>, PointInPerimeter);
-
-            declhook(0x45A9F0, _MemberFunc<void>, GetCentroid);
-            declhook(0x45D110, _MemberFunc<int>, GetPerimeterCount);
-            declhook(0x45D120, _MemberFunc<int>, GetPerimeterVertexIndex);
-            declhook(0x45D140, _MemberFunc<const MM2::Vector3 &>, GetCodedVertex);
-            declhook(0x45D160, _MemberFunc<float>, GetFloat);
-            declhook(0x45D170, _MemberFunc<MM2::gfxTexture *>, GetTexture);
-
-            declhook(0x450880, _Func<uint>, GetShadedColor$1);
-            declhook(0x450910, _Func<uint>, GetShadedColor$2);
-
-            declhook(0x45BF90, _Func<MM2::sdlPage16 *>, LoadBinary);
-        }
     }
 
     typename typedef void(*SDLIteratorCB)(const void *, int, int, int, const ushort *, void *);
@@ -78,62 +56,74 @@ namespace MM2
         gfxTexture **Textures;
         uint unk_1C;
     public:
-        AGE_API sdlPage16(int p1, int p2) {
-            $::sdlPage16::$$ctor(this, p1, p2);
+        AGE_API sdlPage16(int numPerimeterPoints, int numAttributes) {
+            scoped_vtable x(this);
+            hook::Thunk<0x45A4E0>::Call<void>(this, numPerimeterPoints, numAttributes);
         }
 
-        AGE_API static sdlPage16 * LoadBinary(Stream *stream) {
-            return $::sdlPage16::LoadBinary(stream);
+        AGE_API static sdlPage16 * LoadBinary(Stream *stream) 
+        {
+            return hook::StaticThunk<0x45BF90>::Call<sdlPage16*>(stream);
         }
 
-        AGE_API void Draw(int lod, uint baseColor) const {
-            $::sdlPage16::Draw(this, lod, baseColor);
+        AGE_API void Draw(int lod, uint baseColor) const 
+        {
+            hook::Thunk<0x448330>::Call<void>(this, lod, baseColor);
         }
 
         AGE_API void ArcMap(float *p1, const ushort *p2, int p3, int p4, int p5) const {
-            $::sdlPage16::ArcMap(this, p1, p2, p3, p4, p5);
+            hook::Thunk<0x45A560>::Call<void>(this, p1, p2, p3, p4, p5);
         }
 
         AGE_API void WallMap(float *p1, const ushort *p2, float p3, int p4, int p5) const {
-            $::sdlPage16::WallMap(this, p1, p2, p3, p4, p5);
+            hook::Thunk<0x45A760>::Call<void>(this, p1, p2, p3, p4, p5);
+        }
+
+        AGE_API int Collide(const Vector4 & position, sdlPoly* polyBuf, int polyBufCount, int & pAttribute)
+        {
+            return hook::Thunk<0x455830>::Call<int>(this, &position, polyBuf, polyBufCount, &pAttribute);
         }
 
         AGE_API bool PointInPerimeter(float p1, float p2) const {
-            return $::sdlPage16::PointInPerimeter(this, p1, p2);
+            return hook::Thunk<0x45A900>::Call<bool>(this, p1, p2);
         }
 
         AGE_API void GetCentroid(Vector3 &p1) const {
-            $::sdlPage16::GetCentroid(this, &p1);
+            hook::Thunk<0x45A9F0>::Call<void>(this, &p1);
         }
 
-        AGE_API int GetPerimeterCount(void) const {
-            return $::sdlPage16::GetPerimeterCount(this);
+        AGE_API int GetPerimeterCount() const 
+        {
+            return hook::Thunk<0x45D110>::Call<int>(this);
         }
 
         AGE_API int GetPerimeterVertexIndex(int p1) const {
-            return $::sdlPage16::GetPerimeterVertexIndex(this, p1);
+            return hook::Thunk<0x45D120>::Call<int>(this, p1);
         }
 
         AGE_API const Vector3 & GetCodedVertex(int p1) const {
-            return $::sdlPage16::GetCodedVertex(this, p1);
+            return hook::Thunk<0x45D140>::Call<const Vector3&>(this, p1);
         }
 
         AGE_API float GetFloat(int p1) const {
-            return $::sdlPage16::GetFloat(this, p1);
+            return hook::Thunk<0x45D160>::Call<float>(this, p1);
         }
 
         AGE_API gfxTexture * GetTexture(int p1) const {
-            return $::sdlPage16::GetTexture(this, p1);
+            return hook::Thunk<0x45D170>::Call<gfxTexture*>(this, p1);
         }
 
+    public:
         /* these are originally private, but they're pretty helpful */
 
-        AGE_API static uint GetShadedColor(uint p1, uint p2) {
-            return $::sdlPage16::GetShadedColor$1(p1, p2);
+        AGE_API static uint GetShadedColor(uint p1, uint p2) 
+        {
+            return hook::StaticThunk<0x450880 >::Call<unsigned int>(p1, p2);
         }
 
-        AGE_API static uint GetShadedColor(uint p1, uint p2, uint p3) {
-            return $::sdlPage16::GetShadedColor$2(p1, p2, p3);
+        AGE_API static uint GetShadedColor(uint p1, uint p2, uint p3) 
+        {
+            return hook::StaticThunk<0x450910 >::Call<unsigned int>(p1, p2, p3);
         }
     };
 
