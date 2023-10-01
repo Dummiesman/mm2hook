@@ -25,6 +25,8 @@ namespace MM2
 
         luaBind<gfxPacket>(L);
 
+        luaBind<gfxViewport>(L);
+
         LuaBinding(L).addFunction("gfxGetTexture", &gfxGetTexture);
     }
 }
