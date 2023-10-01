@@ -101,7 +101,7 @@ namespace MM2
         void SetGCL(float gcl) { this->GCL = gcl; }
 
         float GetAngInertia() const { return this->AngInertia; }
-        void SetAngInertia(float inertia) { this->AngInertia = AngInertia; }
+        void SetAngInertia(float inertia) { this->AngInertia = inertia; }
 
         Matrix34* GetVisualMatrixPtr()
         {
