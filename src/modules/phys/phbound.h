@@ -79,6 +79,14 @@ namespace MM2
         {
             return this->Radius;
         }
+    protected:
+        /*
+            hidden ctor for inherited classes
+        */
+        phBound()
+        {
+
+        }
     public:
         phBound(BoundType type)
         {
@@ -132,6 +140,8 @@ namespace MM2
             LuaBinding(L).beginClass<phBound>("phBound")
                 .addFunction("GetVertex", &GetVertex)
                 .addFunction("SetOffset", &SetOffset)
+                .addFunction("SetFriction", static_cast<void(phBound::*)(float)>(&SetFriction))
+                .addFunction("SetElasticity", static_cast<void(phBound::*)(float)>(&SetElasticity))
                 .addFunction("GetMaterial", &GetMaterial)
                 .addPropertyReadOnly("Radius", &getRadius)
                 .addPropertyReadOnly("Type", &getType)
