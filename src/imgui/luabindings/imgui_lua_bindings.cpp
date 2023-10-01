@@ -503,10 +503,15 @@ static void ImGuizmo_DrawGrid(const MM2::Matrix44& view, const MM2::Matrix44& pr
 ///////////////////
 //IMPLOT BINDINGS//
 ///////////////////
-static bool ImPlot_BeginPlot(const char* title_id, const char* x_label, const char* y_label, ImVec2 size, ImPlotFlags flags ,
-                            ImPlotAxisFlags x_flags, ImPlotAxisFlags y_flags, ImPlotAxisFlags y2_flags, ImPlotAxisFlags y3_flags) {
+static bool ImPlotShowDemoWindowLua(bool show)
+{
+    ImPlot::ShowDemoWindow(&show);
+    return show;
+}
 
-    return ImPlot::BeginPlot(title_id, ProcessNullableString(x_label), ProcessNullableString(y_label), size, flags, x_flags, y_flags, y2_flags, y3_flags);
+static bool ImPlot_BeginPlot(const char* title, ImVec2 size, ImPlotFlags flags) {
+
+    return ImPlot::BeginPlot(title, size, flags);
 }
 
 static void ImPlot_EndPlot() {
@@ -582,6 +587,27 @@ static void ImPlot_PlotDigital(const char* label, LuaRef xValues, LuaRef yValues
 
     int count = min(xAxisVector.size(), yAxisVector.size());
     ImPlot::PlotDigital(label, xAxisVector.data(), yAxisVector.data(), count, offset);
+}
+
+static void ImPlot_SetupAxis(ImAxis axis, const char* label, ImPlotAxisFlags flags)
+{
+    ImPlot::SetupAxis(axis, ProcessNullableString(label), flags);
+}
+
+static void ImPlot_SetupAxes(const char* x_label, const char* y_label, ImPlotAxisFlags x_flags, ImPlotAxisFlags y_flags)
+{
+    ImPlot::SetupAxes(ProcessNullableString(x_label), ProcessNullableString(y_label), x_flags, y_flags);
+}
+
+static void ImPlot_SetupAxisTicks(ImAxis idx, double v_min, double v_max, int n_ticks, LuaRef labelsTable, bool show_default)
+{
+    const char** labels = nullptr;
+    std::vector<const char*> labelsVec;
+    if (labelsTable.type() != LuaTypeID::NIL && TableValuesToArray<const char*>(labelsTable, LuaTypeID::STRING, labelsVec))
+    {
+        labels = labelsVec.data();
+    }
+    ImPlot::SetupAxisTicks(idx, v_min, v_max, n_ticks, labels, show_default);
 }
 
 // ImGuiStyle helpers
@@ -822,11 +848,21 @@ static void ImguiBindLua(LuaState L) {
     LuaBinding(L).beginModule("ImPlot")
         .addFunction("BeginPlot", &ImPlot_BeginPlot)
         .addFunction("EndPlot", &ImPlot_EndPlot)
+        .addFunction("BeginAlignedPlots", &ImPlot::BeginAlignedPlots)
+        .addFunction("EndAlignedPlots", &ImPlot::EndAlignedPlots)
         .addFunction("PlotLine", &ImPlot_PlotLine)
         .addFunction("PlotBars", &ImPlot_PlotBars)
         .addFunction("PlotScatter", &ImPlot_PlotScatter)
         .addFunction("PlotDigital", &ImPlot_PlotDigital)
         .addFunction("PlotText", &ImPlot_PlotText)
+        .addFunction("SetupAxis", &ImPlot_SetupAxis)
+        .addFunction("SetupAxisTicks", &ImPlot_SetupAxisTicks)
+        .addFunction("SetupAxes", &ImPlot_SetupAxes)
+        .addFunction("SetupLegend", &ImPlot::SetupLegend)
+        .addFunction("SetupFinish", &ImPlot::SetupFinish)
+        //.addFunction("ShowDemoWindow", &ImPlot::ShowDemoWindow)
+        .endModule();
+
         .endModule();
 
     LuaBinding(L).beginModule("ImGui")
