@@ -24,6 +24,8 @@ namespace MM2
         static hook::Type<int> m_LastButtons;
         static hook::Type<int> m_Buttons;
         static hook::Type<int> m_WindowButtons;
+        static hook::Type<bool> m_UseWindow;
+        static hook::Type<IDirectInputDeviceA*> mouseDev;
     public:
         AGE_API static void Update() {
             hook::StaticThunk<0x4BB3A0>::Call<void>();
@@ -84,6 +86,11 @@ namespace MM2
             m_LastButtons.set(0);
             m_Buttons.set(0);
             m_WindowButtons.set(0);
+        }
+
+        static void Begin(bool useWindow)
+        {
+            hook::StaticThunk<0x4BB220>::Call<void>(useWindow);
         }
 
         //lua

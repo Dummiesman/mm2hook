@@ -15,3 +15,5 @@ declfield(ioMouse::m_dZ)            (0x6A38E8);
 declfield(ioMouse::m_LastButtons)   (0x6A38E4);
 declfield(ioMouse::m_Buttons)       (0x6A38E0);
 declfield(ioMouse::m_WindowButtons) (0x6A38F4);
+declfield(ioMouse::m_UseWindow)     (0x6A38D0);
+declfield(ioMouse::mouseDev)        (0x6A38B8);
