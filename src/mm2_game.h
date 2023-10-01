@@ -27,6 +27,8 @@ namespace MM2
         luaBind<mmGearIndicator>(L);
         luaBind<mmLinearGauge>(L);
         luaBind<mmSlidingGauge>(L);
+        luaBind<RadialGauge>(L);
+        luaBind<mmDashView>(L);
         luaBind<mmExternalView>(L);
         luaBind<mmHUD>(L);
         luaBind<mmCDPlayer>(L);
