@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\phys.h>
+#include "phbound.h"
+#include "phpoly.h"
 
 namespace MM2
 {

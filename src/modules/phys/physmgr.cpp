@@ -3,6 +3,7 @@
 #include <modules/level/level.h>
 #include <modules/level/inst.h>
 #include <modules/phys/segment.h>
+#include <modules/phys/physentity.h>
 
 using namespace MM2;
 

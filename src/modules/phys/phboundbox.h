@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\phys.h>
+#include "phboundpolygonal.h"
 
 namespace MM2
 {

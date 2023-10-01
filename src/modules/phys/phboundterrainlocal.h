@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\phys.h>
+#include "phboundterrain.h"
 
 namespace MM2
 {

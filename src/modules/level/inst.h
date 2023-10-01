@@ -2,6 +2,7 @@
 #include <modules\phys\bound.h>
 #include <modules\model\shader.h>
 #include <modules\model\package.h>
+#include <modules\data\hash.h>
 
 namespace MM2
 {

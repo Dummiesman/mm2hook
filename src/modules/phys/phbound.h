@@ -1,5 +1,8 @@
 #pragma once
-#include <modules\phys.h>
+#include <mm2_common.h>
+#include "segment.h"
+#include "phintersection.h"
+#include "phimpactbase.h"
 
 namespace MM2
 {

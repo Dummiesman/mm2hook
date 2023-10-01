@@ -1,4 +1,7 @@
+#include <common.h>
 #include "wpobject.h"
+
+#include <mm2_lua.h>
 
 using namespace MM2;
 

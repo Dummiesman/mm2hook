@@ -1,5 +1,8 @@
 #pragma once
-#include <modules\phys.h>
+#include "phboundbox.h"
+#include "phboundhotdog.h"
+#include "phboundsphere.h"
+#include "phboundgeom.h"
 
 namespace MM2
 {

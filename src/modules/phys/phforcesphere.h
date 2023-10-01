@@ -1,6 +1,6 @@
 #pragma once
-#include <modules\phys.h>
 #include <mm2_common.h>
+#include "phbound.h"
 
 namespace MM2
 {

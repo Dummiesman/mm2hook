@@ -1,6 +1,7 @@
 #pragma once
 #include "phforcesphere.h"
-#include <modules\level.h>
+#include <modules\level\inst.h>
+#include <modules\level\level.h>
 
 namespace MM2
 {
