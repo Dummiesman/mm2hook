@@ -136,11 +136,11 @@ void MM2::aiGoalAvoidPlayer::AvoidPlayer()
     railSet->SetAccelFactor(railSet->GetAccelFactor() - (10.0f * datTimeManager::Seconds));
     if (xDot > 0.0f)
     {
-        rotationAmount = atan2(xDot + PlayerSideReactDist, zDot);
+        rotationAmount = atan2f(xDot + PlayerSideReactDist, zDot);
     }
     else
     {
-        rotationAmount = atan2(xDot - PlayerSideReactDist, zDot);
+        rotationAmount = atan2f(xDot - PlayerSideReactDist, zDot);
     }
 
     // applied mathematics

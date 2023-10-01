@@ -426,7 +426,7 @@ void vehCarDamageHandler::Update() {
                 Matrix34 outMatrix;
                 if (GetPivot(outMatrix, carDamage->GetName(), buffer)) {
                     float halfHeight = (outMatrix.m11 - outMatrix.m01) * 0.5f;
-                    wheel->SetRadius(fabs(halfHeight));
+                    wheel->SetRadius(fabsf(halfHeight));
                 }
             }
         }
