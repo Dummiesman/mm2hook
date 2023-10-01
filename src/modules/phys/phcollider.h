@@ -8,6 +8,7 @@ namespace MM2
 
     // External declarations
     extern class phJoint;
+    extern class phBound;
 
     // Class definitions
 
@@ -17,6 +18,11 @@ namespace MM2
         int dword_a8;
         phJoint* Joint;
     public:
+        void Init(Matrix34* matrixPtr, phBound const* bound)
+        {
+            hook::Thunk<0x46D870>::Call<void>(this, matrixPtr, bound);
+        }
+
         phJoint* GetJoint()
         {
             return *getPtr<phJoint*>(this, 0xAC);
