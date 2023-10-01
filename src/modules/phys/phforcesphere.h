@@ -14,31 +14,32 @@ namespace MM2
     class phForceSphere : public phBound
     {
     private:
-        BOOL IsActive;
-        Vector3 Center;
-        float CurrentRadius;
-        float ForceCoef;
-        float ImpulseCoef;
-        float MaxRadius;
-        float RadiusRate;
-        BOOL IsGrowing;
-        float TimeLeftOriginal;
-        float TimeLeft;
-        float FadeFactor;
-        Vector3 Direction;
-        bool Directional;
+        BOOL m_IsActive;
+        Vector3 m_Center;
+        float m_CurrentRadius;
+        float m_ForceCoef;
+        float m_ImpulseCoef;
+        float m_MaxRadius;
+        float m_RadiusRate;
+        BOOL m_IsGrowing;
+        float m_TimeLeftOriginal;
+        float m_TimeLeft;
+        float m_FadeFactor;
+        Vector3 m_Direction;
+        bool m_Directional;
     private:
         void UpdateBB()
         {
-            float radius = this->CurrentRadius;
-            this->Min = Center - Vector3(radius, radius, radius);
-            this->Max = Center + Vector3(radius, radius, radius);
+            float radius = this->m_CurrentRadius;
+            this->Min = m_Center - Vector3(radius, radius, radius);
+            this->Max = m_Center + Vector3(radius, radius, radius);
             this->Radius = radius;
         }
     public:
-        phForceSphere() : phBound(BoundType::ForceSphere)
+        phForceSphere()
         {
-            
+            scoped_vtable x(this);
+            hook::Thunk<0x4871B0>::Call<void>(this, static_cast<int>(phBound::BoundType::ForceSphere));
         }
 
         /*
@@ -81,131 +82,131 @@ namespace MM2
             Vector3 normalized = Vector3(direction);
             normalized.Normalize();
 
-            this->Direction = normalized;
-            this->Directional = true;
+            this->m_Direction = normalized;
+            this->m_Directional = true;
         }
 
         void SetTimeAndFade(float time, float fade)
         {
-            this->TimeLeft = time;
-            this->FadeFactor = fade;
-            this->TimeLeftOriginal = time;
+            this->m_TimeLeft = time;
+            this->m_FadeFactor = fade;
+            this->m_TimeLeftOriginal = time;
         }
 
         void SetRadiusGrow(float radius, float maxRadius, float rate)
         {
-            this->CurrentRadius = radius;
-            this->MaxRadius = maxRadius;
-            this->RadiusRate = rate;
-            this->IsGrowing = TRUE;
+            this->m_CurrentRadius = radius;
+            this->m_MaxRadius = maxRadius;
+            this->m_RadiusRate = rate;
+            this->m_IsGrowing = TRUE;
             this->UpdateBB();
         }
         
         void SetRadius(float radius)
-        {
-            this->CurrentRadius = radius;
-            this->IsGrowing = FALSE;
+        {         
+            this->m_CurrentRadius = radius;
+            this->m_IsGrowing = FALSE;
             this->UpdateBB();
         }
 
         void SetCenter(const Vector3 & center)
         {
-            this->Center = center;
+            this->m_Center = center;
             this->UpdateBB();
         }
 
         void Start()
         {
-            this->IsActive = TRUE;
+            this->m_IsActive = TRUE;
         }
 
         void Stop()
         {
-            this->IsActive = FALSE;
+            this->m_IsActive = FALSE;
         }
 
         void Reset()
         {
-            this->IsActive = FALSE;
-            this->IsGrowing = FALSE;
-            this->TimeLeft = FLT_MAX;
+            this->m_IsActive = FALSE;
+            this->m_IsGrowing = FALSE;
+            this->m_TimeLeft = FLT_MAX;
         }
 
         void Update()
         {
-            if (this->IsActive == FALSE)
+            if (this->m_IsActive == FALSE)
                 return;
 
-            this->TimeLeft = this->TimeLeft - datTimeManager::Seconds;
-            this->ForceCoef = this->ForceCoef * this->FadeFactor;
+            this->m_TimeLeft = this->m_TimeLeft - datTimeManager::Seconds;
+            this->m_ForceCoef = this->m_ForceCoef * this->m_FadeFactor;
 
-            if (this->TimeLeft < 0.f || (this->ImpulseCoef == 0.f && this->ForceCoef == 0.f))
+            if (this->m_TimeLeft < 0.f || (this->m_ImpulseCoef == 0.f && this->m_ForceCoef == 0.f))
             {
-                this->IsActive = false;
+                this->m_IsActive = false;
                 return;
             }
 
-            if (this->IsGrowing == TRUE)
+            if (this->m_IsGrowing == TRUE)
             {
-                this->CurrentRadius += datTimeManager::Seconds * this->RadiusRate;
-                if (this->CurrentRadius > this->MaxRadius)
+                this->m_CurrentRadius += datTimeManager::Seconds * this->m_RadiusRate;
+                if (this->m_CurrentRadius > this->m_MaxRadius)
                 {
-                    this->IsGrowing = false;
-                    this->CurrentRadius = this->MaxRadius;
+                    this->m_IsGrowing = false;
+                    this->m_CurrentRadius = this->m_MaxRadius;
                 }
                 this->UpdateBB();
             }
         }
 
         //
-        inline float getCurrentRadius()
+        float getCurrentRadius()
         {
-            return this->CurrentRadius;
+            return this->m_CurrentRadius;
         }
 
-        inline float getMaxRadius()
+        float getMaxRadius()
         {
-            return this->MaxRadius;
+            return this->m_MaxRadius;
         }
 
-        inline float getTimeLeft()
+        float getTimeLeft()
         {
-            return this->TimeLeft;
+            return this->m_TimeLeft;
         }
 
-        inline bool getIsGrowing()
+        bool getIsGrowing()
         {
-            return this->IsGrowing == TRUE;
+            return this->m_IsGrowing == TRUE;
         }
 
-        inline void setForceCoef(float force)
+        void setForceCoef(float force)
         {
-            this->ForceCoef = force;
+            this->m_ForceCoef = force;
         }
 
-        inline float getForceCoef()
+        float getForceCoef()
         {
-            return this->ForceCoef;
+            return this->m_ForceCoef;
         }
 
-        inline void setFadeFactor(float fadeFactor)
+        void setFadeFactor(float fadeFactor)
         {
-            this->FadeFactor = fadeFactor;
+            this->m_FadeFactor = fadeFactor;
         }
 
-        inline float getFadeFactor()
+        float getFadeFactor()
         {
-            return this->FadeFactor;
+            return this->m_FadeFactor;
         }
         
-        inline bool IsActive()
+        bool IsActive()
         {
-            return this->IsActive == TRUE;
+            return this->m_IsActive == TRUE;
         }
 
-        inline Vector3 getCenter()
+        Vector3 getCenter()
         {
-            return this->Center;
+            return this->m_Center;
         }
 
         static void BindLua(LuaState L) {
@@ -218,15 +219,15 @@ namespace MM2
                 .addProperty("Radius", &getCurrentRadius, &SetRadius)
                 .addProperty("Center", &getCenter, &SetCenter)
 
-                .addVariable("ForceCoef", &phForceSphere::ForceCoef)
-                .addVariable("ImpulseCoef", &phForceSphere::ImpulseCoef)
+                .addVariable("ForceCoef", &phForceSphere::m_ForceCoef)
+                .addVariable("ImpulseCoef", &phForceSphere::m_ImpulseCoef)
 
                 .addFunction("Direct", &Direct)
                 .addFunction("Update", &Update)
                 .endClass();
         }
     };
-    ASSERT_SIZEOF(phBoundSphere, 0x80);
+    //ASSERT_SIZEOF(phForceSpehere, 0x80);
 
     // Lua initialization
 

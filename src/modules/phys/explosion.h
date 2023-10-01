@@ -11,7 +11,7 @@ namespace MM2
     class dgBombInfo;
 
     // External declarations
-    extern class phMaterial;    
+    extern class phMaterial;
 
     // Class definitions
     class dgBombInfo : public asFileIO
@@ -68,7 +68,7 @@ namespace MM2
 
         virtual AGE_API phInertialCS* GetICS() override
         {
-            return this->collider.GetICS();
+            return this->GetCollider()->GetICS();
         }
 
         virtual AGE_API lvlInstance* GetInst() override
@@ -94,7 +94,7 @@ namespace MM2
     class dgExplosionInstance : public lvlInstance
     {
     private:
-        Vector3 Position;
+        Matrix34 Matrix;
         phForceSphere Sphere;
         BOOL Active;
         dgPhysEntity* Entity;
@@ -116,16 +116,12 @@ namespace MM2
 
         virtual AGE_API const Vector3& GetPosition() override 
         {
-            return this->Position;
+            return this->Matrix.GetRow(3);
         }
 
         virtual AGE_API const Matrix34& GetMatrix(Matrix34* a1) override
         {
-            Matrix34 mtx;
-            mtx.Identity();
-            mtx.SetRow(3, this->Position);
-            a1->Set(mtx);
-            return *a1;
+            return this->Matrix;
         }
                              
         virtual AGE_API phBound* GetBound(int a1) override
@@ -135,7 +131,7 @@ namespace MM2
 
         virtual AGE_API void SetMatrix(const Matrix34& a1)
         {
-            this->Position = Matrix34(a1).GetRow(3);
+            this->Matrix.Set(a1);
         }
 
         virtual AGE_API void Draw(int)
@@ -194,7 +190,7 @@ namespace MM2
             auto &sphere = this->Sphere;
 
             this->SetMatrix(matrix);
-            this->Entity->GetCollider()->Init(&matrix, &sphere);
+            this->Entity->GetCollider()->Init(&this->Matrix, &sphere);
             
             sphere.Reset();
             sphere.SetCenter(matrix.GetRow(3));
