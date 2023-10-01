@@ -5,6 +5,7 @@
 
 #include "..\imgui.h"
 #include "..\..\implot\implot.h"
+#include "..\..\imgui\gizmo\ImGuizmo.h"
 #include "..\misc\cpp\imgui_stdlib.h"
 #include <mm2_gfx.h>
 
@@ -486,6 +487,19 @@ static void ImGuiColumns(int count, const char* id, bool border)
     ImGui::Columns(count, id, border);
 }
 
+/////////////////////
+//IMGUIZMO BINDINGS//
+/////////////////////
+static bool ImGuizmo_Manipulate(const MM2::Matrix44& view, const MM2::Matrix44& proj, ImGuizmo::OPERATION operation, ImGuizmo::MODE mode, MM2::Matrix44* pMtx)
+{
+    return ImGuizmo::Manipulate(&view.m00, &proj.m00, operation, mode, &pMtx->m00);
+}
+
+static void ImGuizmo_DrawGrid(const MM2::Matrix44& view, const MM2::Matrix44& proj, const MM2::Matrix44& mtx, float gridSize)
+{
+    ImGuizmo::DrawGrid(&view.m00, &proj.m00, &mtx.m00, gridSize);
+}
+
 ///////////////////
 //IMPLOT BINDINGS//
 ///////////////////
@@ -760,6 +774,36 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("AddRect", &ImDrawList::AddRect, LUA_ARGS(const ImVec2&, const ImVec2&, ImU32, _def<float, 0>, _def<int, 0>, _def<float, 1>))
         .addFunction("AddRectFilled", &ImDrawList::AddRectFilled, LUA_ARGS(const ImVec2&, const ImVec2&, ImU32, _def<float, 0>, _def<int, 0>))
         .addFunction("AddRectFilledMultiColor", &ImDrawList::AddRectFilledMultiColor, LUA_ARGS(const ImVec2&, const ImVec2&, ImU32, ImU32, ImU32, ImU32))
+        .endClass();
+
+    LuaBinding(L).beginModule("ImGuizmo")
+        .addFunction("SetID", &ImGuizmo::SetID)
+        .addFunction("SetRect", &ImGuizmo::SetRect)
+        .addFunction("SetGizmoSizeClipSpace", &ImGuizmo::SetGizmoSizeClipSpace)
+        .addFunction("Enable", &ImGuizmo::Enable)
+        .addFunction("AllowAxisFlip", &ImGuizmo::AllowAxisFlip)
+        .addFunction("SetAxisLimit", &ImGuizmo::SetAxisLimit)
+        .addFunction("SetPlaneLimit", &ImGuizmo::SetPlaneLimit)
+        .addFunction("SetOrthographic", &ImGuizmo::SetOrthographic)
+        .addFunction("IsUsing", &ImGuizmo::IsUsing)
+        .addFunction("IsUsingAny", &ImGuizmo::IsUsingAny)
+        .addFunction("IsOver", static_cast<bool(*)(ImGuizmo::OPERATION)>(&ImGuizmo::IsOver))
+        .addFunction("Manipulate", &ImGuizmo_Manipulate)
+        .addFunction("DrawGrid", &ImGuizmo_DrawGrid)
+        .addFunction("GetStyle", &ImGuizmo::GetStyle)
+        .endModule();
+
+    LuaBinding(L).beginClass<ImGuizmo::Style>("ImGuizmoStyle")
+        .addVariable("TranslationLineThickness", &ImGuizmo::Style::TranslationLineThickness)
+        .addVariable("TranslationLineArrowSize", &ImGuizmo::Style::TranslationLineArrowSize)
+        .addVariable("RotationLineThickness", &ImGuizmo::Style::RotationLineThickness)
+        .addVariable("RotationOuterLineThickness", &ImGuizmo::Style::RotationOuterLineThickness)
+        .addVariable("ScaleLineThickness", &ImGuizmo::Style::ScaleLineThickness)
+        .addVariable("ScaleLineCircleSize", &ImGuizmo::Style::ScaleLineCircleSize)
+        .addVariable("HatchedAxisLineThickness", &ImGuizmo::Style::HatchedAxisLineThickness)
+        .addVariable("CenterCircleSize", &ImGuizmo::Style::CenterCircleSize)
+        .addMetaFunction("GetColor", &ImGuizmoStyle_GetColor)
+        .addMetaFunction("SetColor", &ImGuizmoStyle_SetColor)
         .endClass();
 
     LuaBinding(L).beginModule("ImPlot")
