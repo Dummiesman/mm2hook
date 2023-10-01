@@ -198,32 +198,32 @@ static int ImGuiDragIntLua(const char* label, int value, float speed, int min, i
 
 static void ImGuiLabelTextLua(const char* label, const char* text) 
 {
-    ImGui::LabelText(label, text);
+    ImGui::LabelText(label, "%s", text);
 }
 
 static void ImGuiTextLua(const char* text)
 {
-    ImGui::Text(text);
+    ImGui::Text("%s", text);
 }
 
 static void ImGuiTextWrappedLua(const char* text)
 {
-    ImGui::TextWrapped(text);
+    ImGui::TextWrapped("%s", text);
 }
 
 static void ImGuiTextColoredLua(const ImVec4& color, const char* text)
 {
-    ImGui::TextColored(color, text);
+    ImGui::TextColored(color, "%s", text);
 }
 
 static void ImGuiBulletTextLua(const char* text)
 {
-    ImGui::BulletText(text);
+    ImGui::BulletText("%s", text);
 }
 
 static void ImGuiSetTooltipLua(const char* tooltip)
 {
-    ImGui::SetTooltip(tooltip);
+    ImGui::SetTooltip("%s", tooltip);
 }
 
 static std::tuple<bool, bool> ImGuiSelectableLua(const char* label, bool selected, ImGuiSelectableFlags flags, const ImVec2& size)
