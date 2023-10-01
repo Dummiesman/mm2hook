@@ -7,6 +7,7 @@
 
 #include <implot/implot.h>
 #include <imgui/imgui.h>
+#include <imgui/gizmo/ImGuizmo.h>
 #include <imgui/impl/imgui_impl_win32.h>
 #include <imgui/impl/imgui_impl_age.h>
 
@@ -161,6 +162,7 @@ public:
         ImGui_ImplAGE_NewFrame();
         ImGui_ImplWin32_NewFrame();
         ImGui::NewFrame();
+        ImGuizmo::BeginFrame();
 
         // Lua
         MM2Lua::OnRenderUi();
