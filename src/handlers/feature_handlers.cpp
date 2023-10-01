@@ -88,6 +88,7 @@ static init_handler g_feature_handlers[] = {
     CreateHandler<pedestrianInstanceHandler>("pedestrianInstanceHandler"),
 
     CreateHandler<aiVehicleInstanceFeatureHandler>("aiVehicleInstance"),
+    CreateHandler<aiVehiclePhysicsFeatureHandler>("aiVehiclePhysics"),
     CreateHandler<aiPoliceOfficerFeatureHandler>("aiPoliceOfficer"),
 
     CreateHandler<luaDrawableHandler>("luaDrawableHandler")

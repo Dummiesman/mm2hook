@@ -10,6 +10,7 @@
 // Individual handlers
 #include "feature_handlers/aiPoliceOfficerFeatureHandler.h"
 #include "feature_handlers/aiVehicleInstanceFeatureHandler.h"
+#include "feature_handlers/aiVehiclePhysicsFeatureHandler.h"
 #include "feature_handlers/asCullManagerHandler.h"
 #include "feature_handlers/aud3DObjectHandler.h"
 #include "feature_handlers/Aud3DObjectManagerHandler.h"
