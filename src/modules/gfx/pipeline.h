@@ -1,4 +1,5 @@
 #pragma once
+#include <mm2_common.h>
 
 namespace MM2
 {
@@ -8,6 +9,9 @@ namespace MM2
 
     // External declarations
     extern class gfxViewport;
+    extern class gfxTexture;
+    extern class gfxBitmap;
+    extern class gfxImage;
 
     // Statically available functions
     declhook(0x4ABE00, _Func<bool>, $gfxAutoDetect);
@@ -66,8 +70,6 @@ namespace MM2
     declhook(0x6857D0, _Type<int>, gfxTexReduceSize);
 
     declhook(0x6B0454, _Type<uint>, mmCpuSpeed);
-
-    declhook(0x683124, _Type<gfxViewport*>, gfxCurrentViewport);
 
     declhook(0x6830F4, _Type<float>, window_fWidth);
     declhook(0x683120, _Type<float>, window_fHeight);
@@ -130,6 +132,10 @@ namespace MM2
     */
     class gfxPipeline {
     private:
+        static hook::Type<gfxViewport*> m_Viewport;
+        static hook::Type<gfxViewport*> VP;
+        static hook::Type<gfxViewport*> OrthoVP;
+    private:
         static void luaStartFade(Vector4 color, float time) {
             gfxPipeline::StartFade(color.PackColorBGRA(), time);
         }
@@ -166,9 +172,26 @@ namespace MM2
             hook::StaticThunk<0x4B2EE0>::Call<void>(viewport);
         }
 
+        static gfxViewport* GetMainViewport()
+        {
+            return gfxPipeline::VP.get();
+        }
+
+        static gfxViewport* GetCurrentViewport()
+        {
+            return gfxPipeline::m_Viewport.get();
+        }
+
+        static gfxViewport* GetOrthoViewport()
+        {
+            return gfxPipeline::OrthoVP.get();
+        }
+
         static void CopyBitmap(int destX, int destY, gfxBitmap* bitmap, int srcX, int srcY, int width, int height, bool srcColorKey) {
             hook::StaticThunk<0x4AB4C0>::Call<void>(destX, destY, bitmap, srcX, srcY, width, height, srcColorKey);
         }
+
+        //static void CopyClippedBitmap(int destX, int destY, gfxBitmap* bitmap, int srcX, int srcY, int width, int height)
 
         static void StartFade(uint color, float time) {
             hook::StaticThunk<0x4B2CE0>::Call<void>(color, time);
@@ -188,6 +211,9 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<gfxPipeline>("gfxPipeline")
+                .addStaticProperty("OrthoViewport", &GetOrthoViewport)
+                .addStaticProperty("MainViewport", &GetMainViewport)
+                .addStaticProperty("CurrentViewport", &GetCurrentViewport)
                 .addStaticFunction("SetFade", &luaSetFade)
                 .addStaticFunction("StartFade", &luaStartFade)
                 .addStaticFunction("CopyBitmap", &CopyBitmap)
