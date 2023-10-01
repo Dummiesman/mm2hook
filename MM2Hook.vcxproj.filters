@@ -2487,6 +2487,9 @@
     <ClCompile Include="src\handlers\feature_handlers\gizTrainHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\level\level.cpp">
+      <Filter>Source Files\modules\level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AGE.h">

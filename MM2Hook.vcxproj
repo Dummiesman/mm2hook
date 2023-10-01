@@ -748,6 +748,7 @@
     <ClCompile Include="src\modules\gizmo\bridge.cpp" />
     <ClCompile Include="src\modules\input.cpp" />
     <ClCompile Include="src\modules\level.cpp" />
+    <ClCompile Include="src\modules\level\level.cpp" />
     <ClCompile Include="src\modules\lights.cpp" />
     <ClCompile Include="src\modules\mmcityinfo.cpp" />
     <ClCompile Include="src\modules\mmeffects.cpp" />
