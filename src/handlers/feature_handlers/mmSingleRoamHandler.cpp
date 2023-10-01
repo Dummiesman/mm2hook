@@ -121,7 +121,7 @@ void mmSingleRoamHandler::EscapeDeepWater() {
         }
 
         if (!MMSTATE->DashEnabled) {
-            player->GetDashView()->Deactivate();
+            player->GetHUD()->GetDashView()->Deactivate();
         }
 
         player->SetWideFOV(MMSTATE->UseWideFOV);

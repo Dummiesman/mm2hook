@@ -22,8 +22,6 @@ namespace MM2
         static hook::Field<0x2C, vehCar> _car;
         static hook::Field<0x288, mmHUD> _hud;
 
-        static hook::Field<0x2A4, mmDashView> _dashView;
-        
         static hook::Field<0xE28, mmHudMap *> _hudmap;
         static hook::Field<0xE2C, camViewCS *> _camView;
 
@@ -45,8 +43,6 @@ namespace MM2
     public:
         vehCar * GetCar() const                  { return _car.ptr(this); }
         mmHUD * GetHUD() const                   { return _hud.ptr(this); }
-
-        mmDashView * GetDashView() const         { return _dashView.ptr(this); }
 
         camViewCS * GetCamView() const           { return _camView.get(this); }
 
@@ -112,6 +108,8 @@ namespace MM2
                 .addPropertyReadOnly("MPPostCam", &GetMPPostCam)
                 .addPropertyReadOnly("CurrentWaypoint", &GetCurrentWaypoint)
 
+                //input filtering
+                
                 //functions
                 .addFunction("FFImpactCallback", &FFImpactCallback)
                 .addFunction("EnableRegen", &EnableRegen)

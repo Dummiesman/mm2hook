@@ -127,6 +127,7 @@ namespace MM2
     private:
         byte _buffer[0xBC0]; // unconfirmed
     protected:
+        static hook::Field<0x1C, mmDashView> _dashView;
         static hook::Field<0xB94, mmCDPlayer*> _cdplayer;
         static hook::Field<0xBA0, mmHudMap*> _hudmap;
         static hook::Field<0xBA4, camViewCS*> _camview;
@@ -141,6 +142,11 @@ namespace MM2
         mmExternalView* GetExternalView()
         {
             return _externalView.ptr(this);
+        }
+
+        mmDashView* GetDashView()
+        {
+            return _dashView.ptr(this);
         }
 
         mmCRHUD* GetCRHUD()
@@ -247,6 +253,7 @@ namespace MM2
                 .addPropertyReadOnly("Map", &GetHudMap)
                 .addPropertyReadOnly("CamView", &GetCamView)
                 .addPropertyReadOnly("ExternalView", &GetExternalView)
+                .addPropertyReadOnly("DashView", &GetDashView)
                 
                 .addPropertyReadOnly("Timer", &GetTimer)
                 .addPropertyReadOnly("CountdownTimer", &GetCountdownTimer)
