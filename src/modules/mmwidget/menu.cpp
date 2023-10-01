@@ -40,4 +40,24 @@ UISlider* MM2::UIMenu::AddSliderLua(int id, LPCSTR name, FloatBox* pValue, float
 						   *datCallback::CreateParamaterlessLuaCallback(onValueChangedCallback),
 						   *datCallback::CreateLuaCallback<int>(hoverCallback));
 }
+
+UITextField* MM2::UIMenu::AddTextFieldLua(int id, LPCSTR name, CharBox* buffer, float x, float y, float w, float h, int maxLength, int somelen2, int someflags, int fontSize, LuaRef onChangedCallback)
+{
+	return this->AddTextField(id, name, buffer->GetBoxedValuePointer(), x, y, w, h, maxLength, somelen2, someflags, fontSize, 0, *datCallback::CreateParamaterlessLuaCallback(onChangedCallback));
+}
+
+uiWidget* MM2::UIMenu::AddIconWLua(int id, LPCSTR name, LPCSTR bitmap, float x, float y, float w, float h, LuaRef callback)
+{
+	return this->AddIconW(id, name, bitmap, x, y, w, h, *datCallback::CreateParamaterlessLuaCallback(callback));
+}
+
+uiWidget* MM2::UIMenu::AddToggleLua(int id, LPCSTR name, IntBox* pValue, float x, float y, float w, float h, int fontSize, int buttonType, LuaRef callback)
+{
+	return this->AddToggle(id, name, pValue->GetBoxedValuePointer(), x, y, w, h, fontSize, buttonType, *datCallback::CreateParamaterlessLuaCallback(callback));
+}
+
+uiWidget* MM2::UIMenu::AddVScrollBarLua(int id, IntBox* pValue, float x, float y, float w, float h, float rangeMin, float rangeMax, int a10, int a11, LuaRef callback)
+{
+	return this->AddVScrollBar(id, pValue->GetBoxedValuePointer(), x, y, w, h, rangeMin, rangeMax, a10, a11, *datCallback::CreateParamaterlessLuaCallback(callback));
+}
   

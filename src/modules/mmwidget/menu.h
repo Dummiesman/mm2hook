@@ -15,6 +15,7 @@ namespace MM2
     extern class UITextDropdown;
     extern class UILabel;
     extern class UISlider;
+    extern class UITextField;
 
     // Class definitions
     class UIMenu : public asNode {
@@ -42,7 +43,7 @@ namespace MM2
         int dword70;
         int WidgetID;
         int PreviousMenu;
-        uint32_t dword7C;
+        int FocusWidgetIndex;
         float dword80;
         uint32_t dword84;
         const char *Background;
@@ -68,6 +69,12 @@ namespace MM2
             return this->AddTextRoller2(id, name, pBoxedValue->GetBoxedValuePointer(), x, y, w, h, tempString, wrapAround ? TRUE : FALSE, maxValue, nameTextMode, fontNum, *datCallback::CreateParamaterlessLuaCallback(onValueChangedCallback));
         }
 
+        uiWidget* AddTextRollerLua(int id, LPCSTR name, IntBox* pBoxedValue, float x, float y, float w, float h, LPCSTR valuesString, bool wrapAround, int maxValue, int nameTextMode, int fontNum, LuaRef onValueChangedCallback)
+        {
+            auto tempString = string(valuesString);
+            return this->AddTextRoller(id, name, pBoxedValue->GetBoxedValuePointer(), x, y, w, h, tempString, wrapAround ? TRUE : FALSE, maxValue, nameTextMode, fontNum, *datCallback::CreateParamaterlessLuaCallback(onValueChangedCallback));
+        }
+
         UITextDropdown* AddTextDropdownLua(int id, LPCSTR name, IntBox* pBoxedValue, float x, float y, float w, float h, LPCSTR choicesString, int nameTextMode, LuaRef onValueChangedCallback, LPCSTR backgroundName, LuaRef hoverCallback);
 
         UILabel* AddLabelLua(int id, LPCSTR text, float x, float y, float w, float h, int effectFlags, int fontType)
@@ -76,6 +83,10 @@ namespace MM2
         }
 
         UISlider* AddSliderLua(int id, LPCSTR name, FloatBox* pValue, float x, float y, float w, float h, float minValue, float maxValue, int textMode, bool isBalanceSlider, LuaRef onValueChangedCallback, LuaRef hoverCallback);
+        UITextField* AddTextFieldLua(int id, LPCSTR name, CharBox* buffer, float x, float y, float w, float h, int maxLength, int somelen2, int someflags, int fontSize, LuaRef onChangedCallback);
+        uiWidget* AddIconWLua(int id, LPCSTR name, LPCSTR bitmap, float x, float y, float w, float h, LuaRef callback);
+        uiWidget* AddToggleLua(int id, LPCSTR name, IntBox* pValue, float x, float y, float w, float h, int fontSize, int buttonType, LuaRef callback);
+        uiWidget* AddVScrollBarLua(int id, IntBox* pValue, float x, float y, float w, float h, float rangeMin, float rangeMax, int a10, int a11, LuaRef callback);
     protected:
         // constructor for inherited classes to use like PUMenuBase
         UIMenu() {}
@@ -127,6 +138,11 @@ namespace MM2
             return hook::Thunk<0x4E2340>::Call<UIBMButton*>(this, id, name, x, y, numStates, onToggle, pValue, radioButtonValue, soundIndex, onHover);
         }
 
+        AGE_API uiWidget* AddTextRoller(int id, LPCSTR name, int* pValue, float x, float y, float w, float h, string valuesString, BOOL wrapAround, int maxValue, int nameTextMode, int fontNum, datCallback onValueChanged)
+        {
+            return hook::Thunk<0x4E1120>::Call<uiWidget*>(this, id, name, pValue, x, y, w, h, valuesString, wrapAround, maxValue, nameTextMode, fontNum, onValueChanged);
+        }
+
         AGE_API UITextRoller2* AddTextRoller2(int id, LPCSTR name, int* pValue, float x, float y, float w, float h, string valuesString, BOOL wrapAround, int maxValue, int nameTextMode, int fontNum, datCallback onValueChanged)
         {
             return hook::Thunk<0x4E1270>::Call<UITextRoller2*>(this, id, name, pValue, x, y, w, h, valuesString, wrapAround, maxValue, nameTextMode, fontNum, onValueChanged);
@@ -147,6 +163,26 @@ namespace MM2
             return hook::Thunk<0x4E1940>::Call<UISlider*>(this, id, name, pValue, x, y, w, h, minValue, maxValue, unused, textMode, unused2, isBalanceSlider, onValueChanged, onFocused);
         }
 
+        AGE_API UITextField* AddTextField(int id, LPCSTR name, char* buffer, float x, float y, float w, float h, int maxLength, int somelen2, int someflags, int fontSize, int UNUSED, datCallback onTextChanged)
+        {
+            return hook::Thunk<0x4E1700>::Call<UITextField*>(this, id, name, buffer, x, y, w, h, maxLength, somelen2, someflags, fontSize, UNUSED, onTextChanged);
+        }
+
+        AGE_API uiWidget* AddIconW(int id, LPCSTR name, LPCSTR bitmap, float x, float y, float w, float h, datCallback callback)
+        {
+            return hook::Thunk<0x4E1ED0>::Call<uiWidget*>(this, id, name, bitmap, x, y, w, h, callback);
+        }
+
+        AGE_API uiWidget* AddToggle(int id, LPCSTR name, int* pValue, float x, float y, float w, float h, int fontSize, int buttonType, datCallback callback)
+        {
+            return hook::Thunk<0x4E1FE0>::Call<uiWidget*>(this, id, name, pValue, x, y, w, h, fontSize, buttonType, callback);
+        }
+
+        AGE_API uiWidget* AddVScrollBar(int id, int* pValue, float x, float y, float w, float h, float rangeMin, float rangeMax, int a10, int a11, datCallback callback)
+        {
+            return hook::Thunk<0x4E2610>::Call<uiWidget*>(this, id, pValue, x, y, w, h, rangeMin, rangeMax, a10, a11, callback);
+        }
+
         AGE_API void AssignBackground(LPCSTR imageName)
         {
             hook::Thunk<0x4E0980>::Call<void>(this, imageName);
@@ -157,9 +193,52 @@ namespace MM2
             hook::Thunk<0x4E0930>::Call<void>(this, name);
         }
 
+        AGE_API void SetBstate(int state)
+        {
+            hook::Thunk<0x4E0B20>::Call<void>(this, state);
+        }
+
+        AGE_API void SetFocusWidget(int widgetId)
+        {
+            hook::Thunk<0x4E0B50>::Call<void>(this, widgetId);
+        }
+
         int GetID() const
         {
             return this->ID;
+        }
+
+        int GetWidgetCount() const
+        {
+            return this->WidgetCount;
+        }
+
+        int GetWidgetID() const
+        {
+            return this->WidgetID;
+        }
+
+
+        uiWidget* GetWidget(int index)
+        {
+            if (ppWidgets == nullptr || index < 0 || index >= this->GetWidgetCount())
+                return nullptr;
+            return ppWidgets[index];
+        }
+
+        uiWidget* GetWidgetByID(int id)
+        {
+            if (ppWidgets == nullptr)
+                return nullptr;
+            for (int i = 0; i < this->GetWidgetCount(); i++)
+            {
+                auto widget = ppWidgets[i];
+                if (widget->WidgetID == id)
+                {
+                    return widget;
+                }
+            }
+            return nullptr;
         }
 
         void SetPreviousMenu(int ID)
@@ -174,17 +253,27 @@ namespace MM2
                     return object;
                 })
                 .addPropertyReadOnly("ID", &GetID)
+                .addPropertyReadOnly("NumWidgets", &GetWidgetCount)
+                .addPropertyReadOnly("WidgetID", &GetWidgetID)
+                .addFunction("GetWidget", &GetWidget)
+                .addFunction("GetWidgetByID", &GetWidgetByID)
                 .addFunction("SetPreviousMenu", &SetPreviousMenu)
+                .addFunction("SetBstate", &SetBstate)
                 .addFunction("AssignBackground", &AssignBackground)
                 .addFunction("AssignName", &AssignName)
                 .addFunction("AddButton", &AddButtonLua)
                 .addFunction("AddIcon", &AddIcon)
                 .addFunction("AddBMLabel", &AddBMLabelLua)
                 .addFunction("AddBMButton", &AddBMButtonLua)
+                .addFunction("AddTextRoller", &AddTextRollerLua)
                 .addFunction("AddTextRoller2", &AddTextRoller2Lua)
                 .addFunction("AddTextDropdown", &AddTextDropdownLua)
+                .addFunction("AddTextField", &AddTextFieldLua)
                 .addFunction("AddLabel", &AddLabelLua)
                 .addFunction("AddSlider", &AddSliderLua)
+                .addFunction("AddIconW", &AddIconWLua)
+                .addFunction("AddToggle", &AddToggleLua)
+                .addFunction("AddVScrollBar", &AddVScrollBarLua)
                 .endClass();
         }
     };
