@@ -94,7 +94,7 @@ namespace MM2
 
     class RadialGauge : public asNode
     {
-    private:
+    public:
         asLinearCS LinearCS;
         float* ValuePtr;
         float MaxValue;
@@ -109,5 +109,16 @@ namespace MM2
         Vector3 PivotOffset;
         Matrix34 dword_e4;
     public:
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<RadialGauge, asNode>("RadialGauge")
+                .addVariable("MaxValue", &RadialGauge::MaxValue)
+                .addVariable("RotMin", &RadialGauge::RotMin)
+                .addVariable("RotMax", &RadialGauge::RotMax)
+                .addVariable("MinValue", &RadialGauge::MinValue)
+                .addVariable("Pivot", &RadialGauge::Pivot)
+                .addVariable("Offset", &RadialGauge::Offset)
+                .addVariable("PivotOffset", &RadialGauge::PivotOffset)
+                .endClass();
+        }
     };
 }
