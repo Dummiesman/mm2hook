@@ -97,10 +97,10 @@ namespace MM2
     public:
         asLinearCS LinearCS;
         float* ValuePtr;
-        float MaxValue;
+        float* MaxValuePtr;
         float RotMin;
         float RotMax;
-        float MinValue;
+        float* MinValuePtr;
         Vector3 dword_ac;
         int ShaderSet;
         int ModStatic;
@@ -111,10 +111,8 @@ namespace MM2
     public:
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<RadialGauge, asNode>("RadialGauge")
-                .addVariable("MaxValue", &RadialGauge::MaxValue)
                 .addVariable("RotMin", &RadialGauge::RotMin)
                 .addVariable("RotMax", &RadialGauge::RotMax)
-                .addVariable("MinValue", &RadialGauge::MinValue)
                 .addVariable("Pivot", &RadialGauge::Pivot)
                 .addVariable("Offset", &RadialGauge::Offset)
                 .addVariable("PivotOffset", &RadialGauge::PivotOffset)

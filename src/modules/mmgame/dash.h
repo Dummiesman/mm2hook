@@ -150,6 +150,8 @@ namespace MM2
                 .addVariable("WheelPivotOffset", &mmDashView::WheelPivotOffset)
                 .addVariable("GearPivotOffset", &mmDashView::GearPivotOffset)
                 .addVariable("WheelFact", &mmDashView::WheelFact)
+                .addVariable("MaxSpeed", &mmDashView::MaxSpeed)
+                .addVariable("MaxRPM", &mmDashView::MaxRPM)
                 .endClass();
         }
     };
