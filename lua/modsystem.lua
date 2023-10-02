@@ -1,5 +1,4 @@
 local M = {}
-local imgui = require("imgui")
 
 --exposed vars
 M.useCache = false
@@ -10,8 +9,18 @@ local modsPath = "lua/mods"
 
 --mods table
 local mods = {}
+local hookCache = {}
 
 --helpers
+local function callSafe(func, ...)
+  local ok, err = pcall(func, ...)
+  if not ok then
+    Errorf(err)
+    return false
+  end
+  return true
+end
+
 local function charCount(str, chr) 
   local c = 0
   for i = 1, #str do
@@ -21,16 +30,30 @@ local function charCount(str, chr)
 end
 
 local function startsWith(str,start)
-   return str:sub(1,string.len(start)):lower() == start:lower()
+  return str:sub(1,string.len(start)):lower() == start:lower()
 end
 
 local function endsWith(str, ending)
-   return str:sub(-#ending):lower() == ending:lower()
+  return str:sub(-#ending):lower() == ending:lower()
+end
+
+local function patchFunctionTable(fnTable, fnName, fnNewName)
+  local fn = fnTable[fnName]
+  if type(fn) == 'function' then
+    local fnNew = fnTable[fnNewName]
+    if type(fnNew) == 'function' then
+      fnTable[fnNewName] = function() fnNew() fn() end
+    else
+      fnTable[fnNewName] = fn
+    end
+    fnTable[fnName] = nil
+    Warningf('FIXME: Patching obsolete function "' .. fnName .. '" to "' .. fnNewName .. '". Please update your code as it uses deprecated API.')
+  end
 end
 
 local function fileExists(name)
-   local f=io.open(name,"r")
-   if f~=nil then io.close(f) return true else return false end
+  local f=io.open(name,"r")
+  if f~=nil then io.close(f) return true else return false end
 end
 
 --init!
@@ -49,12 +72,20 @@ local function getContexts()
   
   if NETMGR.InSession and not allowMp then
     return t
-  elseif MMSTATE.NextState == 1 or Game ~= nil then
+  end
+  
+  if MMSTATE.NextState == STATE_GAME or Game ~= nil then
     table.insert(t, 'game')
     isGame = true
-  elseif MMSTATE.NextState == 0 or Game == nil then
+  elseif MMSTATE.NextState == STATE_MENU or Game == nil then
     table.insert(t, 'menu')
   end
+  
+  --if NETMGR.InSession then
+  --  table.insert(t, 'multiplayer')
+  --else
+  --  table.insert(t, 'singleplayer')
+  --end
   
   if isGame then
     if MMSTATE.GameMode == GAMEMODE_BLITZ then 
@@ -67,6 +98,8 @@ local function getContexts()
     elseif MMSTATE.GameMode == GAMEMODE_CRUISE then
       table.insert(t, 'roam')
       table.insert(t, 'cruise')
+    elseif MMSTATE.GameMode == GAMEMODE_CNR then
+      table.insert(t, 'cnr')
     elseif MMSTATE.GameMode == GAMEMODE_CRASHCOURSE then
       table.insert(t, 'crash')
       table.insert(t, 'crashcourse')
@@ -77,48 +110,77 @@ local function getContexts()
 end
 
 
-local function processMod(loadedMod)
+local function processMod(modName, loadedMod)
+    modName = modName:lower()
     if type(loadedMod) ~= "table" then
         Errorf("  invalid return value.")
+        return false
+    elseif mods[modName] then
+        Errorf("  a mod named '" .. modName .. "' is already loaded.")
+        return false
     else
         if not loadedMod.info or type(loadedMod.info) ~= 'table' then
           Errorf("  invalid or missing info table, this mod will not be loaded.")
-          return
+          return false
         end
         
         -- check if we should be loading this mod
-        -- todo: always load CoreMods
         local context = loadedMod.info.context
         if not context or type(context) ~= 'table' then
           Errorf("  no context information. this mod will not be loaded.")
-          return
+          return false
         end
         
         if not checkContext(context, getContexts()) then
           Displayf("  not specified to run in this context")
-          return
+          return false
         end
         
         -- fix deprecated things
-        if loadedMod.onGameInit and type(loadedMod.onGameInit) == 'function' then
-          Warningf("  onGameInit is deprecated, now moved to onGamePreInit and onGamePostInit. Automatically patching to onGamePostInit.")
-          loadedMod.onGamePostInit = loadedMod.onGameInit
-          loadedMod.onGameInit = nil
-        end
-        if loadedMod.tick and type(loadedMod.tick) == 'function' then
-          Warningf("  tick is deprecated, now moved to onUpdate. Automatically patching to onUpdate.")
-          loadedMod.onUpdate = loadedMod.tick
-          loadedMod.tick = nil
+        patchFunctionTable(loadedMod, "onGameInit", "onStateBegin")
+        patchFunctionTable(loadedMod, "onGamePostInit", "onStateBegin")
+        patchFunctionTable(loadedMod, "onGamePreInit", "onStartup")
+        patchFunctionTable(loadedMod, "onGameEnd", "onStateEnd")
+        patchFunctionTable(loadedMod, "tick", "onUpdate")
+        
+        -- add our fields into the table
+        loadedMod._modInternalName = modName
+        loadedMod._modSubmodules = {}
+        
+        -- temporarily add mod to the mods table to allow for submodule registration
+        mods[modName] = loadedMod
+        
+        -- call onModLoaded
+        local loadResult = true
+        if type(loadedMod.onModLoaded) == 'function' then
+          local ok, loadResult = pcall(loadedMod.onModLoaded)
+          if not ok then
+            Errorf("  onModLoaded failed, mod will not be loaded")
+            Errorf(loadResult)
+            mods[modName] = nil
+            return false
+          end
+          if type(loadResult) ~= "boolean" then loadResult = true end
         end
         
-        -- call init
-        if loadedMod.onInit and type(loadedMod.onInit) == 'function' then
-          loadedMod.onInit()
+        -- remove if onModLoaded returned false
+        if loadResult then
+          -- cache hooks
+          for k,v in pairs(loadedMod) do
+            if type(v) == 'function' then
+              local cache = hookCache[k] or {}
+              table.insert(cache, v)
+              hookCache[k] = cache
+            end
+          end
+          
+          Displayf("  success")
+          return true
+        else
+          Displayf("  skipped as requested by mod")
+          mods[modName] = nil
+          return false
         end
-        
-        -- insert
-        table.insert(mods, loadedMod)
-        Displayf("  success")
     end
 end
 
@@ -143,7 +205,8 @@ local function loadModFromDisk(rootPath)
       return
     end
 
-    processMod(mod)
+    -- process
+    processMod(rootPath:sub(10), mod)
 end
 
 local function loadModsFromDisk()
@@ -179,9 +242,10 @@ local function loadModFromArchive(path)
       return
     end
 
-    -- get return value from script and load
-    mod = mod()
-    processMod(mod)
+    -- process
+    local modPathRelative = path:sub(9, #path-4)
+    modPathRelative = modPathRelative:gsub('/','_')
+    processMod(modPathRelative, mod())
 end
 
 local function loadModsFromArchives()
@@ -191,7 +255,7 @@ local function loadModsFromArchives()
     -- load scripts
     for file, isDir in datAssetManager.EnumFiles("scripts", false) do
       local slashCount = charCount(file, "/")
-      local isLuaFile = endsWith(file, ".lua")
+      local isLuaFile = endsWith(file:lower(), ".lua")
       
       if isLuaFile then
         if slashCount == 0 then
@@ -221,118 +285,141 @@ local function init()
     Warningf("modsystem.init: loading mods complete")
 end
 
+--api
+local function getMod(name)
+  return mods[name]
+end
+
+local function registerSubmodule(parentMod, submodule, subpath)
+  local parentModName
+  if type(parentMod) == 'table' then
+    parentModName = parentMod._modInternalName 
+  elseif type(parentMod) == 'string' then
+    parentModName = parentMod
+  else
+    Errorf("registerSubmodule: invalid parentMod. Must be parent mod table, or parent mod name")
+    return
+  end
+  
+  if type(submodule) ~= 'table' then
+    Errorf("registerSubmodule: invalid submodule. Must be mod table.")
+    return
+  end
+  
+  -- things look in check, lets register this as a submodule
+  local submodulePath = parentModName .. "_" .. subpath:lower()
+  Displayf("  registering submodule " .. submodulePath)
+  
+  local parentModTable = mods[parentModName]
+  if not parentModTable then
+    Errorf("registerSubmodule: could not find parent module " .. parentModName .. ".")
+    return
+  end
+  
+  if processMod(submodulePath, submodule) then
+    table.insert(parentModTable._modSubmodules, submodulePath)
+  end
+end
+
+local function unload(mod)
+  local modName
+  if type(mod) == 'table' then
+    modName = mod._modInternalName 
+  elseif type(mod) == 'string' then
+    modName = mod
+  else
+    Errorf("unload: invalid mod. Must be mod table, or mod name")
+    return
+  end
+  
+  if not mods[modName] then
+    Errorf("Tried to unload a mod that's not loaded: " .. modName)
+  else
+    Warningf("Unloading mod " .. modName)
+    local modTable = mods[modName]
+    
+    -- unload submodules
+    if #modTable._modSubmodules ~= 0 then
+      Warningf("Unloading submodules")
+      for _,submoduleName in pairs(modTable._modSubmodules) do
+        unload(submoduleName)
+      end
+    end
+    
+    -- unload parent module
+    if type(modTable.onModUnloaded) == 'function' then callSafe(modTable.onModUnloaded) end
+    mods[modName] = nil
+    
+    -- clean hooks
+    for k,v in pairs(modTable) do
+      if type(v) == 'function' then
+        local cache = hookCache[k]
+        if cache then
+          for i=#cache,1,-1 do
+             if cache[i] == v then table.remove(cache, i) end
+          end
+        end
+      end
+    end
+    
+    Warningf("Unloaded " .. modName)
+  end
+end
+
+local function reload(mod)
+  local modName
+  if type(mod) == 'table' then
+    modName = mod._modInternalName 
+  elseif type(mod) == 'string' then
+    modName = mod
+  else
+    Errorf("reload: invalid mod. Must be mod table, or mod name")
+    return
+  end
+  
+  if not mods[modName] then
+    Errorf("Tried to reload a mod that's not loaded: " .. modName)
+  else
+    Warningf("Reloading mod " .. modName)
+    local modTable = mods[modName]
+    
+    --TODO: get serialized table, reload, call deserialize
+    if type(modTable.serialize) == 'function' then callSafe(modTable.serialize) end
+  end
+end
+
 ------------------------
 ------ MAIN HOOKS ------
 ------------------------
-local function initMods()
-    for _, mod in ipairs(mods) do
-        if mod.init then mod.init() end
-    end
-end
-
-local function onChatMessage(message)
-    for _, mod in ipairs(mods) do
-        if mod.onChatMessage then mod.onChatMessage(message) end
-    end
-end
-
-local function onGameEnd()
-    for _, mod in ipairs(mods) do
-        if mod.onGameEnd then mod.onGameEnd() end
-    end
-end
-
-local function onGamePreInit()
-    for _, mod in ipairs(mods) do
-        if mod.onGamePreInit then mod.onGamePreInit() end
-    end
-end
-
-local function onGamePostInit()
-    for _, mod in ipairs(mods) do
-        if mod.onGamePostInit then mod.onGamePostInit() end
-    end
-end
-
-local function onSessionCreate(name, password, maxPlayers, details)
-    for _, mod in ipairs(mods) do
-        if mod.onSessionCreate then mod.onSessionCreate(name, password, maxPlayers, details) end
-    end
-end
-
-local function onSessionJoin(a2, a3, a4)
-    for _, mod in ipairs(mods) do
-        if mod.onSessionJoin then mod.onSessionJoin(a2, a3, a4) end
-    end
-end
-
-local function onDisconnect()
-    for _, mod in ipairs(mods) do
-        if mod.onDisconnect then mod.onDisconnect() end
-    end
-end
-
-local function onReset()
-    for _, mod in ipairs(mods) do
-        if mod.onReset ~= nil then mod.onReset() end
-    end
-end
-
-local function onUpdate()
-    for _, mod in ipairs(mods) do
-        if mod.onUpdate ~= nil then mod.onUpdate() end
-    end
-end
-
-local function onUpdatePaused()
-    for _, mod in ipairs(mods) do
-        if mod.onUpdatePaused ~= nil then mod.onUpdatePaused() end
-    end
-end
-
-local function onCull()
-    for _, mod in ipairs(mods) do
-        if mod.onCull ~= nil then mod.onCull() end
+local function callHook(name, ...)
+    local cache = hookCache[name]
+    if not cache then return end
+    
+    for _, func in pairs(cache) do
+        callSafe(func, ...)
     end
 end
 
 local function onRenderUi()
     --Render the main bar
     if imgui.BeginMainMenuBar() then
-      for _, mod in ipairs(mods) do
-          if mod.drawMenuBar then mod.drawMenuBar() end
-      end
+      callHook("drawMenuBar")
       imgui.EndMainMenuBar()
     end
 
     --Render mod windows etc
-    for _, mod in ipairs(mods) do
-        if mod.onRenderUi then mod.onRenderUi() end
-    end
-end
-
-local function onShutdown()
-    for _, mod in ipairs(mods) do
-        if mod.onShutdown then mod.onShutdown() end
-    end
+    callHook("onRenderUi")
 end
 
 --exports
 M.init = init
 
-M.initMods = initMods
-M.onChatMessage = onChatMessage
+M.registerSubmodule = registerSubmodule
+M.getMod = getMod
+M.unload = unload
+M.reload = reload
+
+M.callHook = callHook
 M.onRenderUi = onRenderUi
-M.onCull = onCull
-M.onUpdate = onUpdate
-M.onUpdatePaused = onUpdatePaused
-M.onGamePreInit = onGamePreInit
-M.onGamePostInit = onGamePostInit
-M.onGameEnd = onGameEnd
-M.onSessionCreate = onSessionCreate
-M.onSessionJoin = onSessionJoin
-M.onDisconnect = onDisconnect
-M.onReset = onReset
-M.onShutdown = onShutdown
 
 return M
