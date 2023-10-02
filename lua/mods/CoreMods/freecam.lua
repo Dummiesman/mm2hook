@@ -1,8 +1,16 @@
 local M = {}
-local imgui = require("imgui") -- abstraction of imgui for ease of use in lua
-local winOpen = false
+
+M.info = {
+  name = "Core Mods : Freecam Submodule",
+  author = "mm2hook Team",
+  context = {"game"}
+}
 
 local tilt = 0
+
+-- imgui state
+local winOpen = false
+local drawWindow
 
 local function activateFreecam()
   if Player and Player.Car then
@@ -27,48 +35,45 @@ local function onChatMessage(message)
 end
 
 local function onRenderUi()
-  if winOpen then
-    local window_flags = ImGuiWindowFlags_AlwaysAutoResize
+  if not winOpen then return end
+  local window_flags = ImGuiWindowFlags_AlwaysAutoResize
     
-    --begindraw
-    winOpen = imgui.Begin("Freecam Control Panel", winOpen, window_flags)
-  
-    if Player == nil then
-      imgui.TextColored(ImVec4(1, 0, 0, 1), "No player found. Freecam only works in ")
-    else
-      -- get freecam
-      local freecam = Player.FreeCam
-      if freecam then
-        freecam.Speed = imgui.Drag("Speed", freecam.Speed, 0.1, 0, 100)
-        freecam.RotationSpeed = imgui.Drag("Rotation Speed", freecam.RotationSpeed, 0.1, 0, 10)
+  --begindraw
+  drawWindow, winOpen = imgui.Begin("Freecam Control Panel", true, window_flags)
+  if drawWindow then
+    -- get freecam
+    local freecam = Player.FreeCam
+    if freecam then
+      freecam.Speed = imgui.Drag("Speed", freecam.Speed, 0.1, 0, 100)
+      freecam.RotationSpeed = imgui.Drag("Rotation Speed", freecam.RotationSpeed, 0.1, 0, 10)
+      
+      local newfov = imgui.Drag("FOV", freecam.FOV, 1, 1, 100)
+      if newfov ~= freecam.FOV then
+        freecam.FOV = newfov
+        freecam:UpdateView()
+      end
+      
+      local newtilt = imgui.Drag("Tilt", tilt, 1, -180, 180)
+      if newtilt ~= tilt then
+        local mtx = freecam:GetMatrix()
+        local pos = mtx:GetRow(3)
         
-        local newfov = imgui.Drag("FOV", freecam.FOV, 1, 1, 100)
-        if newfov ~= freecam.FOV then
-          freecam.FOV = newfov
-          freecam:UpdateView()
-        end
+        local delta = tilt - newtilt
+        mtx:Rotate(mtx:GetRow(2), (delta / 180.0) * 3.14) -- rotate around Z axis
         
-        local newtilt = imgui.Drag("Tilt", tilt, 1, -180, 180)
-        if newtilt ~= tilt then
-          local mtx = freecam:GetMatrix()
-          local pos = mtx:GetRow(3)
-          
-          local delta = tilt - newtilt
-          mtx:SetRow(3, Vector3(0,0,0)) -- don't rotate around current position
-          mtx:Rotate(mtx:GetRow(2), (delta / 180.0) * 3.14) -- rotate around Z axis
-          mtx:SetRow(3, pos) -- copy back the position
-          
-          freecam:SetMatrix(mtx)
-          tilt = newtilt
-        end
-        
-        if imgui.Button("Activate") then
-          activateFreecam()
-        end
+        freecam:SetMatrix(mtx)
+        tilt = newtilt
+      end
+      
+      if imgui.Button("Activate") then
+        activateFreecam()
+      end
+      
+      if not NETMGR.InSession then
         imgui.SameLine()
         if imgui.Button("Teleport Car To Freecam") then
           if Player and Player.Car then
-            Player.Car:GetICS().Position = freecam:GetMatrix():GetRow(3)
+            Player.Car:GetICS():SetPosition(freecam:GetMatrix():GetRow(3))
           end
         end
       end
@@ -79,8 +84,11 @@ local function onRenderUi()
 end
 
 local function drawMenuBar()
-  if imgui.MenuItem("Freecam Control Panel", nil, winOpen) then
-    winOpen = not winOpen
+  if imgui.BeginMenu("Core") then
+     if imgui.MenuItem("Freecam Control Panel", nil, winOpen) then
+        winOpen = not winOpen
+     end
+    imgui.EndMenu()
   end
 end
 

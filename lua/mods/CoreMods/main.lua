@@ -1,9 +1,3 @@
-local imgui = require("imgui") -- abstraction of imgui for ease of use in lua
-local freecam = require("mods/CoreMods/freecam")
-local lightsToggle = require("mods/CoreMods/lightstoggle")
-local richPresence = require("mods/CoreMods/richpresence")
-local cheats = require("mods/CoreMods/cheats")
-
 local M = {}
 
 M.info = {
@@ -12,42 +6,20 @@ M.info = {
   context = {"game", "menu"}
 }
 
-local function onRenderUi()
-  if freecam then freecam.onRenderUi() end
-end
-
-
-local function drawMenuBar()
-  if imgui.BeginMenu("Core") then
-    if freecam then freecam.drawMenuBar() end
-    imgui.EndMenu()
+local function onModLoaded()
+  modsystem.registerSubmodule(M, require("mods/CoreMods/freecam"), "freecam")
+  modsystem.registerSubmodule(M, require("mods/CoreMods/cameraExtensions"), "cameraExtensions")
+  modsystem.registerSubmodule(M, require("mods/CoreMods/lightExtensions"), "lightExtensions")
+  modsystem.registerSubmodule(M, require("mods/CoreMods/sirenExtensions"), "sirenExtensions")
+  modsystem.registerSubmodule(M, require("mods/CoreMods/richpresence"), "richpresence")
+  modsystem.registerSubmodule(M, require("mods/CoreMods/cheats"), "cheats")
+  
+  if datArgParser.Get("lConsoleTest") then
+    modsystem.registerSubmodule(M, require("mods/CoreMods/console"), "console")
   end
 end
 
-local function onChatMessage(message)
-  if freecam then freecam.onChatMessage(message) end
-  if cheats then cheats.onChatMessage(message) end
-end
-
-local function onUpdate()
-  if lightsToggle then lightsToggle.onUpdate() end
-  if richPresence then richPresence.onUpdate() end
-end
-
-local function onGamePostInit()
-  if richPresence then richPresence.onGamePostInit() end
-end
-
-local function onInit()
-  if richPresence then richPresence.onInit() end
-end
-
 --exports
-M.drawMenuBar = drawMenuBar
-M.onRenderUi = onRenderUi
-M.onUpdate = onUpdate
-M.onInit = onInit
-M.onGamePostInit = onGamePostInit
-M.onChatMessage = onChatMessage
+M.onModLoaded = onModLoaded
 
 return M

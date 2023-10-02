@@ -1,5 +1,11 @@
 local M = {}
 
+M.info = {
+  name = "Core Mods : Discord Rich Presence Submodule",
+  author = "mm2hook Team",
+  context = {"menu", "game"}
+}
+
 -- locals
 local netUpdateTimer = 0
 local lastPlayerCount = 0
@@ -75,8 +81,6 @@ local function getRaceName()
 end
 
 local function updatePresence()
-  local inGame = (Game ~= nil)
-  
   -- set some defaults
   DiscordRichPresence.StartTimestamp = 0
   DiscordRichPresence.EndTimestamp = 0
@@ -89,7 +93,7 @@ local function updatePresence()
   DiscordRichPresence.LargeText = ""
   
   -- set real values
-  if inGame then
+  if GameState == STATE_GAME then
     DiscordRichPresence.LargeImage = tableContains(cityImageKeys, MMSTATE.CityName) and MMSTATE.CityName or defaultCityImageKey
     DiscordRichPresence.SmallImage = tableContains(carImageKeys, MMSTATE.VehicleName) and MMSTATE.VehicleName or defaultCarImageKey
     
@@ -103,7 +107,7 @@ local function updatePresence()
       DiscordRichPresence.Details = string.format("%s: %s", getGameModeName(), getRaceName())
     else
       DiscordRichPresence.Details = getGameModeName()
-    end
+    end    
     
     -- set image text
     if VehicleList ~= nil then
@@ -151,29 +155,34 @@ local function onUpdate()
   end
 end
 
-local function onInit()
+local function onModLoaded()
   -- check config setting
   if not HookConfig.Get("UseRichPresence") then return end
   
-  --initialize
+  -- initialize
   if not DiscordRichPresence.Initialized then
     DiscordRichPresence.Initialize(379767166267817984)
   end
   
   if DiscordRichPresence.Initialized then
     M.onUpdate = onUpdate 
-    M.onGamePreInit = updatePresence
-    M.onGamePostInit = updatePresence
+    M.onStartup = updatePresence
+    M.onStateBegin = updatePresence
     updatePresence()
   end
+end
+
+local function onModUnloaded()
+  -- todo: shutdown?
 end
 
 local function nop()
 end
 
-M.onInit = onInit
+M.onModLoaded = onModLoaded
+M.onModUnloaded = onModUnloaded
 M.onUpdate = nop
-M.onGamePostInit = nop
-M.onGamePreInit = nop
+M.onStateBegin = nop
+M.onStartup = nop
 
 return M
