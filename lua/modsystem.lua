@@ -5,7 +5,7 @@ M.useCache = false
 
 --local vars
 local allowMp = true
-local modsPath = "lua/mods"
+local modsPath = "lua/scripts"
 
 --mods table
 local mods = {}
