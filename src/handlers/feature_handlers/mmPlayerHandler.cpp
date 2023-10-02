@@ -8,6 +8,7 @@ static ConfigValue<bool> cfgEnableOutOfMapFix("OutOfMapFix", true);
 static ConfigValue<bool> cfgEnableWaterSplashSound("WaterSplashSound", true);
 static ConfigValue<bool> cfgEnableExplosionSound("ExplosionSound", true);
 static ConfigValue<bool> cfgEnableMissingDashboardFix("MissingDashboardFix", true);
+static ConfigValue<bool> cfgMm1StyleFlipOver("MM1StyleFlipOver", false);
 
 /*
     mmPlayerHandler
@@ -101,6 +102,22 @@ void mmPlayerHandler::PlayExplosion() {
     }
 }
 
+void mmPlayerHandler::UpdateHOG()
+{
+    if (ROOT->IsPaused())
+        return;
+
+    auto player = reinterpret_cast<mmPlayer*>(this);
+    auto stuck = player->GetCar()->GetStuck();
+    auto playerMtx = player->GetCar()->GetICS()->GetMatrix();
+    
+    // prevent vehStuck from doing the job of this function
+    if (playerMtx.m11 <= 0.f)
+        stuck->SetStuckTime(0.f);
+
+    hook::Thunk<0x404920>::Call<void>(this); // call original UpdateHOG
+}
+
 void mmPlayerHandler::Update() {
     auto player = reinterpret_cast<mmPlayer*>(this);
     auto car = player->GetCar();
@@ -156,9 +173,6 @@ void mmPlayerHandler::Update() {
         }
     }
 
-    if (carsim->GetWorldMatrix()->m11 <= 0.f)
-        car->GetStuck()->SetStuckTime(0.f);
-
     //call original
     hook::Thunk<0x405760>::Call<void>(this);
 }
@@ -197,10 +211,19 @@ void mmPlayerHandler::Install() {
         });
     }
 
-    //fix collision detection
-    //TODO: fix this properly by setting the hasCollided flag!
-    InstallPatch({ 0x8B, 0x81, 0xF4, 0x0, 0x0, 0x0 }, {
-        0x40493F, // mmPlayer::UpdateHOG
-    });
+    if (cfgMm1StyleFlipOver.Get())
+    {
+        //fix collision detection
+        //TODO: fix this properly by setting the hasCollided flag!
+        InstallPatch({ 0x8B, 0x81, 0xF4, 0x0, 0x0, 0x0 }, {
+            0x40493F, // mmPlayer::UpdateHOG
+            });
+
+        InstallCallback("mmPlayer::UpdateHOG", "Wrap UpdateHOG to prevent flipping over while paused, and to disable stuck timer when upside down.",
+            &UpdateHOG, {
+                cb::call(0x405CAD),
+            }
+        );
+    }
 }
 

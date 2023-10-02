@@ -10,6 +10,7 @@ public:
     void Update();
     void Reset();
     void PlayExplosion();
+    void UpdateHOG();
     static void Install();
 };
 
