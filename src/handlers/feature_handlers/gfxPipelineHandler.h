@@ -16,6 +16,7 @@ public:
     static void SetRes(int width, int height, int cdepth, int zdepth, bool parseArgs);
     static void gfxWindowCreate(LPCSTR lpWindowName);
     static void gfxSetTexReduceSize(int);
+    static void BeginFrame();
 
     static void Install();
 };

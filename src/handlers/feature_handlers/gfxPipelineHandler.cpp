@@ -3,6 +3,8 @@
 #include <imgui\impl\imgui_impl_age.h>
 #include <imgui\impl\imgui_impl_win32.h>
 
+#include <modules\gfx\stats.h>
+
 using namespace MM2;
 
 /*
@@ -334,6 +336,18 @@ void gfxPipelineHandler::gfxSetTexReduceSize(int) {
     gfxTexReduceSize = gfxReduceSizes[*gfxTexQuality];
 }
 
+void gfxPipelineHandler::BeginFrame()
+{
+    //Warningf("BeginFrame, Last gfxTris %d, gfxVerts %d, gfxTextureChanges %d", gfxTris, gfxVerts, gfxTextureChanges);
+    
+    // temp hook
+    gfxTris = 0;
+    gfxVerts = 0;
+    gfxTextureChanges = 0;
+
+    hook::StaticThunk<0x4AA130>::Call<void>();
+}
+
 void gfxPipelineHandler::Install() {
     InstallPatch("Enables pointer in windowed mode.", { 0x90, 0x90 }, {
         0x4F136E,
@@ -360,6 +374,12 @@ void gfxPipelineHandler::Install() {
     InstallCallback("gfxLoadVideoDatabase", "Disables 'badvideo.txt' file.",
         &ReturnFalse, {
             cb::call(0x4AC4F9),
+        }
+    );
+
+    InstallCallback("BeginFrame", "Reset stats counters",
+        &BeginFrame, {
+            cb::call(0x4A1469),
         }
     );
 }
