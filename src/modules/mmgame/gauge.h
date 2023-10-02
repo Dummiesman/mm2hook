@@ -100,7 +100,7 @@ namespace MM2
         float* MaxValuePtr;
         float RotMin;
         float RotMax;
-        float* MinValuePtr;
+        float MinValue;
         Vector3 dword_ac;
         int ShaderSet;
         int ModStatic;
