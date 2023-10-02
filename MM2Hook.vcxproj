@@ -175,6 +175,7 @@
     <ClInclude Include="src\handlers\bugfix_handlers\vehTrailerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\aiVehicleInstanceFeatureHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\aiVehiclePhysicsFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\asCullManagerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\aud3DObjectHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.h" />
@@ -210,6 +211,7 @@
     <ClInclude Include="src\handlers\feature_handlers\mmPlayerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmSingleRaceHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmSingleRoamHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\modStaticHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\pedestrianInstanceHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\PUMainHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\sdlPage16Handler.h" />
@@ -231,6 +233,7 @@
     <ClInclude Include="src\handlers\print_handler.h" />
     <ClInclude Include="src\hook.h" />
     <ClInclude Include="src\handlers\lua_drawable.h" />
+    <ClInclude Include="src\imgui\gizmo\ImGuizmo.h" />
     <ClInclude Include="src\imgui\imconfig.h" />
     <ClInclude Include="src\imgui\imgui.h" />
     <ClInclude Include="src\imgui\imgui_internal.h" />
@@ -240,6 +243,15 @@
     <ClInclude Include="src\imgui\imstb_textedit.h" />
     <ClInclude Include="src\imgui\imstb_truetype.h" />
     <ClInclude Include="src\imgui\misc\cpp\imgui_stdlib.h" />
+    <ClInclude Include="src\imgui\node\blueprint\builders.h" />
+    <ClInclude Include="src\imgui\node\blueprint\drawing.h" />
+    <ClInclude Include="src\imgui\node\blueprint\widgets.h" />
+    <ClInclude Include="src\imgui\node\crude_json.h" />
+    <ClInclude Include="src\imgui\node\imgui_bezier_math.h" />
+    <ClInclude Include="src\imgui\node\imgui_canvas.h" />
+    <ClInclude Include="src\imgui\node\imgui_extra_math.h" />
+    <ClInclude Include="src\imgui\node\imgui_node_editor.h" />
+    <ClInclude Include="src\imgui\node\imgui_node_editor_internal.h" />
     <ClInclude Include="src\imgui\renderer\imgui_age_rendernode.h" />
     <ClInclude Include="src\implot\implot.h" />
     <ClInclude Include="src\implot\implot_internal.h" />
@@ -343,6 +355,7 @@
     <ClInclude Include="src\modules\gfx\material.h" />
     <ClInclude Include="src\modules\gfx\packet.h" />
     <ClInclude Include="src\modules\gfx\rstate.h" />
+    <ClInclude Include="src\modules\gfx\stats.h" />
     <ClInclude Include="src\modules\gfx\texmovie.h" />
     <ClInclude Include="src\modules\gfx\texture.h" />
     <ClInclude Include="src\modules\gfx\viewport.h" />
@@ -387,6 +400,7 @@
     <ClInclude Include="src\modules\mmeffects\meshform.h" />
     <ClInclude Include="src\modules\mmeffects\mmnumber.h" />
     <ClInclude Include="src\modules\mmeffects\mmtext.h" />
+    <ClInclude Include="src\modules\mmeffects\vehform.h" />
     <ClInclude Include="src\modules\mmgame.h" />
     <ClInclude Include="src\modules\mmgame\cd.h" />
     <ClInclude Include="src\modules\mmgame\dash.h" />
@@ -643,6 +657,7 @@
     <ClCompile Include="src\handlers\bugfix_handlers\vehTrailerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\aiVehicleInstanceFeatureHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\aiVehiclePhysicsFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\asCullManagerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\aud3DObjectHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\Aud3DObjectManagerHandler.cpp" />
@@ -678,6 +693,7 @@
     <ClCompile Include="src\handlers\feature_handlers\mmPlayerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmSingleRaceHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmSingleRoamHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\modStaticHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\pedestrianInstanceHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\PUMainHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\sdlPage16Handler.cpp" />
@@ -699,6 +715,7 @@
     <ClCompile Include="src\handlers\print_handler.cpp" />
     <ClCompile Include="src\hook.cpp" />
     <ClCompile Include="src\handlers\lua_drawable.cpp" />
+    <ClCompile Include="src\imgui\gizmo\ImGuizmo.cpp" />
     <ClCompile Include="src\imgui\imgui.cpp" />
     <ClCompile Include="src\imgui\imgui_demo.cpp" />
     <ClCompile Include="src\imgui\imgui_draw.cpp" />
@@ -708,6 +725,13 @@
     <ClCompile Include="src\imgui\impl\imgui_impl_win32.cpp" />
     <ClCompile Include="src\imgui\luabindings\imgui_lua_bindings.cpp" />
     <ClCompile Include="src\imgui\misc\cpp\imgui_stdlib.cpp" />
+    <ClCompile Include="src\imgui\node\blueprint\builders.cpp" />
+    <ClCompile Include="src\imgui\node\blueprint\drawing.cpp" />
+    <ClCompile Include="src\imgui\node\blueprint\widgets.cpp" />
+    <ClCompile Include="src\imgui\node\crude_json.cpp" />
+    <ClCompile Include="src\imgui\node\imgui_canvas.cpp" />
+    <ClCompile Include="src\imgui\node\imgui_node_editor.cpp" />
+    <ClCompile Include="src\imgui\node\imgui_node_editor_api.cpp" />
     <ClCompile Include="src\imgui\renderer\imgui_age_rendernode.cpp" />
     <ClCompile Include="src\implot\implot.cpp" />
     <ClCompile Include="src\implot\implot_demo.cpp" />
@@ -743,7 +767,10 @@
     <ClCompile Include="src\modules\effects\birth.cpp" />
     <ClCompile Include="src\modules\effects\ptx.cpp" />
     <ClCompile Include="src\modules\gfx.cpp" />
+    <ClCompile Include="src\modules\gfx\packet.cpp" />
+    <ClCompile Include="src\modules\gfx\pipeline.cpp" />
     <ClCompile Include="src\modules\gfx\rstate.cpp" />
+    <ClCompile Include="src\modules\gfx\stats.cpp" />
     <ClCompile Include="src\modules\gizmo.cpp" />
     <ClCompile Include="src\modules\gizmo\bridge.cpp" />
     <ClCompile Include="src\modules\input.cpp" />
@@ -753,6 +780,7 @@
     <ClCompile Include="src\modules\mmcityinfo.cpp" />
     <ClCompile Include="src\modules\mmeffects.cpp" />
     <ClCompile Include="src\modules\mmeffects\meshform.cpp" />
+    <ClCompile Include="src\modules\mmeffects\vehform.cpp" />
     <ClCompile Include="src\modules\mmgame.cpp" />
     <ClCompile Include="src\modules\mmgame\icons.cpp" />
     <ClCompile Include="src\modules\mmgame\interface.cpp" />
@@ -947,6 +975,9 @@
     <None Include="mm2hook.ini">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="src\imgui\node\imgui_bezier_math.inl" />
+    <None Include="src\imgui\node\imgui_extra_math.inl" />
+    <None Include="src\imgui\node\imgui_node_editor_internal.inl" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

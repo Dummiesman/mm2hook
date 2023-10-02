@@ -156,6 +156,15 @@
     <Filter Include="Source Files\modules\mmui">
       <UniqueIdentifier>{9565d755-55b6-4062-aa48-b94c21df9b22}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\imgui\node">
+      <UniqueIdentifier>{edc72137-c0b4-45d7-9883-a2eba2520bf3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\imgui\node\blueprint">
+      <UniqueIdentifier>{78b19e72-35e7-4457-b050-693ee61aa646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\imgui\gizmo">
+      <UniqueIdentifier>{a96cda38-3d2d-4b8d-a8ac-f0e20eb9d44c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -947,24 +956,6 @@
     <ClInclude Include="src\modules\effects\linespark.h">
       <Filter>Source Files\modules\effects</Filter>
     </ClInclude>
-    <ClInclude Include="src\imgui\imgui_internal.h">
-      <Filter>Source Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\imgui\imstb_rectpack.h">
-      <Filter>Source Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\imgui\imstb_textedit.h">
-      <Filter>Source Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\imgui\imstb_truetype.h">
-      <Filter>Source Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\imgui\imconfig.h">
-      <Filter>Source Files\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="src\imgui\imgui.h">
-      <Filter>Source Files\imgui</Filter>
-    </ClInclude>
     <ClInclude Include="src\imgui\impl\imgui_impl_age.h">
       <Filter>Source Files\imgui\impl</Filter>
     </ClInclude>
@@ -1687,6 +1678,9 @@
     <ClInclude Include="src\modules\ai\aiGoal.h">
       <Filter>Source Files\modules\ai</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmeffects\vehform.h">
+      <Filter>Source Files\modules\mmeffects</Filter>
+    </ClInclude>
     <ClInclude Include="src\modules\gizmo\train.h">
       <Filter>Source Files\modules\gizmo</Filter>
     </ClInclude>
@@ -1698,6 +1692,63 @@
     </ClInclude>
     <ClInclude Include="src\modules\mmwidget\textfield.h">
       <Filter>Source Files\modules\mmwidget</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\aiVehiclePhysicsFeatureHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\modStaticHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gfx\stats.h">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\node\imgui_extra_math.h">
+      <Filter>Source Files\imgui\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\node\imgui_node_editor.h">
+      <Filter>Source Files\imgui\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\node\imgui_node_editor_internal.h">
+      <Filter>Source Files\imgui\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\node\crude_json.h">
+      <Filter>Source Files\imgui\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\node\imgui_bezier_math.h">
+      <Filter>Source Files\imgui\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\node\imgui_canvas.h">
+      <Filter>Source Files\imgui\node</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\node\blueprint\builders.h">
+      <Filter>Source Files\imgui\node\blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui_internal.h">
+      <Filter>Source Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imstb_rectpack.h">
+      <Filter>Source Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imstb_textedit.h">
+      <Filter>Source Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imstb_truetype.h">
+      <Filter>Source Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imconfig.h">
+      <Filter>Source Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\imgui.h">
+      <Filter>Source Files\imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\node\blueprint\widgets.h">
+      <Filter>Source Files\imgui\node\blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\node\blueprint\drawing.h">
+      <Filter>Source Files\imgui\node\blueprint</Filter>
+    </ClInclude>
+    <ClInclude Include="src\imgui\gizmo\ImGuizmo.h">
+      <Filter>Source Files\imgui\gizmo</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -1976,18 +2027,6 @@
     </ClCompile>
     <ClCompile Include="src\mm2_replay.cpp">
       <Filter>Source Files\mm2</Filter>
-    </ClCompile>
-    <ClCompile Include="src\imgui\imgui_demo.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\imgui\imgui_draw.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\imgui\imgui_widgets.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="src\imgui\imgui.cpp">
-      <Filter>Source Files\imgui</Filter>
     </ClCompile>
     <ClCompile Include="src\imgui\impl\imgui_impl_age.cpp">
       <Filter>Source Files\imgui\impl</Filter>
@@ -2415,9 +2454,6 @@
     <ClCompile Include="src\modules\ai\aiIntersection.cpp">
       <Filter>Source Files\modules\ai</Filter>
     </ClCompile>
-    <ClCompile Include="src\imgui\imgui_tables.cpp">
-      <Filter>Source Files\imgui</Filter>
-    </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\FadeHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
@@ -2475,6 +2511,9 @@
     <ClCompile Include="src\modules\ai\aiGoalAvoidPlayer.cpp">
       <Filter>Source Files\modules\ai</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\mmeffects\vehform.cpp">
+      <Filter>Source Files\modules\mmeffects</Filter>
+    </ClCompile>
     <ClCompile Include="src\modules\data\stack.cpp">
       <Filter>Source Files\modules\data</Filter>
     </ClCompile>
@@ -2487,8 +2526,62 @@
     <ClCompile Include="src\handlers\feature_handlers\gizTrainHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\aiVehiclePhysicsFeatureHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\modStaticHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\gfx\packet.cpp">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\gfx\stats.cpp">
+      <Filter>Source Files\modules\gfx</Filter>
+    </ClCompile>
     <ClCompile Include="src\modules\level\level.cpp">
       <Filter>Source Files\modules\level</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\node\imgui_node_editor.cpp">
+      <Filter>Source Files\imgui\node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\node\imgui_node_editor_api.cpp">
+      <Filter>Source Files\imgui\node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\node\crude_json.cpp">
+      <Filter>Source Files\imgui\node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\node\imgui_canvas.cpp">
+      <Filter>Source Files\imgui\node</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\node\blueprint\builders.cpp">
+      <Filter>Source Files\imgui\node\blueprint</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_demo.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_draw.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_tables.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui_widgets.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\imgui.cpp">
+      <Filter>Source Files\imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\node\blueprint\widgets.cpp">
+      <Filter>Source Files\imgui\node\blueprint</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\node\blueprint\drawing.cpp">
+      <Filter>Source Files\imgui\node\blueprint</Filter>
+    </ClCompile>
+    <ClCompile Include="src\imgui\gizmo\ImGuizmo.cpp">
+      <Filter>Source Files\imgui\gizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\gfx\pipeline.cpp">
+      <Filter>Source Files\modules\gfx</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -2527,5 +2620,14 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="mm2hook.ini" />
+    <None Include="src\imgui\node\imgui_extra_math.inl">
+      <Filter>Source Files\imgui\node</Filter>
+    </None>
+    <None Include="src\imgui\node\imgui_node_editor_internal.inl">
+      <Filter>Source Files\imgui\node</Filter>
+    </None>
+    <None Include="src\imgui\node\imgui_bezier_math.inl">
+      <Filter>Source Files\imgui\node</Filter>
+    </None>
   </ItemGroup>
 </Project>
