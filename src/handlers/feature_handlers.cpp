@@ -91,7 +91,9 @@ static init_handler g_feature_handlers[] = {
     CreateHandler<aiVehiclePhysicsFeatureHandler>("aiVehiclePhysics"),
     CreateHandler<aiPoliceOfficerFeatureHandler>("aiPoliceOfficer"),
 
-    CreateHandler<luaDrawableHandler>("luaDrawableHandler")
+    CreateHandler<luaDrawableHandler>("luaDrawableHandler"),
+
+    CreateHandler<modStaticHandler>("modStaticHandler")
 };
 
 #ifndef FEATURES_DECLARED

@@ -46,6 +46,7 @@
 #include "feature_handlers/mmPlayerHandler.h"
 #include "feature_handlers/mmSingleRaceHandler.h"
 #include "feature_handlers/mmSingleRoamHandler.h"
+#include "feature_handlers/modStaticHandler.h"
 //#include "feature_handlers/multiTireTrackHandler.h"
 #include "feature_handlers/pedestrianInstanceHandler.h"
 #include "feature_handlers/PUMainHandler.h"
