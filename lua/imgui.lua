@@ -9,6 +9,9 @@ local INT_SLIDER_MIN = -2147483648
 local INT_SLIDER_MAX = 2147483647
 local FLOAT_SLIDER_MIN = -3.40282347e+38 / 2
 local FLOAT_SLIDER_MAX = 3.40282347e+38 / 2
+local ZERO_VEC2 = ImVec2(0, 0)
+local DEFAULT_FLOAT_FORMAT = "%.3f"
+local DEFAULT_INT_FORMAT = "%d"
 
 --Helpers
 local function boolDefault(val, def)
@@ -43,14 +46,14 @@ M.EndMenuBar =                        function()               ImGui.EndMenuBar(
 M.BeginMainMenuBar =                  function()               return ImGui.BeginMainMenuBar()                         end
 M.EndMainMenuBar =                    function()               ImGui.EndMainMenuBar()                                  end
           
-M.Dummy =                             function(sz)             ImGui.Dummy(sz or ImVec2(0, 0))                         end        
+M.Dummy =                             function(sz)             ImGui.Dummy(sz or ZERO_VEC2)                            end        
 
 M.BeginDisabled =                     function(disabled)       ImGui.BeginDisabled(boolDefault(disabled, true))        end
 M.EndDisabled =                       function()               ImGui.EndDisabled()                                     end
           
 M.HelpMarker =                        function(text)           ImGui.HelpMarker(text)                                  end
 M.Separator =                         function()               ImGui.Separator()                                       end
-M.SeparatorText =                     function(text)               ImGui.SeparatorText(text)                                       end
+M.SeparatorText =                     function(text)               ImGui.SeparatorText(text)                           end
                 
 M.AlignTextToFramePadding =           function()               ImGui.AlignTextToFramePadding()                         end
 M.GetTextLineHeight =                 function()               return ImGui.GetTextLineHeight()                        end
@@ -107,6 +110,9 @@ M.GetItemRectMin =                    function()               return ImGui.GetI
 M.GetItemRectMax =                    function()               return ImGui.GetItemRectMax()                           end
 M.GetItemRectSize =                   function()               return ImGui.GetItemRectSize()                          end
 
+M.GetWindowSize =                     function()               return ImGui.GetWindowSize()                            end
+M.GetWindowPos =                      function()               return ImGui.GetWindowPos()                             end
+
 M.GetScrollX =                        function()               return ImGui.GetScrollX()                               end
 M.GetScrollY =                        function()               return ImGui.GetScrollY()                               end
 M.GetScrollMaxX =                     function()               return ImGui.GetScrollMaxX()                            end
@@ -117,6 +123,7 @@ M.SetScrollFromPosX =                 function(lx, xr)         return ImGui.SetS
 M.SetScrollFromPosY =                 function(ly, yr)         return ImGui.SetScrollFromPosY(ly, yr or 0.5)           end
 
 M.TreePop =                           function()               ImGui.TreePop()                                         end
+M.TreePush =                          function(id)             ImGui.TreePush(id)                                      end
 M.TreeNode =                          function(label)          return ImGui.TreeNode(label)                            end
                 
 M.PopButtonRepeat =                   function()               ImGui.PopButtonRepeat()                                 end
@@ -127,6 +134,9 @@ M.PopItemWidth =                      function()               ImGui.PopItemWidt
                               
 M.PushStyleColor =                    function(id, val)        ImGui.PushStyleColor(id, val)                           end
 M.PopStyleColor =                     function(c)              ImGui.PopStyleColor(c or 1)                             end
+
+M.PushID  =                           function(id)             ImGui.PushID(tostring(id))                              end
+M.PopID =                             function()               ImGui.PopID()                                           end
                 
 M.SetTooltip =                        function(tooltip)        ImGui.SetTooltip(tooltip)                               end
                 
@@ -155,9 +165,14 @@ M.SetCursorPosY =                     function(y)              ImGui.SetCursorPo
 
 M.GetIO =                             function()               return ImGui.GetIO()                                    end
 M.GetStyle =                          function()               return ImGui.GetStyle()                                 end
+
+-- StackLayout
+M.SuspendLayout =                     function()               ImGui.SuspendLayout()                                   end
+M.ResumeLayout =                      function()               ImGui.ResumeLayout()                                    end
+
 --
-M.CalcTextSize = function(text, text_end, hide_text_after_double_hash, wrap_width)
-  text_end = nullableString(text_end)
+M.CalcTextSize = function(text, hide_text_after_double_hash, wrap_width)
+  local text_end = nullableString(nil) -- automatically calculated, removed from lua side
   hide_text_after_double_hash = boolDefault(hide_text_after_double_hash, false)
   wrap_width = wrap_width or -1.0
   return ImGui.CalcTextSize(text, text_end, hide_text_after_double_hash, wrap_width)
@@ -224,11 +239,30 @@ M.PlotHistogram = function(label, values, valuesOffset, overlayText, scaleMin, s
   plotLinesHistogramSharedSig(label, values, valuesOffset, overlayText, scaleMin, scaleMax, size, stride, ImGui.PlotHistogram)
 end
 
-M.InputFloat = function(label, value, step, stepFast, flags)
+M.InputFloat = function(label, value, step, stepFast, format, flags)
   step = step or 0
   stepFast = stepFast or 0
+  format = format or DEFAULT_FLOAT_FORMAT
   flags = flags or 0
-  return ImGui.InputFloat(label, value, step, stepFast, flags)
+  return ImGui.InputFloat(label, value, step, stepFast, format, flags)
+end
+
+M.InputFloat2 = function(label, x, y, format, flags)
+  format = format or DEFAULT_FLOAT_FORMAT
+  flags = flags or 0
+  return ImGui.InputFloat2(label, x, y, format, flags)
+end
+
+M.InputFloat3 = function(label, x, y, z, format, flags)
+  format = format or DEFAULT_FLOAT_FORMAT
+  flags = flags or 0
+  return ImGui.InputFloat3(label, x, y, z, format, flags)
+end
+
+M.InputFloat4 = function(label, x, y, z, w, format, flags)
+  format = format or DEFAULT_FLOAT_FORMAT
+  flags = flags or 0
+  return ImGui.InputFloat4(label, x, y, z, w, format, flags)
 end
 
 M.InputInt = function(label, value, step, stepFast, flags)
@@ -236,6 +270,21 @@ M.InputInt = function(label, value, step, stepFast, flags)
   stepFast = stepFast or 100
   flags = flags or 0
   return ImGui.InputInt(label, value, step, stepFast, flags)
+end
+
+M.InputInt2 = function(label, x, y, flags)
+  flags = flags or 0
+  return ImGui.InputInt2(label, x, y, flags)
+end
+
+M.InputInt3 = function(label, x, y, z, flags)
+  flags = flags or 0
+  return ImGui.InputInt3(label, x, y, z, flags)
+end
+
+M.InputInt4 = function(label, x, y, z, w, flags)
+  flags = flags or 0
+  return ImGui.InputInt4(label, x, y, z, w, flags)
 end
 
 M.InputText = function(label, text, flags)
@@ -400,7 +449,7 @@ M.Combo = function(label, currentItem, items)
 end
 
 M.BeginListBox = function(label, size)
-  size = size or ImVec2(0, 0)
+  size = size or ZERO_VEC2
   return ImGui.BeginListBox(label, size)
 end
 
@@ -419,11 +468,12 @@ M.VSliderInt = function(label, size, value, min, max, flags)
   return ImGui.VSliderInt(label, size, value, min, max, flags)
 end
 
-M.VSliderFloat = function(label, size, value, min, max, flags)
+M.VSliderFloat = function(label, size, value, min, max, format, flags)
   min = min or FLOAT_SLIDER_MIN
   max = max or FLOAT_SLIDER_MAX
+  format = format or DEFAULT_FLOAT_FORMAT
   flags = flags or 0
-  return ImGui.VSliderFloat(label, size, value, min, max, flags)
+  return ImGui.VSliderFloat(label, size, value, min, max, format, flags)
 end
 
 M.SliderInt = function(label, value, min, max, flags)
@@ -454,32 +504,36 @@ M.SliderInt4 = function(label, x, y, z, w, min, max, flags)
   return ImGui.SliderInt4(label, x, y, z, w, min, max, flags)
 end
 
-M.SliderFloat = function(label, value, min, max, flags)
+M.SliderFloat = function(label, value, min, max, format, flags)
   min = min or FLOAT_SLIDER_MIN
   max = max or FLOAT_SLIDER_MAX
+  format = format or DEFAULT_FLOAT_FORMAT
   flags = flags or 0
-  return ImGui.SliderFloat(label, value, min, max, flags)
+  return ImGui.SliderFloat(label, value, min, max, format, flags)
 end
 
-M.SliderFloat2 = function(label, x, y, min, max, flags)
+M.SliderFloat2 = function(label, x, y, min, max, format, flags)
   min = min or FLOAT_SLIDER_MIN
   max = max or FLOAT_SLIDER_MAX
+  format = format or DEFAULT_FLOAT_FORMAT
   flags = flags or 0
-  return ImGui.SliderFloat2(label, x, y, min, max, flags)
+  return ImGui.SliderFloat2(label, x, y, min, max, format, flags)
 end
 
-M.SliderFloat3 = function(label, x, y, z, min, max, flags)
+M.SliderFloat3 = function(label, x, y, z, min, max, format, flags)
   min = min or FLOAT_SLIDER_MIN
   max = max or FLOAT_SLIDER_MAX
+  format = format or DEFAULT_FLOAT_FORMAT
   flags = flags or 0
-  return ImGui.SliderFloat3(label, x, y, z, min, max, flags)
+  return ImGui.SliderFloat3(label, x, y, z, min, max, format, flags)
 end
 
-M.SliderFloat4 = function(label, x, y, z, w, min, max, flags)
+M.SliderFloat4 = function(label, x, y, z, w, min, max, format, flags)
   min = min or FLOAT_SLIDER_MIN
   max = max or FLOAT_SLIDER_MAX
   flags = flags or 0
-  return ImGui.SliderFloat4(label, x, y, z, w, min, max, flags)
+  format = format or DEFAULT_FLOAT_FORMAT
+  return ImGui.SliderFloat4(label, x, y, z, w, min, max, format, flags)
 end
 
 M.Slider = function(label, value, min, max)
@@ -488,28 +542,31 @@ M.Slider = function(label, value, min, max)
   return M.SliderFloat(label, value, min, max)
 end
 
-M.DragFloat4 = function(label, x, y, z, w, speed, min, max, flags)
+M.DragFloat4 = function(label, x, y, z, w, speed, min, max, format, flags)
   min = min or 0
   max = max or 0
   speed = speed or 1
+  format = format or DEFAULT_FLOAT_FORMAT
   flags = flags or 0
-  return ImGui.DragFloat4(label, x, y, z, w, speed, min, max, flags)
+  return ImGui.DragFloat4(label, x, y, z, w, speed, min, max, format, flags)
 end
 
-M.DragFloat3 = function(label, x, y, z, speed, min, max, flags)
+M.DragFloat2 = function(label, x, y, speed, min, max, format, flags)
   min = min or 0
   max = max or 0
   speed = speed or 1
+  format = format or DEFAULT_FLOAT_FORMAT
   flags = flags or 0
-  return ImGui.DragFloat3(label, x, y, z, speed, min, max, flags)
+  return ImGui.DragFloat2(label, x, y, speed, min, max, format, flags)
 end
 
-M.DragFloat2 = function(label, x, y, speed, min, max, flags)
+M.DragFloat3 = function(label, x, y, z, speed, min, max, format, flags)
   min = min or 0
   max = max or 0
   speed = speed or 1
+  format = format or DEFAULT_FLOAT_FORMAT
   flags = flags or 0
-  return ImGui.DragFloat2(label, x, y, speed, min, max, flags)
+  return ImGui.DragFloat3(label, x, y, z, speed, min, max, format, flags)
 end
 
 M.DragInt4 = function(label, x, y, z, w, speed, min, max, flags)
@@ -538,7 +595,7 @@ end
 
 M.ColorButton = function(dec_id, r, g, b, a, flags, size)
   flags = flags or 0
-  size = size or ImVec2(0, 0)
+  size = size or ZERO_VEC2
   a = a or 1.0
   return ImGui.ColorButton(dec_id, r, g, b, a, flags, size)
 end
@@ -561,12 +618,13 @@ M.DragInt = function(label, value, speed, min, max, flags)
   return ImGui.DragInt(label, value, speed, min, max, flags)
 end
 
-M.DragFloat = function(label, value, speed, min, max, flags)
+M.DragFloat = function(label, value, speed, min, max, format, flags)
   min = min or 0
   max = max or 0
   speed = speed or 1
+  format = format or DEFAULT_FLOAT_FORMAT
   flags = flags or 0
-  return ImGui.DragFloat(label, value, speed, min, max, flags)
+  return ImGui.DragFloat(label, value, speed, min, max, format, flags)
 end
 
 M.Drag = function(label, value, speed, min, max)
@@ -580,13 +638,17 @@ M.End = function()
 end
 
 M.Begin = function(name, arg2, arg3)
-  -- arg2: either open status, or flags
+  -- arg2: has close button
   -- arg3: flags if open status is specified
   
   -- call Begin if we have all 3 args
   if type(arg2) == 'boolean' then
     arg3 = arg3 or 0
-    return ImGui.Begin(name, arg2, arg3)
+    if arg2 then
+      return ImGui.Begin(name, arg3)
+    else
+      return ImGui.Begin2(name, arg3)
+    end
   elseif type(arg2) == 'number' or type(arg2) == 'nil' then
     arg2 = arg2 or 0
     return ImGui.Begin2(name, arg2)
@@ -601,7 +663,7 @@ M.InvisibleButton = function(text, size, flags)
 end
 
 M.Button = function(text, size)
-  return ImGui.Button(text, size or ImVec2(0, 0))
+  return ImGui.Button(text, size or ZERO_VEC2)
 end
 
 M.SmallButton = function(text)
@@ -615,7 +677,7 @@ M.ProgressBar = function(fraction, size, overlay)
 end
 
 M.Image = function(texture, size, uv0, uv1, tintColor, borderColor)
-  uv0 = uv0 or ImVec2(0, 0)
+  uv0 = uv0 or ZERO_VEC2
   uv1 = uv1 or ImVec2(1, 1)
   tintColor = tintColor or ImVec4(1, 1, 1, 1)
   borderColor = borderColor or ImVec4(0, 0, 0, 0)
@@ -637,6 +699,33 @@ M.Tooltip = function(text)
       M.PopTextWrapPos()
       M.EndTooltip()
   end
+end
+
+--StackLayout
+M.BeginHorizontal = function(id, size, align)
+  size = size or ZERO_VEC2
+  align = align or -1.0
+  ImGui.BeginHorizontal(id, size, align)
+end
+
+M.BeginVertical = function(id, size, align)
+  size = size or ZERO_VEC2
+  align = align or -1.0
+  ImGui.BeginVertical(id, size, align)
+end
+
+M.EndHorizontal = function()
+  ImGui.EndHorizontal()
+end
+
+M.EndVertical = function()
+  ImGui.EndVertical()
+end
+
+M.Spring = function(weight, spacing)
+  weight = weight or 1.0
+  spacing = spacing or -1.0
+  ImGui.Spring(weight, spacing)
 end
 
 --Demo window. Draw this for cool examples
@@ -873,5 +962,22 @@ ImGuiFocusedFlags_AnyWindow                 = 1 << 2
 ImGuiFocusedFlags_NoPopupHierarchy          = 1 << 3
 ImGuiFocusedFlags_DockHierarchy             = 1 << 4
 ImGuiFocusedFlags_RootAndChildWindows       = ImGuiFocusedFlags_RootWindow | ImGuiFocusedFlags_ChildWindows
+
+ImGuiTreeNodeFlags_None                     = 0
+ImGuiTreeNodeFlags_Selected                 = 1 << 0
+ImGuiTreeNodeFlags_Framed                   = 1 << 1
+ImGuiTreeNodeFlags_AllowItemOverlap         = 1 << 2
+ImGuiTreeNodeFlags_NoTreePushOnOpen         = 1 << 3
+ImGuiTreeNodeFlags_NoAutoOpenOnLog          = 1 << 4
+ImGuiTreeNodeFlags_DefaultOpen              = 1 << 5
+ImGuiTreeNodeFlags_OpenOnDoubleClick        = 1 << 6
+ImGuiTreeNodeFlags_OpenOnArrow              = 1 << 7
+ImGuiTreeNodeFlags_Leaf                     = 1 << 8
+ImGuiTreeNodeFlags_Bullet                   = 1 << 9
+ImGuiTreeNodeFlags_FramePadding             = 1 << 10
+ImGuiTreeNodeFlags_SpanAvailWidth           = 1 << 11
+ImGuiTreeNodeFlags_SpanFullWidth            = 1 << 12
+ImGuiTreeNodeFlags_NavLeftJumpsBackHere     = 1 << 13
+ImGuiTreeNodeFlags_CollapsingHeader         = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_NoAutoOpenOnLog
     
 return M
