@@ -136,6 +136,16 @@ namespace MM2
         this->Dot(rotMatrix);
     }
 
+    void Matrix34::RotateTo(Vector3 const& side, Vector3 const& up)
+    {
+        hook::Thunk<0x4BD290>::Call<void>(this, &side, &up);
+    }
+
+    void Matrix34::RotateTo(Vector3 const& side, Vector3 const& up, float t)
+    {
+        hook::Thunk<0x4BD380>::Call<void>(this, &side, &up, t);
+    }
+
     void Matrix34::Add(const Matrix34& values) {
         this->m00 += values.m00;
         this->m01 += values.m01;
@@ -191,6 +201,11 @@ namespace MM2
     void Matrix34::Inverse()
     {
         hook::Thunk<0x4BE720>::Call<void>(this);
+    }
+
+    void Matrix34::Interpolate(Matrix34 const& mtxA, Matrix34 const& mtxB, float t)
+    {
+        hook::Thunk<0x4BF080>::Call<void>(&mtxA, &mtxB, t);
     }
 
     void Matrix34::Scale(float amount) {
@@ -442,11 +457,13 @@ namespace MM2
             .addFunction("Determinant3x3", &Matrix34::Determinant3x3)
             .addFunction("FastInverse", &Matrix34::FastInverse)
             .addFunction("Inverse", &Matrix34::Inverse)
+            .addFunction("Interpolate", &Matrix34::Interpolate)
             .addFunction("Scale", static_cast<void(Matrix34::*)(float, float, float)>(&Matrix34::Scale))
             .addFunction("Normalize", &Matrix34::Normalize)
             .addFunction("Dot", &Matrix34::Dot)
             .addFunction("Rotate", &Matrix34::Rotate)
             .addFunction("RotateFull", &Matrix34::RotateFull)
+            .addFunction("RotateTo", static_cast<void(Matrix34::*)(const Vector3&, const Vector3&, float)>(&Matrix34::RotateTo), LUA_ARGS(const Vector3&, const Vector3&, _def<float, 1, 1>))
 
             .addFunction("Zero", &Matrix34::Zero)
             .addFunction("MakeRotateX", &Matrix34::MakeRotateX)

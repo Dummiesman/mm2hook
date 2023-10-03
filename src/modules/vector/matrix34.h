@@ -50,6 +50,8 @@ namespace MM2
         void RotateFullX(float angle);
         void RotateFullY(float angle);
         void RotateFullZ(float angle);
+        void RotateTo(Vector3 const& side, Vector3 const& up);
+        void RotateTo(Vector3 const& side, Vector3 const& up, float t);
         void Add(const Matrix34& values);
         void Normalize();
         void LookAt(const Vector3& from, const Vector3& to);
@@ -58,6 +60,7 @@ namespace MM2
         void Dot3x3(const Matrix34& rhs);
         void FastInverse();
         void Inverse();
+        void Interpolate(Matrix34 const& mtxA, Matrix34 const& mtxB, float t);
         void Scale(float amount);
         void Scale(float xAmount, float yAmount, float zAmount);
         void ScaleFull(float amount);
