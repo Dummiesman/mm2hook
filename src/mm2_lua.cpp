@@ -44,6 +44,42 @@ void LuaCallback::BindLua(LuaState L) {
 }
 
 /*
+    PersistentDataStore
+*/
+std::map<std::string, std::string> PersistentDataStore::m_Data = std::map<std::string, std::string>();
+
+std::string PersistentDataStore::Retrieve(std::string key)
+{
+    auto iter = m_Data.find(key);
+    if (iter != m_Data.end())
+    {
+        return iter->second;
+    }
+    else
+    {
+        return "";
+    }
+}
+
+bool PersistentDataStore::Contains(std::string key)
+{
+    return m_Data.find(key) != m_Data.end();
+}
+
+void PersistentDataStore::Store(std::string key, std::string value)
+{
+    m_Data.insert_or_assign(key, value);
+}
+void PersistentDataStore::Delete(std::string key)
+{
+    auto iter = m_Data.find(key);
+    if (iter != m_Data.end())
+    {
+        m_Data.erase(iter);
+    }
+}
+
+/*
     mm2_lua
 */
 
@@ -91,6 +127,16 @@ void luaAddModule_HookConfig(lua_State* L)
                                                                             bool res = HookConfig::GetProperty(key, value, sizeof(value));
                                                                             return res ? (LPCSTR)&value : def; })
         .addStaticFunction("HasProperty", &HookConfig::HasProperty)
+        .endClass();
+}
+
+void luaAddModule_PersistentDataStore(lua_State* L)
+{
+    LuaBinding(L).beginClass<PersistentDataStore>("PersistentDataStore")
+        .addStaticFunction("Retrieve", &PersistentDataStore::Retrieve)
+        .addStaticFunction("Store", &PersistentDataStore::Store)
+        .addStaticFunction("Contains", &PersistentDataStore::Contains)
+        .addStaticFunction("Delete", &PersistentDataStore::Delete)
         .endClass();
 }
     
@@ -150,6 +196,7 @@ LUAMOD_API int luaopen_MM2(lua_State *L)
 
     luaAddModule_LogFile(modL);
     luaAddModule_HookConfig(modL);
+    luaAddModule_PersistentDataStore(modL);
     luaAddModule_Vector(modL);
     
     // register all Lua modules

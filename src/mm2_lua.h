@@ -1,6 +1,8 @@
 #pragma once
 #include "mm2_common.h"
 #include "mm2_network.h"
+#include <map>
+#include <string>
 
 static ConfigValue<bool> cfgEnableLua   ("EnableLua", true);
 
@@ -15,6 +17,17 @@ public:
     void Call();
     void Release();
     static void BindLua(LuaIntf::LuaState L);
+};
+
+class PersistentDataStore
+{
+private:
+    static std::map<std::string, std::string> m_Data;
+public:
+    static std::string Retrieve(std::string key);
+    static bool Contains(std::string key);
+    static void Store(std::string key, std::string value);
+    static void Delete(std::string key);
 };
 
 class MM2Lua
