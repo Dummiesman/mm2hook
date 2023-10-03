@@ -56,10 +56,22 @@ static bool ImGuiBegin2Lua(const char* name, ImGuiWindowFlags flags = 0)
     return ImGui::Begin(name, nullptr, flags);    
 }
 
+static  bool  ImGuiBeginPopupModal2Lua(const char* name, ImGuiWindowFlags flags)
+{
+    return ImGui::BeginPopupModal(name, nullptr, flags);
+}
+
 static std::tuple<bool, bool> ImGuiBeginLua(const char* name, ImGuiWindowFlags flags = 0)
 {
     bool bOpen = true;
     bool draw =  ImGui::Begin(name, &bOpen, flags);
+    return std::make_tuple(draw, bOpen);
+}
+
+static  std::tuple<bool, bool>  ImGuiBeginPopupModalLua(const char* name, ImGuiWindowFlags flags)
+{
+    bool bOpen = true;
+    bool draw = ImGui::BeginPopupModal(name, &bOpen, flags);
     return std::make_tuple(draw, bOpen);
 }
 
@@ -254,11 +266,6 @@ static bool ImGuiBeginPopupContextWindowLua(const char* str_id, ImGuiPopupFlags 
 static bool ImGuiBeginPopupContextVoidLua(const char* str_id, ImGuiPopupFlags flags)
 {
     return ImGui::BeginPopupContextVoid(ProcessNullableString(str_id), flags);
-}
-
-static bool ImGuiBeginPopupModalLua(const char* name, bool open, ImGuiWindowFlags flags)
-{
-    return ImGui::BeginPopupModal(name, &open, flags);
 }
 
 static void ImGuiOpenPopupLua(const char* str_id, ImGuiPopupFlags flags)
@@ -909,6 +916,7 @@ static void ImguiBindLua(LuaState L) {
         .addVariable("ConfigWindowsResizeFromEdges", &ImGuiIO::ConfigWindowsResizeFromEdges)
         .addVariable("ConfigWindowsMoveFromTitleBarOnly", &ImGuiIO::ConfigWindowsMoveFromTitleBarOnly)
         .addVariableRef("Fonts", &ImGuiIO::Fonts, false)
+        .addVariable("FontDefault", &ImGuiIO::FontDefault)
         .addVariable("MousePos", &ImGuiIO::MousePos)
         .addVariable("MouseWheel", &ImGuiIO::MouseWheel)
         .addVariable("MouseWheelH", &ImGuiIO::MouseWheelH)
@@ -1205,8 +1213,10 @@ static void ImguiBindLua(LuaState L) {
 
         .addFunction("CloseCurrentPopup", &ImGui::CloseCurrentPopup)
         .addFunction("OpenPopup", &ImGuiOpenPopupLua)
+        .addFunction("IsPopupOpen", &ImGui::IsPopupOpen)
         .addFunction("EndPopup", &ImGui::EndPopup)
         .addFunction("BeginPopupModal", &ImGuiBeginPopupModalLua)
+        .addFunction("BeginPopupModal2", &ImGuiBeginPopupModal2Lua)
         .addFunction("BeginPopupContextItem", &ImGuiBeginPopupContextItemLua)
         .addFunction("BeginPopupContextWindow", &ImGuiBeginPopupContextWindowLua)
         .addFunction("BeginPopupContextVoid", &ImGuiBeginPopupContextVoidLua)
