@@ -30,6 +30,14 @@ namespace MM2
     AGE_API void Vector4::Min(const Vector4& vec1, const Vector4& vec2)                       { hook::Thunk<0x4C53F0>::Call<void>(this, &vec1, &vec2); }
     AGE_API void Vector4::Max(const Vector4& vec1, const Vector4& vec2)                       { hook::Thunk<0x4C5460>::Call<void>(this, &vec1, &vec2); }
 
+    AGE_API void Vector4::Lerp(float t, const Vector4& vec1, const Vector4& vec2)
+    {
+        this->X = (vec2.X - vec1.X) * t + vec1.X;
+        this->Y = (vec2.Y - vec1.Y) * t + vec1.Y;
+        this->Z = (vec2.Z - vec1.Z) * t + vec1.Z;
+        this->W = (vec2.W - vec1.W) * t + vec1.W;
+    }
+
     AGE_API void Vector4::Print() const
     {
         Printf("%f,%f,%f,%f", this->X, this->Y, this->Z, this->W);
@@ -132,9 +140,11 @@ namespace MM2
             .addVariable("z", &Vector4::Z)
             .addVariable("w", &Vector4::W)
 
+            .addFunction("Cross", &Cross)
             .addFunction("Min", &Min)
             .addFunction("Max", &Max)
             .addFunction("Set", static_cast<void(Vector4::*)(const Vector4&)>(&Vector4::Set))
+            .addFunction("Lerp", &Lerp)
             .addFunction("Print", static_cast<void(Vector4::*)(LPCSTR)>(&Vector4::Print))
             .endClass();
     }
