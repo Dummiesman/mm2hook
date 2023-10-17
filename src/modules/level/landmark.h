@@ -7,11 +7,13 @@ namespace MM2
 
 
     // External declarations
-
-
+    extern class fxWaterSpout;
+    
     // Class definitions
     class lvlLandmark : public lvlFixedRotY
     {
+    private:
+        fxWaterSpout* m_Spout;
     public:
         /*
             lvlInstance virtuals
@@ -20,8 +22,8 @@ namespace MM2
         virtual AGE_API int IsVisible(const gfxViewport *a1) override
                                                                     { return hook::Thunk<0x468030>::Call<int>(this, a1); }
 
-        virtual AGE_API int Init(const char *a1, const Matrix34 &a2, int a3) override
-                                                                    { return hook::Thunk<0x468010>::Call<int>(this, a1, &a2, a3); }
+        virtual AGE_API int Init(const char* a1, const Matrix34& a2, int a3) override;
+        virtual AGE_API void DrawGlow() override;
 
         virtual AGE_API unsigned int SizeOf(void) override          { return sizeof(lvlLandmark); }
 
@@ -37,5 +39,6 @@ namespace MM2
         }
     };
 
-    ASSERT_SIZEOF(lvlLandmark, 0x28);
+    //ASSERT_SIZEOF(lvlLandmark, 0x28);
+    ASSERT_SIZEOF(lvlLandmark, 0x2C);
 }
