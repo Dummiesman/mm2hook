@@ -17,10 +17,23 @@ bool mmMultiCRHandler::LoadMusic(char* a1, char* a2) {
     return hook::Thunk<0x433F40>::Call<bool>(this, "singlerace", a2);
 }
 
+void mmMultiCRHandler::LoadPositions(const char* a1)
+{
+    auto positions = reinterpret_cast<mmPositions*>(this);
+    positions->Init(100);
+    positions->Load(a1);
+}
+
 void mmMultiCRHandler::Install() {
     InstallCallback("mmMultiCR::Init", "Fixes results screen crash due to incorrect music.",
         &LoadMusic, {
             cb::call(0x4239CB),
+        }
+    );
+
+    InstallCallback("mmMultiCR::LoadSets", "Fixes uninitialized mmPositions allowing multicopsets to load.",
+        &LoadPositions, {
+            cb::call(0x4246A4),
         }
     );
 
