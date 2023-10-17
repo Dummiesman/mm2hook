@@ -65,6 +65,7 @@ namespace MM2
             LuaBinding(L).beginClass<gizTrain>("gizTrain")
                 .addPropertyReadOnly("InStation", &InStation)
                 .addPropertyReadOnly("TimeInStation", &GetTimeInStation)
+                .addPropertyReadOnly("Speed", &GetSpeedFactor)
                 .addFunction("GetCar", &GetCar)
                 .addFunction("GetPosition", &GetPosition)
                 .endClass();
