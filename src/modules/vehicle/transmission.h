@@ -64,23 +64,23 @@ namespace MM2
         };
 
         float GetAutoGearRatio(int gear) const {
-            return AutoRatios[CLAMPINT(gear, 0, 7)];
+            return AutoRatios[CLAMPNUM(gear, 0, 7)];
         }
 
         float GetManualGearRatio(int gear) const {
-            return ManualRatios[CLAMPINT(gear, 0, 7)];
+            return ManualRatios[CLAMPNUM(gear, 0, 7)];
         }
 
         float GetUpshiftRpm(int gear) const {
-            return UpshiftRpms[CLAMPINT(gear, 0, 7)];
+            return UpshiftRpms[CLAMPNUM(gear, 0, 7)];
         }
 
         float GetDownshiftMinRpm(int gear) const {
-            return DownshiftMinRpms[CLAMPINT(gear, 0, 7)];
+            return DownshiftMinRpms[CLAMPNUM(gear, 0, 7)];
         }
 
         float GetDownshiftMaxRpm(int gear) const {
-            return DownshiftMaxRpms[CLAMPINT(gear, 0, 7)];
+            return DownshiftMaxRpms[CLAMPNUM(gear, 0, 7)];
         }
 
         void SetDownshiftMinRpm(int gear, float rpm)
