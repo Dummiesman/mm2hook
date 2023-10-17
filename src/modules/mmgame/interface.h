@@ -18,6 +18,7 @@ namespace MM2
 	protected:
 		static hook::Field<0x18, UIMenu*> _mainMenu;
 		static hook::Field<0x24, Vehicle*> _vehiclesMenu;
+		static hook::Field<0x30, UIMenu*> _aboutMenu;
 
 		static mmInterface* Instance; // not in MM2 in actuality but since we're allowing things like custom menus
 									  // we'll define this
@@ -56,20 +57,15 @@ namespace MM2
 		*/
 		AGE_API void BeDone()								{ hook::Thunk<0x40A5B0>::Call<void>(this); }
 
-		UIMenu* GetMainMenu()
-		{
-			return _mainMenu.get(this);
-		}
-
-		Vehicle* GetVehiclesMenu()
-		{
-			return _vehiclesMenu.get(this);
-		}
+		UIMenu* GetMainMenu()								{ return _mainMenu.get(this); }
+		Vehicle* GetVehiclesMenu()						    { return _vehiclesMenu.get(this); }
+		UIMenu* GetAboutMenu()								{ return _aboutMenu.get(this); }
 
 		static void BindLua(LuaState L) {
 			LuaBinding(L).beginExtendClass<mmInterface, asNode>("mmInterface")
 				.addPropertyReadOnly("MainMenu", &GetMainMenu)
 				.addPropertyReadOnly("VehiclesMenu", &GetVehiclesMenu)
+				.addPropertyReadOnly("AboutMenu", &GetAboutMenu)
 				.addFunction("BeDone", &BeDone)
 				.endClass();
 		}
