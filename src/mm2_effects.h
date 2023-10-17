@@ -12,5 +12,6 @@ namespace MM2
         luaBind<asBirthRule>(L);
         luaBind<asParticles>(L);
         luaBind<asLineSparks>(L);
+        luaBind<fxWaterSpout>(L);
     }
 }

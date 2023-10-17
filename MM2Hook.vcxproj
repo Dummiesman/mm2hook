@@ -197,6 +197,7 @@
     <ClInclude Include="src\handlers\feature_handlers\InitMapHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\ltLensFlareHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\lvlHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\lvlInstanceFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\memSafeHeapHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmArrowHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmCityListHandler.h" />
@@ -344,6 +345,7 @@
     <ClInclude Include="src\modules\effects\ptx.h" />
     <ClInclude Include="src\modules\effects\shard.h" />
     <ClInclude Include="src\modules\effects\texeldamage.h" />
+    <ClInclude Include="src\modules\effects\waterspout.h" />
     <ClInclude Include="src\modules\effects\__template__.h" />
     <ClInclude Include="src\modules\gfx.h" />
     <ClInclude Include="src\modules\gfx\font.h" />
@@ -679,6 +681,7 @@
     <ClCompile Include="src\handlers\feature_handlers\InitMapHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\ltLensFlareHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\lvlHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\lvlInstanceFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\memSafeHeapHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmArrowHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmCityListHandler.cpp" />
@@ -766,6 +769,7 @@
     <ClCompile Include="src\modules\effects.cpp" />
     <ClCompile Include="src\modules\effects\birth.cpp" />
     <ClCompile Include="src\modules\effects\ptx.cpp" />
+    <ClCompile Include="src\modules\effects\waterspout.cpp" />
     <ClCompile Include="src\modules\gfx.cpp" />
     <ClCompile Include="src\modules\gfx\packet.cpp" />
     <ClCompile Include="src\modules\gfx\pipeline.cpp" />
@@ -775,6 +779,7 @@
     <ClCompile Include="src\modules\gizmo\bridge.cpp" />
     <ClCompile Include="src\modules\input.cpp" />
     <ClCompile Include="src\modules\level.cpp" />
+    <ClCompile Include="src\modules\level\landmark.cpp" />
     <ClCompile Include="src\modules\level\level.cpp" />
     <ClCompile Include="src\modules\lights.cpp" />
     <ClCompile Include="src\modules\mmcityinfo.cpp" />
@@ -792,6 +797,8 @@
     <ClCompile Include="src\modules\mmwidget.cpp" />
     <ClCompile Include="src\modules\mmwidget\menu.cpp" />
     <ClCompile Include="src\modules\model.cpp" />
+    <ClCompile Include="src\modules\model\getpivot.cpp" />
+    <ClCompile Include="src\modules\model\getstatic.cpp" />
     <ClCompile Include="src\modules\model\static2.cpp" />
     <ClCompile Include="src\modules\node.cpp" />
     <ClCompile Include="src\modules\parse.cpp" />

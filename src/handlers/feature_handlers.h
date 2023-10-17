@@ -32,6 +32,7 @@
 #include "feature_handlers/ImGuiFeatureHandler.h"
 #include "feature_handlers/ltLensFlareHandler.h"
 #include "feature_handlers/lvlHandler.h"
+#include "feature_handlers/lvlInstanceFeatureHandler.h"
 #include "feature_handlers/memSafeHeapHandler.h"
 #include "feature_handlers/mmArrowHandler.h"
 #include "feature_handlers/mmCityListHandler.h"

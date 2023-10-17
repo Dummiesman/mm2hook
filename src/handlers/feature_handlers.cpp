@@ -71,6 +71,7 @@ static init_handler g_feature_handlers[] = {
     CreateHandler<Dialog_NewPlayerHandler>("New player dialog"),
 
     CreateHandler<lvlHandler>("Propulator"),
+    CreateHandler<lvlInstanceFeatureHandler>("lvlInstance"),
     CreateHandler<sdlPage16Handler>("sdlPage16"),
     CreateHandler<vglHandler>("VGL drawing"),
 

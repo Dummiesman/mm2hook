@@ -1750,6 +1750,9 @@
     <ClInclude Include="src\imgui\gizmo\ImGuizmo.h">
       <Filter>Source Files\imgui\gizmo</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\effects\waterspout.h">
+      <Filter>Source Files\modules\effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2582,6 +2585,18 @@
     </ClCompile>
     <ClCompile Include="src\modules\gfx\pipeline.cpp">
       <Filter>Source Files\modules\gfx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\effects\waterspout.cpp">
+      <Filter>Source Files\modules\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\model\getstatic.cpp">
+      <Filter>Source Files\modules\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\model\getpivot.cpp">
+      <Filter>Source Files\modules\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\level\landmark.cpp">
+      <Filter>Source Files\modules\level</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
