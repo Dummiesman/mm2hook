@@ -115,10 +115,16 @@ namespace MM2
             LuaBinding(L).beginExtendClass<camBaseCS, asNode>("camBaseCS")
                 //properties
                 .addProperty("FOV", &getFOV, &setFOV)
+                .addProperty("CameraFOV", &getFOV, &setFOV)
+
                 .addFunction("GetPosition", &getPosition)
                 .addFunction("GetMatrix", &getMatrix)
                 .addFunction("SetMatrix", &setMatrix)
                 .addFunction("SetPosition", &setPosition)
+
+                .addVariable("BlendTime", &camBaseCS::BlendTime)
+                .addVariable("BlendGoal", &camBaseCS::BlendGoal)
+                .addVariable("CameraNear", &camBaseCS::CameraNear)
 
                 //members
                 .addFunction("UpdateView", &UpdateView)
@@ -174,6 +180,20 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camAppCS, camBaseCS>("camAppCS")
                 .addVariableRef("Target", &camAppCS::Target)
+                .addVariable("ApproachOn", &camAppCS::ApproachOn)
+                .addVariable("AppAppOn", &camAppCS::AppAppOn)
+                .addVariable("AppRot", &camAppCS::AppRot)
+                .addVariable("AppXRot", &camAppCS::AppXRot)
+                .addVariable("AppYPos", &camAppCS::AppYPos)
+                .addVariable("AppXZPos", &camAppCS::AppXZPos)
+                .addVariable("AppApp", &camAppCS::AppApp)
+                .addVariable("AppRotMin", &camAppCS::AppRotMin)
+                .addVariable("AppPosMin", &camAppCS::AppPosMin)
+                .addVariable("LookAbove", &camAppCS::LookAbove)
+                .addVariable("TrackTo", &camAppCS::TrackTo)
+                .addVariable("MaxDist", &camAppCS::MaxDist)
+                .addVariable("MinDist", &camAppCS::MinDist)
+                .addVariable("LookAt", &camAppCS::LookAt)
             .endClass();
         }
     };
@@ -313,8 +333,11 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camPovCS, camCarCS>("camPovCS")
-                //properties
-            .endClass();
+                .addVariable("Offset", &camPovCS::Offset)
+                .addVariable("ReverseOffset", &camPovCS::ReverseOffset)
+                .addVariable("Pitch", &camPovCS::Pitch)
+                .addVariable("POVJitterAmp", &camPovCS::POVJitterAmp)
+                .endClass();
         }
     };
     ASSERT_SIZEOF(camPovCS, 0x148);
@@ -359,9 +382,8 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camTrackCS, camCarCS>("camTrackCS")
-                //properties
                 .addFunction("SwingToRear", &SwingToRear)
-            .endClass();
+                .endClass();
         }
     };
     ASSERT_SIZEOF(camTrackCS, 0x298);
