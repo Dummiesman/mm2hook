@@ -18,6 +18,7 @@ namespace MM2
         AGE_API Vector2();
         AGE_API Vector2(float x, float y);
 
+        AGE_API float Dist(const Vector2& vec);
         AGE_API float Mag(void) const;
         AGE_API float Mag2(void) const;
         AGE_API void Set(float x, float y);

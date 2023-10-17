@@ -6,6 +6,13 @@ namespace MM2
     AGE_API Vector2::Vector2() {}
     AGE_API Vector2::Vector2(float x, float y) : X(x), Y(y) {}
 
+    AGE_API float Vector2::Dist(const Vector2& vec)
+    {
+        float yD = this->Y - vec.Y;
+        float xD = this->X - vec.X;
+        return sqrtf(xD * xD + yD * yD);
+    }
+
     AGE_API float Vector2::Mag(void) const {
         return sqrtf(X * X + Y * Y);
     }
@@ -71,7 +78,8 @@ namespace MM2
             .addFunction("__div", &Vector2::operator/)
             .addFunction("__mul", &Vector2::operator*)
             .addFunction("__eq", &Vector2::IsEqual)
-
+            
+            .addFunction("Dist", &Dist)
             .addFunction("Set", static_cast<void(Vector2::*)(const Vector2&)>(&Vector2::Set))
             .addFunction("Mag", &Mag)
             .addFunction("Mag2", &Mag2)
