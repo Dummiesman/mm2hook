@@ -1,6 +1,7 @@
 #pragma once
+#include <mm2_common.h>
 
 namespace MM2
 {
-    AGE_API bool GetPivot(Matrix34 &, LPCSTR basename, LPCSTR file);
+    AGE_EXT bool GetPivot(Matrix34 & mtx, LPCSTR basename, LPCSTR file);
 }

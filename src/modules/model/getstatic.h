@@ -1,4 +1,5 @@
 #pragma once
+#include <mm2_common.h>
 
 namespace MM2
 {
@@ -6,7 +7,8 @@ namespace MM2
 
     // External declarations
     extern class modStatic;
-    AGE_EXT modStatic * modGetStatic(LPCSTR file, float &a2, bool a3);
+    AGE_API modStatic * modGetStatic(LPCSTR file, void(__cdecl* boundsCB)(Vector3*, void*), void* boundsCBParam, bool a4);
+    AGE_API modStatic* modGetStatic(LPCSTR file, float& radius, bool a3);
 
     // Class definitions
 
