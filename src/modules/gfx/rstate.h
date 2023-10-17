@@ -112,8 +112,7 @@ namespace MM2
         static hook::TypeProxy<Matrix44> sm_View;
         static hook::TypeProxy<Matrix44> sm_Modelview;
 
-        // educated guess -- applied to view?
-        static hook::TypeProxy<Matrix44> sm_Transform;
+        static hook::TypeProxy<Matrix44> ScaleZ;
     public:
         static void Regenerate()                        { hook::StaticThunk<0x4B2820>::Call<void>(); }
         static void SetCard(Vector3 const & pos)        { hook::StaticThunk<0x4B2680>::Call<void>(&pos); }
@@ -126,6 +125,11 @@ namespace MM2
         {
             if ((gfxRenderState::m_TouchedMask & gfxRenderState::m_Touched) != 0)
                 RSTATE->DoFlush(&LASTRSTATE);
+        }
+
+        static void SetBlendSet(int a, int b)
+        {
+            hook::Thunk<0x4B2350>::ThisCall<void>(&RSTATE, a, b);
         }
 
         static gfxMaterial* SetMaterial(gfxMaterial* material)
@@ -299,26 +303,22 @@ namespace MM2
             return (&RSTATE->Data)->AlphaRef;
         }
 
-        static const Matrix44 & GetCameraMatrix()
+        static Matrix44 GetCameraMatrix()
         {
             return gfxRenderState::sm_Camera;
         }
 
-        static Matrix34 GetViewMatrix()
+        static Matrix44 GetViewMatrix()
         {
-            Matrix44 fullView = gfxRenderState::sm_View;
-            Matrix34 converted = Matrix34();
-
-            fullView.ToMatrix34(converted);
-            return converted;
+            return gfxRenderState::sm_View;
         }
 
-        static const Matrix44 & GetWorldMatrix()
+        static Matrix44 GetWorldMatrix()
         {
             return gfxRenderState::sm_World;
         }
         
-        static const Matrix44& GetFullComposite()
+        static Matrix44 GetFullComposite()
         {
             return gfxRenderState::sm_FullComposite;
         }
@@ -333,6 +333,12 @@ namespace MM2
         {
             gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x88;
             Matrix44::Convert(gfxRenderState::sm_World, matrix);
+        }
+
+        static void SetView(const Matrix44& matrix)
+        {
+            gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x80;
+            memcpy(&gfxRenderState::sm_View, &matrix, sizeof(Matrix44));
         }
 
         static byte SetFillMode(byte fillMode)
@@ -354,7 +360,7 @@ namespace MM2
             LuaBinding(L).beginClass<gfxRenderState>("gfxRenderState")
                 .addStaticVariable("EnableTextures", &sm_EnableTextures)
                 .addStaticProperty("WorldMatrix", &GetWorldMatrix, static_cast<void(*)(const Matrix44 &)>(&gfxRenderState::SetWorldMatrix))
-                .addStaticProperty("ViewMatrix", &GetViewMatrix, &SetView)
+                .addStaticProperty("ViewMatrix", &GetViewMatrix, static_cast<void(*)(const Matrix44&)>(&gfxRenderState::SetView))
                 .addStaticProperty("CameraMatrix", &GetCameraMatrix, static_cast<void(*)(const Matrix44&)>(&gfxRenderState::SetCamera))
                 .endClass();
         }
