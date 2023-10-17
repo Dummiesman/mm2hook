@@ -96,7 +96,7 @@ namespace MM2
         return sqrtf(dX * dX + dZ * dZ);
     }
     AGE_API float Vector3::Dot(const Vector3& vec) const {
-        return hook::Thunk<0x466470>::Call<float>(this, &vec);
+        return vec.Z * this->Z + vec.Y * this->Y + vec.X * this->X;
     }
     AGE_API void Vector3::Dot(const Vector3& vec, const Matrix34& mtx) {
         hook::Thunk<0x43BBB0>::Call<void>(this, &vec, &mtx);
