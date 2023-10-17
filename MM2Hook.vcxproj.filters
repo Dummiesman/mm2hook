@@ -1757,6 +1757,11 @@
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClInclude>
     <ClInclude Include="src\modules\vehicle\enginesamplewrapper.h">
+      <Filter>Source Files\modules\vehicle</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\lvlInstanceFeatureHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2383,9 +2388,6 @@
     <ClCompile Include="src\modules\effects\ptx.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\modules\vehicle\carmodel.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\modules\ai\aiMap.cpp">
       <Filter>Source Files\modules\ai</Filter>
     </ClCompile>
@@ -2590,11 +2592,17 @@
     <ClCompile Include="src\modules\gfx\pipeline.cpp">
       <Filter>Source Files\modules\gfx</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\vehicle\carmodel.cpp">
+      <Filter>Source Files\modules\vehicle</Filter>
+    </ClCompile>
     <ClCompile Include="src\handlers\bugfix_handlers\vehCarAudioHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\modules\effects\waterspout.cpp">
       <Filter>Source Files\modules\effects</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\lvlInstanceFeatureHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\modules\model\getstatic.cpp">
       <Filter>Source Files\modules\model</Filter>
