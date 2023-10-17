@@ -27,6 +27,8 @@ namespace MM2
 
         luaBind<gfxViewport>(L);
 
-        LuaBinding(L).addFunction("gfxGetTexture", &gfxGetTexture);
+        LuaBinding(L)
+            .addFunction("gfxGetTexture", &gfxGetTexture)
+            .addFunction("gfxFreeTexture", &gfxFreeTexture);
     }
 }
