@@ -32,6 +32,7 @@
 #include "bugfix_handlers/mpConsistencyHandler.h"
 #include "bugfix_handlers/modShaderHandler.h"
 #include "bugfix_handlers/NetSelectMenuHandler.h"
+#include "bugfix_handlers/vehCarAudioHandler.h"
 #include "bugfix_handlers/vehCarAudioContainerBugfixHandler.h"
 #include "bugfix_handlers/vehTrailerHandler.h"
 #include "bugfix_handlers/vehSemiCarAudioBugfixHandler.h"
@@ -43,15 +44,6 @@ public:
     BOOL OffRoad(MM2::vehCar *perpCar);
     void PerpEscapes(bool a1);
     void Update();
-
-    static void Install();
-};
-
-class vehCarAudioHandler {
-public:
-    bool IsAirBorne();
-    void Update();
-    void Reset();
 
     static void Install();
 };

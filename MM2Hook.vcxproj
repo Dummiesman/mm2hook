@@ -171,6 +171,7 @@
     <ClInclude Include="src\handlers\bugfix_handlers\NetSelectMenuHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\CityListHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\vehCarAudioHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehTrailerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.h" />
@@ -656,6 +657,7 @@
     <ClCompile Include="src\handlers\bugfix_handlers\NetSelectMenuHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\CityListHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\vehCarAudioHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehTrailerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.cpp" />

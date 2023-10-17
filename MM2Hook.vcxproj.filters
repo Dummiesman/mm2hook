@@ -2590,6 +2590,9 @@
     <ClCompile Include="src\modules\gfx\pipeline.cpp">
       <Filter>Source Files\modules\gfx</Filter>
     </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\vehCarAudioHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
     <ClCompile Include="src\modules\effects\waterspout.cpp">
       <Filter>Source Files\modules\effects</Filter>
     </ClCompile>
