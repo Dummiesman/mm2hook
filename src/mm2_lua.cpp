@@ -110,6 +110,14 @@ void luaAddModule_LogFile(lua_State * L)
         .endModule();
 }
 
+void luaAddModule_Hook(lua_State* L)
+{
+    LuaBinding(L).beginModule("MM2Hook")
+        .addProperty("BuildDate", []() { return __DATE__; })
+        .addProperty("BuildTime", []() { return __TIME__; })
+        .endModule();
+}
+
 void luaAddModule_HookConfig(lua_State* L)
 {
     LuaBinding(L).beginClass<HookConfig>("HookConfig")
@@ -195,6 +203,7 @@ LUAMOD_API int luaopen_MM2(lua_State *L)
     auto modL = mod.state();
 
     luaAddModule_LogFile(modL);
+    luaAddModule_Hook(modL);
     luaAddModule_HookConfig(modL);
     luaAddModule_PersistentDataStore(modL);
     luaAddModule_Vector(modL);
