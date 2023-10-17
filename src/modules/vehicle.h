@@ -28,6 +28,7 @@
 #include "vehicle\caraudio.h"
 #include "vehicle\semicaraudio.h"
 #include "vehicle\nitrocaraudio.h"
+#include "vehicle\enginesamplewrapper.h"
 #include "vehicle\engineaudio.h"
 #include "vehicle\aiengineaudio.h"
 #include "vehicle\hornaudio.h"

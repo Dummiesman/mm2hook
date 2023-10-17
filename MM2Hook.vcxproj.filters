@@ -1753,6 +1753,10 @@
     <ClInclude Include="src\modules\effects\waterspout.h">
       <Filter>Source Files\modules\effects</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\vehCarAudioHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\vehicle\enginesamplewrapper.h">
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
