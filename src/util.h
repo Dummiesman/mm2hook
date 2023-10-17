@@ -66,7 +66,8 @@
 // Useful math things
 //
 
-#define CLAMPINT(x, mn, mx) (x > mx) ? mx : ((x < mn) ? mn : x)
+#define CLAMPNUM(x, mn, mx) (x > mx) ? mx : ((x < mn) ? mn : x)
+#define WRAPNUM(x, y) (y == 0.0f || x == 0.0f) ? 0.0f : fmodf(x, y)
 
 //
 // Console color macros

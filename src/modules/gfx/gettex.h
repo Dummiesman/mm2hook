@@ -101,6 +101,10 @@ namespace MM2
         return hook::StaticThunk<0x4B30F0>::Call<gfxTexture*>(a1, a2);
     }
 
+    static void gfxFreeTexture(gfxTexture* texture) {
+        hook::StaticThunk<0x4B31D0>::Call<void>(texture);
+    }
+
     // Class definitions
 
     // Lua initialization
