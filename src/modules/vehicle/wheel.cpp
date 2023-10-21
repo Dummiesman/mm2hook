@@ -133,7 +133,8 @@ namespace MM2
             .addPropertyReadOnly("CurrentPhysicsMaterial", &GetCurrentPhysicsMaterial)
             .addPropertyReadOnly("LatSlipPercent", &GetLatSlipPercent)
             .addPropertyReadOnly("LongSlipPercent", &GetLongSlipPercent)
-                
+            .addPropertyReadOnly("RotationRate", &GetRotationRate)
+
             //functions
             .addFunction("CopyVars", &CopyVars)
             .addFunction("ComputeConstants", &ComputeConstants)
