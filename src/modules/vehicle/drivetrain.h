@@ -20,8 +20,8 @@ namespace MM2
         vehTransmission *m_AttachedTransmission;
         int WheelCount;
         vehWheel *Wheels[4];
-        float DynamicAmount;
-        float unknown60;
+        float OutputAV;
+        float DiffRatio;
         float AngInertia;
         float BrakeDynamicCoef;
         float BrakeStaticCoef;
@@ -54,16 +54,28 @@ namespace MM2
         /*
             vehDrivetrain
         */
+        float GetDiffRatio() const
+        {
+            return this->DiffRatio;
+        }
 
-        int GetWheelCount() const {
+        float GetOutputAV() const 
+        {
+            return this->OutputAV;
+        }
+        
+        int GetWheelCount() const 
+        {
             return this->WheelCount;
         }
 
-        bool IsAttached() const {
+        bool IsAttached() const 
+        {
             return this->m_AttachedEngine != nullptr;
         }
 
-        vehWheel* GetWheel(int num) const {
+        vehWheel* GetWheel(int num) const 
+        {
             if (num < 0 || num >= this->WheelCount)
                 return nullptr;
             return this->Wheels[num];
@@ -83,6 +95,8 @@ namespace MM2
                 //properties
                 .addPropertyReadOnly("Attached", &IsAttached)
                 .addPropertyReadOnly("WheelCount", &GetWheelCount)
+                .addPropertyReadOnly("OutputAV", &GetOutputAV)
+                .addPropertyReadOnly("DiffRatio", &GetDiffRatio)
 
                 .addProperty("AngInertia", &GetAngInertia, &SetAngInertia)
                 .addProperty("BrakeDynamicCoef", &GetBrakeDynamicCoef, &SetBrakeDynamicCoef)
