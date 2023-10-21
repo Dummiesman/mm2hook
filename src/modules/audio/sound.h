@@ -44,7 +44,9 @@ namespace MM2
         */
         AGE_API static unsigned int Get3DFlags() { return hook::StaticThunk<0x50E070>::Call<unsigned int>(); }
         AGE_API static unsigned int Get2DFlags() { return hook::StaticThunk<0x50E030>::Call<unsigned int>(); }
+        AGE_API static unsigned int GetFreqChange2DFlags() { return hook::StaticThunk<0x50E050>::Call<unsigned int>(); }
         AGE_API static unsigned int GetSoft2DFlags() { return hook::StaticThunk<0x50E040>::Call<unsigned int>(); }
+        
 
         AGE_API bool IsPlaying() { return hook::Thunk<0x50E250>::Call<bool>(this); }
         AGE_API void Enable3DMode() { hook::Thunk<0x50E2F0>::Call<void>(this); }
@@ -78,6 +80,7 @@ namespace MM2
 
                 .addStaticFunction("Get3DFlags", &Get3DFlags)
                 .addStaticFunction("Get2DFlags", &Get2DFlags)
+                .addStaticFunction("GetFreqChange2DFlags", &GetFreqChange2DFlags)
                 .addStaticFunction("GetSoft2DFlags", &GetSoft2DFlags)
 
                 .addPropertyReadOnly("NumSoundHandles", &GetNumSoundHandles)
@@ -95,6 +98,7 @@ namespace MM2
                 .addFunction("SetFrequency", &SetFrequency)
                 .addFunction("SetPan", &SetPan)
                 .addFunction("SetVolume", &SetVolume)
+                .addFunction("SetPriority", &SetPriority)
 
                 .addFunction("SetSubPath", &SetSubPath)
                 .addFunction("SetExtension", &SetExtension)
