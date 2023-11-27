@@ -197,6 +197,16 @@ namespace MM2
             }
             return original;
         }
+        
+        static unsigned char SetZBias(unsigned char bias)
+        {
+            auto original = (&RSTATE->Data)->ZBias;
+            if (original != bias) {
+                (&RSTATE->Data)->ZBias = bias;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
 
         static D3DZBUFFERTYPE SetZEnabled(D3DZBUFFERTYPE enabled)
         {
@@ -238,6 +248,16 @@ namespace MM2
             auto original = (&RSTATE->Data)->FogEnable;
             if (original != enabled) {
                 (&RSTATE->Data)->FogEnable = enabled;
+                gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
+            }
+            return original;
+        }
+
+        static D3DCMPFUNC SetZFunc(D3DCMPFUNC func)
+        {
+            auto original = static_cast<D3DCMPFUNC>((&RSTATE->Data)->ZFunc);
+            if (original != func) {
+                (&RSTATE->Data)->ZFunc = static_cast<byte>(func);
                 gfxRenderState::m_Touched = gfxRenderState::m_Touched | 0x01;
             }
             return original;
