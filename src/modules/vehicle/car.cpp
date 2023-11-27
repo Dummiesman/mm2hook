@@ -100,6 +100,7 @@ void vehCar::BindLua(LuaState L) {
 		.addPropertyReadOnly("Stuck", &GetStuck)
 
 		.addPropertyReadOnly("Instance", &GetModel)
+		.addPropertyReadOnly("IsPlayer", &IsPlayer)
 
 		//functions
 		.addFunction("Init", &Init)
@@ -107,7 +108,6 @@ void vehCar::BindLua(LuaState L) {
 		.addFunction("Reset", &Reset)
 		.addFunction("ClearDamage", &ClearDamage)
 		.addFunction("SetDrivable", &setDrivable, LUA_ARGS(bool, _def<int, 3>))
-		.addFunction("IsPlayer", &IsPlayer)
 		
 		.addFunction("GetCollider", &getColliderLua) 
 		.addFunction("SetColliderID", &SetColliderID)
