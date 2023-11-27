@@ -505,7 +505,8 @@ namespace MM2
                 .addFunction("EndGeom", &EndGeom)
                 .addStaticFunction("AddSphere", &AddSphere)
                 .addFunction("InitBoundTerrain", &InitBoundTerrain)
-                .addFunction("InitBoundTerrrainLocal", &InitBoundTerrainLocal)
+                .addFunction("InitBoundTerrainLocal", &InitBoundTerrainLocal)
+                .addFunction("InitBoundTerrrainLocal", &InitBoundTerrainLocal) // Originally misspelled. Kept for compatibility.
                 .addFunction("NeedGhostBound", &NeedGhostBound)
                 .addFunction("InitGhostBound", &InitGhostBound)
                 .addFunction("InitGhost", &InitGhost)
