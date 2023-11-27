@@ -27,8 +27,8 @@ namespace MM2
     public:
         gfxPacket* Next;
         IDirect3DVertexBuffer7* VertexBuffer;
-        int* Positions;
-        int* Vertices;
+        char* Positions;
+        char* Vertices;
         ushort VertexTypeDesc;
         short StartVertex;
         ushort AdjunctCount;
@@ -53,7 +53,8 @@ namespace MM2
         void SetNormal(const Vector3& normal, int index);
         void SetPosition(const Vector3& position, int index);
         void SetTexCoord(const Vector2& coord, int index);
-        int GetStartVertex();
+        int GetStartVertex() const;
+        int GetFVF() const;
         unsigned int GetAdjunctCount() const;
         unsigned int GetTriangleCount() const;
         gfxPacket* GetNext();

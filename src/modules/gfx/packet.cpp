@@ -97,9 +97,14 @@ void gfxPacket::SetTexCoord(const Vector2 & coord, int index)
     texCoordPtr->Y = coord.Y;
 }
 
-int gfxPacket::GetStartVertex() 
+int gfxPacket::GetStartVertex() const
 {
     return this->StartVertex;
+}
+
+int MM2::gfxPacket::GetFVF() const
+{
+    return this->VertexTypeDesc;
 }
 
 unsigned int gfxPacket::GetAdjunctCount() const
@@ -141,6 +146,7 @@ void gfxPacket::BindLua(LuaState L) {
         .addPropertyReadOnly("Next", &GetNext)
         .addPropertyReadOnly("NumAdjuncts", &GetAdjunctCount)
         .addPropertyReadOnly("NumTriangles", &GetTriangleCount)
+        .addPropertyReadOnly("FVF", &GetFVF)
         .addFunction("DoLock", &DoLock)
         .addFunction("DoUnlock", &DoUnlock)
         .addFunction("SetPosition", &SetPosition)
