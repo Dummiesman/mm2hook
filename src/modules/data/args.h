@@ -20,6 +20,9 @@ namespace MM2
         static hook::Type<int> Argc;
         static hook::Type<char **> Argv;
 
+        AGE_API static int SaveToArchive(char* a1);
+        AGE_API static void RestoreFromArchive(char* a1);
+
         AGE_API static bool Get(LPCSTR arg);
         AGE_API static bool Get(LPCSTR arg, UINT index, int* out);
         AGE_API static bool Get(LPCSTR arg, UINT index, float* out);

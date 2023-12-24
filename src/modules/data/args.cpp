@@ -21,6 +21,16 @@ namespace MM2
         return datArgParser::Get(arg, index, &out) ? out : defaultValue;
     }
 
+    AGE_API int datArgParser::SaveToArchive(char* a1)
+    {
+        return hook::StaticThunk<0x4C5EC0>::Call<int>(a1);
+    }
+
+    AGE_API void datArgParser::RestoreFromArchive(char* a1)
+    {
+        hook::StaticThunk<0x4C5D10>::Call<void>(a1);
+    }
+
     AGE_API bool datArgParser::Get(LPCSTR arg)                          { return hook::StaticThunk<0x4C6190>::Call<bool>(arg); }
     AGE_API bool datArgParser::Get(LPCSTR arg, UINT index, int *out)    { return hook::StaticThunk<0x4C61C0>::Call<bool>(arg, index, out); }
     AGE_API bool datArgParser::Get(LPCSTR arg, UINT index, float *out)  { return hook::StaticThunk<0x4C6210>::Call<bool>(arg, index, out); }
