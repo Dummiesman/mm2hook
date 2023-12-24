@@ -46,11 +46,11 @@ void vehCarModelFeatureHandler::EjectOneShot() {
 }
 
 void vehCarModelFeatureHandler::Install() {
-    InstallPatch({ 0x5C, 0x1 }, {
+    InstallPatch({ 0x60, 0x1 }, {
         0x42BB6E + 1, // Change size of vehCarModel on allocation
     });
 
-    InstallPatch({ 0x5C, 0x1 }, {
+    InstallPatch({ 0x60, 0x1 }, {
         0x4CDFE0 + 1, // Change size of vehCarModel on SizeOf
     });
 
@@ -61,8 +61,14 @@ void vehCarModelFeatureHandler::Install() {
     );
 
     InstallCallback("vehCarModel::EjectOneShot", "add more mechanical breakables.",
-        &EjectOneShot, {
+        &vehCarModel::EjectOneshot, {
             cb::call(0x4CAE16),
+        }
+    );
+
+    InstallCallback("vehCarModel::ClearDamage", "reset 3d damage on ClearDamage.",
+        &vehCarModel::ClearDamage, {
+            cb::call(0x42C464),
         }
     );
 
