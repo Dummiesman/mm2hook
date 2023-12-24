@@ -174,6 +174,7 @@ namespace MM2
     // aiMap
     AGE_API void aiMap::Dump()                                  { hook::Thunk<0x538840>::Call<void>(this); }
     AGE_API void aiMap::TestProbes(BOOL a2)                     { hook::Thunk<0x53B870>::Call<void>(this, a2); }
+    AGE_API void aiMap::AddPedestrian(aiPedestrian* ped)        { hook::Thunk<0x539D30>::Call<void>(this, ped); }
     AGE_API aiCableCar* aiMap::CableCar(int num) const          { return hook::Thunk<0x534A30>::Call<aiCableCar *>(this, num); }
     AGE_API mcHookman * aiMap::Hookman(int num) const           { return hook::Thunk<0x5349E0>::Call<mcHookman *>(this, num); }
     AGE_API aiRouteRacer * aiMap::Opponent(int num) const       { return hook::Thunk<0x534940>::Call<aiRouteRacer *>(this, num); }
