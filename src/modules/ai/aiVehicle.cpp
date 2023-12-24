@@ -24,7 +24,7 @@ namespace MM2
     AGE_API void aiVehicleInstance::DrawShadow()                         { hook::Thunk<0x552CC0>::Call<void>(this); }
     AGE_API void aiVehicleInstance::DrawShadowMap()                      { hook::Thunk<0x552F30>::Call<void>(this); }
         
-    AGE_API void aiVehicleInstance::Draw(int a1)                                 { hook::Thunk<0x552160>::Call<void>(this, a1); }
+    AGE_API void aiVehicleInstance::Draw(int a1)                         { hook::Thunk<0x552160>::Call<void>(this, a1); }
 
     AGE_API void aiVehicleInstance::DrawReflected(float a1)              { hook::Thunk<0x552CB0>::Call<void>(this, a1); }
     AGE_API unsigned int aiVehicleInstance::SizeOf()                     { return hook::Thunk<0x553060>::Call<unsigned int>(this); };
@@ -53,6 +53,12 @@ namespace MM2
     //lua
     void aiObstacle::BindLua(LuaState L) {
         LuaBinding(L).beginClass<aiObstacle>("aiObstacle")
+            .addPropertyReadOnly("BreakThreshold", &BreakThreshold)
+            .addPropertyReadOnly("Speed", &Speed)
+            .addPropertyReadOnly("InAccident", &luaInAccident)
+            .addPropertyReadOnly("Drivable", &luaDrivable)
+            .addFunction("IsBlockingTarget", &IsBlockingTarget)
+            .addFunction("GetPosition", &luaPosition)
             .endClass();
     }
 
@@ -77,6 +83,17 @@ namespace MM2
     //lua
     void aiVehicle::BindLua(LuaState L) {
         LuaBinding(L).beginExtendClass<aiVehicle, aiObstacle>("aiVehicle")
+            .addFunction("GetMatrix", &GetMatrix)
+            .addFunction("DrawId", &DrawId)
+            .addPropertyReadOnly("ID", &GetId)
+            .addPropertyReadOnly("Type", &Type)
+            .addPropertyReadOnly("FrontBumperDistance", &FrontBumperDistance)
+            .addPropertyReadOnly("BackBumperDistance", &BackBumperDistance)
+            .addPropertyReadOnly("BackBumperDistance", &BackBumperDistance)
+            .addPropertyReadOnly("LSideDistance", &LSideDistance)
+            .addPropertyReadOnly("RSideDistance", &RSideDistance)
+            .addPropertyReadOnly("CurrentLane", &CurrentLane)
+            .addPropertyReadOnly("CurrentRoadId", &CurrentRoadId)
             .endClass();
     }
 }
