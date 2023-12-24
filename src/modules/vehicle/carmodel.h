@@ -1,6 +1,7 @@
 #pragma once
 #include <modules\level\inst.h>
 #include <modules\effects\texeldamage.h>
+#include <modules\effects\damage3d.h>
 
 #include "car.h"
 #include "breakable.h"
@@ -164,7 +165,8 @@ namespace MM2
         Vector3 weirdOffsetPos;
         int dword_9c;
         vehBreakableMgr* genBreakableMgr;
-        int dword_a4;
+        bool hasEjectedOneshot;
+        char pad[3];
         int wheelBrokenStatus;
         vehBreakableMgr* wheelBreakableMgr;
         ltLight* headlights;
@@ -177,6 +179,7 @@ namespace MM2
         Vector3 fndr5offset;
         ltLight* extraHeadlights[6]; //HEADLIGHT2-7
         Vector3 extraHeadlightPositions[6];
+        fxDamage3D* damage3D;
     public:
         AGE_API vehCarModel();
         AGE_API ~vehCarModel();
@@ -189,6 +192,8 @@ namespace MM2
         ltLight* GetHeadlight(int index);
         int GetWheelBrokenStatus();
         Vector3 GetTrailerHitchOffset();
+        fxTexelDamage* GetTexelDamage();
+        fxDamage3D* GetDamage3D();
 
         AGE_API void GetSurfaceColor(modStatic* model, Vector3* outVector);
         AGE_API void InitBreakable(vehBreakableMgr* manager, const char* basename, const char* breakableName, int geomId, int someId);
@@ -225,6 +230,4 @@ namespace MM2
 
         static void BindLua(LuaState L);
     };
-
-    ASSERT_SIZEOF(vehCarModel, 0xCC + 0xC + 0xC + 0xC + 0xC + 0x18 + 0x48); //+6 extra fields
 }

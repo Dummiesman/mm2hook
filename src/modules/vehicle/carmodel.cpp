@@ -12,7 +12,7 @@ namespace MM2
 
     AGE_API vehCarModel::~vehCarModel() {
         scoped_vtable x(this);
-        hook::Thunk<0x4CCF800>::Call<void>(this);
+        hook::Thunk<0x4CCF80>::Call<void>(this);
     }
 
     vehBreakableMgr * vehCarModel::GetGenBreakableMgr()
@@ -65,6 +65,16 @@ namespace MM2
         return this->trailerHitchPosition;
     }
 
+    fxTexelDamage* vehCarModel::GetTexelDamage()
+    {
+        return texelDamage;
+    }
+
+    fxDamage3D* vehCarModel::GetDamage3D()
+    {
+        return damage3D;
+    }
+
     AGE_API void vehCarModel::GetSurfaceColor(modStatic* model, Vector3* outVector)
                                                         { hook::Thunk<0x4CDF00>::Call<void>(this, model, outVector); }
     AGE_API void vehCarModel::InitBreakable(vehBreakableMgr* manager, const char* basename, const char* breakableName, int geomId, int someId)
@@ -85,14 +95,32 @@ namespace MM2
     }
 
     AGE_API void vehCarModel::BreakElectrics(Vector3* a1)            { hook::Thunk<0x4CEFE0>::Call<void>(this, a1); }
-    AGE_API void vehCarModel::ClearDamage()                          { hook::Thunk<0x4CDFF0>::Call<void>(this); }
+    
+    AGE_API void vehCarModel::ClearDamage()                          
+    {
+        genBreakableMgr->Reset();
+        wheelBreakableMgr->Reset();
+        if (texelDamage)
+            texelDamage->Reset();
+        if (damage3D)
+            damage3D->SetNoDamage();
+        
+        this->hasEjectedOneshot = false;
+        this->wheelBrokenStatus = 0xFFFFFFFF;
+        this->enabledElectrics[0] = true;
+        this->enabledElectrics[1] = true;
+        this->enabledElectrics[2] = true;
+        this->enabledElectrics[3] = true;
+        
+    }
+
     AGE_API void vehCarModel::EjectOneshot()
-    { 
-        if (!(byte)this->dword_a4) {
+    {   
+        if (!hasEjectedOneshot) {
             if (this->carSim->GetSpeedMPH() > 100.f) {
                 this->wheelBreakableMgr->EjectAll(this->GetRoomId());
                 this->wheelBrokenStatus = 0;
-                this->dword_a4 = 1;
+                this->hasEjectedOneshot = true;
                 return;
             }
             if (this->carSim->GetSpeedMPH() <= 75.f) {
@@ -124,7 +152,7 @@ namespace MM2
                 int ejectPackage2 = (extraWheelStatusFlag | extraHubStatusFlag | extraFenderStatusFlag);
 
                 this->wheelBrokenStatus &= ~(ejectPackage | ejectPackage2);
-                this->dword_a4 = 1;
+                this->hasEjectedOneshot = true;
                 return;
             }
             else {
@@ -165,7 +193,7 @@ namespace MM2
                 int ejectPackage3 = (extraWheelStatusFlag | extraHubStatusFlag | extraFenderStatusFlag);
 
                 this->wheelBrokenStatus &= ~(ejectPackage | ejectPackage2 | ejectPackage3);
-                this->dword_a4 = 1;
+                this->hasEjectedOneshot = true;
                 return;
             }
         }
@@ -207,9 +235,7 @@ namespace MM2
             auto carMatrix = this->carSim->GetWorldMatrix();
 
             light->Position = carMatrix->Transform(lightPos);
-
-            Vector3* someCameraThing = (Vector3*)0x685490;
-            light->DrawGlow(someCameraThing);
+            light->DrawGlow(static_cast<Vector3>(gfxRenderState::GetCameraMatrix().GetRow(3)));
         }
         ltLight::DrawGlowEnd();
     }
@@ -243,9 +269,7 @@ namespace MM2
             auto carMatrix = this->carSim->GetWorldMatrix();
 
             light->Position = carMatrix->Transform(lightPos);
-
-            Vector3* someCameraThing = (Vector3*)0x685490;
-            light->DrawGlow(someCameraThing);
+            light->DrawGlow(static_cast<Vector3>(gfxRenderState::GetCameraMatrix().GetRow(3)));
         }
         ltLight::DrawGlowEnd();
     }
@@ -447,6 +471,19 @@ namespace MM2
             }
         }
 
+        //init damage3d
+        if (this->GetGeomIndex() != 0)
+        {
+            auto bodyEntry = this->GetGeomBase(0);
+            auto bodyDamageEntry = this->GetGeomBase(BODYDAMAGE_GEOM_ID);
+
+            if (bodyEntry->GetHighLOD() != nullptr && bodyDamageEntry->GetHighLOD() != nullptr)
+            {
+                this->damage3D = new fxDamage3D();
+                damage3D->Init(bodyEntry->GetHighLOD(), bodyDamageEntry->GetHighLOD());
+            }
+        }
+
         //optimize this instance
         if (hasGeometry)
             lvlInstance::Optimize(this->variant);
@@ -560,7 +597,7 @@ namespace MM2
         //create gen breakables
         this->genBreakableMgr = new vehBreakableMgr();
         this->genBreakableMgr->Init(this->carSim->GetWorldMatrix());
-        this->genBreakableMgr->setVariant(this->variant);
+        this->genBreakableMgr->SetVariant(this->variant);
 
         InitBreakable(this->genBreakableMgr, basename, "break0", BREAK0_GEOM_ID, 0);
         InitBreakable(this->genBreakableMgr, basename, "break1", BREAK1_GEOM_ID, 0);
@@ -580,7 +617,7 @@ namespace MM2
         //create wheel breakables
         this->wheelBreakableMgr = new vehBreakableMgr();
         this->wheelBreakableMgr->Init(this->carSim->GetWorldMatrix());
-        this->wheelBreakableMgr->setVariant(this->variant);
+        this->wheelBreakableMgr->SetVariant(this->variant);
             
         InitBreakable(this->wheelBreakableMgr, basename, "whl0", WHL0_GEOM_ID, 1 << 0);
         InitBreakable(this->wheelBreakableMgr, basename, "hub0", HUB0_GEOM_ID, 1 << 1);
@@ -616,7 +653,11 @@ namespace MM2
         lvlInstance virtuals
     */
 
-    AGE_API void vehCarModel::Reset()                       { hook::Thunk<0x4CDFD0>::Call<void>(this); }
+    AGE_API void vehCarModel::Reset()
+    {
+        ClearDamage();
+    }
+
     AGE_API const Vector3 & vehCarModel::GetPosition()
                                                         { return hook::Thunk<0x4CEF50>::Call<const Vector3 &>(this); }
     AGE_API const Matrix34 & vehCarModel::GetMatrix(Matrix34 *a1)
@@ -661,7 +702,7 @@ namespace MM2
         gfxRenderState::SetWorldMatrix(*this->carSim->GetWorldMatrix());
 
         //draw the body
-        auto bodyGeom = this->GetGeom(lod, 0);
+        modStatic* bodyGeom = (damage3D != nullptr && lod >= 2) ? damage3D->GetDeformModel() : this->GetGeom(lod, 0);
         if (bodyGeom != nullptr)
             bodyGeom->Draw(shaders);
 
