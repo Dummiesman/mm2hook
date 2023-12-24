@@ -26,6 +26,10 @@ namespace MM2
         aiTrafficLightSet *trafficLights;
         aiObstacle *vehicles;
         aiObstacle *bangers;
+    private:
+        //lua stuff
+        int GetBangers(lua_State* L);
+        int GetVehicles(lua_State* L);
     public:
         aiIntersection(void)                                DONOTCALL;
         aiIntersection(const aiIntersection &&)             DONOTCALL;

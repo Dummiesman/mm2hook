@@ -134,6 +134,49 @@ namespace MM2
         return _rooms.get(this)[index];
     }
 
+    aiPedestrian* aiPath::GetPedestrians()
+    {
+        return _pedestrians.get(this);
+    }
+
+    void aiPath::RemovePedestrian(aiPedestrian* ped)
+    {
+        hook::Thunk<0x549910>::Call<void>(this, ped);
+    }
+
+    int aiPath::GetBangers(lua_State* L, int section, int side)
+    {
+        if (section >= 0 && section < this->NumVerts()) 
+        {
+            aiObstacle* obstacle = (side > 0) ? this->_rBangers.get(this)[section]
+                                              : this->_lBangers.get(this)[section];
+            return CppFunctor::make<aiObstacleLuaIterator>(L, obstacle);
+        }
+        return 0;
+    }
+
+    int aiPath::GetVehicles(lua_State* L, int section, int side)
+    {
+        if (section >= 0 && section < this->NumVerts())
+        {
+            aiObstacle* obstacle = (side > 0) ? this->_rVehicles.get(this)[section]
+                                              : this->_lVehicles.get(this)[section];
+            return CppFunctor::make<aiObstacleLuaIterator>(L, obstacle);
+        }
+        return 0;
+    }
+
+    int aiPath::GetPedestrians(lua_State* L, int section, int side)
+    {
+        if (section >= 0 && section < this->NumVerts())
+        {
+            aiObstacle* obstacle = (side > 0) ? this->_rPedestrians.get(this)[section]
+                                              : this->_lPedestrians.get(this)[section];
+            return CppFunctor::make<aiObstacleLuaIterator>(L, obstacle);
+        }
+        return 0;
+    }
+
     AGE_API float aiPath::CenterDist(Vector3 const& pos) const
     {
         return hook::Thunk<0x548850>::Call<float>(this, &pos);
@@ -316,6 +359,8 @@ namespace MM2
             .addFunction("GetLeftBoundary", &GetLeftBoundary)
             .addFunction("GetRightBoundary", &GetRightBoundary)
             .addFunction("GetRoomID", &GetRoomId)
+            .addFunction("GetVehicles", &GetVehicles)
+            .addFunction("GetBangers", &GetBangers)
             .endClass();
     }
 }

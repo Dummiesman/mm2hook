@@ -3,7 +3,17 @@
 
 namespace MM2
 {
-    AGE_API int aiIntersection::NumSources() const 
+    int aiIntersection::GetBangers(lua_State* L)
+    {
+        return CppFunctor::make<aiObstacleLuaIterator>(L, this->bangers);
+    }
+
+    int aiIntersection::GetVehicles(lua_State* L)
+    {
+        return CppFunctor::make<aiObstacleLuaIterator>(L, this->vehicles);
+    }
+
+    AGE_API int aiIntersection::NumSources() const
     {
         return hook::Thunk<0x549D60>::Call<int>(this); 
     }
@@ -66,6 +76,8 @@ namespace MM2
             .addFunction("DrawId", &DrawId)
             .addFunction("DrawPaths", &DrawPaths)
             .addFunction("GetPath", &GetPath)
+            .addFunction("GetBangers", &GetBangers)
+            .addFunction("GetVehicles", &GetVehicles)
             .endClass();
     }
 }

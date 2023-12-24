@@ -1,5 +1,6 @@
 #pragma once
 #include <mm2_common.h>
+#include "aiVehicle.h"
 
 namespace MM2
 {
@@ -8,6 +9,7 @@ namespace MM2
 
     // External declarations
     extern class aiIntersection;
+    extern class aiPedestrian;
 
     // Class definitions
 
@@ -22,6 +24,7 @@ namespace MM2
         static hook::Field<0x10, short*> _rooms;
         static hook::Field<0x14, float> _halfWidth;
         static hook::Field<0x18, float> _baseSpeedLimit;
+        static hook::Field<0x20, aiPedestrian*> _pedestrians;
         static hook::Field<0x24, int> _numSharpTurns;
         static hook::Field<0x74, Vector3*> _lLaneVertices;
         static hook::Field<0x78, Vector3*> _lCableCarVertices;
@@ -41,9 +44,22 @@ namespace MM2
         static hook::Field<0x110, Vector3*> _sectionOriZ;
         static hook::Field<0x118, aiIntersection*> _intersectionA;
         static hook::Field<0x13C, aiIntersection*> _intersectionB;
+        static hook::Field<0x90, aiObstacle**> _lVehicles;
+        static hook::Field<0x94, aiObstacle**> _lBangers;
+        static hook::Field<0x98, aiObstacle**> _lPedestrians;
+        static hook::Field<0xF4, aiObstacle**> _rVehicles;
+        static hook::Field<0xF8, aiObstacle**> _rBangers;
+        static hook::Field<0xFC, aiObstacle**> _rPedestrians;
+        static hook::Field<0x84, short*> _lAmbientsCount;
+        static hook::Field<0x88, aiVehicleSpline**> _lSplines;
+        static hook::Field<0xE8, short*> _rAmbientsCount;
+        static hook::Field<0xEC, aiVehicleSpline**> _rSplines;
     private:
-        //lua helper
+        //lua stuff
         std::tuple<int, float> luaIsPosOnRoad(Vector3 const& pos, float margin) const;
+        int GetBangers(lua_State* L, int section, int side);
+        int GetVehicles(lua_State* L, int section, int side);
+        int GetPedestrians(lua_State* L, int section, int side);
     public:
         aiPath(void)                                        DONOTCALL;
         aiPath(const aiPath &&)                             DONOTCALL;
@@ -67,6 +83,8 @@ namespace MM2
         float GetWidth() const;
         int GetRoomCount() const;
         int GetRoomId(int index) const;
+        aiPedestrian* GetPedestrians();
+        void RemovePedestrian(aiPedestrian* ped);
 
         /*
             aiPath
