@@ -37,16 +37,17 @@ namespace MM2
         */
         inline dgBangerData* GetData() const                       { return hook::Thunk<0x441AB0>::Call<dgBangerData*>(this); }
 
-        inline int GetVariant() const {
+        int GetVariant() const 
+        {
             return this->DataPack >> 12;
         }
 
-        inline void SetBangerType(unsigned short type)
+        void SetBangerType(unsigned short type)
         {
             this->DataPack ^= (this->DataPack ^ type) & 0xFFF;
         }
 
-        inline unsigned short GetBangerType()
+        unsigned short GetBangerType() const
         {
             return this->DataPack & 0xFFF;
         }
