@@ -23,13 +23,20 @@ void MM2::aiPedestrian::DrawDebug() const
 	vglDrawLabelf(_matrix.get(this).GetRow(3) + Vector3(0.0f, 4.0f, 0.0f), "%d", _id.get(this));
 }
 
-aiPedestrianInstance * aiPedestrian::GetInstance() const {
+aiPedestrianInstance * aiPedestrian::GetInstance() const 
+{
 	return _instance.get(this);
 }
 
-aiPedAudio * aiPedestrian::GetAudio() const {
+aiPedAudio * aiPedestrian::GetAudio() const 
+{
 	return _audio.ptr(this);
-};
+}
+
+aiPedestrian* MM2::aiPedestrian::GetNext() const
+{
+	return _next.get(this);
+}
 
 void aiPedestrian::BindLua(LuaState L) {
 	LuaBinding(L).beginClass<aiPedestrian>("aiPedestrian")

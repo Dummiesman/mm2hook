@@ -19,6 +19,7 @@ namespace MM2
         static hook::Field<0x3C, Matrix34> _matrix;
         static hook::Field<0x6C, Vector3> _targetPoint;
         static hook::Field<0xC0, aiPedAudio> _audio;
+        static hook::Field<0x98, aiPedestrian*> _next;
         static hook::Field<0x9C, aiPedestrianInstance *> _instance;
     public:
         AGE_API void Update();
@@ -26,6 +27,7 @@ namespace MM2
 
         aiPedestrianInstance* GetInstance() const;
         aiPedAudio* GetAudio() const;
+        aiPedestrian* GetNext() const;
 
         static void BindLua(LuaState L);
     };
