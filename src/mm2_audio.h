@@ -219,18 +219,18 @@ namespace MM2
         };
     };
 
-    class mmCNRSpeech {
+    class mmCNRSpeech : public AudSpeech {
     public:
         AGE_API void Play(LPCSTR a1)                         { hook::Thunk<0x5A7800>::Call<void>(this, a1); }
 
         static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<mmCNRSpeech>("mmCNRSpeech")
+            LuaBinding(L).beginExtendClass<mmCNRSpeech, AudSpeech>("mmCNRSpeech")
                 .addFunction("Play", &Play)
             .endClass();
         }
     };
 
-    class mmRaceSpeech {
+    class mmRaceSpeech : public AudSpeech {
     public:
         AGE_API void PlayUnlockVehicle()                     { hook::Thunk<0x51A6C0>::Call<void>(this); }
         AGE_API void PlayUnlockTexture()                     { hook::Thunk<0x51A720>::Call<void>(this); }
@@ -246,7 +246,7 @@ namespace MM2
         AGE_API void PlayDamagePenalty()                     { hook::Thunk<0x51A7A0>::Call<void>(this); }
 
         static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<mmRaceSpeech>("mmRaceSpeech")
+            LuaBinding(L).beginExtendClass<mmRaceSpeech, AudSpeech>("mmRaceSpeech")
                 .addFunction("PlayUnlockVehicle", &PlayUnlockVehicle)
                 .addFunction("PlayUnlockTexture", &PlayUnlockTexture)
                 .addFunction("PlayUnlockRace", &PlayUnlockRace)
