@@ -121,13 +121,8 @@ namespace MM2
                 auto light = &this->ltLightPool[i];
                 auto lightPos = this->extraLightPositions[i];
 
-                float lX = lightPos.Y * a1->m10 + lightPos.Z * a1->m20 + lightPos.X * a1->m00 + a1->m30;
-                float lY = lightPos.Y * a1->m11 + lightPos.Z * a1->m21 + lightPos.X * a1->m01 + a1->m31;
-                float lZ = lightPos.Y * a1->m12 + lightPos.Z * a1->m22 + lightPos.X * a1->m02 + a1->m32;
-                light->Position = Vector3(lX, lY, lZ);
-
-                Vector3* someCameraThing = (Vector3*)0x685490;
-                light->DrawGlow(someCameraThing);
+                light->Position = a1->Transform(lightPos);
+                light->DrawGlow(static_cast<Vector3>(gfxRenderState::GetCameraMatrix().GetRow(3)));
             }
             ltLight::DrawGlowEnd();
 
