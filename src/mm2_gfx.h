@@ -18,6 +18,7 @@ namespace MM2
 
         luaBind<ltLight>(L);
         luaBind<ltLensFlare>(L);
+        luaBind<gfxBitmap>(L);
         luaBind<gfxTexture>(L);
         luaBind<gfxTextureCacheEntry>(L);
         luaBind<gfxTextureCachePool>(L);
@@ -28,6 +29,8 @@ namespace MM2
         luaBind<gfxViewport>(L);
 
         LuaBinding(L)
+            .addFunction("gfxGetBitmap", &gfxGetBitmap)
+            .addFunction("gfxFreeBitmap", &gfxFreeBitmap)
             .addFunction("gfxGetTexture", &gfxGetTexture)
             .addFunction("gfxFreeTexture", &gfxFreeTexture);
     }
