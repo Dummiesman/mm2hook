@@ -27,7 +27,8 @@ namespace MM2
             return buf;
         }
 
-        std::string asString() 
+    public:
+        std::string AsString() 
         {
             int remainBytes = this->Size() - this->Tell();
             return luaRead(remainBytes);
@@ -67,7 +68,7 @@ namespace MM2
                 .addStaticFunction("Open", static_cast<Stream * (*)(LPCSTR, bool)>(&Stream::Open))
                 .addStaticFunction("Create", static_cast<Stream * (*)(LPCSTR)>(&Stream::Create))
 
-                .addFunction("ReadAll", &Stream::asString) 
+                .addFunction("ReadAll", &Stream::AsString) 
 
                 .addFunction("Read", &Stream::luaRead)
                 .addFunction("Write", &Stream::Write)
