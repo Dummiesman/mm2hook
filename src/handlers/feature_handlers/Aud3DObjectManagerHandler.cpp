@@ -2,6 +2,8 @@
 
 using namespace MM2;
 
+static ConfigValue<int> cfgAudioMax3D("AudioMax3DSounds", 4);
+
 /*
     Aud3DObjectManager
 */
@@ -20,6 +22,12 @@ void Aud3DObjectManagerHandler::InitAmbObjContainer(LPCSTR name) {
     hook::Thunk<0x50F650>::Call<void>(this, szAmbientSFX);
 }
 
+void Aud3DObjectManagerHandler::Construct(int maxSounds)
+{
+    maxSounds = cfgAudioMax3D.Get();
+    hook::Thunk<0x50F360>::Call<void>(this, maxSounds);
+}
+
 void Aud3DObjectManagerHandler::Install() {
     InstallPatch("Allows for custom positional ambient effects in addon cities.", { 0x90, 0x90 }, {
         0x404059,
@@ -28,6 +36,12 @@ void Aud3DObjectManagerHandler::Install() {
     InstallCallback("mmPlayer::Init", "Allows for custom positional ambient effects in addon cities.",
         &InitAmbObjContainer, {
             cb::call(0x404082),
+        }
+    );
+
+    InstallCallback("mmPlayer::Init", "Allow expansion of max 3D sounds.",
+        &Construct, {
+            cb::call(0x404009),
         }
     );
 }

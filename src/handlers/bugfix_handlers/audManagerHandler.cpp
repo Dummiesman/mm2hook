@@ -3,6 +3,7 @@
 using namespace MM2;
 
 static ConfigValue<int> cfgAudioMaxSounds("AudioMaxSounds", 800);
+static ConfigValue<int> cfgAudioMaxConcurrent("AudioMaxConcurrent", 32);
 
 /*
     audManagerHandler
@@ -87,6 +88,12 @@ void audManagerHandler::Init(int maxSounds, int a2, int a3, char* a4, short a5, 
     hook::Thunk<0x519350>::Call<void>(this, maxSounds, a2, a3, a4, a5, a6);
 }
 
+void audManagerHandler::SetMaxConcurrent(int type, int value)
+{
+    if (type == 1) value = cfgAudioMaxConcurrent.Get();
+    hook::Thunk<0x5A1B60>::Call<void>(this, type, value);
+}
+
 void audManagerHandler::AssignCDVolume(float value) {
     // update mixer volume first
     SetMixerCDVolume(value);
@@ -143,6 +150,13 @@ void audManagerHandler::Install() {
     InstallCallback("AudManager::Init", "Allows the mixer control to be initialized along with the audio manager.",
         &Init, {
             cb::call(0x401F1B),
+        }
+    );
+
+    InstallCallback("audManager::SetMaxConcurrent", "Allows customization of max concurrent sounds.",
+        &SetMaxConcurrent, {
+            cb::call(0x5193F9),
+            cb::call(0x50EF46),
         }
     );
 

@@ -6,6 +6,7 @@
 class audManagerHandler {
 public:
     void Init(int, int, int, char*, short, short);
+    void SetMaxConcurrent(int, int);
 
     void AssignCDVolume(float value);
     void SetupCDAudio(float);
