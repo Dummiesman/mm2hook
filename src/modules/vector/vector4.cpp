@@ -48,6 +48,16 @@ namespace MM2
         Printf("%s: %f,%f,%f,%f", caption, this->X, this->Y, this->Z,this->W);
     }
 
+    AGE_API Vector4 Vector4::operator/(float value) const
+    {
+        return Vector4(this->X / value, this->Y / value, this->Z / value, this->W / value);
+    }
+
+    AGE_API Vector4 Vector4::operator*(float value) const
+    {
+        return Vector4(this->X * value, this->Y * value, this->Z * value, this->W * value);
+    }
+
     Vector4::operator Vector3() const
     {
         return Vector3(this->X, this->Y, this->Z);
