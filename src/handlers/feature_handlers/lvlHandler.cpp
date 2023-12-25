@@ -29,6 +29,14 @@ int lvlHandler::GetAIRoom(int room) {
     return lvlHandler::lvl_aiRoom;
 };
 
+int lvlHandler::CollidePolyToLevel(MM2::phBoundPolygonal* bound, int* rooms, int roomsCount, int unk, MM2::phColliderBase* collider, MM2::Matrix34* unk2, MM2::Matrix34* unk3, MM2::lvlIntersection* unk4, int* unk5, char unk6)
+{
+    if (roomsCount > 0) { sdlCommon::sm_CurrentRoom.set(rooms[0]); }
+    int result = hook::Thunk<0x45B060>::Call<int>(this, bound, rooms, roomsCount, unk, collider, unk2, unk3, unk4, unk5, unk6);
+    if (roomsCount > 0) { sdlCommon::sm_CurrentRoom.set(0); }
+    return result;
+}
+
 void lvlHandler::EnumerateSDL(int p1, SDLIteratorCB iter, void *context) {
     int *page = (*getPtr<int**>(this, 0x54))[p1];
 
@@ -82,6 +90,12 @@ void lvlHandler::Install() {
     InstallCallback("lvlAiMap::SetRoad", "Allows for more detailed information when propulating roads.",
         &GetAIRoom, {
             cb::call(0x45D76E),
+        }
+    );
+
+    InstallVTableHook("CollidePolyToLevel",
+        &CollidePolyToLevel, {
+            0x5B18DC
         }
     );
 
