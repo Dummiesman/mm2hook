@@ -2,6 +2,7 @@
 #include <mm2_common.h>
 #include "..\level\level.h"
 #include "..\level\sky.h"
+#include "psdl.h"
 
 namespace MM2
 {
@@ -46,6 +47,7 @@ namespace MM2
     private:
         static hook::Type<unsigned char[512]> sm_PvsBuffer;
         static hook::Type<bool> sm_EnablePVS;
+        static hook::Type<lvlSDL> SDL;
     public:
         static hook::Type<lvlSky> Sky;
 
@@ -92,6 +94,7 @@ namespace MM2
             Helpers
         */
         bool IsRoomVisible(int roomId) const;
+        static lvlSDL* GetSDL();
 
         //lua
         static void BindLua(LuaState L);

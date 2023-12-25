@@ -6,6 +6,7 @@ namespace MM2
     declfield(cityLevel::Sky)(0x628728);
     declfield(cityLevel::sm_EnablePVS)(0x62B070);
     declfield(cityLevel::sm_PvsBuffer)(0x62AE68);
+    declfield(cityLevel::SDL)(0x629928);
 
     /*
         cityTimeWeatherLighting
@@ -115,6 +116,11 @@ namespace MM2
         return  ((buf[roomId >> 2] >> (2 * (roomId & 3))) & 3) != 0;
     }
 
+    lvlSDL* cityLevel::GetSDL()
+    {
+        return SDL.ptr();
+    }
+
     //lua
     void cityLevel::BindLua(LuaState L) {
         LuaBinding(L).beginExtendClass<cityLevel, lvlLevel>("cityLevel")
@@ -137,6 +143,7 @@ namespace MM2
 
             //sky singleton
             .addStaticProperty("Sky", [] { return &Sky; })
+            .addStaticProperty("SDL", &GetSDL)
             .endClass();
     }
 }
