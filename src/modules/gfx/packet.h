@@ -11,14 +11,14 @@ namespace MM2
 
 
     // Class definitions
-    static unsigned int gfxFVFOffset(unsigned int a1, unsigned int a2)
+    static unsigned int gfxFVFOffset(unsigned int fvf, unsigned int flag)
     {
-        return hook::StaticThunk<0x4B2E80>::Call<unsigned int>(a1, a2);
+        return hook::StaticThunk<0x4B2E80>::Call<unsigned int>(fvf, flag);
     }
 
-    static unsigned int gfxFVFSize(unsigned int a1)
+    static unsigned int gfxFVFSize(unsigned int fvf)
     {
-        return hook::StaticThunk<0x4B2E30>::Call<unsigned int>(a1);
+        return hook::StaticThunk<0x4B2E30>::Call<unsigned int>(fvf);
     }
 
     class gfxPacket {
