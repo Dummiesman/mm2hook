@@ -179,6 +179,16 @@ void aiVehicleInstanceFeatureHandler::AddGeomHook(const char* pkgName, const cha
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tslight1", flags);
 }
 
+void aiVehicleInstanceFeatureHandler::VehicleSpline_DrawId()
+{
+    reinterpret_cast<aiVehicleSpline*>(this)->aiVehicleSpline::DrawId();
+}
+
+void aiVehicleInstanceFeatureHandler::Ambient_DrawId()
+{
+    reinterpret_cast<aiVehicleAmbient*>(this)->aiVehicleAmbient::DrawId();
+}
+
 void aiVehicleInstanceFeatureHandler::Install() {
     InstallCallback("aiVehicleInstance::aiVehicleInstance", "Adds brake light and pop-up lights geometries.",
         &AddGeomHook, {
@@ -204,6 +214,17 @@ void aiVehicleInstanceFeatureHandler::Install() {
     InstallVTableHook("aiVehicleInstance::DrawGlow",
         &DrawGlow, {
             0x5B5944
+        }
+    );
+
+    InstallVTableHook("aiVehicleAmbient::DrawId",
+        &Ambient_DrawId, {
+            0x5B58E8
+        }
+    );
+    InstallVTableHook("aiVehicleSpline::DrawId",
+        &VehicleSpline_DrawId, {
+            0x5B5B68
         }
     );
 
