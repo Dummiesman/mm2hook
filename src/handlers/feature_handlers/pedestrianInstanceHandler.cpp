@@ -9,6 +9,26 @@ static ConfigValue<bool> cfgRagdolls("Ragdolls", true);
     pedestrianInstanceHandler
 */
 
+void pedestrianInstanceHandler::aiMapClearPeds(MM2::aiPath* path)
+{
+    // This is a backported version of ClearPeds from MC1
+    auto ped = path->GetPedestrians();
+    auto aimap = aiMap::GetInstance();
+    auto ragdollMgr = pedRagdollMgr::Instance;
+
+    while (ped)
+    {
+        auto next = ped->GetNext();
+        path->RemovePedestrian(ped);
+        aimap->AddPedestrian(ped);
+        if (ragdollMgr != nullptr)
+        {
+            ragdollMgr->Detach(ped->GetInstance());
+        }
+        ped = next;
+    }
+}
+
 void pedestrianInstanceHandler::aiMapClean()
 {
     //clean aimap
@@ -116,6 +136,12 @@ void pedestrianInstanceHandler::Install()
     InstallCallback("aiMap::Clean", "aiMap clean hook for ragdoll manager",
         &aiMapClean, {
             cb::call(0x413A44), // mmGame::Init
+        }
+    );
+
+    InstallCallback("aiMap::ClearPath", "aiMap clearpeds hook to detach ragdolls",
+        &aiMapClearPeds, {
+            cb::call(0x539B70), // aiMap::AdjustPedestrians
         }
     );
 
