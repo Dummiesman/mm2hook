@@ -8,7 +8,7 @@ public:
     void Draw(int a1);
     void DrawGlow();
     void ModStaticDraw(MM2::modShader * a1);
-    void EjectOneShot();
+    void ApplyImpact(MM2::vehDamageImpactInfo* a1);
     static void Install();
 };
 

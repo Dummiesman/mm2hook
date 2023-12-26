@@ -35,14 +35,24 @@ void vehCarModelFeatureHandler::ModStaticDraw(modShader* a1) {
     }
 }
 
+void vehCarModelFeatureHandler::ApplyImpact(vehDamageImpactInfo* a1)
+{
+    auto damage = reinterpret_cast<vehCarDamage*>(this);
+    hook::Thunk<0x4CB140>::Call<void>(this, a1); // Call original
+
+    if (a1->Damage >= damage->GetImpactThreshold() && (damage->GetCar()->GetCarSim()->GetSpeedMPH() >= 10.0f || a1->OtherCollider->GetICS()))
+    {
+        auto damage3d = damage->GetCar()->GetModel()->GetDamage3D();
+        if (damage3d)
+        {
+            damage3d->Impact(a1->LocalPosition);
+        }
+    }
+}
+
 void vehCarModelFeatureHandler::DrawGlow() {
     auto model = reinterpret_cast<vehCarModel*>(this);
     model->vehCarModel::DrawGlow();
-}
-
-void vehCarModelFeatureHandler::EjectOneShot() {
-    auto model = reinterpret_cast<vehCarModel*>(this);
-    model->vehCarModel::EjectOneshot();
 }
 
 void vehCarModelFeatureHandler::Install() {
@@ -69,6 +79,13 @@ void vehCarModelFeatureHandler::Install() {
     InstallCallback("vehCarModel::ClearDamage", "reset 3d damage on ClearDamage.",
         &vehCarModel::ClearDamage, {
             cb::call(0x42C464),
+        }
+    );
+
+    InstallCallback("vehCarDamage::ApplyImpact", "Add 3d damage.",
+        &ApplyImpact, {
+            cb::call(0x4CAFE0),
+            cb::call(0x4CB12C),
         }
     );
 
