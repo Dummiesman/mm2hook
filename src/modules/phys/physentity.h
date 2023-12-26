@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\phys.h>
+#include <modules\data\base.h>
+#include <modules\phys\phcolliderjointed.h>
 
 namespace MM2
 {
@@ -8,14 +9,20 @@ namespace MM2
 
     // External declarations
     extern class lvlInstance;
+    extern class phCollider;
+    extern class phInertialCS;
 
     // Class definitions
 
     class dgPhysEntity : public Base {
     private:
-        byte buffer[0xB0]; // there's a phColliderJointed here but phCollider and phColliderBase 
-                           // aren't entirely known yet
+        phColliderJointed collider;
     public:
+        dgPhysEntity() : collider()
+        {
+
+        }
+
         virtual AGE_API void PreUpdate()                    { hook::Thunk<0x42CBE0>::Call<void>(this); }
         virtual AGE_API void Update()                       { hook::Thunk<0x46A120>::Call<void>(this); }
         virtual AGE_API void PostUpdate()                   PURE;

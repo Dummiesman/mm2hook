@@ -7,6 +7,11 @@ namespace MM2
     class phColliderJointed : public phCollider
     {
     public:
+        phColliderJointed()
+        {
+            scoped_vtable x(this);
+            hook::Thunk<0x46D3E0>::Call<void>(this);
+        }
 
         /*
             phColliderBase virtuals

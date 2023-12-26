@@ -1,5 +1,7 @@
 #pragma once
 #include <modules\vector.h>
+#include <modules\phys\phimpactbase.h>
+#include <modules\data\callback.h>
 
 namespace MM2
 {
@@ -11,6 +13,7 @@ namespace MM2
     extern class phBound;
     extern class phSleep;
     extern class datCallback;
+    extern class phInertialCS;
 
     // Class definitions
     struct InstanceData
@@ -40,6 +43,11 @@ namespace MM2
         float dword_68;
         Matrix34* dword_6c;
         Matrix34* dword_70;
+    private:
+        void SetImpactCBLua(LuaRef ref)
+        {
+            SetImpactCB(datCallback::CreateLuaCallback<ImpactCBData*>(ref));
+        }
     public:
         
         /*
@@ -64,10 +72,13 @@ namespace MM2
             phColliderBase members
         */
         AGE_API void UpdateMtx()                            { hook::Thunk<0x46D9E0>::Call<void>(this); }
+        AGE_API void SetImpactCB(datCallback* cb)           { hook::Thunk<0x46E4B0>::Call<void>(this, cb); }
 
         int GetID() const
         {
-            return this->pInstanceData->ID;
+            if(this->pInstanceData)
+                return this->pInstanceData->ID;
+            return -1;
         }
 
         phInertialCS* GetICS()
@@ -85,6 +96,7 @@ namespace MM2
             .addPropertyReadOnly("ID", &GetID)
             .addFunction("GetICS", &GetICS)
             .addFunction("GetBound", &GetBound)
+            .addFunction("SetImpactCB", &SetImpactCBLua)
             .endClass();
         }
     };
