@@ -105,6 +105,14 @@ namespace MM2
         hook::StaticThunk<0x4B31D0>::Call<void>(texture);
     }
 
+    static gfxBitmap* gfxGetBitmap(const char* a1, bool a2 = true) {
+        return hook::StaticThunk<0x4B3210>::Call<gfxBitmap*>(a1, a2);
+    }
+
+    static void gfxFreeBitmap(gfxBitmap* texture) {
+        hook::StaticThunk<0x4B32D0>::Call<void>(texture);
+    }
+
     // Class definitions
 
     // Lua initialization
