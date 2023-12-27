@@ -150,7 +150,7 @@ namespace MM2
                 .addStaticFunction("DrawStatic", []() -> void
                 {
                     //uhh, no idea about inheritance so we have this for now
-                    auto sdl = (lvlSDL*)0x629928;
+                    auto sdl = cityLevel::GetSDL();
                     Draw(*sdl);
                 })
             .endClass();
