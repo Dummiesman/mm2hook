@@ -18,6 +18,10 @@ namespace MM2
         int ChannelCount;
         float* Buffer;
     public:
+        crAnimFrame() : crAnimFrame(true)
+        {
+        }
+
         crAnimFrame(bool bufferless)
         {
             hook::Thunk<0x57DDA0>::Call<void>(this, bufferless);
@@ -30,12 +34,17 @@ namespace MM2
 
         ~crAnimFrame()
         {
-            hook::Thunk<0x57DE13>::Call<void>(this);
+            hook::Thunk<0x57DE10>::Call<void>(this);
         }
 
         void Blend(float fraction, crAnimFrame* first, crAnimFrame* second, int startFrame = -1, int endFrame = -1)
         {
             hook::Thunk<0x57E110>::Call<void>(this, fraction, first, second, startFrame, endFrame);
+        }
+
+        void Copy(const crAnimFrame* other)
+        {
+            hook::Thunk<0x57DE90>::Call<void>(this, other);
         }
 
         float* GetBuffer()     { return Buffer; }
