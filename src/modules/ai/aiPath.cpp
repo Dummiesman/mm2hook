@@ -177,6 +177,11 @@ namespace MM2
         return 0;
     }
 
+    AGE_API void aiPath::AddAmbVehicle(aiVehicleSpline* spline, int lane, float dist, int side)
+    {
+        hook::Thunk<0x5491C0>::Call<void>(this, spline, lane, dist, side);
+    }
+
     AGE_API float aiPath::CenterDist(Vector3 const& pos) const
     {
         return hook::Thunk<0x548850>::Call<float>(this, &pos);
