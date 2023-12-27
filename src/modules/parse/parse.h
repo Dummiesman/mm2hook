@@ -5,9 +5,17 @@ namespace MM2
     // Forward declarations
     class datParser;
     class datParserRecord;
+    class datBaseTokenizer;
+    class datAsciiTokenizer;
+    class datBinTokenizer;
+    class datTokenizer;
+    class datMultiTokenizer;
 
     // External declarations
     extern class Stream;
+    extern class Vector2;
+    extern class Vector3;
+    extern class Vector4;
 
     // Class definitions
 
@@ -177,11 +185,221 @@ namespace MM2
         };
     };
 
-    //TODO: figure out the inheritance that the compiler 
-    //seems to have completely mess up
-    class datAsciiTokenizer {
+    class datBaseTokenizer
+    {
+    private:
+        char buffer[0x54];
+    private:
+        // Lua methods
+        Vector2 MatchVector2(const char* key)
+        {
+            Vector2 vec;
+            MatchVector(key, vec);
+            return vec;
+        }
+
+        Vector3 MatchVector3(const char* key)
+        {
+            Vector3 vec;
+            MatchVector(key, vec);
+            return vec;
+        }
+
+        Vector4 MatchVector4(const char* key)
+        {
+            Vector4 vec;
+            MatchVector(key, vec);
+            return vec;
+        }
+
+        Vector2 GetVector2()
+        {
+            Vector2 vec;
+            GetVector(vec);
+            return vec;
+        }
+
+        Vector3 GetVector3()
+        {
+            Vector3 vec;
+            GetVector(vec);
+            return vec;
+        }
+
+        Vector4 GetVector4()
+        {
+            Vector4 vec;
+            GetVector(vec);
+            return vec;
+        }
+
+        std::string LuaGetToken()
+        {
+            char buf[256];
+            int len = this->GetToken(buf, 256);
+
+            std::string str(buf);
+            return str;
+        }
+
+        void LuaPutString(const char* str)
+        {
+            this->Put(str, static_cast<unsigned int>(strlen(str)));
+        }
     public:
+        void Init(const char* name, Stream* stream)                { hook::Thunk<0x4C8210>::Call<void>(this, name, stream); }
+        int GetToken(char* buf, int bufsize)                       { return hook::Thunk<0x4C82F0>::Call<int>(this, buf, bufsize); }
+        int GetBlock(char* buf, int bufsize)                       { return hook::Thunk<0x4C8440>::Call<int>(this, buf, bufsize); }
+        bool CheckToken(const char* token, bool consumeIfFound)    { return hook::Thunk<0x4C8500>::Call<bool>(this, token, consumeIfFound); }
+        void IgnoreToken()                                         { hook::Thunk<0x4C8670>::Call<void>(this); }
+        void MatchToken(const char* token)                         { hook::Thunk<0x4C8480>::Call<void>(this, token); }
+
+        virtual int GetInt()                                       PURE;
+        virtual float GetFloat()                                   PURE;
+        virtual void GetVector(Vector4& vec)                       PURE;
+        virtual void GetVector(Vector3& vec)                       PURE;
+        virtual void GetVector(Vector2& vec)                       PURE;
+        virtual void GetDelimiter(const char* str)                 PURE;
+        virtual int MatchInt(const char* key)                      PURE;
+        virtual float MatchFloat(const char* key)                  PURE;
+        virtual void MatchVector(const char* key, Vector4& vec)    PURE;
+        virtual void MatchVector(const char* key, Vector3& vec)    PURE;
+        virtual void MatchVector(const char* key, Vector2& vec)    PURE;
+        virtual bool Put(Vector4 const& vec)                       PURE;
+        virtual bool Put(Vector3 const& vec)                       PURE;
+        virtual bool Put(Vector2 const& vec)                       PURE;
+        virtual bool Put(float val)                                PURE;
+        virtual bool Put(int val)                                  PURE;
+        virtual bool Put(char val)                                 { return hook::Thunk<0x4C86D0>::Call<bool>(this, val); }
+        virtual bool Put(const char* val, unsigned int length)     PURE;
+        virtual bool PutDelimiter(const char* val)                 PURE;
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<datBaseTokenizer>("datBaseTokenizer")
+                .addFunction("Init", &Init)
+                .addFunction("IgnoreToken", &IgnoreToken)
+                .addFunction("CheckToken", &CheckToken)
+                .addFunction("MatchToken", &MatchToken)
+                .addFunction("GetToken", &LuaGetToken)
+                .addFunction("GetInt", &GetInt)
+                .addFunction("GetFloat", &GetFloat)
+                .addFunction("GetVector2", &GetVector2)
+                .addFunction("GetVector3", &GetVector3)
+                .addFunction("GetVector4", &GetVector4)
+                .addFunction("MatchInt", &MatchInt)
+                .addFunction("MatchFloat", &MatchFloat)
+                .addFunction("MatchVector2", &MatchVector2)
+                .addFunction("MatchVector3", &MatchVector3)
+                .addFunction("MatchVector4", &MatchVector4)
+                .addFunction("PutInt", static_cast<bool(datBaseTokenizer::*)(int)>(&datBaseTokenizer::Put))
+                .addFunction("PutFloat", static_cast<bool(datBaseTokenizer::*)(float)>(&datBaseTokenizer::Put))
+                .addFunction("PutCh", static_cast<bool(datBaseTokenizer::*)(char)>(&datBaseTokenizer::Put))
+                .addFunction("Put", &LuaPutString)
+                .endClass();
+        }
     };
+    ASSERT_SIZEOF(datBaseTokenizer, 0x58);
+
+
+    class datAsciiTokenizer : public datBaseTokenizer {
+    public:
+        virtual int GetInt() override                                      { return hook::Thunk<0x4C8770>::Call<int>(this); }
+        virtual float GetFloat() override                                  { return hook::Thunk<0x4C87D0>::Call<float>(this); }
+        virtual void GetVector(Vector4& vec) override                      { hook::Thunk<0x4C8890>::Call<void>(this, &vec); }
+        virtual void GetVector(Vector3& vec) override                      { hook::Thunk<0x4C8860>::Call<void>(this, &vec); }
+        virtual void GetVector(Vector2& vec) override                      { hook::Thunk<0x4C8830>::Call<void>(this, &vec); }
+        virtual void GetDelimiter(const char* str) override                { hook::Thunk<0x4C88D0>::Call<void>(this, str); }
+        virtual int MatchInt(const char* key) override                     { return hook::Thunk<0x4C88E0>::Call<int>(this, key); }
+        virtual float MatchFloat(const char* key) override                 { return hook::Thunk<0x4C8900>::Call<float>(this, key); }
+        virtual void MatchVector(const char* key, Vector4& vec) override   { hook::Thunk<0x4C8960>::Call<void>(this, key, &vec); }
+        virtual void MatchVector(const char* key, Vector3& vec) override   { hook::Thunk<0x4C8940>::Call<void>(this, key, &vec); }
+        virtual void MatchVector(const char* key, Vector2& vec) override   { hook::Thunk<0x4C8920>::Call<void>(this, key, &vec); }
+        virtual bool Put(Vector4 const& vec) override                      { return hook::Thunk<0x4C8B50>::Call<bool>(this, &vec); }
+        virtual bool Put(Vector3 const& vec) override                      { return hook::Thunk<0x4C8AF0>::Call<bool>(this, &vec); }
+        virtual bool Put(Vector2 const& vec) override                      { return hook::Thunk<0x4C8A90>::Call<bool>(this, &vec); }
+        virtual bool Put(float val) override                               { return hook::Thunk<0x4C8A40>::Call<bool>(this, val); }
+        virtual bool Put(int val) override                                 { return hook::Thunk<0x4C8A00>::Call<bool>(this, val); }
+        virtual bool Put(const char* val, unsigned int length) override    { return hook::Thunk<0x4C8980>::Call<bool>(this, val, length); }
+        virtual bool PutDelimiter(const char* val) override                { return hook::Thunk<0x4C8BC0>::Call<bool>(this, val); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<datAsciiTokenizer, datBaseTokenizer>("datAsciiTokenizer")
+                .endClass();
+        }
+    };
+
+    class datBinTokenizer : public datBaseTokenizer {
+    public:
+        virtual int GetInt() override                                      { return hook::Thunk<0x4C8BE0>::Call<int>(this); }
+        virtual float GetFloat() override                                  { return hook::Thunk<0x4C8C20>::Call<float>(this); }
+        virtual void GetVector(Vector4& vec) override                      { hook::Thunk<0x4C8CF0>::Call<void>(this, &vec); }
+        virtual void GetVector(Vector3& vec) override                      { hook::Thunk<0x4C8CB0>::Call<void>(this, &vec); }
+        virtual void GetVector(Vector2& vec) override                      { hook::Thunk<0x4C8C70>::Call<void>(this, &vec); }
+        virtual void GetDelimiter(const char* str) override                { hook::Thunk<0x4C8D30>::Call<void>(this, str); }
+        virtual int MatchInt(const char* key) override                     { return hook::Thunk<0x4C8D40>::Call<int>(this, key); }
+        virtual float MatchFloat(const char* key) override                 { return hook::Thunk<0x4C8D50>::Call<float>(this, key); }
+        virtual void MatchVector(const char* key, Vector4& vec) override   { hook::Thunk<0x4C8D80>::Call<void>(this, key, &vec); }
+        virtual void MatchVector(const char* key, Vector3& vec) override   { hook::Thunk<0x4C8D70>::Call<void>(this, key, &vec); }
+        virtual void MatchVector(const char* key, Vector2& vec) override   { hook::Thunk<0x4C8D60>::Call<void>(this, key, &vec); }
+        virtual bool Put(Vector4 const& vec) override                      { return hook::Thunk<0x4C8E60>::Call<bool>(this, &vec); }
+        virtual bool Put(Vector3 const& vec) override                      { return hook::Thunk<0x4C8E40>::Call<bool>(this, &vec); }
+        virtual bool Put(Vector2 const& vec) override                      { return hook::Thunk<0x4C8E20>::Call<bool>(this, &vec); }
+        virtual bool Put(float val) override                               { return hook::Thunk<0x4C8E00>::Call<bool>(this, val); }
+        virtual bool Put(int val) override                                 { return hook::Thunk<0x4C8DE0>::Call<bool>(this, val); }
+        virtual bool Put(const char* val, unsigned int length) override    { return hook::Thunk<0x4C8D90>::Call<bool>(this, val, length); }
+        virtual bool PutDelimiter(const char* val) override                { return hook::Thunk<0x4C8E80>::Call<bool>(this, val); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<datBinTokenizer, datBaseTokenizer>("datBinTokenizer")
+                .endClass();
+        }
+    };
+
+    class datTokenizer : public datAsciiTokenizer
+    {
+    public:
+        datTokenizer(const char* name, Stream* stream)
+        {
+            Init(name, stream);
+        }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<datTokenizer, datAsciiTokenizer>("datTokenizer")
+                .addConstructor(LUA_ARGS(LPCSTR, Stream*))
+                .endClass();
+        }
+    };
+
+    class datMultiTokenizer
+    {
+    private:
+        datAsciiTokenizer m_tokenizerA;
+        datBinTokenizer m_tokenizerB;
+    public:
+        datMultiTokenizer()
+        {
+            hook::Thunk<0x4C8E90>::Call<void>(this);
+        }
+
+        datBaseTokenizer& GetReadTokenizer(const char* name, Stream* stream, const char* typeAHeader, const char* typeBHeader)
+        {
+            return hook::Thunk<0x4C8EA0>::Call<datBaseTokenizer&>(this, name, stream, typeAHeader, typeBHeader);
+        }
+
+        datBaseTokenizer& GetWriteTokenizer(const char* name, Stream* stream, char binary, const char* header)
+        {
+            return hook::Thunk<0x4C8FB0>::Call<datBaseTokenizer&>(this, name, stream, binary, header);
+        }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<datMultiTokenizer>("datMultiTokenizer")
+                .addConstructor(LUA_ARGS())
+                .addFunction("GetReadTokenizer", &GetReadTokenizer)
+                .addFunction("GetWriteTokenizer", &GetWriteTokenizer)
+                .endClass();
+        }
+    };
+    ASSERT_SIZEOF(datMultiTokenizer, 0xB0);
 
     // Lua initialization
 

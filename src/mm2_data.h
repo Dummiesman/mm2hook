@@ -4,6 +4,7 @@
 
 #include <modules\core.h>
 #include <modules\data.h>
+#include <modules\parse.h>
 
 namespace MM2
 {
@@ -12,6 +13,11 @@ namespace MM2
         luaBind<datOutput>(L);
         luaBind<datStack>(L);
         luaBind<datTimeManager>(L);
+        luaBind<datBaseTokenizer>(L);
+        luaBind<datBinTokenizer>(L);
+        luaBind<datAsciiTokenizer>(L);
+        luaBind<datTokenizer>(L);
+        luaBind<datMultiTokenizer>(L);
         luaBind<datAssetManager>(L);
         luaBind<datArgParser>(L);
     }
