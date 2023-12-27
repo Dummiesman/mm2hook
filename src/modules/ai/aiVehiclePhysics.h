@@ -88,7 +88,7 @@ namespace MM2
 
         void Reset(void) override;
         int Type(void) override;
-        Matrix34 & GetMatrix(void) override;
+        Matrix34 & GetMatrix(void) const override;
         float FrontBumperDistance(void) override;
         float BackBumperDistance(void) override;
         float LSideDistance(void) override;

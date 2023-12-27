@@ -30,7 +30,7 @@ namespace MM2
         void Update(void) override                          FORWARD_THUNK;
         void Reset(void) override                           FORWARD_THUNK;
         int Type(void) override                             FORWARD_THUNK;
-        Matrix34 & GetMatrix(void) override                 FORWARD_THUNK;
+        Matrix34 & GetMatrix(void) const override           FORWARD_THUNK;
         float FrontBumperDistance(void) override            FORWARD_THUNK;
         float BackBumperDistance(void) override             FORWARD_THUNK;
         float LSideDistance(void) override                  FORWARD_THUNK;

@@ -103,7 +103,7 @@ int aiVehiclePhysics::CurrentRdVert(void)                    { return hook::Thun
 
 void aiVehiclePhysics::Reset(void)                           { hook::Thunk<0x5597A0>::Call<void>(this); }
 int aiVehiclePhysics::Type(void)                             { return hook::Thunk<0x567B90>::Call<int>(this); }
-Matrix34 & aiVehiclePhysics::GetMatrix(void)                 { return hook::Thunk<0x567C40>::Call<Matrix34&>(this); };
+Matrix34 & aiVehiclePhysics::GetMatrix(void) const           { return hook::Thunk<0x567C40>::Call<Matrix34&>(this); };
 float aiVehiclePhysics::FrontBumperDistance(void)            { return hook::Thunk<0x567BC0>::Call<float>(this); }
 float aiVehiclePhysics::BackBumperDistance(void)             { return hook::Thunk<0x567BD0>::Call<float>(this); }
 float aiVehiclePhysics::LSideDistance(void)                  { return hook::Thunk<0x567BE0>::Call<float>(this); }
