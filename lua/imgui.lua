@@ -10,6 +10,7 @@ local INT_SLIDER_MAX = 2147483647
 local FLOAT_SLIDER_MIN = -3.40282347e+38 / 2
 local FLOAT_SLIDER_MAX = 3.40282347e+38 / 2
 local ZERO_VEC2 = ImVec2(0, 0)
+local DEFAULT_ANGLE_FORMAT = "%.0f deg"
 local DEFAULT_FLOAT_FORMAT = "%.3f"
 local DEFAULT_INT_FORMAT = "%d"
 
@@ -325,10 +326,19 @@ M.EndChild = function()
   ImGui.EndChild()                        
 end
 
-M.BeginPopupModal = function(name, open, flags)
-  flags = flags or 0
-  open = boolDefault(open, true)
-  return ImGui.BeginPopupModal(name, open, flags)
+M.BeginPopupModal = function(name, arg2, arg3)
+  -- arg2 is "hasCloseButton" if boolean, otherwise "flags". arg3 is "flags" if "hasCloseButton" is present
+  if type(arg2) == 'boolean' then
+    arg3 = arg3 or 0
+    if arg2 then
+      return ImGui.BeginPopupModal(name, arg3)
+    else
+      return ImGui.BeginPopupModal2(name, arg3)
+    end
+  elseif type(arg2) == 'number' or type(arg2) == 'nil' then
+    arg2 = arg2 or 0
+    return ImGui.BeginPopupModal2(name, arg2)
+  end
 end
 
 M.EndPopup = function()               
@@ -337,6 +347,11 @@ end
 
 M.CloseCurrentPopup = function()               
   ImGui.CloseCurrentPopup()                        
+end
+
+M.IsPopupOpen = function(name, flags)
+  flags = flags or 0
+  return ImGui.IsPopupOpen(name, flags)
 end
 
 M.OpenPopup = function(name, flags)               
@@ -504,6 +519,14 @@ M.SliderInt4 = function(label, x, y, z, w, min, max, flags)
   return ImGui.SliderInt4(label, x, y, z, w, min, max, flags)
 end
 
+M.SliderAngle = function(label, v_rad, v_degrees_min, v_degrees_max, format, flags)
+  v_degrees_min = v_degrees_min or -360
+  v_degrees_max = v_degrees_max or 360
+  format = format or DEFAULT_ANGLE_FORMAT
+  flags = flags or 0
+  return ImGui.SliderAngle(label, v_rad, v_degrees_min, v_degrees_max, format, flags)
+end
+
 M.SliderFloat = function(label, value, min, max, format, flags)
   min = min or FLOAT_SLIDER_MIN
   max = max or FLOAT_SLIDER_MAX
@@ -638,10 +661,7 @@ M.End = function()
 end
 
 M.Begin = function(name, arg2, arg3)
-  -- arg2: has close button
-  -- arg3: flags if open status is specified
-  
-  -- call Begin if we have all 3 args
+  -- arg2 is "hasCloseButton" if boolean, otherwise "flags". arg3 is "flags" if "hasCloseButton" is present
   if type(arg2) == 'boolean' then
     arg3 = arg3 or 0
     if arg2 then
@@ -652,8 +672,6 @@ M.Begin = function(name, arg2, arg3)
   elseif type(arg2) == 'number' or type(arg2) == 'nil' then
     arg2 = arg2 or 0
     return ImGui.Begin2(name, arg2)
-  else
-    print("imgui.Begin : invalid parameters (" .. name .. ", " .. tostring(arg2) .. ", " .. tostring(arg3) .. ")")
   end
 end
 

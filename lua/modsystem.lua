@@ -56,6 +56,15 @@ local function fileExists(name)
   if f~=nil then io.close(f) return true else return false end
 end
 
+local function findMod(mod)
+  if type(mod) == 'table' then
+    return mods[mod._modInternalName]
+  elseif type(mod) == 'string' then
+    return mods[mod]
+  end
+  return nil
+end
+
 --init!
 local function checkContext(ctx, ctxs)
   for _,ctx1 in pairs(ctx) do
@@ -119,7 +128,7 @@ local function processMod(modName, loadedMod)
         Errorf("  a mod named '" .. modName .. "' is already loaded.")
         return false
     else
-        if not loadedMod.info or type(loadedMod.info) ~= 'table' then
+        if type(loadedMod.info) ~= 'table' then
           Errorf("  invalid or missing info table, this mod will not be loaded.")
           return false
         end
@@ -165,6 +174,17 @@ local function processMod(modName, loadedMod)
         
         -- remove if onModLoaded returned false
         if loadResult then
+          -- load any persistent data
+          print("[SERIALIZATION] Attempt to deserialize " .. loadedMod._modInternalName)
+          if PersistentDataStore.Contains(loadedMod._modInternalName) and type(loadedMod.deserialize) == 'function' then
+            print(" ... calling func")
+            local data = PersistentDataStore.Retrieve(loadedMod._modInternalName)
+            loadedMod.deserialize(json.decode(data))
+          else
+            print(" ... NOT found or no func")
+          end
+          PersistentDataStore.Delete(loadedMod._modInternalName)
+          
           -- cache hooks
           for k,v in pairs(loadedMod) do
             if type(v) == 'function' then
@@ -206,7 +226,7 @@ local function loadModFromDisk(rootPath)
     end
 
     -- process
-    processMod(rootPath:sub(10), mod)
+    processMod(rootPath:sub(#modsPath+2), mod)
 end
 
 local function loadModsFromDisk()
@@ -287,18 +307,21 @@ end
 
 --api
 local function getMod(name)
-  return mods[name]
+  local ret = findMod(name)
+  if ret == nil then
+    Errorf("modsystem.getmod: Cannot find " .. name)
+    Errorf("Loaded mods:")
+    for k,v in pairs(mods) do
+      Errorf(k)
+    end
+  end
+  return ret
 end
 
 local function registerSubmodule(parentMod, submodule, subpath)
-  local parentModName
-  if type(parentMod) == 'table' then
-    parentModName = parentMod._modInternalName 
-  elseif type(parentMod) == 'string' then
-    parentModName = parentMod
-  else
-    Errorf("registerSubmodule: invalid parentMod. Must be parent mod table, or parent mod name")
-    return
+  local parentModTable = findMod(parentMod)
+  if parentModTable == nil then
+    Errorf("registerSubmodule: invalid parentMod.")
   end
   
   if type(submodule) ~= 'table' then
@@ -307,12 +330,11 @@ local function registerSubmodule(parentMod, submodule, subpath)
   end
   
   -- things look in check, lets register this as a submodule
-  local submodulePath = parentModName .. "_" .. subpath:lower()
+  local submodulePath = parentModTable._modInternalName .. "_" .. subpath:lower()
   Displayf("  registering submodule " .. submodulePath)
   
-  local parentModTable = mods[parentModName]
   if not parentModTable then
-    Errorf("registerSubmodule: could not find parent module " .. parentModName .. ".")
+    Errorf("registerSubmodule: could not find parent module " .. parentModTable._modInternalName .. ".")
     return
   end
   
@@ -321,71 +343,52 @@ local function registerSubmodule(parentMod, submodule, subpath)
   end
 end
 
-local function unload(mod)
-  local modName
-  if type(mod) == 'table' then
-    modName = mod._modInternalName 
-  elseif type(mod) == 'string' then
-    modName = mod
-  else
-    Errorf("unload: invalid mod. Must be mod table, or mod name")
+local function unload(mod, unloadSubmodules)
+  local modTable = findMod(mod)
+  if modTable == nil then
+    Errorf("unload: invalid mod")
     return
   end
   
-  if not mods[modName] then
-    Errorf("Tried to unload a mod that's not loaded: " .. modName)
-  else
-    Warningf("Unloading mod " .. modName)
-    local modTable = mods[modName]
-    
-    -- unload submodules
-    if #modTable._modSubmodules ~= 0 then
-      Warningf("Unloading submodules")
-      for _,submoduleName in pairs(modTable._modSubmodules) do
-        unload(submoduleName)
-      end
+  -- unload submodules
+  if unloadSubmodules == nil then unloadSubmodules = true end
+  if unloadSubmodules and #modTable._modSubmodules ~= 0 then
+    for _,submoduleName in pairs(modTable._modSubmodules) do
+      unload(submoduleName)
     end
-    
-    -- unload parent module
-    if type(modTable.onModUnloaded) == 'function' then callSafe(modTable.onModUnloaded) end
-    mods[modName] = nil
-    
-    -- clean hooks
-    for k,v in pairs(modTable) do
-      if type(v) == 'function' then
-        local cache = hookCache[k]
-        if cache then
-          for i=#cache,1,-1 do
-             if cache[i] == v then table.remove(cache, i) end
-          end
+  end
+  
+  -- unload module
+  if type(modTable.onModUnloaded) == 'function' then callSafe(modTable.onModUnloaded) end
+  mods[modTable._modInternalName] = nil
+  
+  -- serialize persistent data
+  if type(modTable.serialize) == 'function' then
+    local serializedData = modTable.serialize()
+    PersistentDataStore.Store(modTable._modInternalName, json.encode(serializedData))
+  end
+  
+  -- clean hooks
+  for k,v in pairs(modTable) do
+    if type(v) == 'function' then
+      local cache = hookCache[k]
+      if cache then
+        for i=#cache,1,-1 do
+           if cache[i] == v then table.remove(cache, i) end
         end
       end
     end
-    
-    Warningf("Unloaded " .. modName)
   end
 end
 
 local function reload(mod)
-  local modName
-  if type(mod) == 'table' then
-    modName = mod._modInternalName 
-  elseif type(mod) == 'string' then
-    modName = mod
-  else
-    Errorf("reload: invalid mod. Must be mod table, or mod name")
+  -- TODO
+  local modTable = findMod(mod)
+  if modTable == nil then
+    Errorf("reload: invalid key or mod not loaded")
     return
   end
   
-  if not mods[modName] then
-    Errorf("Tried to reload a mod that's not loaded: " .. modName)
-  else
-    Warningf("Reloading mod " .. modName)
-    local modTable = mods[modName]
-    
-    --TODO: get serialized table, reload, call deserialize
-    if type(modTable.serialize) == 'function' then callSafe(modTable.serialize) end
-  end
 end
 
 ------------------------
@@ -411,6 +414,19 @@ local function onRenderUi()
     callHook("onRenderUi")
 end
 
+local function onStartup()
+  callHook("onStartup")
+end
+
+local function onShutdown()
+  callHook("onShutdown")
+  
+  -- unload all mods which will also handle serialization
+  for _,mod in pairs(mods) do
+    unload(mod, false)
+  end
+end
+
 --exports
 M.init = init
 
@@ -421,5 +437,7 @@ M.reload = reload
 
 M.callHook = callHook
 M.onRenderUi = onRenderUi
+M.onStartup = onStartup
+M.onShutdown = onShutdown
 
 return M

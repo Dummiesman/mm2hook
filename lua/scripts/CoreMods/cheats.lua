@@ -32,6 +32,7 @@ local function onModLoaded()
   -- get launch prop from config
   launchProp = HookConfig.GetString("LaunchProp", launchProp)
   launchPropSpeed = HookConfig.GetFloat("LaunchPropSpeed", launchPropSpeed)
+  launchProp = "sp_tree1_s"
 end
 
 local function initLaunchProp()
@@ -92,13 +93,14 @@ local function launchAProp()
     local camFwd = camMatrix:GetRow(2)
     matrix:SetRow(3, camPos)
 
-    local banger = dgBangerManager.Instance:GetBanger()
+    local banger = dgBangerManager.Instance:GetBanger() -- Get a dgHitBangerInstance
     banger.GeomIndex = launchPropGeomId
     banger.BangerType = launchPropBangerId
     banger:SetMatrix(matrix)
+    banger:SetVariant(0)
     lvlLevel.Singleton:Reparent(banger)
     
-    local active = banger:AttachEntity()
+    local active = banger:AttachEntity() -- This asks dgBangerActiveManager to return us a dgBangerActive. The physics representation.
     if active then
       local carVel = carInst:GetVelocity()
       local bangerIcs = active:GetICS()
@@ -106,7 +108,7 @@ local function launchAProp()
     end
 end
 
-local function onGamePostInit()
+local function onStateBegin()
   restoreImpactThreshold = Player.Car.CarDamage.ImpactThreshold
   restoreWeatherFriction = vehWheel.WeatherFriction
   restoreBridgeSpeed = gizBridge.LiftSpeed
@@ -133,7 +135,7 @@ end
 --exports
 M.onModLoaded = onModLoaded
 M.onChatMessage = onChatMessage
-M.onGamePostInit = onGamePostInit
+M.onStateBegin = onStateBegin
 M.onUpdate = onUpdate
 
 return M

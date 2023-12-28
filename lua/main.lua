@@ -1,13 +1,6 @@
 package.loaded.modsystem = nil
-package.loaded.constants = nil
-require("constants")
-require("dinput_keys")
-require("utils")
+require("bootstrap")
 modsystem = require("modsystem")
-imgui = require("imgui") -- abstraction of imgui for ease of use in lua
-implot = require("implot")
-imnodes = require("imnodes")
-imguizmo = require("imguizmo")
 
 local node = nil -- main node to get cull/update from
 local addNodeToGame = false
@@ -15,33 +8,6 @@ local drawAllGUI = false -- if false, only draw persistent GUI
 
 local lastCamRoom = 0
 local lastPlayerRoom = 0
-
--- first init
-if not gFirstInit then
-  -- print to console
-  print = function(x) Displayf(tostring(x)) end
-  
-  -- add searcher for zip files
-  local vfsSearcher = function(libraryname) 
-    local stream = Stream.Open(libraryname .. ".lua", true)
-    if stream then
-      local streamContent = stream:ReadAll()
-      stream:Close()
-      
-      return load(streamContent)
-    end
-  end
-  table.insert(package.searchers, 1, vfsSearcher)
-  
-  --
-  gFirstInit = true
-end
-
--- ui init
-local function file_exists(name)
-   local f=io.open(name,"r")
-   if f~=nil then io.close(f) return true else return false end
-end
 
 function detectGlobalWrites()
   setmetatable(_G, {
@@ -71,6 +37,12 @@ local function initImgui()
   style:SetColor(ImGuiCol_Button, ImVec4(0.26, 0.58, 0.98, 0.00))
   style:SetColor(ImGuiCol_ButtonHovered, ImVec4(0.60, 0.60, 0.60, 0.39))
   style:SetColor(ImGuiCol_ButtonActive, ImVec4(0.64, 0.64, 0.64, 1.00))
+  style:SetColor(ImGuiCol_ModalWindowDimBg, ImVec4(0.0, 0.0, 0.0, 0.35))
+  
+  style:SetColor(ImGuiCol_ScrollbarGrabActive, ImVec4(0.447, 0.329, 0.992, 1.00))
+  style:SetColor(ImGuiCol_ScrollbarGrabHovered, ImVec4(0.347, 0.229, 0.992, 1.00))
+  style:SetColor(ImGuiCol_ScrollbarGrab, ImVec4(0.247, 0.129, 0.992, 1.00))
+  style:SetColor(ImGuiCol_ScrollbarBg, ImVec4(0.00, 0.00, 0.00, 0.65))
 
   local file = Stream.Open("fonts/Arimo-Bold.ttf", true)
   if file then
@@ -82,21 +54,17 @@ local function initImgui()
     UI_FONT_MEDIUM = atlas:AddFontFromMemoryTTF(fileData, fileData:len(), 26)
     UI_FONT_LARGE = atlas:AddFontFromMemoryTTF(fileData, fileData:len(), 38)
     atlas:Build()
+    
+    imgui.GetIO().FontDefault = UI_FONT_SMALL
   end
 end
 
 -- modsystem forwaraders
 function onRenderUi()
-  if UI_FONT_SMALL ~= nil then
-    imgui.PushFont(UI_FONT_SMALL)
-  end
   --imgui.ShowDemoWindow(true)
   modsystem.callHook("onRenderPersistentUi")
   if drawAllGUI then
     modsystem.onRenderUi()
-  end
-  if UI_FONT_SMALL ~= nil then
-    imgui.PopFont()
   end
 end
 
@@ -137,12 +105,12 @@ end
 
 function startup()
   GameState = MMSTATE.NextState
-  modsystem.callHook("onStartup")
+  modsystem.onStartup()
   initImgui()
 end
 
 function shutdown()
-  modsystem.callHook("onShutdown")
+  modsystem.onShutdown()
 end
 
 local function onUpdate()
@@ -159,10 +127,8 @@ local function onUpdate()
   
   -- call room hooks
   if Player ~= nil then
-    local level = lvlLevel.Singleton
-    
     local camPos = Player.CamView.CurrentCamera:GetPosition()
-    local camRoom = level:FindRoomId(camPos, lastCamRoom)
+    local camRoom = Level:FindRoomId(camPos, lastCamRoom)
     if camRoom ~= lastCamRoom then
       modsystem.callHook("onCameraMovedRoom", lastCamRoom, camRoom)
       lastCamRoom = camRoom
@@ -203,6 +169,5 @@ function init()
   --
   modsystem.init()
 end
-
 
 init()

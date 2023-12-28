@@ -7,6 +7,11 @@ GAMEMODE_BLITZ          = 4
 GAMEMODE_CROAM          = 5
 GAMEMODE_CRASHCOURSE    = 6
 
+-- dgGameModeNames
+GAMEMODE_NAMES = { [GAMEMODE_CRUISE] = "roam", [GAMEMODE_CHECKPOINT] = "race%d", [GAMEMODE_CNR] = "multicop", 
+                   [GAMEMODE_CIRCUIT] = "circuit%d", [GAMEMODE_BLITZ] = "blitz%d", [GAMEMODE_CROAM] = "croam",
+                   [GAMEMODE_CRASHCOURSE] = "crash%d" }
+
 --Time
 TIME_MORNING = 0
 TIME_NOON    = 1
@@ -55,6 +60,17 @@ INST_NOBACKFACING       = 256
 INST_DRAW               = 512
 INST_DRAW_SHADOW2       = 8192
 INST_PLAYER             = 32768
+
+-- Room flags
+ROOM_SUBTERRANEAN       = 2
+ROOM_WATER              = 4
+ROOM_TRI_BOUND          = 32
+ROOM_WARP               = 64
+
+-- Vehicle flags
+VEHICLE_COP             = 8
+VEHICLE_LARGE           = 16
+VEHICLE_RHD             = 64
 
 -- dgPathType
 PATHTYPE_POINTS         = 0

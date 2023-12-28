@@ -1,13 +1,3 @@
-function PackColor(r, g, b, a, order)
-  order = order or "ARGB"
-  return 0xFFFFFFFF
-end
-
-function UnpackColor(color, order)
-  order = order or "ARGB"
-  return 1, 1, 1, 1
-end
-
 function ParseCSV(text, separator, trimValues, allowEmptyValues, callback)
   local groups = {}; local cgroup = {}; local cvalue = ""
   
