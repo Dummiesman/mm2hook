@@ -120,6 +120,12 @@ static float ImGuiSliderFloatLua(const char* label, float value, float min, floa
     return value;
 }
 
+static float ImGuiSliderAngleLua(const char* label, float v_rad, float v_degrees_min, float v_degrees_max, const char* format, ImGuiSliderFlags flags)
+{
+    ImGui::SliderAngle(label, &v_rad, v_degrees_min, v_degrees_max, format, flags);
+    return v_rad;
+}
+
 static std::tuple<float, float> ImGuiSliderFloat2Lua(const char* label, float x, float y, float min, float max, const char* format, ImGuiSliderFlags flags)
 {
     float floatArray[2] = { x, y };
@@ -811,6 +817,7 @@ static ImFont* ImFontAtlas_AddFontFromMemoryCompressedBase85TTF(ImFontAtlas& atl
 static void ImFontGlyphRangesBuilder_AddText(ImFontGlyphRangesBuilder& builder, const char* text)
 {
     builder.AddText(text);
+    //ImFontGlyphRangesBuilder::
 }
 
 static ImWchar* ImFontGlyphRangesBuilder_BuildRanges(ImFontGlyphRangesBuilder& builder)
@@ -864,6 +871,7 @@ static void ImguiBindLua(LuaState L) {
 
     LuaBinding(L).beginClass<ImFontGlyphRangesBuilder>("ImFontGlyphRangesBuilder")
         .addConstructor(LUA_ARGS())
+        .addMetaFunction("AddText", &ImFontGlyphRangesBuilder_AddText)
         .addFunction("Clear", &ImFontGlyphRangesBuilder::Clear)
         .endClass();
 
@@ -996,6 +1004,8 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("AddRect", &ImDrawList::AddRect, LUA_ARGS(const ImVec2&, const ImVec2&, ImU32, _def<float, 0>, _def<int, 0>, _def<float, 1>))
         .addFunction("AddRectFilled", &ImDrawList::AddRectFilled, LUA_ARGS(const ImVec2&, const ImVec2&, ImU32, _def<float, 0>, _def<int, 0>))
         .addFunction("AddRectFilledMultiColor", &ImDrawList::AddRectFilledMultiColor, LUA_ARGS(const ImVec2&, const ImVec2&, ImU32, ImU32, ImU32, ImU32))
+        //.addFunction("AddImage", &ImDrawList::AddImage)
+        //.addFunction("AddImageQuad", &ImDrawList::AddImageQuad)
         .endClass();
 
     LuaBinding(L).beginModule("ImGuizmo")
@@ -1159,6 +1169,7 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("ProgressBar", &ImGuiProgressBar)
 
         .addFunction("SliderFloat", &ImGuiSliderFloatLua)  
+        .addFunction("SliderAngle", &ImGuiSliderAngleLua)
         .addFunction("SliderInt", &ImGuiSliderIntLua)
         .addFunction("VSliderFloat", &ImGuiVSliderFloatLua)
         .addFunction("VSliderInt", &ImGuiVSliderIntLua)
