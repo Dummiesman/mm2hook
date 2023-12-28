@@ -1,5 +1,6 @@
 #pragma once
 #include "phforcesphere.h"
+#include <modules\phys\physentity.h>
 #include <modules\level\inst.h>
 #include <modules\level\level.h>
 
@@ -59,7 +60,7 @@ namespace MM2
     public:
         dgExplosionEntity()
         {
-
+            SetInstance(nullptr);
         }
 
         virtual AGE_API void PostUpdate() override
@@ -98,10 +99,12 @@ namespace MM2
         phForceSphere Sphere;
         BOOL Active;
         dgPhysEntity* Entity;
+        Vector3 temp;
     public:
         dgExplosionInstance::dgExplosionInstance()
         {
-            
+            Active = FALSE;
+            Entity = nullptr;
         }
         
         virtual AGE_API const float GetRadius() override
@@ -116,7 +119,8 @@ namespace MM2
 
         virtual AGE_API const Vector3& GetPosition() override 
         {
-            return this->Matrix.GetRow(3);
+            temp = this->Matrix.GetRow(3);
+            return temp;
         }
 
         virtual AGE_API const Matrix34& GetMatrix(Matrix34* a1) override
@@ -184,8 +188,16 @@ namespace MM2
 
         void Detonate(Matrix34 & matrix, const dgBombInfo & bombInfo)
         {
-            if (this->Entity == nullptr)
+            if (this->Entity == nullptr) 
+            {
+                Errorf("dgExplosionInstance::Detonate: No entity.");
                 return;
+            }
+            if (this->Entity->GetCollider() == nullptr)
+            {
+                Errorf("dgExplosionInstance::Detonate: No collider.");
+                return;
+            }
 
             auto &sphere = this->Sphere;
 
@@ -196,7 +208,7 @@ namespace MM2
             sphere.SetCenter(matrix.GetRow(3));
             sphere.SetRadiusGrow(bombInfo.RadiusMin, bombInfo.RadiusMax, (bombInfo.RadiusMax - bombInfo.RadiusMin) / bombInfo.ExplodeTime);
             sphere.SetTimeAndFade(bombInfo.ExplodeTime, 1.0f);
-            sphere.setForceCoef(bombInfo.Strength);
+            sphere.setForceCoef(bombInfo.Strength * 100000.0f);
             sphere.Start();
 
             this->Activate();
@@ -217,7 +229,9 @@ namespace MM2
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<dgExplosionInstance, lvlInstance>("dgExplosionInstance")
-                .addConstructor(LUA_ARGS())
+                .addFactory([]() {
+                    return new dgExplosionInstance();
+                })
 
                 .addPropertyReadOnly("Active", &IsActive)
 

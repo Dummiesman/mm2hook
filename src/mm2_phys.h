@@ -23,6 +23,8 @@ namespace MM2
         luaBind<phColliderJointed>(L);
         luaBind<dgTrailerJoint>(L);
         luaBind<dgPhysEntity>(L);
+        luaBind<dgBombInfo>(L);
+        luaBind<dgExplosionEntity>(L);
         luaBind<dgBangerData>(L);
         luaBind<dgBangerDataManager>(L);
         luaBind<dgBangerInstance>(L);
@@ -32,5 +34,6 @@ namespace MM2
         luaBind<dgHitBangerInstance>(L);
         luaBind<dgBangerActive>(L);
         luaBind<dgBangerManager>(L);
+        luaBind<dgBangerActiveManager>(L);
     }
 }

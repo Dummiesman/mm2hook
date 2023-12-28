@@ -30,16 +30,20 @@ namespace MM2
     private:
         void UpdateBB()
         {
-            float radius = this->m_CurrentRadius;
-            this->Min = m_Center - Vector3(radius, radius, radius);
-            this->Max = m_Center + Vector3(radius, radius, radius);
-            this->Radius = radius;
+            float radius = m_CurrentRadius;
+            Min = m_Center - Vector3(radius, radius, radius);
+            Max = m_Center + Vector3(radius, radius, radius);
+            Radius = radius;
         }
     public:
         phForceSphere()
         {
             scoped_vtable x(this);
+
+            m_IsActive = false;
             hook::Thunk<0x4871B0>::Call<void>(this, static_cast<int>(phBound::BoundType::ForceSphere));
+            Zero();
+            m_Directional = false;
         }
 
         /*
@@ -50,163 +54,196 @@ namespace MM2
             return nullptr;
         }
 
-        AGE_API virtual bool TestProbePoint(phSegment& a1, phIntersectionPoint* a2, float a3)  override
-        {
-            //use phBoundSphere::TestProbePoint
-            return hook::Thunk<0x484BC0>::Call<bool>(this, a1, a2, a3);
-        }
-
         AGE_API virtual bool TestAIPoint(phSegment& a1, phIntersectionPoint* a2) override
         {
+            Warningf("phForceSphere::TestAIPoint");
             //use phBoundSphere::TestAIPoint
             return hook::Thunk<0x484D70>::Call<bool>(this, a1, a2);
         }
             
         AGE_API virtual int  TestEdge(phSegment& a1, phIntersection* a2, int a3) override
         {
+            Warningf("phForceSphere::TestEdge");
             //use phBoundSphere::TestEdge
             return hook::Thunk<0x484F10>::Call<int>(this, a1, a2, a3);
         }
 
         AGE_API virtual bool TestProbe(phSegment& a1, phIntersection* a2, float a3) override
         {
-            //use phBoundSphere::TestProbe
-            return hook::Thunk<0x485210>::Call<bool>(this, a1, a2, a3);
+            Warningf("phForceSphere::TestProbe");
+            float radiusSquared = Radius * Radius;
+            Vector3 startDifference = a2->StartPos - this->m_Center;
+            Vector3 endDifference = a2->EndPos - this->m_Center;
+
+            if (startDifference.Mag2() >= radiusSquared)
+            {
+                Vector3 dir = endDifference - startDifference;
+                float normalizedDist, unk;
+                if (SegmentToSphereIntersections(startDifference, dir, radiusSquared, &normalizedDist, &unk))
+                {
+                    auto& point = a2->IntersectionPoint;
+                    point.Set(startDifference + (dir * normalizedDist), startDifference + (dir * normalizedDist), normalizedDist, 1.0f, true);
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        AGE_API virtual bool TestProbePoint(phSegment& a1, phIntersectionPoint* a2, float a3)  override
+        {
+            Warningf("phForceSphere::TestProbePoint");
+            //use phBoundSphere::TestProbePoint
+            return hook::Thunk<0x484BC0>::Call<bool>(this, a1, a2, a3);
         }
 
         /*
             phForceSphere
         */
+        void Zero()
+        {
+            m_ForceCoef = 0.0;
+            m_ImpulseCoef = 0.0;
+            m_Center.X = 0.0;
+            m_Center.Y = 0.0;
+            m_Center.Z = 0.0;
+            m_CurrentRadius = 0.0;
+            m_IsGrowing = false;
+            UpdateBB();
+            m_FadeFactor = 1.0f;
+            m_TimeLeft = FLT_MAX;
+        }
+
         void Direct(const Vector3 & direction)
         {
             Vector3 normalized = Vector3(direction);
             normalized.Normalize();
 
-            this->m_Direction = normalized;
-            this->m_Directional = true;
+            m_Direction = normalized;
+            m_Directional = true;
         }
 
         void SetTimeAndFade(float time, float fade)
         {
-            this->m_TimeLeft = time;
-            this->m_FadeFactor = fade;
-            this->m_TimeLeftOriginal = time;
+            m_TimeLeft = time;
+            m_FadeFactor = fade;
+            m_TimeLeftOriginal = time;
         }
 
         void SetRadiusGrow(float radius, float maxRadius, float rate)
         {
-            this->m_CurrentRadius = radius;
-            this->m_MaxRadius = maxRadius;
-            this->m_RadiusRate = rate;
-            this->m_IsGrowing = TRUE;
-            this->UpdateBB();
+            m_CurrentRadius = radius;
+            m_MaxRadius = maxRadius;
+            m_RadiusRate = rate;
+            m_IsGrowing = TRUE;
+            UpdateBB();
         }
         
         void SetRadius(float radius)
         {         
-            this->m_CurrentRadius = radius;
-            this->m_IsGrowing = FALSE;
-            this->UpdateBB();
+            m_CurrentRadius = radius;
+            m_IsGrowing = FALSE;
+            UpdateBB();
         }
 
         void SetCenter(const Vector3 & center)
         {
-            this->m_Center = center;
-            this->UpdateBB();
+            m_Center = center;
+            UpdateBB();
         }
 
         void Start()
         {
-            this->m_IsActive = TRUE;
+            m_IsActive = TRUE;
         }
 
         void Stop()
         {
-            this->m_IsActive = FALSE;
+            m_IsActive = FALSE;
         }
 
         void Reset()
         {
-            this->m_IsActive = FALSE;
-            this->m_IsGrowing = FALSE;
-            this->m_TimeLeft = FLT_MAX;
+            m_IsActive = FALSE;
+            m_IsGrowing = FALSE;
+            m_TimeLeft = FLT_MAX;
         }
 
         void Update()
         {
-            if (this->m_IsActive == FALSE)
+            if (m_IsActive == FALSE)
                 return;
 
-            this->m_TimeLeft = this->m_TimeLeft - datTimeManager::Seconds;
-            this->m_ForceCoef = this->m_ForceCoef * this->m_FadeFactor;
+            m_TimeLeft = m_TimeLeft - datTimeManager::Seconds;
+            m_ForceCoef = m_ForceCoef * m_FadeFactor;
 
-            if (this->m_TimeLeft < 0.f || (this->m_ImpulseCoef == 0.f && this->m_ForceCoef == 0.f))
+            if (m_TimeLeft < 0.f || (m_ImpulseCoef == 0.f && m_ForceCoef == 0.f))
             {
-                this->m_IsActive = false;
+                m_IsActive = false;
                 return;
             }
 
-            if (this->m_IsGrowing == TRUE)
+            if (m_IsGrowing == TRUE)
             {
-                this->m_CurrentRadius += datTimeManager::Seconds * this->m_RadiusRate;
-                if (this->m_CurrentRadius > this->m_MaxRadius)
+                m_CurrentRadius += datTimeManager::Seconds * m_RadiusRate;
+                if (m_CurrentRadius > m_MaxRadius)
                 {
-                    this->m_IsGrowing = false;
-                    this->m_CurrentRadius = this->m_MaxRadius;
+                    m_IsGrowing = false;
+                    m_CurrentRadius = m_MaxRadius;
                 }
-                this->UpdateBB();
+                UpdateBB();
             }
         }
 
         //
         float getCurrentRadius()
         {
-            return this->m_CurrentRadius;
+            return m_CurrentRadius;
         }
 
         float getMaxRadius()
         {
-            return this->m_MaxRadius;
+            return m_MaxRadius;
         }
 
         float getTimeLeft()
         {
-            return this->m_TimeLeft;
+            return m_TimeLeft;
         }
 
         bool getIsGrowing()
         {
-            return this->m_IsGrowing == TRUE;
+            return m_IsGrowing == TRUE;
         }
 
         void setForceCoef(float force)
         {
-            this->m_ForceCoef = force;
+            m_ForceCoef = force;
         }
 
         float getForceCoef()
         {
-            return this->m_ForceCoef;
+            return m_ForceCoef;
         }
 
         void setFadeFactor(float fadeFactor)
         {
-            this->m_FadeFactor = fadeFactor;
+            m_FadeFactor = fadeFactor;
         }
 
         float getFadeFactor()
         {
-            return this->m_FadeFactor;
+            return m_FadeFactor;
         }
         
         bool IsActive()
         {
-            return this->m_IsActive == TRUE;
+            return m_IsActive == TRUE;
         }
 
         Vector3 getCenter()
         {
-            return this->m_Center;
+            return m_Center;
         }
 
         static void BindLua(LuaState L) {

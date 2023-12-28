@@ -45,6 +45,7 @@
 #include "phys\levelbound.h"
 #include "phys\physmgr.h"
 #include "phys\physentity.h"
+#include "phys\explosion.h"
 #include "phys\trailerjoint.h"
 
 /*
@@ -61,6 +62,7 @@
 #include "phys\phboundterrain.h"
 #include "phys\phboundterrainlocal.h"
 #include "phys\phboundcollision.h"
+#include "phys\phforcesphere.h"
 #include "phys\phcollisionprim.h"
 
 /*
