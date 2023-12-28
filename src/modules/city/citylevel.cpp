@@ -20,6 +20,15 @@ namespace MM2
         cityLevel
     */
 
+    std::vector<Vector3> cityLevel::LuaGetPerimeter(int room)
+    {
+        auto vec = std::vector<Vector3>();
+        vec.resize(64);
+        int actual_size = this->GetRoomPerimeter(room, vec.data(), vec.size());
+        vec.resize(actual_size);
+        return vec;
+    }
+
     AGE_API cityLevel::cityLevel() {
         scoped_vtable x(this);
         hook::Thunk<0x443860>::Call<void>(this);
@@ -125,6 +134,8 @@ namespace MM2
     void cityLevel::BindLua(LuaState L) {
         LuaBinding(L).beginExtendClass<cityLevel, lvlLevel>("cityLevel")
             //functions
+            .addFunction("GetRoomPerimeter", &LuaGetPerimeter)
+
             .addFunction("EnablePVS", &EnablePVS)
             .addFunction("EnableSky", &EnableSky)
             .addFunction("IsRoomVisible", &IsRoomVisible)

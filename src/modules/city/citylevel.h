@@ -48,6 +48,9 @@ namespace MM2
         static hook::Type<unsigned char[512]> sm_PvsBuffer;
         static hook::Type<bool> sm_EnablePVS;
         static hook::Type<lvlSDL> SDL;
+    private:
+        //lua function for getting perimeter
+        std::vector<Vector3> LuaGetPerimeter(int room);
     public:
         static hook::Type<lvlSky> Sky;
 
