@@ -6,6 +6,7 @@ namespace MM2
     // Forward declarations
     class datStack;
     struct MapSymbol;
+
     // External declarations
 
 
