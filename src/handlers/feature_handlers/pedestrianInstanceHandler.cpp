@@ -3,7 +3,8 @@
 using namespace MM2;
 
 static ConfigValue<bool> cfgRagdolls("Ragdolls", true);
-
+hook::Type<float> FrameFraction2 = 0x6B4724;
+hook::Type<int> FrameDelta2 = 0x6B4720;
 
 /*
     pedestrianInstanceHandler
@@ -65,26 +66,96 @@ bool pedestrianInstanceHandler::IsCollidable()
 void pedestrianInstanceHandler::DrawRagdoll() 
 {
     auto inst = reinterpret_cast<aiPedestrianInstance*>(this);
-
-    //matrices
-    Matrix44 pedestrianMatrixList[32]; //bone matrices
-
-    //get pedActive
     auto active = reinterpret_cast<pedActive*>(inst->GetEntity());
 
-    //set matrix
-    Matrix44 identityMatrix;
-    identityMatrix.Identity();
-    gfxRenderState::SetWorldMatrix(identityMatrix);
-
-    //attach skeleton
+    Matrix44 pedestrianMatrixList[32]; //bone matrices
+    
     auto ragdollSkel = active->GetSkeleton();
-    ragdollSkel->Attach(&pedestrianMatrixList[0]);
+    ragdollSkel->Attach(pedestrianMatrixList);
 
     //get animationInstance and draw it
     auto animationInstance = inst->GetAnimationInstance();
-    auto anim = animationInstance->getAnimation();
-    anim->pModel->Draw(&pedestrianMatrixList[0], anim->ppShaders[animationInstance->getVariant()], 0xFFFFFFFF);
+    auto anim = animationInstance->GetAnimation();
+
+    gfxRenderState::SetWorldMatrix(Matrix44::I);
+    anim->pModel->Draw(pedestrianMatrixList, anim->ppShaders[animationInstance->GetVariant()], 0xFFFFFFFF);
+}
+
+void pedestrianInstanceHandler::AnimationInstance_Draw(bool a1)
+{
+    auto inst = reinterpret_cast<pedAnimationInstance*>(this);
+    Matrix44 pedestrianMatrixList[32]; //bone matrices
+
+    auto pedanim = inst->GetAnimation();
+    auto sequence = pedanim->GetSequence(inst->GetCurrentState());
+
+    int frame1 = inst->GetCurrentFrame();
+    int frame2 = frame1;
+
+    auto animation = sequence->pCrAnimation;
+    if (FrameFraction2.get() != 0.0f) 
+    {
+        if (sequence->Direction > 0)
+        {
+            frame2 = (frame1 + 1) % animation->GetFrameCount();
+        }
+        else if (sequence->Direction < 0)
+        {
+            frame2 = frame1 - 1;
+            if (frame2 < 0) frame2 = animation->GetFrameCount() - 1;
+        }
+    }
+
+    crAnimFrame finalFrame = crAnimFrame();
+    if (frame1 == frame2)
+    {
+        finalFrame.Copy(animation->GetFrame(frame1));
+    }
+    else 
+    {
+        float blend = FrameFraction2.get();
+        finalFrame.Blend(blend, animation->GetFrame(frame1), animation->GetFrame(frame2));
+    }
+
+    auto skeleton = pedanim->GetSkeleton();
+    hook::StaticThunk<0x57B410>::Call<void>(skeleton, &finalFrame); // Some form of crAnimFrame::Pose but static??
+    skeleton->Update();
+    skeleton->Attach(pedestrianMatrixList);
+
+    if (a1)
+    {
+        pedanim->GetModel()->Draw(pedestrianMatrixList, pedanim->GetShaders(inst->GetVariant()), 0xFFFFFFFF);
+    }
+    else
+    {
+        pedanim->DrawSkeleton(inst->GetVariant(), skeleton);
+    }
+}
+
+void pedestrianInstanceHandler::AnimationInstance_Update()
+{
+    // for inteprolated pedestrians we need to switch animations one frame earlier
+    auto inst = reinterpret_cast<pedAnimationInstance*>(this);
+    int delta = FrameDelta2.get();
+    int cutShortFrames = 1;
+    
+    auto state = inst->GetAnimation()->GetSequence(inst->GetCurrentState());
+    int direction = state->Direction;
+    if (direction == -1)
+    {
+        inst->SetCurrentFrame(inst->GetCurrentFrame() - delta);
+        if (inst->GetCurrentFrame() > (state->FrameCount + cutShortFrames)) return;
+    }
+    else if (direction == 1)
+    {
+        inst->SetCurrentFrame(inst->GetCurrentFrame() + delta);
+        if (inst->GetCurrentFrame() < (state->FrameCount - cutShortFrames)) return;
+    }
+    else if (delta == 0)
+    {
+        return;
+    }
+    inst->Start(inst->GetNextState());
 }
 
 void pedestrianInstanceHandler::Draw(int a1) 
@@ -92,10 +163,13 @@ void pedestrianInstanceHandler::Draw(int a1)
     auto inst = reinterpret_cast<aiPedestrianInstance*>(this);
 
     //if we have no ragdoll, call the original function
-    if (inst->GetEntity() == nullptr) {
+    if (inst->GetEntity() == nullptr) 
+    {
         hook::Thunk<0x57B5F0>::Call<void>(this, a1);
         return;
-    }else{
+    }
+    else
+    {
         this->DrawRagdoll();
     }
 }
@@ -142,6 +216,18 @@ void pedestrianInstanceHandler::Install()
     InstallCallback("aiMap::ClearPath", "aiMap clearpeds hook to detach ragdolls",
         &aiMapClearPeds, {
             cb::call(0x539B70), // aiMap::AdjustPedestrians
+        }
+    );
+
+    InstallCallback("pedAnimationInstance::Draw", "Interpolate ped animations",
+        &AnimationInstance_Draw, {
+            cb::call(0x57B6EE),
+        }
+    );
+
+    InstallCallback("pedAnimationInstance::Update", "Interpolate ped animations",
+        &AnimationInstance_Update, {
+            cb::call(0x54BF78),
         }
     );
 

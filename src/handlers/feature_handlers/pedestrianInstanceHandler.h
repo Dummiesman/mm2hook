@@ -6,6 +6,8 @@
 class pedestrianInstanceHandler {
 public:
     void DrawRagdoll();
+    void AnimationInstance_Draw(bool a1);
+    void AnimationInstance_Update();
     void Draw(int a1);
     void Detach();
     bool IsCollidable();
