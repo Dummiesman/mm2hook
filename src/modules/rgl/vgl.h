@@ -20,6 +20,7 @@ namespace MM2
     extern void vglEnd(void);
     extern void vglBeginBatch(void);
     extern void vglEndBatch(void);
+    extern void vglDrawTexture(unsigned int index);
     extern void vglBindTexture(gfxTexture *texture);
     extern void vglDrawLabel(const Vector3 &position, const char *text);
 
