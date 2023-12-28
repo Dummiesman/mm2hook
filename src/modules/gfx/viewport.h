@@ -64,6 +64,11 @@ namespace MM2
             hook::Thunk<0x4B14C0>::Call<void>(this, left, top, width, height, dvMinZ, dvMaxZ);
         }
 
+        D3DVIEWPORT7& GetD3DViewport()
+        {
+            return m_Viewport;
+        }
+
         Matrix44 GetProjectionMatrix()
         {
             return m_Projection;
