@@ -44,31 +44,31 @@ namespace MM2
         static hook::Type<gfxTexture*> sm_First;
         static hook::Type<bool> sm_UseInternalCache;
     public:
-        inline const char * getName() {
+        const char * getName() {
             return this->Name;
         }
 
-        inline int getWidth() {
+        int getWidth() {
             return this->Width;
         }
 
-        inline int getHeight() {
+        int getHeight() {
             return this->Height;
         }
 
-        inline gfxTextureCachePool * getPool() {
+        gfxTextureCachePool * getPool() {
             return this->CachePool;
         }
 
-        inline gfxTextureCacheEntry * getCacheEntry() {
+        gfxTextureCacheEntry * getCacheEntry() {
             return this->CacheEntry;
         }
 
-        inline gfxTexture * getNext() {
+        gfxTexture * getNext() {
             return this->Next;
         }
 
-        inline gfxTexture * getNextLOD() {
+        gfxTexture * getNextLOD() {
             return this->NextLOD;
         }
     public:
@@ -135,7 +135,29 @@ namespace MM2
         uint32_t RefCount;
         gfxBitmap* Next;
     public:
+        const char* getName() {
+            return this->Name;
+        }
+
+        int getWidth() {
+            return this->Width;
+        }
+
+        int getHeight() {
+            return this->Height;
+        }
+    public:
         ANGEL_ALLOCATOR
+
+        static void BindLua(LuaState L) {
+        LuaBinding(L).beginClass<gfxBitmap>("gfxBitmap")
+            .addPropertyReadOnly("Name", &getName)
+
+            .addPropertyReadOnly("Width", &getWidth)
+            .addPropertyReadOnly("Height", &getHeight)
+
+            .endClass();
+    }
     };
 
     class gfxTextureCacheEntry {
