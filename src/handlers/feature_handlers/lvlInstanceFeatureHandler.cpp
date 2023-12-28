@@ -25,6 +25,12 @@ int lvlInstanceFeatureHandler::lvlLandmark_Init(const char* a1, const Matrix34& 
 }
 
 void lvlInstanceFeatureHandler::Install() {
+    InstallCallback("ltLight::DrawGlow", "light clip fix",
+        &ltLight::DrawGlow, {
+            cb::jmp(0x59AD90),
+        }
+    );
+
    // Install lvlLandmark extensions
    mem::write(0x46586C + 1, (byte)sizeof(lvlLandmark)); // Change allocation size
    InstallVTableHook("lvlLandmark::Init", &lvlLandmark_Init, { 0x5B1ACC });

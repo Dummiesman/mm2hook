@@ -15,6 +15,11 @@ void dgBangerInstanceHandler::Reset() {
     glowLoaded = false;
 }
 
+void dgBangerInstanceHandler::tglDrawParticle(const Vector3& position, float size, const Vector4& color)
+{
+    tglDrawParticleClipAdjusted(position, size, color, 0.05f);
+}
+
 void dgBangerInstanceHandler::DrawGlow()
 {
     //first time texture load
@@ -63,6 +68,12 @@ void dgBangerInstanceHandler::Install()
     InstallCallback("aiTrafficLightInstance::DrawGlow", "Make traffic light banger lights double sided.",
         &DrawGlow, {
             cb::call(0x53CCFD),
+        }
+    );
+
+    InstallCallback("dgBangerInstance::DrawGlow", "Use custom tglDrawParticle.",
+        &tglDrawParticle, {
+            cb::call(0x441966),
         }
     );
 

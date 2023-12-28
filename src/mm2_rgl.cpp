@@ -52,6 +52,11 @@ void    MM2::vglEndBatch            (void)                                      
 void    MM2::vglBindTexture         (gfxTexture *texture)                                       { return _StaticThunk<0x4A5BA0>::Call<void>(texture); }
 void    MM2::vglDrawLabel           (const Vector3 &position, const char *text)                 { return _StaticThunk<0x4A5C50>::Call<void>(&position, text); }
 
+void    MM2::vglDrawTexture         (unsigned int index)
+{
+    hook::StaticThunk<0x4A5780>::Call<void>(index); // TODO: rewrite
+}
+
 /* font.obj */
 void    MM2::gfxDrawFont            (int x, int y, const char *text)                            { return _StaticThunk<0x4B1280>::Call<void>(x, y, text); }
 
@@ -76,6 +81,16 @@ void    MM2::rglBindTexture2        (const gfxTexture *texture)                 
 void    MM2::tglDrawParticle        (const Vector3 &p1, float p2, const Vector4 &p3)            { return _StaticThunk<0x4A6190>::Call<void>(&p1, p2, &p3); }
 void    MM2::tglDrawRotatedParticle (const Vector3 &p1, float p2, float p3, const Vector4 &p4)  { return _StaticThunk<0x4A6550>::Call<void>(&p1, p2, p3, &p4); }
 uint    MM2::mkfrgba                (float r, float g, float b, float a)                        { return _StaticThunk<0x4A7880>::Call<uint>(r, g, b, a); }
+
+void MM2::tglDrawParticleClipAdjusted(const Vector3& position, float size, const Vector4& color, float anticlip)
+{
+    // move towards camera by anticlip
+    Vector3 camPosAAA = static_cast<Vector3>(gfxRenderState::GetCameraMatrix().GetRow(3));
+    Vector3 particlePosAAA;
+    particlePosAAA.Lerp(anticlip, position, camPosAAA);
+    tglDrawParticle(particlePosAAA, size, color);
+    return;
+}
 
 /* rglext.obj */
 

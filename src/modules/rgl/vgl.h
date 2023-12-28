@@ -12,7 +12,7 @@ namespace MM2
     extern void vglTexCoord2f(Vector2 uv);
     extern void vglTexCoord2f(float u, float v);
     extern void vglVertex3f(float x, float y, float z);
-    extern void vglVertex3f(Vector3 position);
+    extern void vglVertex3f(const Vector3 position);
     extern void vgl_VERTEX_VCT1(float x, float y, float z);
     extern void vgl_VERTEX_VNT1(float x, float y, float z);
     extern void vglSetFormat(uint p1, uint p2, uint p3, uint p4);
@@ -33,7 +33,8 @@ namespace MM2
     extern void rglWorldIdentity(void);
     extern void rglCard(const Vector3 &position);
     extern void rglBindTexture2(const gfxTexture *texture);
-    extern void tglDrawParticle(const Vector3 &p1, float p2, const Vector4 &p3);
+    extern void tglDrawParticle(const Vector3 &position, float size, const Vector4& color);
+    extern void tglDrawParticleClipAdjusted(const Vector3& position, float size, const Vector4& color, float anticlip);
     extern void tglDrawRotatedParticle(const Vector3 &p1, float p2, float p3, const Vector4 &p4);
 
     extern uint mkfrgba(float r, float g, float b, float a);
