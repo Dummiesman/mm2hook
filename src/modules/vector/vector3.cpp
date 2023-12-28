@@ -78,8 +78,8 @@ namespace MM2
     AGE_API float Vector3::FastAngle(const Vector3& vec) const {
         return hook::Thunk<0x4C0500>::Call<float>(this, &vec);
     }
-    AGE_API bool Vector3::Approach(const Vector3& vec, float p2, float p3) {
-        return hook::Thunk<0x4BFF20>::Call<bool>(this, &vec, p2, p3);
+    AGE_API bool Vector3::Approach(const Vector3& vec, float rate, float time) {
+        return hook::Thunk<0x4BFF20>::Call<bool>(this, &vec, rate, time);
     }
     AGE_API void Vector3::Cross(const Vector3& vec) {
         hook::Thunk<0x45CE80>::Call<void>(this, &vec);
@@ -219,6 +219,7 @@ namespace MM2
             .addFunction("Set", static_cast<void(Vector3::*)(const Vector3&)>(&Vector3::Set))
             .addFunction("Lerp", &Lerp)
             .addFunction("Dist", &Dist)
+            .addFunction("Dot", static_cast<float(Vector3::*)(const Vector3&) const>(&Vector3::Dot))
             .addFunction("Angle", &Angle)
             .addFunction("FastAngle", &FastAngle)
             .addFunction("FlatDist", &FlatDist)

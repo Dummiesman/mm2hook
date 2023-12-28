@@ -44,7 +44,7 @@ namespace MM2
         AGE_API void RotateAboutAxis(float angle, int axis);
         AGE_API float Angle(const Vector3& vec) const;
         AGE_API float FastAngle(const Vector3& vec) const;
-        AGE_API bool Approach(const Vector3& vec, float p2, float p3);
+        AGE_API bool Approach(const Vector3& vec, float rate, float time);
         AGE_API void Cross(const Vector3& vec);
         AGE_API void Cross(const Vector3& vec1, const Vector3& vec2);
         AGE_API float Dist(const Vector3& vec) const;
