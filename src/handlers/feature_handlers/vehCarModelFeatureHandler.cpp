@@ -3,6 +3,7 @@
 using namespace MM2;
 
 static ConfigValue<bool> cfgMm1StyleTransmission("MM1StyleTransmission", false);
+static ConfigValue<bool> cfgEnable3DDamage("3DDamage", true);
 
 /*
     vehCarModelFeatureHandler
@@ -124,5 +125,7 @@ void vehCarModelFeatureHandler::Install() {
 
     vehCarModel::mm1StyleTransmission = cfgMm1StyleTransmission.Get();
     vehCarModel::breakableRenderTweak = cfgBreakableRenderTweak.Get();
+    
+    vehCarModel::Enable3DDamage = cfgEnable3DDamage.Get();
 }
 

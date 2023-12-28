@@ -133,6 +133,9 @@ namespace MM2
         static bool HazardLightsState;
         static bool LeftSignalLightState;
         static bool RightSignalLightState;
+
+        //3d damage feature
+        static bool Enable3DDamage;
     private:
         bool enabledElectrics[4]; //0/1 are back, 2/3 are front
         vehCar* car;

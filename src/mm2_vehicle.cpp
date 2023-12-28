@@ -27,6 +27,8 @@ bool vehCarModel::RightSignalLightState = false;
 bool vehCarModel::mm1StyleTransmission = false;
 bool vehCarModel::breakableRenderTweak = false;
 
+bool vehCarModel::Enable3DDamage = true;
+
 /*
    vehBreakableMgr
 */

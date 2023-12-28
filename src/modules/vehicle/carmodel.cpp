@@ -472,7 +472,7 @@ namespace MM2
         }
 
         //init damage3d
-        if (this->GetGeomIndex() != 0)
+        if (this->GetGeomIndex() != 0 && vehCarModel::Enable3DDamage)
         {
             auto bodyEntry = this->GetGeomBase(0);
             auto bodyDamageEntry = this->GetGeomBase(BODYDAMAGE_GEOM_ID);
