@@ -127,6 +127,11 @@ namespace MM2
                 RSTATE->DoFlush(&LASTRSTATE);
         }
 
+        static bool Touched(int flags)
+        {
+            return gfxRenderState::m_Touched & flags;
+        }
+
         static void SetBlendSet(int a, int b)
         {
             hook::Thunk<0x4B2350>::ThisCall<void>(&RSTATE, a, b);
@@ -331,6 +336,11 @@ namespace MM2
         static Matrix44 GetViewMatrix()
         {
             return gfxRenderState::sm_View;
+        }
+
+        static Matrix44 GetModelViewMatrix()
+        {
+            return gfxRenderState::sm_Modelview;
         }
 
         static Matrix44 GetWorldMatrix()
