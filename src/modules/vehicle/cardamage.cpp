@@ -27,7 +27,6 @@ declfield(vehCarDamage::EngineSmokeRule)(0x6AFED4);
 
 void vehCarDamage::setGameCallbackLua(LuaRef fn)
 {
-	delete GameCallback;
 	GameCallback = datCallback::CreateLuaCallback<vehDamageImpactInfo*>(fn, this);
 }
     
