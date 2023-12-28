@@ -78,7 +78,7 @@ void    MM2::rglWorldMatrix         (const Matrix34 &mtx)                       
 void    MM2::rglWorldIdentity       (void)                                                      { return _StaticThunk<0x4A6110>::Call<void>();  }
 void    MM2::rglCard                (const Vector3 &position)                                   { return _StaticThunk<0x4A6140>::Call<void>(&position); }
 void    MM2::rglBindTexture2        (const gfxTexture *texture)                                 { return _StaticThunk<0x4A6160>::Call<void>(texture); }
-void    MM2::tglDrawParticle        (const Vector3 &p1, float p2, const Vector4 &p3)            { return _StaticThunk<0x4A6190>::Call<void>(&p1, p2, &p3); }
+void    MM2::tglDrawParticle        (const Vector3& position, float size, const Vector4& color) { return _StaticThunk<0x4A6190>::Call<void>(&position, size, &color); }
 void    MM2::tglDrawRotatedParticle (const Vector3 &p1, float p2, float p3, const Vector4 &p4)  { return _StaticThunk<0x4A6550>::Call<void>(&p1, p2, p3, &p4); }
 uint    MM2::mkfrgba                (float r, float g, float b, float a)                        { return _StaticThunk<0x4A7880>::Call<uint>(r, g, b, a); }
 
