@@ -91,7 +91,7 @@ namespace MM2
                 {
                     bodyPacket->DoLock(); deformPacket->DoLock();
                     
-                    for (int j = 0; j < bodyPacket->GetAdjunctCount() && j < deformPacket->GetAdjunctCount(); j++)
+                    for (unsigned int j = 0; j < bodyPacket->GetAdjunctCount() && j < deformPacket->GetAdjunctCount(); j++)
                     {
                         Vector3 position = Vector3::ORIGIN;
                         bodyPacket->GetPosition(position, j);
@@ -122,7 +122,7 @@ namespace MM2
                 {
                     damagePacket->DoLock(); deformPacket->DoLock();
 
-                    for (int j = 0; j < damagePacket->GetAdjunctCount() && j < deformPacket->GetAdjunctCount(); j++)
+                    for (unsigned int j = 0; j < damagePacket->GetAdjunctCount() && j < deformPacket->GetAdjunctCount(); j++)
                     {
                         Vector3 position = Vector3::ORIGIN;
                         damagePacket->GetPosition(position, j);
@@ -156,7 +156,7 @@ namespace MM2
                     if (m_PacketMatchesVertCount[currentPacket]) {
                         damagePacket->DoLock(); deformPacket->DoLock(); bodyPacket->DoLock();
 
-                        for (int j = 0; j < damagePacket->GetAdjunctCount() && j < deformPacket->GetAdjunctCount(); j++)
+                        for (unsigned int j = 0; j < damagePacket->GetAdjunctCount() && j < deformPacket->GetAdjunctCount(); j++)
                         {
                             Vector3 position = Vector3::ORIGIN;
                             bodyPacket->GetPosition(position, j);
