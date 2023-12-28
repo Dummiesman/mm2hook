@@ -12,6 +12,12 @@ namespace MM2
     // Class definitions
     class datTimeManager {
     public:
+        //enum EnumTimeMode
+        //{
+        //    RealTime,
+        //    FixedFrame
+        //};
+    public:
         static hook::Type<float> InvSeconds;
         static hook::Type<float> FPS;
         static hook::Type<float> Seconds;

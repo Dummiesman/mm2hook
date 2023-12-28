@@ -9,6 +9,7 @@ namespace MM2
     // External declarations
     extern class gfxTexture;
     extern struct gfxMaterial;
+    extern class Stream;
 
     // Class definitions
     class modShader {

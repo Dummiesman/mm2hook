@@ -18,6 +18,7 @@ namespace MM2
         luaBind<lvlFixedRotY>(L);
         luaBind<lvlFixedMatrix>(L);
         luaBind<lvlLandmark>(L);
+        luaBind<dgExplosionInstance>(L);
         luaBind<aiPedestrianInstance>(L);
     }
 }
