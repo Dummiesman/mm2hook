@@ -49,11 +49,11 @@ namespace MM2
         float p7; // (default: 2.0)
         float p8; // (default: 0.0)
     public:
-        inline int getVariant() {
+        int GetVariant() {
             return this->variant;
         }
 
-        inline void setVariant(int variant) {
+        void SetVariant(int variant) {
             this->variant = variant;
         }
 
@@ -70,6 +70,8 @@ namespace MM2
                                                             { hook::Thunk<0x4D8600 >::Call<void>(this, a1, a2, a3, a4, a5); }
         AGE_API void Eject(vehBreakable *a1, int room)      { hook::Thunk<0x4D8940>::Call<void>(this, a1, room); }
         AGE_API void EjectAll(int room)                     { hook::Thunk<0x4D8BB0>::Call<void>(this, room); }
+
+        AGE_API void Reset()                                { hook::Thunk<0x4D8710>::Call<void>(this); }
 
 
         AGE_API void Draw(const Matrix34* a1, modShader* a2, int a3)
