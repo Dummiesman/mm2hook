@@ -61,7 +61,7 @@ namespace MM2
         AGE_API void Dot(const Matrix44& a1);
         AGE_API void FastInverse(const Matrix44& a1);
         AGE_API void FromMatrix34(const Matrix34& a1);
-        AGE_API void InvertTo(const Matrix44* a1);
+        AGE_API void InvertTo(Matrix44& a1);
         AGE_API void MakeRotX(float a1);
         AGE_API void MakeRotY(float a1);
         AGE_API void MakeRotZ(float a1);
@@ -69,7 +69,7 @@ namespace MM2
         AGE_API void Set(const Matrix44* a1);
         AGE_API void Subtract(const Matrix44* a1);
         AGE_API void ToMatrix34(Matrix34& a1) const;
-        AGE_API void Transform4(const Vector3* a1, const Vector4* a2, int a3);
+        AGE_API void Transform4(const Vector3* in, const Vector4* out, int count);
         AGE_API void Transform3x3(const Vector3& vector, Vector3& out) const;
         AGE_API Vector3 Transform3x3(const Vector3& vector) const;
         AGE_API static void Convert(Matrix44& output, const Matrix34& input);
