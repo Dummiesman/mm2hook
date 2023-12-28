@@ -89,6 +89,7 @@ namespace MM2
             byte m_Priority;
             byte byte_8f;
         public:
+            void CopyFrom(CollisionTableEntry& other);
             void SetFlags(short flags);
             short GetFlags() const;
             byte GetPriority() const;

@@ -4,6 +4,8 @@
 #include <modules/level/inst.h>
 #include <modules/phys/segment.h>
 #include <modules/phys/physentity.h>
+#include <modules/phys/phcollider.h>
+#include <modules/phys/phjoint.h>
 
 using namespace MM2;
 
@@ -84,6 +86,20 @@ void PhysicsStats::BindLua(LuaState L) {
         .addVariable("MoverVsCollidable", &PhysicsStats::MoverVsCollidable, false)
         .addVariable("CollisionsTime", &PhysicsStats::CollisionsTime, false)
         .endClass();
+}
+
+void MM2::dgPhysManager::CollisionTableEntry::CopyFrom(CollisionTableEntry& other)
+{
+    this->byte_8f = other.byte_8f;
+    this->m_Flags = other.m_Flags;
+    this->m_CollidablesCount = other.m_CollidablesCount;
+    this->m_Instance = other.m_Instance;
+    this->m_Priority = other.m_Priority;
+    this->m_PhysEntity = other.m_PhysEntity;
+    for (int i = 0; i < other.m_CollidablesCount; i++)
+    {
+        this->m_Collidables[i] = other.m_Collidables[i];
+    }
 }
 
 /*
@@ -783,6 +799,7 @@ void MM2::dgPhysManager::Update()
                 }
             }
         }
+
         perfPhysCollide.set(perfPhysCollide.get() + ((Timer::Ticks() - collisionTimer.StartTicks) * Timer::TicksToMilliseconds));
 
         // update entry flags
