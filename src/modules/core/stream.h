@@ -15,72 +15,32 @@ namespace MM2
 
     class Stream {
     private:
-        //lua read
-        std::string luaRead(int length) 
-        {
-            std::string buf;
-            buf.resize(length);
-            
-            int read = this->Read((LPVOID)buf.data(), length);
-            if(read != length)
-                buf.resize(read);                     
-            return buf;
-        }
-
-    public:
-        std::string AsString() 
-        {
-            int remainBytes = this->Size() - this->Tell();
-            return luaRead(remainBytes);
-        }
+        static hook::Type<coreFileMethods> coreFileStandard;
+        static hook::Type<coreFileMethods> zipFile;
     public:
         static hook::Type<coreFileMethods *> sm_DefaultOpenMethods;
         static hook::Type<coreFileMethods *> sm_DefaultCreateMethods;
 
-        AGE_API static void     DumpOpenFiles   (void)                              { return hook::StaticThunk<0x4C9970>::Call<void>(); };
+        AGE_API static void     DumpOpenFiles();
+        AGE_API static Stream*  Open(LPCSTR filename, bool readOnly);
+        AGE_API static Stream*  Open(LPCSTR filename, const coreFileMethods* fileMethods, bool readOnly);                                
+        AGE_API static Stream*  Create(LPCSTR filename);
+        AGE_API static Stream*  Create(LPCSTR filename, const coreFileMethods* fileMethods);                                                          
+        AGE_API int             Read(LPVOID dstBuf, int size);
+        AGE_API int             Write(const LPVOID srcBuf, int size);
+        AGE_API int             GetCh();
+        AGE_API int             PutCh(unsigned char ch);
+        AGE_API int             Seek(int offset);
+        AGE_API int             Tell();
+        AGE_API int             Close();
+        AGE_API int             Size();
+        AGE_API int             Flush();
 
-        AGE_API static Stream*  Open            (LPCSTR filename, bool readOnly)    { return hook::StaticThunk<0x4C99C0>::Call<Stream *>(filename, readOnly); };
-        AGE_API static Stream*  Open            (LPCSTR filename, const coreFileMethods *fileMethods, bool readOnly)
-                                                                                    { return hook::StaticThunk<0x4C9A40>::Call<Stream *>(filename, fileMethods, readOnly); };
+        std::string ReadString(int length);
+        void WriteString(std::string str);
+        std::string AsString();
 
-        AGE_API static Stream*  Create          (LPCSTR filename)                   { return hook::StaticThunk<0x4C9A00>::Call<Stream *>(filename); };
-        AGE_API static Stream*  Create          (LPCSTR filename, const coreFileMethods *fileMethods)
-                                                                                    { return hook::StaticThunk<0x4C9A70>::Call<Stream *>(filename, fileMethods); };
-
-        AGE_API int             Read            (LPVOID dstBuf, int size)           { return hook::Thunk<0x4C9AA0>::Call<int>(this, dstBuf, size); };
-        AGE_API int             Write           (const LPVOID srcBuf, int size)     { return hook::Thunk<0x4C9BF0>::Call<int>(this, srcBuf, size); };
-        AGE_API int             GetCh           (void)                              { return hook::Thunk<0x4C9D00>::Call<int>(this); };
-        AGE_API int             PutCh           (unsigned char ch)                  { return hook::Thunk<0x4C9D30>::Call<int>(this, ch); };
-        AGE_API int             Seek            (int offset)                        { return hook::Thunk<0x4C9D60>::Call<int>(this, offset); };
-        AGE_API int             Tell            (void)                              { return hook::Thunk<0x4C9DB0>::Call<int>(this); };
-        AGE_API int             Close           (void)                              { return hook::Thunk<0x4C9DC0>::Call<int>(this); };
-        AGE_API int             Size            (void)                              { return hook::Thunk<0x4C9E00>::Call<int>(this); };
-        AGE_API int             Flush           (void)                              { return hook::Thunk<0x4C9E60>::Call<int>(this); };
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<Stream>("Stream")
-                .addFactory([](LPCSTR filename, bool createFile = false) {
-                    auto stream = (createFile) ? Stream::Create(filename) : Stream::Open(filename, false);
-                    return stream;
-                }, LUA_ARGS(LPCSTR, _opt<bool>))
-                .addStaticFunction("DumpOpenFiles", &Stream::DumpOpenFiles)
-
-                .addStaticFunction("Open", static_cast<Stream * (*)(LPCSTR, bool)>(&Stream::Open))
-                .addStaticFunction("Create", static_cast<Stream * (*)(LPCSTR)>(&Stream::Create))
-
-                .addFunction("ReadAll", &Stream::AsString) 
-
-                .addFunction("Read", &Stream::luaRead)
-                .addFunction("Write", &Stream::Write)
-                .addFunction("GetCh", &Stream::GetCh)
-                .addFunction("PutCh", &Stream::PutCh)
-                .addFunction("Seek", &Stream::Seek)
-                .addFunction("Tell", &Stream::Tell)
-                .addFunction("Close", &Stream::Close)
-                .addFunction("Size", &Stream::Size)
-                .addFunction("Flush", &Stream::Flush)
-            .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     AGE_EXT int     fseek       (Stream *stream, int position, seekWhence whence);
