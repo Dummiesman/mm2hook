@@ -239,6 +239,10 @@ namespace MM2
                 .addVariable("CnRPointLimit", &mmStatePack::CnRPointLimit)
                 .addVariable("CnRTeam", &mmStatePack::CnRTeam)
                 .addVariable("CnRTimeLimit", &mmStatePack::CnRTimeLimit)
+
+                .addVariable("SoundFXVolume", &mmStatePack::SoundFXVolume)
+                .addVariable("AudioBalance", &mmStatePack::AudioBalance)
+                .addVariable("MusicVolume", &mmStatePack::MusicVolume)
                 
                 .endClass();
         }
