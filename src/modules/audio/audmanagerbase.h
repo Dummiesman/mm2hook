@@ -1,0 +1,47 @@
+#pragma once
+#include <modules\node\node.h>
+
+namespace MM2
+{
+    // Forward declarations
+    class AudManagerBase;
+
+    // External declarations
+
+    // Class definitions
+    class AudManagerBase : public asNode {
+    private:
+            //lua helpers
+            bool luaGetIsStereo() {
+                return IsStereo() == TRUE;
+            }
+    public:
+        AGE_API AudManagerBase() {
+            scoped_vtable x(this);
+            hook::Thunk<0x50EE10>::Call<void>(this);
+        };
+
+        AGE_API ~AudManagerBase() {
+            scoped_vtable x(this);
+            hook::Thunk<0x50EE40>::Call<void>(this);
+        };
+
+        //instance
+        static hook::Type<AudManagerBase*> Instance;
+
+        //members
+        AGE_API BOOL IsStereo()                         { return hook::Thunk<0x50F0D0>::Call<BOOL>(this); }
+
+        //asNode overrides
+        AGE_API virtual void Update() override          { hook::Thunk<0x50F130>::Call<void>(this); }
+        AGE_API virtual void UpdatePaused() override    { hook::Thunk<0x50F1A0>::Call<void>(this); }
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<AudManagerBase, asNode>("AudManagerBase")
+                .addStaticFunction("Instance", [] { return (AudManagerBase*)Instance; })
+
+                .addPropertyReadOnly("IsStereo", &luaGetIsStereo)
+            .endClass();
+        }
+    };
+}

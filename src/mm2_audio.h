@@ -26,9 +26,6 @@ namespace MM2
     // Forward declarations
     class DirSnd;
     class mmDirSnd;
-    class AudCreatureContainer;
-    class AudManager;
-    class mmCNRSpeech;
 
     namespace $
     {
@@ -219,117 +216,6 @@ namespace MM2
         };
     };
 
-    class mmCNRSpeech : public AudSpeech {
-    public:
-        AGE_API void Play(LPCSTR a1)                         { hook::Thunk<0x5A7800>::Call<void>(this, a1); }
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<mmCNRSpeech, AudSpeech>("mmCNRSpeech")
-                .addFunction("Play", &Play)
-            .endClass();
-        }
-    };
-
-    class mmRaceSpeech : public AudSpeech {
-    public:
-        AGE_API void PlayUnlockVehicle()                     { hook::Thunk<0x51A6C0>::Call<void>(this); }
-        AGE_API void PlayUnlockTexture()                     { hook::Thunk<0x51A720>::Call<void>(this); }
-        AGE_API void PlayUnlockRace()                        { hook::Thunk<0x51A660>::Call<void>(this); }
-        AGE_API void PlayResultsWin()                        { hook::Thunk<0x51A890>::Call<void>(this); }
-        AGE_API void PlayResultsPoor()                       { hook::Thunk<0x51A840>::Call<void>(this); }
-        AGE_API void PlayResultsMid()                        { hook::Thunk<0x51A8E0>::Call<void>(this); }
-        AGE_API void PlayResults(int a1, int a2)             { hook::Thunk<0x51A800>::Call<void>(this, a1, a2); }
-        AGE_API void PlayRaceProgress()                      { hook::Thunk<0x51A7D0>::Call<void>(this); }
-        AGE_API void PlayPreRace()                           { hook::Thunk<0x51A590>::Call<void>(this); }
-        AGE_API void PlayFinalLap()                          { hook::Thunk<0x51A780>::Call<void>(this); }
-        AGE_API void PlayFinalCheckPoint()                   { hook::Thunk<0x51A750>::Call<void>(this); }
-        AGE_API void PlayDamagePenalty()                     { hook::Thunk<0x51A7A0>::Call<void>(this); }
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<mmRaceSpeech, AudSpeech>("mmRaceSpeech")
-                .addFunction("PlayUnlockVehicle", &PlayUnlockVehicle)
-                .addFunction("PlayUnlockTexture", &PlayUnlockTexture)
-                .addFunction("PlayUnlockRace", &PlayUnlockRace)
-                .addFunction("PlayResultsWin", &PlayResultsWin)
-                .addFunction("PlayResultsPoor", &PlayResultsPoor)
-                .addFunction("PlayResultsMid", &PlayResultsMid)
-                .addFunction("PlayResults", &PlayResults)
-                .addFunction("PlayRaceProgress", &PlayRaceProgress)
-                .addFunction("PlayPreRace", &PlayPreRace)
-                .addFunction("PlayFinalLap", &PlayFinalLap)
-                .addFunction("PlayFinalCheckPoint", &PlayFinalCheckPoint)
-                .addFunction("PlayDamagePenalty", &PlayDamagePenalty)
-            .endClass();
-        }
-    };
-
-    class AudManagerBase : public asNode {
-    public:
-        AGE_API AudManagerBase() {
-            scoped_vtable x(this);
-            hook::Thunk<0x50EE10>::Call<void>(this);
-        };
-
-        AGE_API ~AudManagerBase() {
-            scoped_vtable x(this);
-            hook::Thunk<0x50EE40>::Call<void>(this);
-        };
-
-        //instance
-        static hook::Type<AudManagerBase*> Instance;
-
-        //members
-        AGE_API BOOL IsStereo()                         { return hook::Thunk<0x50F0D0>::Call<BOOL>(this); }
-
-        //asNode overrides
-        AGE_API virtual void Update() override          { hook::Thunk<0x50F130>::Call<void>(this); }
-        AGE_API virtual void UpdatePaused() override    { hook::Thunk<0x50F1A0>::Call<void>(this); }
-
-        //lua helpers
-        inline bool getIsStereo() {
-            return IsStereo() == TRUE;
-        }
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<AudManagerBase, asNode>("AudManagerBase")
-                .addStaticFunction("Instance", [] { return (AudManagerBase*)Instance; })
-
-                .addPropertyReadOnly("IsStereo", &getIsStereo)
-            .endClass();
-        }
-    };
-
-    class AudManager : public AudManagerBase {
-    public:
-        AGE_API AudManager() {
-            scoped_vtable x(this);
-            hook::Thunk<0x519290>::Call<void>(this);
-        };
-
-        AGE_API ~AudManager() {
-            scoped_vtable x(this);
-            hook::Thunk<0x5192D0>::Call<void>(this);
-        };
-
-        static hook::Type<AudManager*> Instance;
-
-        //members
-        AGE_API mmCNRSpeech* GetCNRSpeechPtr()               { return hook::Thunk<0x5195C0>::Call<mmCNRSpeech*>(this); }
-        AGE_API mmRaceSpeech* GetRaceSpeechPtr()             { return hook::Thunk<0x519580>::Call<mmRaceSpeech*>(this); }
-        
-        //asNode overrides
-        AGE_API virtual void Update() override               { hook::Thunk<0x519D00>::Call<void>(this); }
-
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<AudManager, AudManagerBase>("AudManager")
-                .addStaticFunction("Instance", [] { return (AudManager*)Instance; })
-
-                .addFunction("GetCNRSpeechPtr", &GetCNRSpeechPtr)
-                .addFunction("GetRaceSpeechPtr", &GetRaceSpeechPtr)
-            .endClass();
-        }
-    };
-
 
     template<>
     void luaAddModule<module_audio>(LuaState L) {
@@ -343,5 +229,8 @@ namespace MM2
         luaBind<Aud3DAmbientObjectWrapper>(L);
         luaBind<mmCNRSpeech>(L);
         luaBind<mmRaceSpeech>(L);
+        luaBind<DMusicObject>(L);
+        luaBind<DMusicManager>(L);
+        luaBind<MMDMusicManager>(L);
     }
 }
