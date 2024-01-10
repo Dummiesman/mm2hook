@@ -55,12 +55,13 @@ namespace MM2
         {
             return hook::Thunk<0x50DE90>::Call<BOOL>(this, wavName, handle, unknown);
         }
+
         AGE_API void PlayOnce(float volume, float pitch) { hook::Thunk<0x50E090>::Call<void>(this, volume, pitch); }
         AGE_API void PlayLoop(float volume, float pitch) { hook::Thunk<0x50E150>::Call<void>(this, volume, pitch); }
         AGE_API void Stop() { hook::Thunk<0x50E1F0>::Call<void>(this); }
         AGE_API void SetFrequency(float frequency) { hook::Thunk<0x50DAB0>::Call<void>(this, frequency); }
         AGE_API void SetVolume(float volume) { hook::Thunk<0x50DA30>::Call<void>(this, volume); }
-        AGE_API void SetPan(float pan, int a2) { hook::Thunk<0x50DB30>::Call<void>(this, pan, a2); }
+        AGE_API void SetPan(float pan, int handleIndex) { hook::Thunk<0x50DB30>::Call<void>(this, pan, handleIndex); }
         AGE_API void SetSoundHandleIndex(int index) { hook::Thunk<0x50E2C0>::Call<void>(this, index); }
         AGE_API void SetExtension(LPCSTR extension) { hook::Thunk<0x50D900>::Call<void>(this, extension); }
         AGE_API void SetSubPath(LPCSTR path) { hook::Thunk<0x50D8D0>::Call<void>(this, path); }
@@ -68,7 +69,7 @@ namespace MM2
         {
             hook::Thunk<0x50E2E0>::Call<void>(this, position);
         }
-        AGE_API void SetPriority(int a1) { hook::Thunk<0x50DB10>::Call<void>(this, a1); }
+        AGE_API void SetPriority(int priority) { hook::Thunk<0x50DB10>::Call<void>(this, priority); }
         AGE_API int GetSoundHandleIndex() { return hook::Thunk<0x50E2D0>::Call<int>(this); }
         AGE_API int GetNumSoundHandles() { return hook::Thunk<0x50E310>::Call<int>(this); }
 
@@ -96,7 +97,7 @@ namespace MM2
                 .addFunction("PlayLoop", &PlayLoop, LUA_ARGS(_def<float, -1>, _def<float, -1>))
                 .addFunction("Stop", &Stop)
                 .addFunction("SetFrequency", &SetFrequency)
-                .addFunction("SetPan", &SetPan)
+                .addFunction("SetPan", &SetPan, LUA_ARGS(float, _def<int, -1>))
                 .addFunction("SetVolume", &SetVolume)
                 .addFunction("SetPriority", &SetPriority)
 
