@@ -13,6 +13,7 @@
 #include "feature_handlers/aiVehiclePhysicsFeatureHandler.h"
 #include "feature_handlers/asCullManagerHandler.h"
 #include "feature_handlers/aud3DObjectHandler.h"
+#include "feature_handlers/audControlHandler.h"
 #include "feature_handlers/Aud3DObjectManagerHandler.h"
 #include "feature_handlers/BridgeFerryHandler.h"
 #include "feature_handlers/cityLevelHandler.h"
