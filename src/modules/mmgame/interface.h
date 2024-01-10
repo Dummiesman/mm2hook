@@ -19,6 +19,7 @@ namespace MM2
 		static hook::Field<0x18, UIMenu*> _mainMenu;
 		static hook::Field<0x24, Vehicle*> _vehiclesMenu;
 		static hook::Field<0x30, UIMenu*> _aboutMenu;
+		static hook::Field<0x40, UIMenu*> _graphicsOptionsMenu;
 
 		static mmInterface* Instance; // not in MM2 in actuality but since we're allowing things like custom menus
 									  // we'll define this
@@ -60,12 +61,14 @@ namespace MM2
 		UIMenu* GetMainMenu()								{ return _mainMenu.get(this); }
 		Vehicle* GetVehiclesMenu()						    { return _vehiclesMenu.get(this); }
 		UIMenu* GetAboutMenu()								{ return _aboutMenu.get(this); }
+		UIMenu* GetGraphicsOptionsMenu()					{ return _graphicsOptionsMenu.get(this); }
 
 		static void BindLua(LuaState L) {
 			LuaBinding(L).beginExtendClass<mmInterface, asNode>("mmInterface")
 				.addPropertyReadOnly("MainMenu", &GetMainMenu)
 				.addPropertyReadOnly("VehiclesMenu", &GetVehiclesMenu)
 				.addPropertyReadOnly("AboutMenu", &GetAboutMenu)
+				.addPropertyReadOnly("GraphicsOptionsMenu", &GetGraphicsOptionsMenu)
 				.addFunction("BeDone", &BeDone)
 				.endClass();
 		}
