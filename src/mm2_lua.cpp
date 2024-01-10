@@ -193,6 +193,8 @@ void luaSetGlobals()
     Lua::setGlobal(L, "Level", (cityLevel*)lvlLevel::GetSingleton());
     Lua::setGlobal(L, "PHYS", dgPhysManager::Instance.get());
     Lua::setGlobal(L, "Interface", mmInterface::GetInstance());
+    Lua::setGlobal(L, "MMAUDMGRPTR", AudManager::Instance.get());
+    Lua::setGlobal(L, "MUSICMANAGERPTR", MMDMusicManager::Instance.get());
 }
 
 LUAMOD_API int luaopen_MM2(lua_State *L)
