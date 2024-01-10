@@ -2,6 +2,6 @@
 using namespace MM2;
 
 /*
-    AudManager
+    MMDMusicManager
 */
 declfield(MMDMusicManager::Instance)(0x6B15EC);
