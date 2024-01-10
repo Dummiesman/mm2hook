@@ -93,8 +93,8 @@ void Stream::BindLua(LuaState L) {
         auto stream = (createFile) ? Stream::Create(filename) : Stream::Open(filename, false);
         return stream;
             }, LUA_ARGS(LPCSTR, _opt<bool>))
-        .addStaticProperty("ZipFileMethods", []() {return zipFile.ptr(); })
-        .addStaticProperty("StandardFileMethods", []() {return coreFileStandard.ptr(); })
+        .addStaticProperty("ZipFileMethods", []() -> coreFileMethods* {return zipFile.ptr(); })
+        .addStaticProperty("StandardFileMethods", []() -> coreFileMethods* {return coreFileStandard.ptr(); })
 
         .addStaticFunction("DumpOpenFiles", &Stream::DumpOpenFiles)
 
