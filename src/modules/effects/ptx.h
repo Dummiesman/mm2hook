@@ -46,7 +46,7 @@ namespace MM2
 
         AGE_API void Init(int nParticles, int nTilesW, int nTilesH, int nVertices, asMeshCardVertex *mesh)
                                                             { hook::Thunk<0x460FB0>::Call<void>(this, nParticles, nTilesW, nTilesH, nVertices, mesh); }
-        AGE_API void Blast(int a1, asBirthRule *rule)       { hook::Thunk<0x461490>::Call<void>(this, a1, rule); }
+        AGE_API void Blast(int count, asBirthRule *rule)    { hook::Thunk<0x461490>::Call<void>(this, count, rule); }
         AGE_API void Reset()                                { hook::Thunk<0x461040>::Call<void>(this); }
         AGE_API void Update()                               { hook::Thunk<0x4610F0>::Call<void>(this); }
         AGE_API void SetTexture(const char *tex)            { hook::Thunk<0x461090>::Call<void>(this, tex); }
