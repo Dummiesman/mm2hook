@@ -43,8 +43,8 @@ namespace MM2
         uint16_t unk_18; // flags?
         uint16_t unk_1A; // unused/padding ?
 
-        Matrix34 matrix_1;
-        Matrix34 matrix_2;
+        Matrix34 matrix_1; // matrix
+        Matrix34 matrix_2; // "exact matrix" as tdor calls it
 
         camViewCS *view;
 
@@ -64,34 +64,39 @@ namespace MM2
         }
 
         //fields
-        Matrix34 getMatrix() const
+        Matrix34 GetMatrix() const
         {
-            return matrix_1; 
+            return this->matrix_1;
         }
 
-        void setMatrix(Matrix34 matrix)
+        void SetMatrix(Matrix34 matrix)
         {
-            matrix_1 = matrix;
+            this->matrix_1 = matrix;
         }
         
-        Vector3 getPosition() const
+        Vector3 GetPosition() const
         {
-            return matrix_1.GetRow(3); 
+            return this->matrix_1.GetRow(3);
         }
 
-        void setPosition(Vector3 position)
+        void SetPosition(Vector3 position)
         {
-            matrix_1.SetRow(3, position);
+            this->matrix_1.SetRow(3, position);
         }
 
-        float getFOV() const
+        float GetFOV() const
         {
-            return CameraFOV; 
+            return this->CameraFOV;
         }
         
-        void setFOV(float fov)
+        void SetFOV(float fov)
         {
-            CameraFOV = fov;
+            this->CameraFOV = fov;
+        }
+
+        void SetCamView(camViewCS* view)
+        {
+            this->view = view;
         }
 
         //asNode overrides
@@ -114,13 +119,19 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camBaseCS, asNode>("camBaseCS")
                 //properties
-                .addProperty("FOV", &getFOV, &setFOV)
-                .addProperty("CameraFOV", &getFOV, &setFOV)
+                .addFactory([]() {  
+                    auto obj = new camBaseCS();
+                    MM2Lua::MarkForCleanupOnShutdown(obj);
+                    return obj;
+                 })
+                .addProperty("FOV", &GetFOV, &SetFOV)
+                .addProperty("CameraFOV", &GetFOV, &SetFOV)
 
-                .addFunction("GetPosition", &getPosition)
-                .addFunction("GetMatrix", &getMatrix)
-                .addFunction("SetMatrix", &setMatrix)
-                .addFunction("SetPosition", &setPosition)
+                .addFunction("GetPosition", &GetPosition)
+                .addFunction("GetMatrix", &GetMatrix)
+                .addFunction("SetMatrix", &SetMatrix)
+                .addFunction("SetPosition", &SetPosition)
+                .addFunction("SetCamView", &SetCamView)
 
                 .addVariable("BlendTime", &camBaseCS::BlendTime)
                 .addVariable("BlendGoal", &camBaseCS::BlendGoal)
@@ -179,6 +190,11 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camAppCS, camBaseCS>("camAppCS")
+                .addFactory([]() {  
+                    auto obj = new camAppCS();
+                    MM2Lua::MarkForCleanupOnShutdown(obj);
+                    return obj;
+                 })
                 .addVariableRef("Target", &camAppCS::Target)
                 .addVariable("ApproachOn", &camAppCS::ApproachOn)
                 .addVariable("AppAppOn", &camAppCS::AppAppOn)
@@ -204,8 +220,12 @@ namespace MM2
         vehCar *car;
         int ReverseMode; // one of: -1, 0, 1?
     public:
-        vehCar * getCar(void) const {
+        vehCar * GetCar() const {
             return this->car;
+        }
+
+        void SetCar(vehCar* car) {
+            this->car = car;
         }
 
         AGE_API camCarCS(void) {
@@ -218,7 +238,7 @@ namespace MM2
             hook::Thunk<0x521490>::Call<void>(this);
         }
 
-        AGE_API void Init(vehCar *car, char *name)          { hook::Thunk<0x5214A0>::Call<void>(this, car, name); }
+        AGE_API void Init(vehCar *car, LPCSTR *name)        { hook::Thunk<0x5214A0>::Call<void>(this, car, name); }
 
         //overrides
         AGE_API void FileIO(datParser &parser) override     { hook::Thunk<0x5214E0>::Call<void>(this, &parser); }
@@ -226,8 +246,9 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camCarCS, camAppCS>("camCarCS")
-                .addPropertyReadOnly("Car", &getCar)
+                .addProperty("Car", &GetCar, &SetCar)
                 .addVariable("ReverseMode", &camCarCS::ReverseMode)
+                .addFunction("Init", &Init)
             .endClass();
         }
     };
@@ -282,6 +303,11 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camPointCS, camCarCS>("camPointCS")
+                .addFactory([]() {  
+                    auto obj = new camPointCS();
+                    MM2Lua::MarkForCleanupOnShutdown(obj);
+                    return obj;
+                 })
                 //properties
                 .addProperty("MinDist", &GetMinDist, &SetMinDist)
                 .addProperty("MaxDist", &GetMaxDist, &SetMaxDist)
@@ -333,6 +359,11 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camPovCS, camCarCS>("camPovCS")
+                .addFactory([]() {  
+                    auto obj = new camPovCS();
+                    MM2Lua::MarkForCleanupOnShutdown(obj);
+                    return obj;
+                 })
                 .addVariable("Offset", &camPovCS::Offset)
                 .addVariable("ReverseOffset", &camPovCS::ReverseOffset)
                 .addVariable("Pitch", &camPovCS::Pitch)
@@ -382,6 +413,11 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camTrackCS, camCarCS>("camTrackCS")
+                .addFactory([]() {  
+                    auto obj = new camTrackCS();
+                    MM2Lua::MarkForCleanupOnShutdown(obj);
+                    return obj;
+                 })
                 .addFunction("SwingToRear", &SwingToRear)
                 .endClass();
         }
@@ -429,6 +465,11 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camPolarCS, camCarCS>("camPolarCS")
+                .addFactory([]() {  
+                    auto obj = new camPolarCS();
+                    MM2Lua::MarkForCleanupOnShutdown(obj);
+                    return obj;
+                 })
                 //properties
                 .addProperty("AzimuthLock", &getAzimuthLock, &setAzimuthLock)
                 .addVariable("Height", &camPolarCS::PolarHeight)
@@ -475,6 +516,11 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camAICS, camCarCS>("camAICS")
+                .addFactory([]() {  
+                    auto obj = new camAICS();
+                    MM2Lua::MarkForCleanupOnShutdown(obj);
+                    return obj;
+                 })
                 //properties
                 .addStaticProperty("Height", &getHeight, &setHeight)
                 .addVariable("Speed", &camAICS::Speed)
@@ -517,7 +563,7 @@ namespace MM2
 
     class camViewCS : public asNode {
     protected:
-        int unk_18;
+        BOOL ManualFOV;
         short LastTransitionType;
         float LastTransitionTime;
 
@@ -528,7 +574,7 @@ namespace MM2
         camTransitionCS *transitionCamera;
 
         // overrides
-        bool OverrideClip; 
+        bool UseGlobalNearFar; 
 
         float OverrideFar; // camera far? (4th param in gfxViewport::Perspective)
         float OverrideNear; // camera near? (3rd param in gfxViewport::Perspective)
@@ -584,7 +630,7 @@ namespace MM2
                 .addFunction("OneShot", &OneShot)
                 .addFunction("ForceMatrixDelta", static_cast<void(camViewCS::*)(const Matrix34 *)>(&ForceMatrixDelta))
 
-                .addVariable("OverrideClip", &camViewCS::OverrideClip)
+                .addVariable("UseGlobalNearFar", &camViewCS::UseGlobalNearFar)
                 .addVariable("OverrideFar", &camViewCS::OverrideFar)
                 .addVariable("OverrideNear", &camViewCS::OverrideNear)
             .endClass();
