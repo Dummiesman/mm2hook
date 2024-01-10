@@ -110,7 +110,7 @@ void vehSemiCarAudioBugfixHandler::Init(MM2::vehCarSim* carsim, MM2::vehCarDamag
 
 void vehSemiCarAudioBugfixHandler::SetNon3DParams()
 {
-    bool isStereo = AudManagerBase::Instance.get()->getIsStereo();
+    bool isStereo = AudManagerBase::Instance.get()->IsStereo();
     auto airBrakeSound = *getPtr<AudSoundBase*>(this, 0x13C);
     auto reverseSound = *getPtr<AudSoundBase*>(this, 0x138);
     float airBrakeVolume = *getPtr<float>(this, 0x134);
