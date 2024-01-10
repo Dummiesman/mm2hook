@@ -165,6 +165,12 @@
     <Filter Include="Source Files\imgui\gizmo">
       <UniqueIdentifier>{a96cda38-3d2d-4b8d-a8ac-f0e20eb9d44c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\modules\directmusic">
+      <UniqueIdentifier>{dbf9b1d2-5aac-461e-87b4-dfb1cad374e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\modules\mmaudio">
+      <UniqueIdentifier>{1191659c-08d6-4d6f-bb17-3400b0badc7b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\lua\lapi.h">
@@ -1762,6 +1768,48 @@
     <ClInclude Include="src\handlers\feature_handlers\lvlInstanceFeatureHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\effects\damage3d.h">
+      <Filter>Source Files\modules\effects</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\directmusic\dmusicmanager.h">
+      <Filter>Source Files\modules\directmusic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\directmusic\__template__.h">
+      <Filter>Source Files\modules\directmusic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmaudio\mmaudiomanager.h">
+      <Filter>Source Files\modules\mmaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\audio\audmanagerbase.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmaudio\racespeech.h">
+      <Filter>Source Files\modules\mmaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmaudio\cnrspeech.h">
+      <Filter>Source Files\modules\mmaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\mmaudio\mmdmusicmanager.h">
+      <Filter>Source Files\modules\mmaudio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\directmusic\dmusicobject.h">
+      <Filter>Source Files\modules\directmusic</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\audControlHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\audio\control.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\audio\list.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\audio\streamingmusic.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\audio\manager.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2612,6 +2660,42 @@
     </ClCompile>
     <ClCompile Include="src\modules\level\landmark.cpp">
       <Filter>Source Files\modules\level</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\lights\light.cpp">
+      <Filter>Source Files\modules\lights</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\ai\aiVehicleSpline.cpp">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\ai\aiVehicleAmbient.cpp">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\core\stream.cpp">
+      <Filter>Source Files\modules\core</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\directmusic\dmusicmanager.cpp">
+      <Filter>Source Files\modules\directmusic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mmaudio\mmaudiomanager.cpp">
+      <Filter>Source Files\modules\mmaudio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\audio\audmanagerbase.cpp">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mmaudio\mmdmusicmanager.cpp">
+      <Filter>Source Files\modules\mmaudio</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\directmusic\dmusicobject.cpp">
+      <Filter>Source Files\modules\directmusic</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\mmgame\gameman.cpp">
+      <Filter>Source Files\modules\mmgame</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\audControlHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\audio\streamingmusic.cpp">
+      <Filter>Source Files\modules\audio</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
