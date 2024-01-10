@@ -87,9 +87,9 @@ namespace MM2
 
     class dgUnhitBangerInstance : public dgBangerInstance {
     private:
-        static dgUnhitBangerInstance* requestBangerLua(LPCSTR a1, bool a2)
+        static dgUnhitBangerInstance* requestBangerLua(LPCSTR name, bool fullMatrix)
         {
-            return dgUnhitBangerInstance::RequestBanger(a1, a2 ? TRUE : FALSE);
+            return dgUnhitBangerInstance::RequestBanger(name, fullMatrix ? TRUE : FALSE);
         }
     public:
         AGE_API dgUnhitBangerInstance()
@@ -107,8 +107,8 @@ namespace MM2
         /*
             dgUnhitBangerInstance
         */
-        AGE_API static dgUnhitBangerInstance* RequestBanger(const char* a1, BOOL a2)
-                                                                   { return hook::StaticThunk<0x441D80>::Call<dgUnhitBangerInstance*>(a1, a2); }
+        AGE_API static dgUnhitBangerInstance* RequestBanger(const char* name, BOOL fullMatrix)
+                                                                   { return hook::StaticThunk<0x441D80>::Call<dgUnhitBangerInstance*>(name, fullMatrix); }
 
         /*
             lvlInstance virtuals
