@@ -26,52 +26,28 @@ namespace MM2
         mmMultiCircuit* m_MultiCircuitGame;
         mmMultiBlitz* m_MultiBlitzGame;
         int NumUpdateCallsSinceReset;
+    private:
+        static mmGame* sm_CustomGame; // Extension for hook
     public:
-        bool isCurrentGameSingleGame() const {
-            auto game = getGame();
-            return (game != nullptr && (game == m_SingleRoamGame || game == m_SingleRaceGame || game == m_SingleStuntGame
-                                        || game == m_SingleCircuitGame || game == m_SingleBlitzGame));
-        }
-
-        bool isCurrentGameMultiGame() const {
-            auto game = getGame();
-            return (game != nullptr && (game == m_MultiRaceGame || game == m_MultiRoamGame || game == m_MultiCRGame
-                                        || game == m_MultiCircuitGame || game == m_MultiBlitzGame));
-        }
-
-        mmGame* getGame() const {
-            return this->m_CurrentGame;
-        };
-
-        mmPlayer* getPlayerSafe() const {
-            auto game = this->getGame();
-            if (game == nullptr)
-                return nullptr;
-            auto player = game->GetPlayer();
-            return player;
-        }
+        bool isCurrentGameSingleGame() const;
+        bool isCurrentGameMultiGame() const;
+        mmGame* getGame() const;
+        mmPlayer* getPlayerSafe() const;
     public:
         ANGEL_ALLOCATOR
         void* operator new (std::size_t, void* p) throw() { return p; }
 
         static hook::Type<mmGameManager *> Instance;
 
-        AGE_API mmGameManager(void)  {
-            scoped_vtable x(this);
-            hook::Thunk<0x4029E0>::Call<void>(this);
-        }
-
-        virtual AGE_API ~mmGameManager(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x402E40>::Call<void>(this);
-        }
+        AGE_API mmGameManager(void);
+        virtual AGE_API ~mmGameManager(void);
 
         /*
             asNode virtuals
         */
-        AGE_API void Cull()  override                       { hook::Thunk<0x4031D0>::Call<void>(this); }
-        AGE_API void Update()  override                     { hook::Thunk<0x403000>::Call<void>(this); }
-        AGE_API void Reset()  override                      { hook::Thunk<0x402E30>::Call<void>(this); }
+        AGE_API void Cull()  override;
+        AGE_API void Update()  override;
+        AGE_API void Reset()  override;
 
         /* TODO?
         mmGameManager::mmGameManager(void)
@@ -82,15 +58,7 @@ namespace MM2
         void mmGameManager::ForceReplayUI(void)
         */
 
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<mmGameManager, asNode>("mmGameManager")
-                //properties
-                .addPropertyReadOnly("Game", &getGame)
-                
-                //statics
-                .addStaticFunction("Instance", [] {return (mmGameManager *)Instance; })
-            .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     ASSERT_SIZEOF(mmGameManager, 0x1B8);
