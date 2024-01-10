@@ -98,9 +98,9 @@ namespace MM2
         AGE_API void CopyVars(vehWheel* copyFrom);
 
         AGE_API void ComputeConstants();
-        AGE_API void AddNormalLoad(float a1);
-        AGE_API void SetNormalLoad(float a1);
-        AGE_API void SetInputs(float a1, float a2, float a3);
+        AGE_API void AddNormalLoad(float loadKG);
+        AGE_API void SetNormalLoad(float loadKG);
+        AGE_API void SetInputs(float steer, float brake, float handbrake);
 
         AGE_API int GetSurfaceSound();
         AGE_API float GetVisualDispVert();

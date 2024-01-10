@@ -39,10 +39,10 @@ namespace MM2
     AGE_API void vehWheel::CopyVars(vehWheel *copyFrom)              { hook::Thunk<0x4D4110>::Call<void>(this, copyFrom); }
 
     AGE_API void vehWheel::ComputeConstants()                        { hook::Thunk<0x4D23F0>::Call<void>(this); }
-    AGE_API void vehWheel::AddNormalLoad(float a1)                   { hook::Thunk<0x4D2490>::Call<void>(this, a1); }
-    AGE_API void vehWheel::SetNormalLoad(float a1)                   { hook::Thunk<0x4D24C0>::Call<void>(this, a1); }
-    AGE_API void vehWheel::SetInputs(float a1, float a2, float a3)
-                                                            { hook::Thunk<0x4D3F80>::Call<void>(this, a1, a2, a3); }
+    AGE_API void vehWheel::AddNormalLoad(float loadKG)               { hook::Thunk<0x4D2490>::Call<void>(this, loadKG); }
+    AGE_API void vehWheel::SetNormalLoad(float loadKG)               { hook::Thunk<0x4D24C0>::Call<void>(this, loadKG); }
+    AGE_API void vehWheel::SetInputs(float steer, float brake, float handbrake)
+                                                                     { hook::Thunk<0x4D3F80>::Call<void>(this, steer, brake, handbrake); }
     AGE_API int vehWheel::GetSurfaceSound()                          { return hook::Thunk<0x4D3F60>::Call<int>(this); }
     AGE_API float vehWheel::GetVisualDispVert()                      { return hook::Thunk<0x4D4030>::Call<float>(this); }
     AGE_API float vehWheel::GetVisualDispLat()                       { return hook::Thunk<0x4D4090>::Call<float>(this); }
