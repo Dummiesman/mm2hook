@@ -82,12 +82,14 @@ void    MM2::tglDrawParticle        (const Vector3& position, float size, const 
 void    MM2::tglDrawRotatedParticle (const Vector3 &p1, float p2, float p3, const Vector4 &p4)  { return _StaticThunk<0x4A6550>::Call<void>(&p1, p2, p3, &p4); }
 uint    MM2::mkfrgba                (float r, float g, float b, float a)                        { return _StaticThunk<0x4A7880>::Call<uint>(r, g, b, a); }
 
-void MM2::tglDrawParticleClipAdjusted(const Vector3& position, float size, const Vector4& color, float anticlip)
+void MM2::tglDrawParticleClipAdjusted(const Vector3& position, float size, const Vector4& color)
 {
     // move towards camera by anticlip
     Vector3 camPosAAA = static_cast<Vector3>(gfxRenderState::GetCameraMatrix().GetRow(3));
-    Vector3 particlePosAAA;
-    particlePosAAA.Lerp(anticlip, position, camPosAAA);
+    Vector3 particlePosAAA = position;
+    Vector3 positionDifference = (position - camPosAAA);
+    positionDifference.Scale(positionDifference.InvMag());
+    particlePosAAA.Subtract(positionDifference);
     tglDrawParticle(particlePosAAA, size, color);
     return;
 }

@@ -17,7 +17,7 @@ void dgBangerInstanceHandler::Reset() {
 
 void dgBangerInstanceHandler::tglDrawParticle(const Vector3& position, float size, const Vector4& color)
 {
-    tglDrawParticleClipAdjusted(position, size, color, 0.05f);
+    tglDrawParticleClipAdjusted(position, size, color);
 }
 
 void dgBangerInstanceHandler::DrawGlow()
