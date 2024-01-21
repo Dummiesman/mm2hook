@@ -56,8 +56,8 @@ namespace MM2
             return hook::Thunk<0x50DE90>::Call<BOOL>(this, wavName, handle, unknown);
         }
 
-        AGE_API void PlayOnce(float volume, float pitch) { hook::Thunk<0x50E090>::Call<void>(this, volume, pitch); }
-        AGE_API void PlayLoop(float volume, float pitch) { hook::Thunk<0x50E150>::Call<void>(this, volume, pitch); }
+        AGE_API void PlayOnce(float volume = -1.0f, float pitch = -1.0f) { hook::Thunk<0x50E090>::Call<void>(this, volume, pitch); }
+        AGE_API void PlayLoop(float volume = -1.0f, float pitch = -1.0f) { hook::Thunk<0x50E150>::Call<void>(this, volume, pitch); }
         AGE_API void Stop() { hook::Thunk<0x50E1F0>::Call<void>(this); }
         AGE_API void SetFrequency(float frequency) { hook::Thunk<0x50DAB0>::Call<void>(this, frequency); }
         AGE_API void SetVolume(float volume) { hook::Thunk<0x50DA30>::Call<void>(this, volume); }
