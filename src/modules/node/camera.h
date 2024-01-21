@@ -35,6 +35,8 @@ namespace MM2
             scoped_vtable x(this);
             hook::Thunk<0x4A22E0>::Call<void>(this);
         };
+
+        AGE_API void Update() override                      { hook::Thunk<0x4A24A0>::Call<void>(this); }
     };
     ASSERT_SIZEOF(asCamera, 0x170);
 
