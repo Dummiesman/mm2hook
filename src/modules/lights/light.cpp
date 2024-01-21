@@ -38,7 +38,7 @@ void ltLight::DrawGlow(Vector3 const & cameraPosition)
         float size =  sqrtf(intensity * positionDifference.Mag2()) * ltLight::GlowScale.get();
 
         //tglDrawParticle(drawPosition, size, Vector4(color.X, color.Y, color.Z, 1.0f));
-        tglDrawParticleClipAdjusted(drawPosition, size, Vector4(color.X, color.Y, color.Z, 1.0f), 0.05f);
+        tglDrawParticleClipAdjusted(drawPosition, size, Vector4(color.X, color.Y, color.Z, 1.0f));
     }
 }
 

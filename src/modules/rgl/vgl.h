@@ -35,7 +35,7 @@ namespace MM2
     extern void rglCard(const Vector3 &position);
     extern void rglBindTexture2(const gfxTexture *texture);
     extern void tglDrawParticle(const Vector3 &position, float size, const Vector4& color);
-    extern void tglDrawParticleClipAdjusted(const Vector3& position, float size, const Vector4& color, float anticlip);
+    extern void tglDrawParticleClipAdjusted(const Vector3& position, float size, const Vector4& color);
     extern void tglDrawRotatedParticle(const Vector3 &p1, float p2, float p3, const Vector4 &p4);
 
     extern uint mkfrgba(float r, float g, float b, float a);
