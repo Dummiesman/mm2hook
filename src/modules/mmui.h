@@ -5,6 +5,7 @@
 #include "mmui\vselect.h"
 #include "mmui\vehicle.h"
 #include "mmui\pu_menu.h"
+#include "mmui\pu_results.h"
 #include "mmui\luaPopup.h"
 
 

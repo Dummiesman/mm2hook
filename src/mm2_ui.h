@@ -23,6 +23,7 @@ namespace MM2
         luaBind<UIMenu>(L);
         luaBind<luaMenu>(L);
         luaBind<PUMenuBase>(L);
+        luaBind<PUResults>(L);
         luaBind<LuaPUMenu>(L);
         luaBind<MenuManager>(L);
 

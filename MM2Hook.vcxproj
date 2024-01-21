@@ -461,6 +461,7 @@
     <ClInclude Include="src\modules\mmui.h" />
     <ClInclude Include="src\modules\mmui\luaPopup.h" />
     <ClInclude Include="src\modules\mmui\pu_menu.h" />
+    <ClInclude Include="src\modules\mmui\pu_results.h" />
     <ClInclude Include="src\modules\mmui\vehicle.h" />
     <ClInclude Include="src\modules\mmui\vselect.h" />
     <ClInclude Include="src\modules\mmwidget.h" />

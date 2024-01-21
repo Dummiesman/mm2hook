@@ -1810,6 +1810,9 @@
     <ClInclude Include="src\modules\audio\manager.h">
       <Filter>Source Files\modules\audio</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmui\pu_results.h">
+      <Filter>Source Files\modules\mmui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
