@@ -1,5 +1,5 @@
 #pragma once
-#include <modules\mminput.h>
+#include <modules\node.h>
 
 namespace MM2
 {
@@ -10,9 +10,9 @@ namespace MM2
 
 
     // Class definitions
-    class mmInput {
+    class mmInput : public asNode {
     private:
-        char buffer[0x248];
+        char buffer[0x230];
     private:
         float getSteeringLua()  {
             return GetSteering();
@@ -56,7 +56,7 @@ namespace MM2
 
         //lua
         static void BindLua(LuaState L) {
-            LuaBinding(L).beginClass<mmInput>("mmInput")
+            LuaBinding(L).beginExtendClass<mmInput, asNode>("mmInput")
                 .addFunction("GetThrottle", &GetThrottle)
                 .addFunction("GetThrottleVal", &GetThrottleVal)
                 .addFunction("GetBrakes", &GetBrakes)
