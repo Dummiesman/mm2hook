@@ -40,45 +40,14 @@ namespace MM2
         float Penetration;
         float PenetrationBarelyMoved;
     public:
-        BoundType getType() 
-        {
-            return this->Type;
-        }
-
-        int getMaterialCount() 
-        {
-            return this->MaterialCount;
-        }
-
-        Vector3 getMin()
-        {
-            return this->Min;
-        }
-
-        Vector3 getMax()
-        {
-            return this->Max;
-        }
-
-        Vector3 getSize()
-        {
-            return getMax() - getMin();
-        }
-
-        bool getIsOffset()
-        {
-            return this->IsOffset == TRUE;
-        }
-
-        Vector3 getOffset() 
-        {
-            return this->Offset;
-        }
-
-        float getRadius()
-        {
-            return this->Radius;
-        }
+        BoundType GetType() const    { return this->Type; }
+        int GetMaterialCount() const { return this->MaterialCount; }
+        Vector3 GetMin() const       { return this->Min; }
+        Vector3 GetMax() const       { return this->Max; }
+        Vector3 GetSize() const      { return GetMax() - GetMin(); }
+        bool GetIsOffset() const     { return this->IsOffset == TRUE; }
+        Vector3 GetOffset() const    { return this->Offset; }
+        float GetRadius() const      { return this->Radius; }
     protected:
         /*
             hidden ctor for inherited classes
@@ -143,14 +112,14 @@ namespace MM2
                 .addFunction("SetFriction", static_cast<void(phBound::*)(float)>(&SetFriction))
                 .addFunction("SetElasticity", static_cast<void(phBound::*)(float)>(&SetElasticity))
                 .addFunction("GetMaterial", &GetMaterial)
-                .addPropertyReadOnly("Radius", &getRadius)
-                .addPropertyReadOnly("Type", &getType)
-                .addPropertyReadOnly("NumMaterials", &getMaterialCount)
-                .addPropertyReadOnly("IsOffset", &getIsOffset)
-                .addPropertyReadOnly("Offset", &getOffset)
-                .addPropertyReadOnly("Min", &getMin)
-                .addPropertyReadOnly("Max", &getMax)
-                .addPropertyReadOnly("Size", &getSize)
+                .addPropertyReadOnly("Radius", &GetRadius)
+                .addPropertyReadOnly("Type", &GetType)
+                .addPropertyReadOnly("NumMaterials", &GetMaterialCount)
+                .addPropertyReadOnly("IsOffset", &GetIsOffset)
+                .addPropertyReadOnly("Offset", &GetOffset)
+                .addPropertyReadOnly("Min", &GetMin)
+                .addPropertyReadOnly("Max", &GetMax)
+                .addPropertyReadOnly("Size", &GetSize)
                 .endClass();
         }
     };

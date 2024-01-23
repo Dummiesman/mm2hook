@@ -107,7 +107,7 @@ namespace MM2
                 return 1;
             }
 
-            switch (bound->getType()) 
+            switch (bound->GetType()) 
             {
             case phBound::BoundType::Box:
                 LuaState(L).push(reinterpret_cast<phBoundBox*>(bound));
