@@ -242,7 +242,7 @@ void gfxPipelineHandler::SetRes(int width, int height, int cdepth, int zdepth, b
                     window_ColorDepth,
                     0,
                     0) != DD_OK) {
-                    LogFile::WriteLine("[gfxPipeline::SetRes]: SHIT! Failed to set the display mode!");
+                    LogFile::WriteLine("[gfxPipeline::SetRes]: Failed to set the display mode.");
                 }
             }
         }
