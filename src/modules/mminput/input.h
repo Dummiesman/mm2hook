@@ -19,7 +19,7 @@ namespace MM2
         }
     protected:
         static hook::Field<0x1D4, BOOL> _pedalsSwapped;
-        static hook::Field<0x1A8, BOOL> _autoReverse;
+        static hook::Field<0x18C, BOOL> _autoReverse;
     public:
         static hook::Type<mmInput*> GameInputPtr;
     public:
