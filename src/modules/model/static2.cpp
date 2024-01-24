@@ -61,6 +61,83 @@ AGE_API void modStatic::Draw(modShader *shaders) const
 		gfxPacket::DrawList(list);
 	}
 
+	gfxRenderState::SetMaterial(nullptr);
+	gfxRenderState::SetAlphaEnabled(lastAlphaEnable);
+}
+
+AGE_API void modStatic::DrawShadowed(modShader* shaders, float intensity) const
+{
+	gfxRenderState::FlushMasked();
+	bool lastAlphaEnable = gfxRenderState::GetAlphaEnabled();
+
+	gfxMaterial ShadowMaterial = gfxMaterial();
+	ShadowMaterial.Diffuse = Vector4(0.0f, 0.0f, 0.0f, intensity);
+	ShadowMaterial.Ambient = Vector4(0.0f, 0.0f, 0.0f, intensity);
+	ShadowMaterial.Emissive = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	ShadowMaterial.Specular = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+	ShadowMaterial.Shininess = 0.0f;
+	gfxRenderState::SetMaterial(&ShadowMaterial);
+
+	for (int i = 0; i < this->PacketCount; i++)
+	{
+		if (shaders != nullptr)
+		{
+			auto shader = shaders[this->ShaderIndices[i]];
+			gfxRenderState::SetTexture(0, shader.GetTexture());
+			gfxRenderState::FlushMasked();
+		}
+
+		auto list = this->ppPacketLists[i];
+		gfxPacket::DrawList(list);
+	}
+
+	gfxRenderState::SetMaterial(gfxMaterial::FlatWhite.ptr());
+	gfxRenderState::SetAlphaEnabled(lastAlphaEnable);
+}
+
+AGE_API void modStatic::DrawColored(modShader* shaders, const Vector4& color) const
+{
+	gfxRenderState::FlushMasked();
+	bool lastAlphaEnable = gfxRenderState::GetAlphaEnabled();
+	bool alphaEnabled = false;
+
+	for (int i = 0; i < this->PacketCount; i++)
+	{
+		if (shaders != nullptr)
+		{
+			auto shader = shaders[this->ShaderIndices[i]];
+			if (shader.GetMaterial() != nullptr)
+			{
+				gfxMaterial tempMaterial = *shader.GetMaterial();
+				Vector4& ambient = tempMaterial.Ambient;
+				Vector4& diffuse = tempMaterial.Diffuse;
+				ambient.X *= color.X; ambient.Y *= color.Y; ambient.Z *= color.Z; ambient.W *= color.W;
+				diffuse.X *= color.X; diffuse.Y *= color.Y; diffuse.Z *= color.Z; diffuse.W *= color.W;
+				gfxRenderState::SetMaterial(&tempMaterial);
+			}
+			else
+			{
+				gfxRenderState::SetMaterial(nullptr);
+			}
+			gfxRenderState::SetTexture(0, shader.GetTexture());
+
+			/*if ((this->Flags & 2) != 0
+				&& !alphaEnabled
+				&& (shader.GetMaterial()->Diffuse.W != 1.0 || shader.GetTexture() && (shader.GetTexture()->TexEnv & 0x20000) != 0))*/
+			if (!alphaEnabled && (shader.GetTexture() && (shader.GetTexture()->TexEnv & 0x20000) != 0 || shader.GetMaterial()->Diffuse.W != 1.0))
+			{
+				gfxRenderState::SetAlphaEnabled(true);
+				alphaEnabled = true;
+			}
+
+			gfxRenderState::FlushMasked();
+		}
+
+		auto list = this->ppPacketLists[i];
+		gfxPacket::DrawList(list);
+	}
+
+	gfxRenderState::SetMaterial(gfxMaterial::FlatWhite.ptr());
 	gfxRenderState::SetAlphaEnabled(lastAlphaEnable);
 }
 

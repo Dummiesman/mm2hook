@@ -29,6 +29,8 @@ namespace MM2
         AGE_API modStatic * Clone(void) const;
         AGE_API void Optimize(modShader *shaders);
         AGE_API void Draw(modShader *shaders) const;
+        AGE_API void DrawShadowed(modShader* shaders, float intensity) const;
+        AGE_API void DrawColored(modShader* shaders, const Vector4& color) const;
         AGE_API void DrawNoAlpha(modShader *shaders) const;
         AGE_API void DrawEnvMapped(modShader *shaders, gfxTexture *envMap, float intensity) const;
         AGE_API void DrawOrthoMapped(modShader *shaders, gfxTexture *tex, float a3, uint a4) const;
