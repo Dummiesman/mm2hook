@@ -19,6 +19,7 @@
 
 #include "mmaudio\cnrspeech.h"
 #include "mmaudio\racespeech.h"
+#include "mmaudio\ccspeech.h"
 #include "mmaudio\mmaudiomanager.h"
 #include "mmaudio\mmdmusicmanager.h"
 
