@@ -6,6 +6,10 @@
 
 using namespace MM2;
 
+static gfxMaterial ColorMaterialTmp[2]; // Keep two around since AGE compares material changes by ptr
+static int ColorMaterialTmpIdx = 0;
+static gfxMaterial ShadowMaterial;
+
 AGE_API int modStatic::GetTriCount(void) const	                    
 {
 	return hook::Thunk<0x4A4DE0>::Call<int>(this); 
@@ -61,7 +65,6 @@ AGE_API void modStatic::Draw(modShader *shaders) const
 		gfxPacket::DrawList(list);
 	}
 
-	gfxRenderState::SetMaterial(nullptr);
 	gfxRenderState::SetAlphaEnabled(lastAlphaEnable);
 }
 
@@ -70,7 +73,6 @@ AGE_API void modStatic::DrawShadowed(modShader* shaders, float intensity) const
 	gfxRenderState::FlushMasked();
 	bool lastAlphaEnable = gfxRenderState::GetAlphaEnabled();
 
-	gfxMaterial ShadowMaterial = gfxMaterial();
 	ShadowMaterial.Diffuse = Vector4(0.0f, 0.0f, 0.0f, intensity);
 	ShadowMaterial.Ambient = Vector4(0.0f, 0.0f, 0.0f, intensity);
 	ShadowMaterial.Emissive = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
@@ -91,7 +93,6 @@ AGE_API void modStatic::DrawShadowed(modShader* shaders, float intensity) const
 		gfxPacket::DrawList(list);
 	}
 
-	gfxRenderState::SetMaterial(gfxMaterial::FlatWhite.ptr());
 	gfxRenderState::SetAlphaEnabled(lastAlphaEnable);
 }
 
@@ -108,16 +109,17 @@ AGE_API void modStatic::DrawColored(modShader* shaders, const Vector4& color) co
 			auto shader = shaders[this->ShaderIndices[i]];
 			if (shader.GetMaterial() != nullptr)
 			{
-				gfxMaterial tempMaterial = *shader.GetMaterial();
-				Vector4& ambient = tempMaterial.Ambient;
-				Vector4& diffuse = tempMaterial.Diffuse;
+				ColorMaterialTmpIdx = 1 - ColorMaterialTmpIdx;
+				ColorMaterialTmp[ColorMaterialTmpIdx] = *shader.GetMaterial();
+				Vector4& ambient = ColorMaterialTmp[ColorMaterialTmpIdx].Ambient;
+				Vector4& diffuse = ColorMaterialTmp[ColorMaterialTmpIdx].Diffuse;
 				ambient.X *= color.X; ambient.Y *= color.Y; ambient.Z *= color.Z; ambient.W *= color.W;
 				diffuse.X *= color.X; diffuse.Y *= color.Y; diffuse.Z *= color.Z; diffuse.W *= color.W;
-				gfxRenderState::SetMaterial(&tempMaterial);
+				gfxRenderState::SetMaterial(&ColorMaterialTmp[ColorMaterialTmpIdx]);
 			}
 			else
 			{
-				gfxRenderState::SetMaterial(nullptr);
+				gfxRenderState::SetMaterial(gfxMaterial::FlatWhite.ptr());
 			}
 			gfxRenderState::SetTexture(0, shader.GetTexture());
 
@@ -137,7 +139,6 @@ AGE_API void modStatic::DrawColored(modShader* shaders, const Vector4& color) co
 		gfxPacket::DrawList(list);
 	}
 
-	gfxRenderState::SetMaterial(gfxMaterial::FlatWhite.ptr());
 	gfxRenderState::SetAlphaEnabled(lastAlphaEnable);
 }
 
