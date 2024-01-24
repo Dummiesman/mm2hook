@@ -399,6 +399,7 @@
     <ClInclude Include="src\modules\lights\flare.h" />
     <ClInclude Include="src\modules\lights\light.h" />
     <ClInclude Include="src\modules\localize\localize.h" />
+    <ClInclude Include="src\modules\mmaudio\ccspeech.h" />
     <ClInclude Include="src\modules\mmaudio\cnrspeech.h" />
     <ClInclude Include="src\modules\mmaudio\mmaudiomanager.h" />
     <ClInclude Include="src\modules\mmaudio\mmdmusicmanager.h" />

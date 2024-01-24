@@ -228,6 +228,7 @@ namespace MM2
         luaBind<Aud3DAmbientObject>(L);
         luaBind<Aud3DAmbientObjectWrapper>(L);
         luaBind<mmCNRSpeech>(L);
+        luaBind<mmCCSpeech>(L);
         luaBind<mmRaceSpeech>(L);
         luaBind<DMusicObject>(L);
         luaBind<DMusicManager>(L);
