@@ -12,10 +12,7 @@ namespace MM2
     // Class definitions
     class phMaterial {
     private:
-        char Name[20];
-        int unknown24;
-        int unknown28;
-        int unknown32;
+        char Name[32];
         short EffectIndex;
         short SoundIndex;
         float Elasticity;
@@ -29,7 +26,7 @@ namespace MM2
         /*
             phMaterial Virtuals
         */
-        virtual AGE_API void Copy(const phMaterial *material)   { hook::Thunk<0x493270>::Call<void>(this, material);}
+        virtual AGE_API void Copy(const phMaterial *copyfrom)   { hook::Thunk<0x493270>::Call<void>(this, copyfrom);}
         virtual AGE_API void Save(datAsciiTokenizer *writer)    { hook::Thunk<0x493160>::Call<void>(this, writer);}
         virtual AGE_API void SaveBinary(Stream *stream)         { hook::Thunk<0x493340>::Call<void>(this, stream); }
 
