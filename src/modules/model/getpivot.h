@@ -3,5 +3,5 @@
 
 namespace MM2
 {
-    AGE_EXT bool GetPivot(Matrix34 & mtx, LPCSTR basename, LPCSTR file);
+    extern bool GetPivot(Matrix34 & mtx, LPCSTR basename, LPCSTR file);
 }

@@ -11,7 +11,6 @@ namespace MM2
     extern class gfxPacketList;
     extern class gfxTexture;
     extern class modShader;
-    AGE_EXT modStatic * modGetStatic(LPCSTR file, void(*a2)(Vector3 &, void *), void *a3, bool a4);
 
     // Class definitions
     class modStatic {
