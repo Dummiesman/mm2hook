@@ -8,12 +8,51 @@ namespace MM2
     declfield(cityLevel::sm_PvsBuffer)(0x62AE68);
     declfield(cityLevel::SDL)(0x629928);
 
+    hook::Type<int> timeOfDay(0x62B068);
+    hook::Type< cityTimeWeatherLighting[16]> timeWeathers(0x6299A8);
+
     /*
         cityTimeWeatherLighting
     */
+
+    void cityTimeWeatherLighting::SetAmbient(Vector4 ambient)
+    {
+        ambient.W = 1.0f;
+        Ambient = ambient.PackColorBGRA();
+    }
+
+    Vector4 cityTimeWeatherLighting::GetAmbient() const
+    {
+        Vector4 vec;
+        vec.UnpackColorBGRA(Ambient);
+        vec.W = 1.0f;
+        return vec;
+    }
+
     void cityTimeWeatherLighting::ComputeAmbientLightLevels()
     {
         hook::Thunk<0x443300>::Call<void>(this);
+    }
+
+    void cityTimeWeatherLighting::BindLua(LuaState L)
+    {
+        LuaBinding(L).beginClass<cityTimeWeatherLighting>("cityTimeWeatherLighting")
+            .addVariable("KeyHeading", &cityTimeWeatherLighting::KeyHeading)
+            .addVariable("KeyPitch", &cityTimeWeatherLighting::KeyPitch)
+            .addVariable("KeyColor", &cityTimeWeatherLighting::KeyColor)
+
+            .addVariable("Fill1Heading", &cityTimeWeatherLighting::Fill1Heading)
+            .addVariable("Fill1Pitch", &cityTimeWeatherLighting::Fill1Pitch)
+            .addVariable("Fill1Color", &cityTimeWeatherLighting::Fill1Color)
+
+            .addVariable("Fill2Heading", &cityTimeWeatherLighting::Fill2Heading)
+            .addVariable("Fill2Pitch", &cityTimeWeatherLighting::Fill2Pitch)
+            .addVariable("Fill2Color", &cityTimeWeatherLighting::Fill2Color)
+
+            .addProperty("Ambient", &GetAmbient, &SetAmbient)
+            
+            .addFunction("ComputeAmbientLightLevels", &ComputeAmbientLightLevels)
+            .endClass();
     }
 
     /*
@@ -130,6 +169,16 @@ namespace MM2
         return SDL.ptr();
     }
 
+    cityTimeWeatherLighting* cityLevel::GetLighting(int index)
+    {
+        return timeWeathers.ptr(index);
+    }
+
+    cityTimeWeatherLighting* cityLevel::GetCurrentLighting()
+    {
+        return timeWeathers.ptr(timeOfDay.get());
+    }
+
     //lua
     void cityLevel::BindLua(LuaState L) {
         LuaBinding(L).beginExtendClass<cityLevel, lvlLevel>("cityLevel")
@@ -143,6 +192,10 @@ namespace MM2
             .addStaticFunction("LoadPath", &LoadPath)
             .addStaticFunction("LoadPathSet", &LoadPathSet)
             .addStaticFunction("LoadProp", &LoadProp)
+
+            .addStaticProperty("SDL", &GetSDL)
+            .addStaticFunction("GetLighting", &GetLighting)
+            .addStaticFunction("GetCurrentLighting", &GetCurrentLighting)
                 
             //singleton
             .addStaticProperty("Singleton", [] 
@@ -154,7 +207,6 @@ namespace MM2
 
             //sky singleton
             .addStaticProperty("Sky", [] { return &Sky; })
-            .addStaticProperty("SDL", &GetSDL)
             .endClass();
     }
 }

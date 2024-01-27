@@ -7,11 +7,6 @@
 
 namespace MM2
 {
-    namespace $
-    {
-        declhook(0x6299A8, _Type<cityTimeWeatherLighting[16]>, timeWeathers);
-    }
-
     typename typedef void(*SDLIteratorCB)(const void *, int, int, int, const ushort *, void *);
 
     template<>
@@ -20,6 +15,7 @@ namespace MM2
         luaBind<sdlPoly>(L);
         luaBind<sdlPage16>(L);
         luaBind<lvlSDL>(L);
+        luaBind<cityTimeWeatherLighting>(L);
         luaBind<cityLevel>(L);
 
         luaBind<mmCityInfo>(L);

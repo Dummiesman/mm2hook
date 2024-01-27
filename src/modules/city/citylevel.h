@@ -38,7 +38,10 @@ namespace MM2
 
         int Ambient; // looks like the alpha is ignored
 
+        void SetAmbient(Vector4 ambient);
+        Vector4 GetAmbient() const;
         void ComputeAmbientLightLevels();
+        static void BindLua(LuaState L);
     };
 
     class cityLevel : public lvlLevel {
@@ -98,6 +101,8 @@ namespace MM2
         */
         bool IsRoomVisible(int roomId) const;
         static lvlSDL* GetSDL();
+        static cityTimeWeatherLighting* GetLighting(int index);
+        static cityTimeWeatherLighting* GetCurrentLighting();
 
         //lua
         static void BindLua(LuaState L);
