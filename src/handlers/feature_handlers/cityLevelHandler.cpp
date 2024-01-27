@@ -19,8 +19,6 @@ hook::Type<float> sdl_VLowThresh(0x5C5708);  // default: 300.0
 hook::Type<float> sdl_LowThresh(0x5C570C);  // default: 100.0
 hook::Type<float> sdl_MedThresh(0x5C5710);  // default: 50.0
 
-hook::Type<int> timeOfDay(0x62B068);
-
 static hook::Type<bool> sm_PerRoomLighting = 0x5C5720;
 
 /*
@@ -33,39 +31,12 @@ int cityLevelHandler::city_currentRoom = 0;
 const double cosNum = 1.570796;
 
 /* PSDL shading fix */
-Vector3 vglAmbient;
-Vector3 vglKeyColor;
-Vector3 vglFill1Color;
-Vector3 vglFill2Color;
-Vector3 vglShadedColor;
 
-
-static Vector3 addPitch(Vector3* vec, float pitch) {
-    pitch = (float)fmod(pitch, 3.14159);
-    bool pitchIsZero = (pitch >= 0.0f);
-
-    return {
-        (float)((!pitchIsZero) ? fmaxf(vec->X, 0) * cos(pitch + cosNum) : 0.0f),
-        (float)((!pitchIsZero) ? fmaxf(vec->Y, 0) * cos(pitch + cosNum) : 0.0f),
-        (float)((!pitchIsZero) ? fmaxf(vec->Z, 0) * cos(pitch + cosNum) : 0.0f),
-    };
+static void setLightDirectionInv(Vector3* out, float heading, float pitch) {
+    out->X = -(cosf(heading) * cosf(pitch));
+    out->Y = -(sinf(pitch));
+    out->Z = -(sinf(heading) * cosf(pitch));
 }
-
-static float normalize(float value) {
-    if (value >= 2.0f)
-        value = 1.0f;
-
-    return (value > 1.0f) ? (value - (value - 1.0f)) : value;
-}
-
-static Vector3 intToColor(int value) {
-    return {
-        (float)((char)((value & 0xFF0000) >> 16) / 256.0f),
-        (float)((char)((value & 0xFF00) >> 8) / 256.0f),
-        (float)((char)((value & 0xFF)) / 256.0f),
-    };
-}
-
 
 void cityLevelHandler::UpdateLighting()
 {
@@ -75,25 +46,30 @@ void cityLevelHandler::UpdateLighting()
 
     // Calculate SDL lighting color
     // TODO: fix lighting quality not being taken into account (harder than it sounds)
-    auto timeWeather = $::timeWeathers.ptr(timeOfDay);
+    auto timeWeather = cityLevel::GetCurrentLighting();
+    Vector3 keyDir, fill1Dir, fill2Dir;
+    Vector3 lighting = Vector3(0.0f, 0.0f, 0.0f);
 
-    vglKeyColor = addPitch(&timeWeather->KeyColor, timeWeather->KeyPitch);
-    vglFill1Color = addPitch(&timeWeather->Fill1Color, timeWeather->Fill1Pitch);
-    vglFill2Color = addPitch(&timeWeather->Fill2Color, timeWeather->Fill2Pitch);
+    Vector4 ambient;
+    ambient.UnpackColorBGRA(timeWeather->Ambient);
+    lighting += static_cast<Vector3>(ambient);
 
-    // convert the ambient to a vector3 for better accuracy
-    vglAmbient = intToColor(timeWeather->Ambient);
+    setLightDirectionInv(&keyDir, timeWeather->KeyHeading, timeWeather->KeyPitch);
+    setLightDirectionInv(&fill1Dir, timeWeather->Fill1Heading, timeWeather->Fill1Pitch);
+    setLightDirectionInv(&fill2Dir, timeWeather->Fill2Heading, timeWeather->Fill2Pitch);
 
-    // compute le values
-    vglShadedColor = {
-        normalize(vglKeyColor.X + vglFill1Color.X + vglFill2Color.X + vglAmbient.X),
-        normalize(vglKeyColor.Y + vglFill1Color.Y + vglFill2Color.Y + vglAmbient.Y),
-        normalize(vglKeyColor.Z + vglFill1Color.Z + vglFill2Color.Z + vglAmbient.Z),
-    };
+    Vector3 normal = Vector3::YAXIS;
+    lighting += timeWeather->KeyColor * fmaxf(0.0f, normal.Dot(keyDir));
+    lighting += timeWeather->Fill1Color * fmaxf(0.0f, normal.Dot(fill1Dir));
+    lighting += timeWeather->Fill2Color * fmaxf(0.0f, normal.Dot(fill2Dir));
 
-    vglHandler::vglResultColor.r = byte(vglShadedColor.X * 255.999f);
-    vglHandler::vglResultColor.g = byte(vglShadedColor.Y * 255.999f);
-    vglHandler::vglResultColor.b = byte(vglShadedColor.Z * 255.999f);
+    lighting.X = fminf(1.0f, fmaxf(0.0f, lighting.X));
+    lighting.Y = fminf(1.0f, fmaxf(0.0f, lighting.Y));
+    lighting.Z = fminf(1.0f, fmaxf(0.0f, lighting.Z));
+    
+    vglHandler::vglResultColor.r = byte(lighting.X * 255.0f);
+    vglHandler::vglResultColor.g = byte(lighting.Y * 255.0f);
+    vglHandler::vglResultColor.b = byte(lighting.Z * 255.0f);
     vglHandler::vglResultColor.a = 255;
 }
 
@@ -110,6 +86,7 @@ void cityLevelHandler::DrawRooms(const gfxViewport* viewport, unsigned int p2, L
 {
     cityLevelHandler::city_numRooms = numRooms;
     cityLevelHandler::city_currentRoom = 0;
+    UpdateLighting();
 
     auto level = reinterpret_cast<cityLevel*>(this);
     level->DrawRooms(viewport, p2, roomRecs, numRooms);

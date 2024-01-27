@@ -38,7 +38,7 @@ struct TimeWeatherInfo {
     }
 
     void SetDefaults(dgStatePack* statePack, int index) {
-        data = &$::timeWeathers[index];
+        data = cityLevel::GetLighting(index);
 
         ShowHeadlights = (statePack->TimeOfDay >= 2 || statePack->WeatherType == 2);
         ShowLightGlows = statePack->TimeOfDay == 3;
