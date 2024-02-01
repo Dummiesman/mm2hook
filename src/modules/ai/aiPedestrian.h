@@ -28,6 +28,7 @@ namespace MM2
         aiPedestrianInstance* GetInstance() const;
         aiPedAudio* GetAudio() const;
         aiPedestrian* GetNext() const;
+        Matrix34* GetMatrix() const;
 
         static void BindLua(LuaState L);
     };

@@ -44,6 +44,9 @@ namespace MM2
         static void BindLua(LuaState L);
     };
 
+    void SetLightDirection(Vector3* out, float heading, float pitch);
+    float ComputeShadowIntensity(Vector3 keyColor);
+
     class cityLevel : public lvlLevel {
     private:
         int unk28;

@@ -63,6 +63,107 @@ bool pedestrianInstanceHandler::IsCollidable()
     return pedRagdollMgr::Instance->UnusedActive();
 }
 
+void pedestrianInstanceHandler::Init(char* a1, int a2, int a3) {
+    //call original
+    hook::Thunk<0x54B0D0>::Call<void>(this, a1, a2, a3);
+
+    auto inst = reinterpret_cast<aiPedestrian*>(this)->GetInstance();
+    inst->SetFlag(64); //shadow flag
+}
+
+void pedestrianInstanceHandler::DrawShadow()
+{
+    auto inst = reinterpret_cast<aiPedestrianInstance*>(this);
+    auto animationInstance = inst->GetAnimationInstance();
+    auto pedanim = animationInstance->GetAnimation();
+    auto timeWeather = cityLevel::GetCurrentLighting();
+
+    if (MMSTATE->TimeOfDay == 3 || lvlLevel::GetSingleton()->GetRoomInfo(inst->GetRoomId())->Flags & static_cast<int>(RoomFlags::Subterranean))
+        return;
+
+    Vector3 lightDirection;
+    SetLightDirection(&lightDirection, timeWeather->KeyHeading, timeWeather->KeyPitch);
+
+    Matrix34 shadowMatrix;
+    Matrix34* pedMatrix = inst->GetPedestrian()->GetMatrix();
+    Matrix44 pedestrianMatrixList[32]; //bone matrices
+
+    bool prevLighting = gfxRenderState::SetLighting(true);
+
+    if (lvlInstance::ComputeShadowMatrix(&shadowMatrix, inst->GetRoomId(), pedMatrix))
+    {
+        float angle = lightDirection.X * shadowMatrix.m10 + lightDirection.Z * shadowMatrix.m12;
+        shadowMatrix.SetRow(1, Vector3(lightDirection.X, -angle, lightDirection.Z));
+
+        float dist = shadowMatrix.GetRow(3).Dist(pedMatrix->GetRow(3));
+        shadowMatrix.SetRow(3, shadowMatrix.GetRow(3) + shadowMatrix.GetRow(1) * dist);
+
+        //if we have no ragdoll
+        if (inst->GetEntity() == nullptr)
+        {
+            auto sequence = pedanim->GetSequence(animationInstance->GetCurrentState());
+
+            int frame1 = animationInstance->GetCurrentFrame();
+            int frame2 = frame1;
+
+            auto animation = sequence->pCrAnimation;
+            if (FrameFraction2.get() != 0.0f)
+            {
+                if (sequence->Direction > 0)
+                {
+                    frame2 = (frame1 + 1) % animation->GetFrameCount();
+                }
+                else if (sequence->Direction < 0)
+                {
+                    frame2 = frame1 - 1;
+                    if (frame2 < 0) frame2 = animation->GetFrameCount() - 1;
+                }
+            }
+
+            crAnimFrame finalFrame = crAnimFrame();
+            if (frame1 == frame2)
+            {
+                finalFrame.Copy(animation->GetFrame(frame1));
+            }
+            else
+            {
+                float blend = FrameFraction2.get();
+                finalFrame.Blend(blend, animation->GetFrame(frame1), animation->GetFrame(frame2));
+            }
+
+            auto skeleton = pedanim->GetSkeleton();
+            hook::StaticThunk<0x57B410>::Call<void>(skeleton, &finalFrame); // Some form of crAnimFrame::Pose but static??
+            skeleton->Update();
+            skeleton->Attach(pedestrianMatrixList);
+
+            gfxRenderState::SetWorldMatrix(shadowMatrix);
+            pedanim->GetModel()->DrawShadowed(pedestrianMatrixList, pedanim->GetShaders(animationInstance->GetVariant()), 0xFFFFFFFF, ComputeShadowIntensity(timeWeather->KeyColor));
+        }
+        else
+        {
+            Matrix34 shadowMatrix2;
+            Matrix44::I.ToMatrix34(shadowMatrix2);
+
+            auto active = reinterpret_cast<pedActive*>(inst->GetEntity());
+            auto ragdollSkel = active->GetSkeleton();
+            ragdollSkel->Attach(pedestrianMatrixList);
+
+            float angle2 = lightDirection.X * shadowMatrix2.m10 + lightDirection.Z * shadowMatrix2.m12;
+            shadowMatrix2.SetRow(1, Vector3(lightDirection.X, -angle2, lightDirection.Z));
+
+            shadowMatrix2.SetRow(3, Vector3(
+                shadowMatrix2.GetRow(3).X - shadowMatrix2.m10 * shadowMatrix.m31,
+                shadowMatrix.m31,
+                shadowMatrix2.GetRow(3).Z - shadowMatrix2.m12 * shadowMatrix.m31));
+
+            gfxRenderState::SetWorldMatrix(shadowMatrix2);
+            pedanim->GetModel()->DrawShadowed(pedestrianMatrixList, pedanim->GetShaders(animationInstance->GetVariant()), 0xFFFFFFFF, ComputeShadowIntensity(timeWeather->KeyColor));
+        }
+    }
+
+    gfxRenderState::SetLighting(prevLighting);
+}
+
 void pedestrianInstanceHandler::DrawRagdoll() 
 {
     auto inst = reinterpret_cast<aiPedestrianInstance*>(this);
@@ -231,9 +332,22 @@ void pedestrianInstanceHandler::Install()
         }
     );
 
+    InstallCallback("aiPedestrian::Init", "Set flag id to 64 to render pedestrian shadows",
+        &Init, {
+            cb::call(0x53584F), // aiMap::Init
+            cb::call(0x5358CC), // aiMap::Init
+        }
+    );
+
     InstallVTableHook("aiPedestrianInstance::Draw",
         &Draw, {
             0x5B631C
+        }
+    );
+
+    InstallVTableHook("aiPedestrianInstance::DrawShadow",
+        &DrawShadow, {
+            0x5B6320
         }
     );
 

@@ -38,6 +38,11 @@ aiPedestrian* MM2::aiPedestrian::GetNext() const
 	return _next.get(this);
 }
 
+Matrix34* aiPedestrian::GetMatrix() const
+{
+	return _matrix.ptr(this);
+}
+
 void aiPedestrian::BindLua(LuaState L) {
 	LuaBinding(L).beginClass<aiPedestrian>("aiPedestrian")
 		.addPropertyReadOnly("Audio", &GetAudio)
