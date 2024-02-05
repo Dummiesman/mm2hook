@@ -55,6 +55,19 @@ namespace MM2
             .endClass();
     }
 
+    void SetLightDirection(Vector3* out, float heading, float pitch)
+    {
+        out->X = cosf(heading) * cosf(pitch);
+        out->Y = sinf(pitch);
+        out->Z = sinf(heading) * cosf(pitch);
+    }
+
+    float ComputeShadowIntensity(Vector3 keyColor)
+    {
+        float average = (keyColor.X + keyColor.Y + keyColor.Z) / 3.0f;
+        return min(average, 0.75f);
+    }
+
     /*
         cityLevel
     */
