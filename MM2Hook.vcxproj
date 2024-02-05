@@ -830,6 +830,7 @@
     <ClCompile Include="src\modules\model.cpp" />
     <ClCompile Include="src\modules\model\getpivot.cpp" />
     <ClCompile Include="src\modules\model\getstatic.cpp" />
+    <ClCompile Include="src\modules\model\model2.cpp" />
     <ClCompile Include="src\modules\model\static2.cpp" />
     <ClCompile Include="src\modules\node.cpp" />
     <ClCompile Include="src\modules\parse.cpp" />
