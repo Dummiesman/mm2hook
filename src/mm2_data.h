@@ -13,6 +13,7 @@ namespace MM2
         luaBind<datOutput>(L);
         luaBind<datStack>(L);
         luaBind<datTimeManager>(L);
+        luaBind<datParser>(L);
         luaBind<datBaseTokenizer>(L);
         luaBind<datBinTokenizer>(L);
         luaBind<datAsciiTokenizer>(L);

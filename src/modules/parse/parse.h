@@ -18,27 +18,6 @@ namespace MM2
     extern class Vector4;
 
     // Class definitions
-
-    namespace $
-    {
-        namespace datParser
-        {
-            declhook(0x4A78E0, _MemberFunc<void>, $$ctor);
-            declhook(0x4A7920, _MemberFunc<void>, $$dtor);
-
-            declhook(0x4A7980, _MemberFunc<MM2::datParser *>, AddParser);
-            declhook(0x4A79D0, _MemberFunc<MM2::datParserRecord &>, AddRecord);
-
-            declhook(0x4A7A90, _MemberFunc<bool>, Load$1);
-            declhook(0x4A7AF0, _MemberFunc<bool>, Load$2);
-            declhook(0x4A7B40, _MemberFunc<bool>, Load$3);
-
-            declhook(0x4A7B90, _MemberFunc<bool>, Save$1);
-            declhook(0x4A7C00, _MemberFunc<bool>, Save$2);
-            declhook(0x4A7C50, _MemberFunc<bool>, Save$3);
-        }
-    }
-
     class datParserRecord {
     private:
         /*
@@ -96,24 +75,34 @@ namespace MM2
         */
         AGE_API datParserRecord & AddRecord(int type, LPCSTR name, void *dataPtr, int count) {
             // last parameter is the 'callback' which is never actually used
-            return $::datParser::AddRecord(this, type, name, dataPtr, count, NULL);
+            return hook::Thunk<0x4A79D0>::Call<datParserRecord&>(this, type, name, dataPtr, count, nullptr);
         };
 
         inline datParserRecord & AddRecord(int type, LPCSTR name, void *dataPtr) {
             return AddRecord(type, name, dataPtr, 1);
         };
+    private:
+        void saveAsciiLua(LPCSTR directory, LPCSTR filename, LPCSTR extension)
+        {
+            this->Save(directory, filename, extension, false);
+        }
+
+        void saveBinaryLua(LPCSTR directory, LPCSTR filename, LPCSTR extension)
+        {
+            this->Save(directory, filename, extension, true);
+        }
     public:
         AGE_API datParser(const char *filename) {
-            $::datParser::$$ctor(this, filename);
+            hook::Thunk<0x4A78E0>::Call<void>(this, filename);
         };
 
         AGE_API ~datParser() {
-            $::datParser::$$dtor(this);
+            hook::Thunk<0x4A7920>::Call<void>(this);
         };
 
         AGE_API datParser * AddParser(LPCSTR name) {
             // 'callback' unused (see AddRecord above)
-            return $::datParser::AddParser(this, name, NULL);
+            return hook::Thunk<0x4A7980>::Call<datParser*>(this, name, nullptr);
         };
 
         void AddToken(LPCSTR name, char *tokenPtr, int tokenLength) {
@@ -144,45 +133,50 @@ namespace MM2
         AGE_API void AddValue(LPCSTR name, Vector4 *values, int count)  { AddRecord(8, name, values, count); };
 
         /*
-            Inline methods for adding a single value instead of an array
+            Methods for adding a single value instead of an array
         */
 
-        inline void AddValue(LPCSTR name, bool *value)      { AddValue(name, value, 1); };
-        inline void AddValue(LPCSTR name, char *value)      { AddValue(name, value, 1); };
-        inline void AddValue(LPCSTR name, short *value)     { AddValue(name, value, 1); };
-        inline void AddValue(LPCSTR name, int *value)       { AddValue(name, value, 1); };
-        inline void AddValue(LPCSTR name, float *value)     { AddValue(name, value, 1); };
-        inline void AddValue(LPCSTR name, Vector2 *value)   { AddValue(name, value, 1); };
-        inline void AddValue(LPCSTR name, Vector3 *value)   { AddValue(name, value, 1); };
-        inline void AddValue(LPCSTR name, Vector4 *value)   { AddValue(name, value, 1); };
+        void AddValue(LPCSTR name, bool *value)      { AddValue(name, value, 1); };
+        void AddValue(LPCSTR name, char *value)      { AddValue(name, value, 1); };
+        void AddValue(LPCSTR name, short *value)     { AddValue(name, value, 1); };
+        void AddValue(LPCSTR name, int *value)       { AddValue(name, value, 1); };
+        void AddValue(LPCSTR name, float *value)     { AddValue(name, value, 1); };
+        void AddValue(LPCSTR name, Vector2 *value)   { AddValue(name, value, 1); };
+        void AddValue(LPCSTR name, Vector3 *value)   { AddValue(name, value, 1); };
+        void AddValue(LPCSTR name, Vector4 *value)   { AddValue(name, value, 1); };
 
         AGE_API bool Load(Stream *stream, LPCSTR filename) {
-            return $::datParser::Load$1(this, stream, filename);
+            return hook::Thunk<0x4A7A90>::Call<bool>(this, stream, filename);
         };
 
         AGE_API bool Load(LPCSTR directory, LPCSTR filename) {
-            return $::datParser::Load$2(this, directory, filename);
+            return hook::Thunk<0x4A7AF0>::Call<bool>(this, directory, filename);
         };
 
         AGE_API bool Load(LPCSTR directory, LPCSTR filename, LPCSTR extension) {
-            return $::datParser::Load$3(this, directory, filename, extension);
+            return hook::Thunk<0x4A7B40>::Call<bool>(this, directory, filename, extension);
         };
 
-        /*
-            Binary saving is indefinitely disabled since it's bugged
-        */
-
-        AGE_API bool Save(Stream *stream, LPCSTR filename) {
-            return $::datParser::Save$1(this, stream, filename, false);
+        AGE_API bool Save(Stream *stream, LPCSTR filename, bool binary = false) {
+            return hook::Thunk<0x4A7B90>::Call<bool>(this, stream, filename, binary);
         };
 
-        AGE_API bool Save(LPCSTR directory, LPCSTR filename) {
-            return $::datParser::Save$2(this, directory, filename, false);
+        AGE_API bool Save(LPCSTR directory, LPCSTR filename, bool binary = false) {
+            return hook::Thunk<0x4A7C00>::Call<bool>(this, directory, filename, binary);
         };
 
-        AGE_API bool Save(LPCSTR directory, LPCSTR filename, LPCSTR extension) {
-            return $::datParser::Save$3(this, directory, filename, extension, false);
+        AGE_API bool Save(LPCSTR directory, LPCSTR filename, LPCSTR extension, bool binary = false) {
+            return hook::Thunk<0x4A7C50>::Call<bool>(this, directory, filename, extension, binary);
         };
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass<datParser>("datParser")
+                .addFunction("Load", static_cast<bool (datParser::*)(LPCSTR, LPCSTR, LPCSTR)>(&datParser::Load))
+                .addFunction("Save", &saveAsciiLua)
+                .addFunction("SaveBinary", &saveBinaryLua)
+                .addConstructor(LUA_ARGS(LPCSTR))
+                .endClass();
+        }
     };
 
     class datBaseTokenizer
