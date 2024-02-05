@@ -38,6 +38,7 @@ namespace MM2
 
         int Ambient; // looks like the alpha is ignored
 
+        void FileIO(datParser& parser);
         void SetAmbient(Vector4 ambient);
         Vector4 GetAmbient() const;
         void ComputeAmbientLightLevels();

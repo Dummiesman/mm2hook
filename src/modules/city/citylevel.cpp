@@ -15,6 +15,11 @@ namespace MM2
         cityTimeWeatherLighting
     */
 
+    void cityTimeWeatherLighting::FileIO(datParser& parser)
+    {
+        hook::Thunk<0x443440>::Call<void>(this, &parser);
+    }
+
     void cityTimeWeatherLighting::SetAmbient(Vector4 ambient)
     {
         ambient.W = 1.0f;
