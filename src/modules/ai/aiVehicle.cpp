@@ -13,6 +13,11 @@ namespace MM2
     {
         return _spline.get(this);
     }
+
+    int aiVehicleInstance::GetVariant() const
+    {
+        return _variant.get(this);
+    }
         
     //overrides
     AGE_API Vector3 const& aiVehicleInstance::GetPosition()              { return hook::Thunk<0x553030>::Call<Vector3 const&>(this); };

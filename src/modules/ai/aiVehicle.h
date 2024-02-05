@@ -36,11 +36,13 @@ namespace MM2
         static int AmbientHeadlightStyle;
     protected:
         static hook::Field<0x14, aiVehicleSpline*> _spline;
+        static hook::Field<0x1E, short> _variant;
     public:
         aiVehicleInstance(void)             DONOTCALL;
 
         //properties
         aiVehicleSpline* GetSpline();
+        int GetVariant() const;
         
         //overrides
         AGE_API Vector3 const& GetPosition() override;
