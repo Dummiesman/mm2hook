@@ -1,5 +1,6 @@
 #pragma once
 #include <modules\audio\audmanagerbase.h>
+#include <modules\mmaudio\ccspeech.h>
 #include <modules\mmaudio\racespeech.h>
 #include <modules\mmaudio\cnrspeech.h>
 
@@ -25,7 +26,8 @@ namespace MM2
         //members
         AGE_API mmCNRSpeech* GetCNRSpeechPtr()               { return hook::Thunk<0x5195C0>::Call<mmCNRSpeech*>(this); }
         AGE_API mmRaceSpeech* GetRaceSpeechPtr()             { return hook::Thunk<0x519580>::Call<mmRaceSpeech*>(this); }
-        
+        AGE_API mmCCSpeech* GetCCSpeechPtr()                 { return hook::Thunk<0x5195A0>::Call<mmCCSpeech*>(this); }
+
         AGE_API void AssignWaveVolume(float vol)             { hook::Thunk<0x5197D0>::Call<void>(this, vol); }
         AGE_API void AssignWaveBalance(float vol)            { hook::Thunk<0x519610>::Call<void>(this, vol); }
         AGE_API void AssignCDVolume(float vol)               { hook::Thunk<0x519A30>::Call<void>(this, vol); }
@@ -38,6 +40,7 @@ namespace MM2
             LuaBinding(L).beginExtendClass<AudManager, AudManagerBase>("AudManager")
                 .addStaticFunction("Instance", [] { return (AudManager*)Instance; })
 
+                .addFunction("GetCCSpeechPtr", &GetCCSpeechPtr)
                 .addFunction("GetCNRSpeechPtr", &GetCNRSpeechPtr)
                 .addFunction("GetRaceSpeechPtr", &GetRaceSpeechPtr)
 
