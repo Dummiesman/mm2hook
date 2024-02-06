@@ -17,7 +17,7 @@ namespace MM2
     public:
         /*0x00*/uint BindIndex;
 
-        /*0x04*/const char *Name;
+        /*0x04*/char *Name;
 
         /*0x08*/ushort Width;
         /*0x0A*/ushort Height;
@@ -44,33 +44,13 @@ namespace MM2
         static hook::Type<gfxTexture*> sm_First;
         static hook::Type<bool> sm_UseInternalCache;
     public:
-        const char * getName() {
-            return this->Name;
-        }
-
-        int getWidth() {
-            return this->Width;
-        }
-
-        int getHeight() {
-            return this->Height;
-        }
-
-        gfxTextureCachePool * getPool() {
-            return this->CachePool;
-        }
-
-        gfxTextureCacheEntry * getCacheEntry() {
-            return this->CacheEntry;
-        }
-
-        gfxTexture * getNext() {
-            return this->Next;
-        }
-
-        gfxTexture * getNextLOD() {
-            return this->NextLOD;
-        }
+        char * GetName() const                       { return this->Name; }
+        int GetWidth() const                         { return this->Width; }
+        int GetHeight() const                        { return this->Height; }
+        gfxTextureCachePool * GetPool() const        { return this->CachePool; }
+        gfxTextureCacheEntry * GetCacheEntry() const { return this->CacheEntry; }
+        gfxTexture * GetNext() const                 { return this->Next; }
+        gfxTexture * GetNextLOD() const              { return this->NextLOD; }
     public:
         ANGEL_ALLOCATOR
 
@@ -113,14 +93,14 @@ namespace MM2
 
                 .addFunction("Clone", &Clone)
 
-                .addPropertyReadOnly("Name", &getName)
-                .addPropertyReadOnly("Next", &getNext)
-                .addPropertyReadOnly("NextLOD", &getNextLOD)
+                .addPropertyReadOnly("Name", &GetName)
+                .addPropertyReadOnly("Next", &GetNext)
+                .addPropertyReadOnly("NextLOD", &GetNextLOD)
 
-                .addPropertyReadOnly("Width", &getWidth)
-                .addPropertyReadOnly("Height", &getHeight)
-                .addPropertyReadOnly("CacheEntry", &getCacheEntry)
-                .addPropertyReadOnly("CachePool", &getPool)
+                .addPropertyReadOnly("Width", &GetWidth)
+                .addPropertyReadOnly("Height", &GetHeight)
+                .addPropertyReadOnly("CacheEntry", &GetCacheEntry)
+                .addPropertyReadOnly("CachePool", &GetPool)
 
                 .endClass();
         }
