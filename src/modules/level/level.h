@@ -47,10 +47,12 @@ namespace MM2
         lvlInstance* FirstInstance;
         lvlInstance* FirstStaticInstance;
         Vector4 BoundSphere;
-        int Color;
+        int LightmapColor;
         float MinY;
         float MaxY;
 
+        Vector4 GetLightmapColor() const;
+        void SetLightmapColor(const Vector4& vec);
         static void BindLua(LuaState L);
     };
 

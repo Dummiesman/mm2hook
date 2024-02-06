@@ -18,6 +18,18 @@ int lvlRoomInfo::getStaticInstancesLua(lua_State* L)
 }
 
 
+Vector4 MM2::lvlRoomInfo::GetLightmapColor() const
+{
+    Vector4 vec;
+    vec.UnpackColorBGRA(this->LightmapColor);
+    return vec;
+}
+
+void MM2::lvlRoomInfo::SetLightmapColor(const Vector4& vec)
+{
+    this->LightmapColor = vec.PackColorBGRA();
+}
+
 void lvlRoomInfo::BindLua(LuaState L) {
     LuaBinding(L).beginClass<lvlRoomInfo>("lvlRoomInfo")
         .addFunction("GetInstances", &lvlRoomInfo::getInstancesLua)
@@ -27,7 +39,7 @@ void lvlRoomInfo::BindLua(LuaState L) {
         .addVariable("FirstInstance", &lvlRoomInfo::FirstInstance, false)
         .addVariable("FirstStaticInstance", &lvlRoomInfo::FirstStaticInstance, false)
         .addVariable("BoundSphere", &lvlRoomInfo::BoundSphere, false)
-        .addVariable("Color", &lvlRoomInfo::Color, false)
+        .addProperty("LightmapColor", &GetLightmapColor, &SetLightmapColor)
         .addVariable("MinY", &lvlRoomInfo::MinY, false)
         .addVariable("MaxY", &lvlRoomInfo::MaxY, false)
         .endClass();
@@ -151,6 +163,7 @@ const char* lvlLevel::GetLevelName() const {
 void lvlLevel::BindLua(LuaState L) {
     LuaBinding(L).beginExtendClass<lvlLevel, asCullable>("lvlLevel")
         //properties
+        .addPropertyReadOnly("Name", &GetLevelName)
         .addPropertyReadOnly("NumRooms", &GetRoomCount)
         .addVariable("InstanceLabelMask", &lvlLevel::InstanceLabelMask)
 
