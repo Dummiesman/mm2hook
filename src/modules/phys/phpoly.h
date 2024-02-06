@@ -21,42 +21,42 @@ namespace MM2
         /*
             Lua Helpers
         */
-        short getIndex(int i) const
+        short GetIndex(int i) const
         {
             if (i < 0 || i >= 4)
                 return -1;
             return (short)this->Indices[i];
         }
 
-        void setIndex(int i, ushort index)
+        void SetIndex(int i, ushort index)
         {
             if (i >= 0 && i < 4)
                 this->Indices[i] = index;
         }
 
-        byte getMaterialIndex() const
+        char GetMaterialIndex() const
         {
-            return *(byte*)&Radius;
+            return *(char*)&Radius;
         }
 
-        void setMaterialIndex(byte index) 
+        void SetMaterialIndex(char index) 
         {
-            *(byte*)&Radius = index;
+            *(char*)&Radius = index;
         }
 
-        bool isQuad() const
+        bool IsQuad() const
         {
             return this->Indices[3] != 0;
         }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<phPolygon>("phPolygon")
-                .addPropertyReadOnly("IsQuad", &isQuad)
+                .addPropertyReadOnly("IsQuad", &IsQuad)
                 .addVariable("Radius", &phPolygon::Radius)
                 .addVariable("Normal", &phPolygon::Normal)
-                .addProperty("MaterialIndex", &getMaterialIndex, &setMaterialIndex)
-                .addFunction("GetIndex", &getIndex)
-                .addFunction("SetIndex", &setIndex)
+                .addProperty("MaterialIndex", &GetMaterialIndex, &SetMaterialIndex)
+                .addFunction("GetIndex", &GetIndex)
+                .addFunction("SetIndex", &SetIndex)
                 .endClass();
         }
     };
