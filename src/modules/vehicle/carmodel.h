@@ -191,7 +191,6 @@ namespace MM2
         vehBreakableMgr* GetMechBreakableMgr();
         vehCar* GetCar();
         int GetVariant();
-        void SetVariant(int variant);
         ltLight* GetHeadlight(int index);
         int GetWheelBrokenStatus();
         Vector3 GetTrailerHitchOffset();
@@ -221,6 +220,7 @@ namespace MM2
         AGE_API const Vector3& GetPosition() override;
         AGE_API const Matrix34& GetMatrix(Matrix34* a1);
         AGE_API void SetMatrix(const Matrix34& a1) override;
+        AGE_API void SetVariant(int variant) override;
         AGE_API dgPhysEntity* GetEntity() override;
         AGE_API dgPhysEntity* AttachEntity() override;
         AGE_API const Vector3& GetVelocity() override;

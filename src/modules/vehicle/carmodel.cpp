@@ -35,10 +35,21 @@ namespace MM2
         return this->variant;
     }
 
-    void vehCarModel::SetVariant(int variant)
+    AGE_API void vehCarModel::SetVariant(int variant)
     {
         this->PreLoadShader(variant);
+        this->GetGenBreakableMgr()->SetVariant(variant);
+        this->GetMechBreakableMgr()->SetVariant(variant);
+        //this->Optimize(variant); crash
         this->variant = variant;
+
+        if (texelDamage) {
+            auto bodyEntry = this->GetGeomBase();
+            if (bodyEntry->GetHighLOD() != nullptr)
+            {
+                texelDamage->Init(bodyEntry->GetHighLOD(), bodyEntry->pShaders[this->GetVariant()], bodyEntry->numShadersPerVariant);
+            }
+        }
     }
 
     ltLight* vehCarModel::GetHeadlight(int index)

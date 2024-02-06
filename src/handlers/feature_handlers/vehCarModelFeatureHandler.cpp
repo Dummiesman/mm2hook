@@ -51,6 +51,12 @@ void vehCarModelFeatureHandler::ApplyImpact(vehDamageImpactInfo* a1)
     }
 }
 
+void vehCarModelFeatureHandler::SetVariant(int a1)
+{
+    auto model = reinterpret_cast<vehCarModel*>(this);
+    model->vehCarModel::SetVariant(a1);
+}
+
 void vehCarModelFeatureHandler::DrawGlow() {
     auto model = reinterpret_cast<vehCarModel*>(this);
     model->vehCarModel::DrawGlow();
@@ -87,6 +93,12 @@ void vehCarModelFeatureHandler::Install() {
         &ApplyImpact, {
             cb::call(0x4CAFE0),
             cb::call(0x4CB12C),
+        }
+    );
+
+    InstallVTableHook("vehCarModel::SetVariant",
+        &SetVariant, {
+            0x5B2CC4,
         }
     );
 

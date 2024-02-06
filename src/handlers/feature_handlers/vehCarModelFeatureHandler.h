@@ -9,6 +9,7 @@ public:
     void DrawGlow();
     void ModStaticDraw(MM2::modShader * a1);
     void ApplyImpact(MM2::vehDamageImpactInfo* a1);
+    void SetVariant(int a1);
     static void Install();
 };
 
