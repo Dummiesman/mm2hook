@@ -42,7 +42,7 @@ namespace MM2
             .addVariable("TimeOfDay", &dgStatePack::TimeOfDay)
             .addVariable("WeatherType", &dgStatePack::WeatherType)
             .addProperty("SkillLevel", &dgStatePack::getSkillLevel, &dgStatePack::setSkillLevel)
-            .addVariable("AudioFlags", &dgStatePack::AudioFlags)
+            .addVariable("AudioFlags", &dgStatePack::AudioFlags, false)
 
             .addProperty("EnablePedestrians", &dgStatePack::getEnablePedestrians, &dgStatePack::setEnablePedestrians);
         return binder;
