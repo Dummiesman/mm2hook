@@ -2706,6 +2706,9 @@
     <ClCompile Include="src\modules\model\model2.cpp">
       <Filter>Source Files\modules\model</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\level\inst.cpp">
+      <Filter>Source Files\modules\level</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AGE.h">
