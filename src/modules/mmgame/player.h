@@ -17,7 +17,7 @@ namespace MM2
         byte _buffer[0x238C];
 
         AGE_API camCarCS * _GetCurrentCameraPtr() const       { return hook::Thunk<0x4048E0>::Call<camCarCS*>(this); }
-
+        bool luaIsMaxDamaged() const { return this->IsMaxDamaged() == TRUE; }
     protected:
         static hook::Field<0x2C, vehCar> _car;
         static hook::Field<0x288, mmHUD> _hud;
@@ -39,8 +39,21 @@ namespace MM2
         static hook::Field<0x1FBC, camPolarCS> _mpPostCam;
 
         static hook::Field<0x2254, int> _currentWaypoint;
+        static hook::Field<0x2258, BOOL> _applyPostRaceInput;
         static hook::Field<0x2264, float> _steering;
     public:
+        mmPlayer() 
+        {
+            //scoped_vtable x(this);
+            hook::Thunk<0x4033D0>::Call<void>(this);
+        }
+
+        ~mmPlayer()
+        {
+            scoped_vtable x(this);
+            hook::Thunk<0x403800>::Call<void>(this);
+        }
+
         vehCar * GetCar() const                  { return _car.ptr(this); }
         mmHUD * GetHUD() const                   { return _hud.ptr(this); }
 
@@ -61,11 +74,14 @@ namespace MM2
 
         camCarCS * GetCurrentCameraPtr() const   { return this->_GetCurrentCameraPtr(); }
 
+        bool GetApplyPostRaceInput() const       { return _applyPostRaceInput.get(this) == TRUE; }
+        void SetApplyPostRaceInput(bool apply)   { _applyPostRaceInput.set(this, apply ? TRUE : FALSE); }
+
         AGE_API void FFImpactCallback(float damage)         { hook::Thunk<0x406240>::Call<void>(this, damage); }
         AGE_API void EnableRegen(bool a1)                   { hook::Thunk<0x406160>::Call<void>(this, a1); }
         AGE_API float FilterSteering(float a1)              { return hook::Thunk<0x404C90>::Call<float>(this, a1); }
-        AGE_API bool IsMaxDamaged() const                   { return hook::Thunk<0x406140>::Call<bool>(this); }
-        AGE_API bool IsPOV() const                          { return hook::Thunk<0x404550>::Call<bool>(this); }
+        AGE_API BOOL IsMaxDamaged() const                   { return hook::Thunk<0x406140>::Call<BOOL>(this); }
+        AGE_API BOOL IsPOV() const                          { return hook::Thunk<0x404550>::Call<BOOL>(this); }
         AGE_API void ResetDamage()                          { hook::Thunk<0x406180>::Call<void>(this); }
         AGE_API void SetCamera(int a1, int a2)              { hook::Thunk<0x404710>::Call<void>(this, a1, a2); }
         AGE_API void SetMPPostCam(Matrix34 *a1, float a2)   { hook::Thunk<0x404460>::Call<void>(this, a1, a2); }
@@ -82,11 +98,11 @@ namespace MM2
             asNode virtuals
         */
 
-        virtual AGE_API void BeforeSave()                   { hook::Thunk<0x403990>::Call<void>(this); }
-        virtual AGE_API void AfterLoad()                    { hook::Thunk<0x4039A0>::Call<void>(this); }
-        virtual AGE_API void FileIO(datParser &parser)      { hook::Thunk<0x406320>::Call<void>(this, &parser); }
-        virtual AGE_API void Reset()                        { hook::Thunk<0x404A60>::Call<void>(this); }
-        virtual AGE_API void Update()                       { hook::Thunk<0x405760>::Call<void>(this); }
+        virtual AGE_API void BeforeSave() override               { hook::Thunk<0x403990>::Call<void>(this); }
+        virtual AGE_API void AfterLoad() override                { hook::Thunk<0x4039A0>::Call<void>(this); }
+        virtual AGE_API void FileIO(datParser &parser) override  { hook::Thunk<0x406320>::Call<void>(this, &parser); }
+        virtual AGE_API void Reset() override                    { hook::Thunk<0x404A60>::Call<void>(this); }
+        virtual AGE_API void Update() override                   { hook::Thunk<0x405760>::Call<void>(this); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmPlayer, asNode>("mmPlayer")
@@ -107,14 +123,14 @@ namespace MM2
                 .addPropertyReadOnly("XCam", &GetXCam)
                 .addPropertyReadOnly("MPPostCam", &GetMPPostCam)
                 .addPropertyReadOnly("CurrentWaypoint", &GetCurrentWaypoint)
-
+                .addPropertyReadOnly("IsMaxDamaged", &luaIsMaxDamaged)
+                .addProperty("ApplyPostRaceInput", &GetApplyPostRaceInput, &SetApplyPostRaceInput)
                 //input filtering
                 
                 //functions
                 .addFunction("FFImpactCallback", &FFImpactCallback)
                 .addFunction("EnableRegen", &EnableRegen)
                 .addFunction("FilterSteering", &FilterSteering)
-                .addFunction("IsMaxDamaged", &IsMaxDamaged)
                 .addFunction("ReInit", &ReInit)
                 .addFunction("ResetDamage", &ResetDamage)
                 .addFunction("SetCamera", &SetCamera)
