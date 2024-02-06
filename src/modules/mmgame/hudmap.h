@@ -1,6 +1,7 @@
 #pragma once
 #include <modules\node.h>
 #include "oppiconinfo.h"
+#include "luaoppicons.h"
 
 namespace MM2
 {

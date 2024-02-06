@@ -13,6 +13,8 @@ namespace MM2
     // External declarations
     extern class mmPlayer;
     extern class mmHudMap;
+    extern class mmDashView;
+    extern class mmExternalView;
 
     // Class definitions
     class mmArrow : public asNode {
