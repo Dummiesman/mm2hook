@@ -1,5 +1,6 @@
 #pragma once
 #include <modules\node.h>
+#include "mmgamemusicdata.h"
 
 namespace MM2
 {
@@ -8,18 +9,36 @@ namespace MM2
 
     // External declarations
     extern class mmPlayer;
+    extern class AudSoundBase;
     extern class mmPopup;
+    extern class mmWaypoints;
+    extern class mmIcons;
+    extern class mmViewMgr;
     extern class gizBridgeMgr;
     extern class gizTrainMgr;
-    extern class mmWaypoints;
-    
+    extern class mmRaceData;
+
     // Class definitions
     class mmGame : public asNode {
+    private:
+        char _buffer[0x7670];
+    private:
+        Vector4 luaRespawnXYZ(bool disallowHighwaySpawning, bool disallowAlleySpawning, bool useNetIdForSeed)
+        {
+            Vector3 pos = Vector3::ORIGIN;
+            float rot = 0.0f;
+            this->RespawnXYZ(pos, rot, disallowHighwaySpawning, disallowAlleySpawning, useNetIdForSeed);
+            return Vector4(pos.X, pos.Y, pos.Z, rot);
+        }
     protected:
         static hook::Field<0x48, mmPlayer *> _player;
+        static hook::Field<0x8C, AudSoundBase*> _gameSounds;
+        static hook::Field<0x98, mmRaceData*> _raceData;
         static hook::Field<0x54, mmIcons*> _icons;
         static hook::Field<0x94, mmPopup *> _popup;
         static hook::Field<0x240, mmViewMgr> _viewManager;
+        static hook::Field<0x270, int> _state;
+        static hook::Field<0x408, float> _stateTimer;
         static hook::Field<0x767C, gizBridgeMgr*> _bridgeManager;
         static hook::Field<0x7680, gizTrainMgr*> _trainManager;
     public:
@@ -59,6 +78,20 @@ namespace MM2
             return _trainManager.get(this);
         }
 
+        int GetState(void) const {
+            return _state.get(this);
+        }
+
+        AudSoundBase* GetSounds(void) const {
+            return _gameSounds.get(this);
+        }
+
+        void SetSounds(AudSoundBase* sounds) {
+            _gameSounds.set(this, sounds);
+        }
+
+        AGE_API void RespawnXYZ(Vector3& pos, float& rot, bool disallowHighwaySpawning, bool disallowAlleySpawning, bool useNetIdForSeed)
+                                                            { hook::Thunk<0x413B70>::Call<void>(this, &pos, &rot, disallowHighwaySpawning, disallowAlleySpawning, useNetIdForSeed); }
         AGE_API void InitWeather(void)                      { hook::Thunk<0x413370>::Call<void>(this); }
         AGE_API void SetIconsState(void)                    { hook::Thunk<0x414BB0>::Call<void>(this); }
 
@@ -86,7 +119,8 @@ namespace MM2
         virtual AGE_API void NextRace()                     PURE;
         virtual AGE_API void HitWaterHandler()              { hook::Thunk<0x414290>::Call<void>(this); };
         virtual AGE_API void DropThruCityHandler()          { hook::Thunk<0x414280>::Call<void>(this); };
-        virtual AGE_API void SendChatMessage(char *message) { hook::Thunk<0x414E50>::Call<void>(this, message); };
+        virtual AGE_API void SendChatMessage(LPCSTR *message) 
+                                                            { hook::Thunk<0x414E50>::Call<void>(this, message); };
         virtual AGE_API void SwitchState(int)               PURE;
         virtual AGE_API void BeDone(int p1)                 { hook::Thunk<0x414D30>::Call<void>(this, p1); };
         virtual AGE_API mmWaypoints * GetWaypoints(void)    PURE;
@@ -94,6 +128,8 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmGame, asNode>("mmGame")
                 //properties
+                .addProperty("State", &GetState, &SwitchState)
+                .addProperty("Sounds", &GetSounds, &SetSounds)
                 .addPropertyReadOnly("TrainManager", &GetTrainManager)
                 .addPropertyReadOnly("BridgeManager", &GetBridgeManager)
                 .addPropertyReadOnly("Player", &GetPlayer)
@@ -102,7 +138,10 @@ namespace MM2
                 .addPropertyReadOnly("ViewManager", &GetViewManager)
                 .addPropertyReadOnly("Waypoints", &GetWaypoints)
                 .addFunction("BeDone", &BeDone, LUA_ARGS(_def<int, 0>))
+                .addFunction("SendChatMessage", &SendChatMessage)
+                .addFunction("RespawnXYZ", &luaRespawnXYZ)
             .endClass();
         }
     };
+    ASSERT_SIZEOF(mmGame, 0x7688);
 }
