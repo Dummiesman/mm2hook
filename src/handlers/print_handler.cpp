@@ -1,4 +1,5 @@
 #include "print_handler.h"
+#include <events\dispatcher.h>
 #include <modules\core\output.h>
 
 using namespace MM2;
@@ -65,6 +66,7 @@ void PrintHandler::Print(int level, const char* format, va_list args)
         if (level >= 5) datOutput::sm_Stream->Flush();
     }
 
+    GameEventDispatcher::Printer(level, FormatBuffer);
     OutputDebugStringA(PrintBuffer);
 
     if (ConsoleLog::IsEnabled()) {
