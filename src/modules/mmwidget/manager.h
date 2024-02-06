@@ -17,6 +17,7 @@ namespace MM2
         static hook::Type<MenuManager*> Instance;
 
         static hook::Field<0xEC, int> _activeDialogID;
+        static hook::Field<0xF8, UIMenu**> _menus;
         static hook::Field<0x138, int> _currentMenuId;
         static hook::Field<0x114, int> _lastMenuId;
         static hook::Field<0x10C, int> _menuCount;
@@ -38,6 +39,13 @@ namespace MM2
             return _menuCount.get(this);
         }
 
+        UIMenu* GetMenu(int index) const
+        {
+            if (index < 0 || index >= _menuCount.get(this))
+                return nullptr;
+            return _menus.get(this)[index];
+        }
+
        AGE_API int AddMenu2(UIMenu* menu)                                { return hook::Thunk<0x4E5B20>::Call<int>(this, menu); }
        AGE_API void DeleteMenu(UIMenu* menu)                             { hook::Thunk<0x4E5B80>::Call<void>(this); }
        AGE_API void Switch(int menuID)                                   { hook::Thunk<0x4E5A30>::Call<void>(this, menuID); }
@@ -48,6 +56,7 @@ namespace MM2
        AGE_API void PlaySound(int id) const                              { hook::Thunk<0x4E5320>::Call<void>(this, id); }
        AGE_API UIMenu* GetCurrentMenu() const                            { return hook::Thunk<0x4E58D0>::Call<UIMenu*>(this); }
        AGE_API int FindMenu(int menuID) const                            { return hook::Thunk<0x4E5900>::Call<int>(this, menuID); }
+       AGE_API int MenuState(int menuID = -1) const                      { return hook::Thunk<0x4E5960>::Call<int>(this, menuID); }
 
        static void BindLua(LuaState L) {
            LuaBinding(L).beginExtendClass<MenuManager, asNode>("MenuManager")
@@ -64,6 +73,8 @@ namespace MM2
                .addFunction("DisableNavBar", &DisableNavBar)
                .addFunction("PlaySound", &PlaySound)
                .addFunction("FindMenu", &FindMenu)
+               .addFunction("GetCurrentMenu", &GetCurrentMenu)
+               .addFunction("GetMenu", &GetMenu)
                .endClass();
        }
     };
