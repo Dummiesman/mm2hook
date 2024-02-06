@@ -1322,6 +1322,7 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("GetFrameHeightWithSpacing", &ImGui::GetFrameHeightWithSpacing)
         .addFunction("GetWindowSize", &ImGui::GetWindowSize)
         .addFunction("GetWindowPos", &ImGui::GetWindowPos)
+        .addFunction("GetContentRegionAvail", &ImGui::GetContentRegionAvail)
         .addFunction("SetNextWindowBgAlpha", &ImGui::SetNextWindowBgAlpha)
         .addFunction("SetNextWindowSize", &ImGui::SetNextWindowSize)
         .addFunction("SetNextWindowPos", &ImGui::SetNextWindowPos)
@@ -1368,6 +1369,12 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("IsMouseClicked",&ImGui::IsMouseClicked)
         .addFunction("GetMouseDragDelta", &ImGui::GetMouseDragDelta)
         .addFunction("IsMouseDragging", &ImGui::IsMouseDragging)
+
+        .addFunction("IsKeyPressed", &ImGui::IsKeyPressed)
+        .addFunction("IsKeyReleased", &ImGui::IsKeyReleased)
+        .addFunction("SetKeyboardFocusHere", &ImGui::SetKeyboardFocusHere)
+            
+        .addFunction("IsWindowDocked", &ImGui::IsWindowDocked)
 
         .addFunction("GetWindowDrawList", &ImGui::GetWindowDrawList)
 
