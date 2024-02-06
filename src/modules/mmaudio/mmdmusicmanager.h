@@ -18,6 +18,7 @@ namespace MM2
         static hook::Field<0x3C, int> _chaseSegmentIndex;
         static hook::Field<0x40, int> _resultsSegmentIndex;
         static hook::Field<0x44, int> _startSegmentIndex;
+        static hook::Field<0x50, bool> _disableIdleSegmentSwitch;
     public:
         static hook::Type<MMDMusicManager*> Instance;
 
@@ -29,6 +30,9 @@ namespace MM2
         int GetChaseSegmentIndex() const            { return _chaseSegmentIndex.get(this); }
         int GetResultsSegmentIndex() const          { return _resultsSegmentIndex.get(this); }
         int GetStartSegmentIndex() const            { return _startSegmentIndex.get(this); }
+
+        bool GetIdleSegmentSwitchEnabled() const       { return !_disableIdleSegmentSwitch.get(this); }
+        void SetIdleSegmentSwitchEnabled(bool enabled) { _disableIdleSegmentSwitch.set(this, !enabled); }
 
         void EchoOn(float delay, float volumeScale)
         {
@@ -50,6 +54,7 @@ namespace MM2
             .addPropertyReadOnly("ChaseSegmentIndex", &GetChaseSegmentIndex)
             .addPropertyReadOnly("ResultsSegmentIndex", &GetResultsSegmentIndex)
             .addPropertyReadOnly("StartSegmentIndex", &GetStartSegmentIndex)
+            .addProperty("EnableIdleSegmentSwitch", &GetIdleSegmentIndex, &SetIdleSegmentSwitchEnabled)
             .addFunction("EchoOn", &EchoOn)
             .addFunction("EchoOn", &EchoOff)
             .endClass();
