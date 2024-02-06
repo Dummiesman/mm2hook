@@ -9,6 +9,7 @@ private:
     static std::vector<void(*)()> stateEndCallbacks;
     static std::vector<void(*)()> stateBeginCallbacks;
     static std::vector<void(*)(const char*)> chatMessageCallbacks;
+    static std::vector<void(*)(int, const char*)> printerCallbacks;
     static std::vector<void(*)()> resetCallbacks;
 public:
     static void RegisterBeginPhaseCallback(void(*cb)(bool));
@@ -17,10 +18,12 @@ public:
     static void RegisterStateBeginCallback(void(*cb)());
     static void RegisterChatMessageCallback(void(*cb)(const char*));
     static void RegisterOnResetCallback(void(*cb)());
-    
+    static void RegisterPrinterCallback(void(*cb)(int, const char*));
+
     static void BeginPhase(bool a1);
     static void EndPhase();
 
+    static void Printer(int level, const char* text);
     static void onStateBegin();
     static void onStateEnd();
     static void onChatMessage(const char* message);

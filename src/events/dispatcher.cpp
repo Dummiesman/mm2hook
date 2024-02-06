@@ -8,6 +8,7 @@ std::vector<void(*)()> GameEventDispatcher::endPhaseCallbacks = {};
 std::vector<void(*)()> GameEventDispatcher::stateEndCallbacks = {};
 std::vector<void(*)()> GameEventDispatcher::stateBeginCallbacks = {};
 std::vector<void(*)(const char*)> GameEventDispatcher::chatMessageCallbacks = {};
+std::vector<void(*)(int, const char*)> GameEventDispatcher::printerCallbacks = {};
 std::vector<void(*)()> GameEventDispatcher::resetCallbacks = {};
 
 /*
@@ -43,6 +44,11 @@ void GameEventDispatcher::RegisterOnResetCallback(void(*cb)())
     resetCallbacks.push_back(cb);
 }
 
+void GameEventDispatcher::RegisterPrinterCallback(void(*cb)(int, const char*))
+{
+    printerCallbacks.push_back(cb);
+}
+
 /*
     Dispatcher static functions
 */
@@ -56,6 +62,12 @@ void GameEventDispatcher::EndPhase()
 {
     for (auto cb : endPhaseCallbacks) cb();
     MM2Lua::OnShutdown();
+}
+
+void GameEventDispatcher::Printer(int level, const char* text)
+{
+    for (auto cb : printerCallbacks) cb(level, text);
+    MM2Lua::OnDebugMessage(level, text);
 }
 
 void GameEventDispatcher::onStateBegin()
