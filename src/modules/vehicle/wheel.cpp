@@ -28,7 +28,7 @@ namespace MM2
             this->Center.Z = outMatrix.m32;
 
             float halfHeight = (outMatrix.m11 - outMatrix.m01) * 0.5f;
-            this->Radius = fabs(halfHeight);
+            this->Radius = fabsf(halfHeight);
 
             this->Width = outMatrix.m10 - outMatrix.m00;
         }
