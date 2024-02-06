@@ -76,6 +76,7 @@ public:
     static void OnDisconnect();
     static void OnSessionCreate();
     static void OnSessionJoin();
+    static void OnDebugMessage(int level, const char* text);
 
     static void OnStateBegin();
     static void OnStateEnd();

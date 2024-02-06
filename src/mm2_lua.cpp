@@ -414,6 +414,14 @@ void MM2Lua::OnSessionJoin()
     }
 }
 
+void MM2Lua::OnDebugMessage(int level, const char* text)
+{
+    if (IsInitialized()) {
+        LuaRef func(L, "onDebugMessage");
+        TryCallFunction(func, level, text);
+    }
+}
+
 void MM2Lua::OnDisconnect() 
 {
     if (IsInitialized()) {
