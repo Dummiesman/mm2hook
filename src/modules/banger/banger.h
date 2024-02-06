@@ -247,6 +247,7 @@ namespace MM2
             dgBangerManager
         */
         AGE_API dgHitBangerInstance * GetBanger()                  { return hook::Thunk<0x442780>::Call<dgHitBangerInstance*>(this); }
+        AGE_API void Init(int poolSize)                            { hook::Thunk<0x4427E0>::Call<void>(this, poolSize); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<dgBangerManager, asNode>("dgBangerManager")
