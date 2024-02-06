@@ -10,16 +10,25 @@ bool mmWaypointObject::radiusHitLua(Vector3 pos)
     return this->RadiusHit(pos) == TRUE;
 }
 
-MM2::mmWaypointObject::mmWaypointObject(Vector4 const& positionAndHeading, const char* modelName, int id, float radius, mmWaypointObjectType type, float yOffset)
+bool mmWaypointObject::planeHitLua(Matrix34 vehMatrix, Vector2 linePtA, Vector2 linePtB, Vector3 vehSize)
+{
+    return this->PlaneHit(vehMatrix, linePtA, linePtB, vehSize) == TRUE;
+}
+
+void mmWaypointObject::setHitFlagLua(bool flag)
+{
+    this->SetHitFlag(flag ? TRUE : FALSE);
+}
+
+mmWaypointObject::mmWaypointObject(Vector4 const& positionAndHeading, const char* modelName, int id, float radius, mmWaypointObjectType type, float yOffset)
 {
     scoped_vtable x(this);
     hook::Thunk<0x43DE30>::Call<void>(this, &positionAndHeading, modelName, id, radius, type, yOffset);
 }
 
-MM2::mmWaypointObject::~mmWaypointObject()
+mmWaypointObject::~mmWaypointObject()
 {
-    scoped_vtable x(this);
-    hook::Thunk<0x43E010>::Call<void>(this);
+    asNode::~asNode();
 }
 
 AGE_API void mmWaypointObject::Update()
@@ -47,6 +56,16 @@ AGE_API BOOL mmWaypointObject::RadiusHit(Vector3 pos)
     return hook::Thunk<0x43E3B0>::Call<BOOL>(this, pos);
 }
 
+AGE_API BOOL MM2::mmWaypointObject::PlaneHit(Matrix34 vehMatrix, Vector2 linePtA, Vector2 linePtB, Vector3 vehSize)
+{
+    return hook::Thunk<0x43E210>::Call<BOOL>(this, vehMatrix, linePtA, linePtB, vehSize);
+}
+
+AGE_API void MM2::mmWaypointObject::SetHitFlag(BOOL flag)
+{
+    hook::Thunk<0x43E6D0>::Call<void>(this, flag);
+}
+
 AGE_API void mmWaypointObject::SetRadius(float radius)
 {
     hook::Thunk<0x43E170>::Call<void>(this, radius);
@@ -72,6 +91,26 @@ AGE_API void mmWaypointObject::Move()
     hook::Thunk<0x43E5F0>::Call<void>(this);
 }
 
+AGE_API void MM2::mmWaypointObject::CalculateGatePoints()
+{
+    hook::Thunk<0x43E190>::Call<void>(this);
+}
+
+void MM2::mmWaypointObject::Clear()
+{
+    m_Cleared = TRUE;
+}
+
+bool mmWaypointObject::Cleared() const
+{
+    return this->m_Cleared == TRUE;
+}
+
+int mmWaypointObject::GetHitIDMask() const
+{
+    return HitID;
+}
+
 void mmWaypointObject::BindLua(LuaState L)
 {
     LuaBinding(L).beginExtendClass<mmWaypointObject, asNode>("mmWaypointObject")
@@ -84,10 +123,14 @@ void mmWaypointObject::BindLua(LuaState L)
         .addFunction("Activate", &Activate)
         .addFunction("Deactivate", &Deactivate)
         .addFunction("RadiusHit", &radiusHitLua)
+        .addFunction("PlaneHit", &planeHitLua)
         .addFunction("SetRadius", &SetRadius)
         .addFunction("SetPos", &SetPos)
+        .addFunction("SetPosition", &SetPos)
         .addFunction("SetHeading", &SetHeading)
         .addFunction("SetHeadingType", &SetHeadingType)
+        .addFunction("SetHitFlag", &setHitFlagLua)
         .addFunction("Move", &Move)
+        .addFunction("CalculateGatePoints", &CalculateGatePoints)
         .endClass();
 }

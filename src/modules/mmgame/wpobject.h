@@ -17,10 +17,10 @@ namespace MM2
 
     class mmWaypointObject : public asNode {
     private:
-        int dword_18;
+        BOOL m_Cleared;
         mmWaypointObjectType Type;
         int HitFlag;
-        int ID;
+        int HitID;
         int HitRoom;
         mmWaypointInstance* lvlInstancePtr;
         Vector2 RightGatePt;
@@ -32,9 +32,9 @@ namespace MM2
         float yOffset;
     private:
         bool radiusHitLua(Vector3 pos);
+        bool planeHitLua(Matrix34 vehMatrix, Vector2 linePtA, Vector2 linePtB, Vector3 vehSize);
+        void setHitFlagLua(bool flag);
     public:
-        ANGEL_ALLOCATOR
-
         mmWaypointObject() = delete;
         mmWaypointObject(Vector4 const& positionAndHeading, const char* modelName, int id, float radius, mmWaypointObjectType type, float yOffset);
         ~mmWaypointObject();
@@ -51,11 +51,18 @@ namespace MM2
         AGE_API void Activate();
         AGE_API void Deactivate();
         AGE_API BOOL RadiusHit(Vector3 pos);
+        AGE_API BOOL PlaneHit(Matrix34 vehMatrix, Vector2 linePtA, Vector2 linePtB, Vector3 vehSize);
+        AGE_API void SetHitFlag(BOOL flag);
         AGE_API void SetRadius(float radius);
         AGE_API void SetPos(Vector3 pos);
         AGE_API void SetHeading(float heading);
         AGE_API void SetHeadingType(int type);
         AGE_API void Move();
+        AGE_API void CalculateGatePoints();
+
+        void Clear();
+        bool Cleared() const;
+        int GetHitIDMask() const;
 
         static void BindLua(LuaState L);
     };
