@@ -62,6 +62,12 @@ void vehCarModelFeatureHandler::DrawGlow() {
     model->vehCarModel::DrawGlow();
 }
 
+void vehCarModelFeatureHandler::DrawShadow()
+{
+    auto model = reinterpret_cast<vehCarModel*>(this);
+    model->vehCarModel::DrawShadow();
+}
+
 void vehCarModelFeatureHandler::Install() {
     InstallPatch({ 0x60, 0x1 }, {
         0x42BB6E + 1, // Change size of vehCarModel on allocation
@@ -111,6 +117,12 @@ void vehCarModelFeatureHandler::Install() {
     InstallVTableHook("vehCarModel::DrawGlow",
         &DrawGlow, {
             0x5B2CE8
+        }
+    );
+
+    InstallVTableHook("vehCarModel::DrawShadow",
+        &DrawShadow, {
+            0x5B2CE0
         }
     );
 
