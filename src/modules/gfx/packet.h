@@ -44,6 +44,8 @@ namespace MM2
         Vector2 getTexCoordLua(int index);
     public:
         static void BeginRef();
+        bool NeedsLock() const;
+        bool NeedsUnlock() const;
         void DoLock();
         void DoUnlock();
         void GetPosition(Vector3& out, int index);

@@ -37,14 +37,30 @@ void gfxPacket::BeginRef()
     hook::StaticThunk<0x4B3320>::Call<void>();
 }
 
+bool gfxPacket::NeedsLock() const
+{
+    return (StartVertex >= 0 && Positions == nullptr);
+}
+
+bool gfxPacket::NeedsUnlock() const
+{
+    return (StartVertex >= 0 && Positions != nullptr);
+}
+
 void gfxPacket::DoLock()
 {
-    hook::Thunk<0x4B4720>::Call<void>(this);
+    if (NeedsLock()) 
+    {
+        hook::Thunk<0x4B4720>::Call<void>(this);
+    }
 }
 
 void gfxPacket::DoUnlock()
 {
-    hook::Thunk<0x4B4740>::Call<void>(this);
+    if (NeedsUnlock())
+    {
+        hook::Thunk<0x4B4740>::Call<void>(this);
+    }
 }
 
 void gfxPacket::GetPosition(Vector3 & out, int index)
