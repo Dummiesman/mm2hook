@@ -1,4 +1,5 @@
 #pragma once
+#include <modules\core\stream.h>
 
 namespace MM2
 {
@@ -35,6 +36,11 @@ namespace MM2
         AGE_API void CloseFile(void)                            { return hook::Thunk<0x4A4800>::Call<void>(this); }
         AGE_API void SkipTo(LPCSTR file)                        { return hook::Thunk<0x4A48D0>::Call<void>(this, file); }
         AGE_API void Skip(void)                                 { return hook::Thunk<0x4A4970>::Call<void>(this); }
+
+        AGE_API const char* GetCurrentFileName() const
+        {
+            return file;
+        }
     };
 
     // Lua initialization
