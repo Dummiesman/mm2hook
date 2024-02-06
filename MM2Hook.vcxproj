@@ -853,6 +853,7 @@
     <ClCompile Include="src\modules\vehicle\car.cpp" />
     <ClCompile Include="src\modules\vehicle\cardamage.cpp" />
     <ClCompile Include="src\modules\vehicle\carmodel.cpp" />
+    <ClCompile Include="src\modules\vehicle\carsim.cpp" />
     <ClCompile Include="src\modules\vehicle\trailer.cpp" />
     <ClCompile Include="src\modules\vehicle\wheel.cpp" />
     <ClCompile Include="src\settings.cpp" />

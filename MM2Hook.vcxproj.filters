@@ -2703,6 +2703,9 @@
     <ClCompile Include="src\modules\audio\streamingmusic.cpp">
       <Filter>Source Files\modules\audio</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\vehicle\carsim.cpp">
+      <Filter>Source Files\modules\vehicle</Filter>
+    </ClCompile>
     <ClCompile Include="src\modules\node\linear.cpp">
       <Filter>Source Files\modules\node</Filter>
     </ClCompile>
