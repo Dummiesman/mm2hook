@@ -131,6 +131,20 @@ namespace MM2
         hook::Thunk<0x4C0160>::Call<void>(this);
     }
 
+    AGE_API void Vector3::Min(const Vector3& vec1, const Vector3& vec2)
+    {
+        this->X = (vec1.X < vec2.X) ? vec1.X : vec2.X;
+        this->Y = (vec1.Y < vec2.Y) ? vec1.Y : vec2.Y;
+        this->Z = (vec1.Z < vec2.Z) ? vec1.Z : vec2.Z;
+    }
+
+    AGE_API void Vector3::Max(const Vector3& vec1, const Vector3& vec2)
+    {
+        this->X = (vec1.X > vec2.X) ? vec1.X : vec2.X;
+        this->Y = (vec1.Y > vec2.Y) ? vec1.Y : vec2.Y;
+        this->Z = (vec1.Z > vec2.Z) ? vec1.Z : vec2.Z;
+    }
+
     AGE_API bool Vector3::IsEqual(const Vector3& vec) const {
         return vec.X == this->X && vec.Y == this->Y && vec.Z == this->Z;
     }
@@ -225,6 +239,8 @@ namespace MM2
             .addFunction("FlatDist", &FlatDist)
             .addFunction("Approach", &Approach)
             .addFunction("Negate", &Negate)
+            .addFunction("Min", &Min)
+            .addFunction("Max", &Max)
             .addFunction("Print", static_cast<void(Vector3::*)(LPCSTR)>(&Vector3::Print))
 
             .addFunction("RGBtoHSV", &RGBtoHSV)

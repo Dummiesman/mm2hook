@@ -58,6 +58,8 @@ namespace MM2
         AGE_API void Normalize();
         AGE_API void HSVtoRGB();
         AGE_API void RGBtoHSV();
+        AGE_API void Min(const Vector3& vec1, const Vector3& vec2);
+        AGE_API void Max(const Vector3& vec1, const Vector3& vec2);
         AGE_API bool IsEqual(const Vector3& vec) const;
         AGE_API void Print() const;
         AGE_API void Print(LPCSTR caption);
