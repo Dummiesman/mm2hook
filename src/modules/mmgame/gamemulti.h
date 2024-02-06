@@ -50,7 +50,7 @@ namespace MM2
         virtual AGE_API void NextRace() override            { hook::Thunk<0x421B70>::Call<void>(this); };
         virtual AGE_API void HitWaterHandler() override     { hook::Thunk<0x439130>::Call<void>(this); };
         virtual AGE_API void DropThruCityHandler() override { hook::Thunk<0x439230>::Call<void>(this); };
-        virtual AGE_API void SendChatMessage(char *a1) override       
+        virtual AGE_API void SendChatMessage(LPCSTR *a1) override       
                                                             { hook::Thunk<0x43B530>::Call<void*>(this, a1); }
         virtual AGE_API void BeDone(int a1) override        { hook::Thunk<0x43A4D0>::Call<void>(this, a1); };
 
