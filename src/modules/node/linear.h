@@ -1,4 +1,5 @@
 #pragma once
+#include <modules\node\node.h>
 
 namespace MM2
 {
@@ -11,6 +12,8 @@ namespace MM2
     // Class definitions
     class asLinearCS : public asNode
     {
+    private:
+        static hook::Type<Matrix34*> CurrentMatrix;
     private:
         Matrix34 matrix;
         Matrix34 camera;
@@ -32,6 +35,11 @@ namespace MM2
         */
         virtual AGE_API void Cull(void) override            { hook::Thunk<0x4A3400>::Call<void>(this); };
         virtual AGE_API void Update(void) override          { hook::Thunk<0x4A3370>::Call<void>(this); };
+
+        /*
+            asLinearCS Members
+        */
+        static Matrix34* GetCurrentMatrix()                 { return CurrentMatrix.get(); }
 
         //lua
         static void BindLua(LuaState L) {
