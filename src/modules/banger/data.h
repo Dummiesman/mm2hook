@@ -16,7 +16,7 @@ namespace MM2
 
     class dgBangerData : public asNode
     {
-    private:
+    public:
         uint Index;
         Vector3 CG;
         Vector3 Size;
@@ -48,14 +48,14 @@ namespace MM2
         int GeomSet;
         char pad138[28];
     public:
-        Vector3 getGlowOffset(int num) 
+        Vector3 GetGlowOffset(int num) 
         {
             if (num >= this->NumGlows || num < 0)
-                return Vector3();
+                return Vector3::ORIGIN;
             return Vector3(this->GlowOffsets[num]);
         }
 
-        void setGlowOffset(int num, Vector3 offset)
+        void SetGlowOffset(int num, Vector3 offset)
         {
             if (num >= this->NumGlows || num < 0)
                 return;
@@ -88,8 +88,8 @@ namespace MM2
                 .addVariable("AudioId", &dgBangerData::AudioId)
                 .addVariableRef("Bound", &dgBangerData::Bound)
 
-                .addFunction("GetGlowOffset", &getGlowOffset)
-                .addFunction("SetGlowOffset", &setGlowOffset)
+                .addFunction("GetGlowOffset", &GetGlowOffset)
+                .addFunction("SetGlowOffset", &SetGlowOffset)
                 .endClass();
         }
     };
