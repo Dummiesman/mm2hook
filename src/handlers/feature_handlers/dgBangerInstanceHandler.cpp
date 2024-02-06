@@ -59,29 +59,15 @@ void dgBangerInstanceHandler::DrawShadow()
 
     bool prevLighting = gfxRenderState::SetLighting(true);
 
-    //get shaders
     auto shaders = banger->GetShader(banger->GetVariant());
-
-    //get model
     modStatic* model = banger->GetGeomBase(0)->GetHighestLOD();
 
     if (model != nullptr)
     {
-        Matrix34 shadowMatrix;
-        Matrix34 dummyMatrix;
+        Matrix34 shadowMatrix, dummyMatrix;
         Matrix34 bangerMatrix = banger->GetMatrix(&dummyMatrix);
-
-        if (lvlInstance::ComputeShadowMatrix(&shadowMatrix, banger->GetRoomId(), &bangerMatrix))
+        if (lvlInstance::ComputeShadowProjectionMatrix(shadowMatrix, banger->GetRoomId(), timeWeather->KeyPitch, timeWeather->KeyHeading, bangerMatrix))
         {
-            Vector3 lightDirection;
-            SetLightDirection(&lightDirection, timeWeather->KeyHeading, timeWeather->KeyPitch);
-
-            float angle = lightDirection.X * shadowMatrix.m10 + lightDirection.Z * shadowMatrix.m12;
-            shadowMatrix.SetRow(1, Vector3(lightDirection.X, -angle, lightDirection.Z));
-
-            float dist = shadowMatrix.GetRow(3).Dist(bangerMatrix.GetRow(3));
-            shadowMatrix.SetRow(3, shadowMatrix.GetRow(3) + shadowMatrix.GetRow(1) * dist);
-
             gfxRenderState::SetWorldMatrix(shadowMatrix);
             model->DrawShadowed(shaders, ComputeShadowIntensity(timeWeather->KeyColor));
         }
@@ -90,7 +76,7 @@ void dgBangerInstanceHandler::DrawShadow()
     gfxRenderState::SetLighting(prevLighting);
 }
 
-bool dgBangerInstanceHandler::BeginGeom(const char* a1, const char* a2, int a3)
+bool dgBangerInstanceHandler::dgBangerInstance_BeginGeom(const char* a1, const char* a2, int a3)
 {
     //We hook this to set flag 64 (shadow)
     auto inst = reinterpret_cast<lvlInstance*>(this);
@@ -98,6 +84,19 @@ bool dgBangerInstanceHandler::BeginGeom(const char* a1, const char* a2, int a3)
 
     //Call original
     return inst->BeginGeom(a1, a2, a3);
+}
+
+void dgBangerInstanceHandler::dgBangerManager_Init(int poolSize)
+{
+    //We hook this to set flag 64 (shadow)
+    auto mgr = reinterpret_cast<dgBangerManager*>(this);
+    mgr->Init(poolSize);
+
+    for (int i = 0; i < poolSize; i++)
+    {
+        auto banger = mgr->GetBanger();
+        banger->SetFlag(64);
+    }
 }
 
 void dgBangerInstanceHandler::Install()
@@ -119,11 +118,17 @@ void dgBangerInstanceHandler::Install()
     );
 
     InstallCallback("dgBangerInstance::Init", "Hook BeginGeom to set instance shadowing flag.",
-        &BeginGeom, {
+        &dgBangerInstance_BeginGeom, {
             cb::call(0x53C7DE), // aiTrafficLightInstance::Init
             cb::call(0x441C86), // dgUnhitBangerInstance::Init
         }
     );
+
+    //InstallCallback("dgBangerManager::Init", "Hook Init to set instance shadowing flag.",
+    //    &dgBangerManager_Init, {
+    //        cb::call(0x4129F4), // mmGame::Init
+    //    }
+    //);
 
     // increases the maximum distance from 5 to 10 meters to enable shadow rendering for very tall props 
     InstallPatch({ 0xD8, 0x25, 0x28, 0x4, 0x5B, 0x0 }, {

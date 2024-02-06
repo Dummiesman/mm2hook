@@ -20,15 +20,13 @@ void vehCableCarInstanceHandler::DrawShadow()
     if (inst->GetGeomIndex() == 0)
         return;
 
-    //get our shader set
+    // get our shader set
     int shaderSet = 0;
     auto shaders = inst->GetShader(shaderSet);
 
-    //
-    Matrix34 shadowMatrix;
-    Matrix34 dummyMatrix;
-
-    if (lvlInstance::ComputeShadowMatrix(&shadowMatrix, inst->GetRoomId(), &inst->GetMatrix(&dummyMatrix)))
+    // draw drop shadow
+    Matrix34 shadowMatrix, dummyMatrix;
+    if (lvlInstance::ComputeShadowMatrix(shadowMatrix, inst->GetRoomId(), inst->GetMatrix(&dummyMatrix)))
     {
         //setup renderer
         gfxRenderState::SetWorldMatrix(shadowMatrix);
