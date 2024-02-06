@@ -80,6 +80,13 @@ namespace MM2
         return std::make_tuple((int)outType, (int)outId, (int)outRoom);
     }
 
+    std::tuple<aiPath*, bool> aiMap::detRdSegBetweenIntsLua(aiIntersection* intersectionA, aiIntersection* intersectionB)
+    {
+        bool outArg = false;
+        auto path = this->DetRdSegBetweenInts(intersectionA, intersectionB, &outArg);
+        return std::make_tuple(path, outArg);
+    }
+
     // Instance
     aiMap* aiMap::GetInstance() {
         return Instance.ptr();
@@ -193,7 +200,8 @@ namespace MM2
     AGE_API aiPedestrian * aiMap::Pedestrian(int num) const     { return hook::Thunk<0x534AB0>::Call<aiPedestrian *>(this, num); }
     AGE_API aiIntersection* aiMap::Intersection(int num) const  { return hook::Thunk<0x534880>::Call<aiIntersection*>(this, num); }
     AGE_API aiPath* aiMap::Path(int num) const                  { return hook::Thunk<0x534850>::Call<aiPath*>(this, num); }
-
+    AGE_API aiPath* aiMap::DetRdSegBetweenInts(aiIntersection* intersectionA, aiIntersection* intersectionB, bool* outRdEndsAtB)
+                                                                { return hook::Thunk<0x53A680>::Call<aiPath*>(this, intersectionA, intersectionB, outRdEndsAtB); }
     aiMapComponentType aiMap::MapComponentType(int room, int* outId)
                                                                 { return hook::Thunk<0x537600>::Call<aiMapComponentType>(this, room, outId); }
     int aiMap::MapComponent(const Vector3& position, short* outId, short* outType, int room)
@@ -222,6 +230,7 @@ namespace MM2
             .addFunction("CTFOpponent", &CTFOpponent)
             .addFunction("Vehicle", &Vehicle)
             .addFunction("Intersection", &Intersection)
+            .addFunction("DetRdSegBetweenInts", &detRdSegBetweenIntsLua)
             .addPropertyReadOnly("CityData", &GetCityData)
             .addPropertyReadOnly("RaceData", &GetRaceData)
             .addPropertyReadOnly("PoliceForce", &GetPoliceForce)

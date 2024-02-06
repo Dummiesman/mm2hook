@@ -173,6 +173,7 @@ namespace MM2
         std::tuple<int, int> mapComponentTypeLua(int room);
         std::tuple<int, int> mapComponentLua(const Vector3& position, int room);
         std::tuple<int, int, int> positionToAIMapCompLua(const Vector3& position);
+        std::tuple<aiPath*, bool> detRdSegBetweenIntsLua(aiIntersection* intersectionA, aiIntersection* intersectionB);
     public:
         static int GetCTFOpponentTypeCount();
         static LPCSTR GetCTFOpponentType(int id);
@@ -238,6 +239,7 @@ namespace MM2
         AGE_API aiPedestrian* Pedestrian(int num) const;
         AGE_API aiIntersection* Intersection(int num) const;
         AGE_API aiPath* Path(int num) const;
+        AGE_API aiPath* DetRdSegBetweenInts(aiIntersection* intersectionA, aiIntersection* intersectionB, bool* outRdEndsAtB);
         aiMapComponentType MapComponentType(int room, int* outId);
         int MapComponent(const Vector3& position, short* outId, short* outType, int room);
         BOOL PositionToAIMapComp(const Vector3& position, short* outId, short* outType, short* outRoom, short wantedRoadId);
