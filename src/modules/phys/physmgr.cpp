@@ -635,7 +635,7 @@ AGE_API bool MM2::dgPhysManager::Collide(lvlSegment& segment, lvlIntersection* i
     auto probeTimer = Timer::Timer();
     bool res = hook::Thunk<0x468E40>::Call<bool>(this, &segment, intersection, a4, ignoreInstance, flags1, flags2);
 
-    float probeTime = (Timer::Ticks() - probeTimer.StartTicks) * Timer::TicksToMilliseconds;
+    float probeTime = (Timer::Ticks() - probeTimer.TickCount) * Timer::TicksToMilliseconds;
     this->TotalProbeTime += probeTime;
     if (this->IsUpdating == FALSE)
     {
@@ -699,7 +699,7 @@ void MM2::dgPhysManager::Update()
         }   
     }
 
-    dgPhysManager::perfObjPairCollecting.set((Timer::Ticks() - physObjPairCollectingTimer.StartTicks) * Timer::TicksToMilliseconds);
+    dgPhysManager::perfObjPairCollecting.set((Timer::Ticks() - physObjPairCollectingTimer.TickCount) * Timer::TicksToMilliseconds);
     auto totalCollisionTimer = Timer::Timer();
 
     // compute samples
@@ -729,7 +729,7 @@ void MM2::dgPhysManager::Update()
                 entity->Update();
             }
         }
-        perfMoverUpdate.set(perfMoverUpdate.get() + ((Timer::Ticks() - moverUpdateTimer.StartTicks) * Timer::TicksToMilliseconds));
+        perfMoverUpdate.set(perfMoverUpdate.get() + ((Timer::Ticks() - moverUpdateTimer.TickCount) * Timer::TicksToMilliseconds));
 
         // gather collidables
         auto gatheringTimer = Timer::Timer();
@@ -742,7 +742,7 @@ void MM2::dgPhysManager::Update()
                 this->GatherCollidables(entry);
             }
         }
-        perfPhysGathering.set(perfPhysGathering.get() + ((Timer::Ticks() - gatheringTimer.StartTicks) * Timer::TicksToMilliseconds));
+        perfPhysGathering.set(perfPhysGathering.get() + ((Timer::Ticks() - gatheringTimer.TickCount) * Timer::TicksToMilliseconds));
 
         // collide
         auto collisionTimer = Timer::Timer();
@@ -800,7 +800,7 @@ void MM2::dgPhysManager::Update()
             }
         }
 
-        perfPhysCollide.set(perfPhysCollide.get() + ((Timer::Ticks() - collisionTimer.StartTicks) * Timer::TicksToMilliseconds));
+        perfPhysCollide.set(perfPhysCollide.get() + ((Timer::Ticks() - collisionTimer.TickCount) * Timer::TicksToMilliseconds));
 
         // update entry flags
         for (int j = 0; j < NumActiveMovers; j++)
@@ -837,7 +837,7 @@ void MM2::dgPhysManager::Update()
         }
     }
 
-    perfTotalCollisionTime.set((Timer::Ticks() - totalCollisionTimer.StartTicks) * Timer::TicksToMilliseconds);
+    perfTotalCollisionTime.set((Timer::Ticks() - totalCollisionTimer.TickCount) * Timer::TicksToMilliseconds);
     datTimeManager::SetTempOversampling(false, numSamples);
 
     // post-update
@@ -851,13 +851,13 @@ void MM2::dgPhysManager::Update()
             entity->PostUpdate();
         }
     }
-    perfPostCollision.set((Timer::Ticks() - postCollisionTimer.StartTicks) * Timer::TicksToMilliseconds);
+    perfPostCollision.set((Timer::Ticks() - postCollisionTimer.TickCount) * Timer::TicksToMilliseconds);
 
     // calculate stats
     this->MoverVsCollidable = 0;
     this->MoverVsMover = 0;
 
-    perfTotalUpdateTime = ((Timer::Ticks() - totalUpdateTimer.StartTicks) * Timer::TicksToMilliseconds);
+    perfTotalUpdateTime = ((Timer::Ticks() - totalUpdateTimer.TickCount) * Timer::TicksToMilliseconds);
     for (int i = 0; i < NumActiveMovers; i++)
     {
         auto entry = &Table[i];
