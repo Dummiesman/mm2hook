@@ -140,7 +140,7 @@ AGE_API BOOL aiPoliceOfficer::Fov(vehCar* perpCar)
 	perpPosition.Y += 1.f;
 
 	segment.Set(copPosition, perpPosition, 0, nullptr);
-	return dgPhysManager::Instance->Collide(segment, &intersection, 0, nullptr, (ushort)RoomFlags::SpecialBound, 0) == FALSE;
+	return dgPhysManager::Instance->Collide(segment, &intersection, 0, nullptr, (ushort)RoomFlags::SpecialBound, 0) ? FALSE : TRUE;
 }
 
 AGE_API BOOL aiPoliceOfficer::Collision(vehCar* perpCar)             { return hook::Thunk<0x53E370>::Call<BOOL>(this, perpCar); }
@@ -149,7 +149,7 @@ AGE_API BOOL aiPoliceOfficer::HitMe(vehCar* perpCar)                 { return ho
 AGE_API BOOL aiPoliceOfficer::IsPerpACop(vehCar* perpCar)
 {
 	char* vehName = perpCar->GetCarDamage()->GetName(); // we can't use vehCarSim because the game forces vpcop to vpmustang99...
-	return vehCarAudioContainer::IsPolice(vehName) == TRUE;
+	return vehCarAudioContainer::IsPolice(vehName) ? TRUE : FALSE;
 }
 
 AGE_API BOOL aiPoliceOfficer::OffRoad(vehCar* perpCar)
