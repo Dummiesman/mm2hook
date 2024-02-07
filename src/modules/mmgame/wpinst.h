@@ -8,6 +8,7 @@ namespace MM2
     // Forward declarations
     class mmWaypointInstance;
     class mmBillInstance;
+    class mmCheckpointInstance;
 
     // Class definitions
     class mmWaypointInstance : public lvlInstance {
@@ -101,4 +102,24 @@ namespace MM2
         }
     };
     ASSERT_SIZEOF(mmBillInstance, 0x5C);
+
+    class mmCheckpointInstance : public mmWaypointInstance
+    {
+    public:
+        virtual AGE_API void Init(const char* a1, Vector3 scale) override
+        {
+            hook::Thunk<0x43F600>::Call<void>(this, a1, scale);
+        }
+
+        virtual AGE_API unsigned int SizeOf() override
+        {
+            return sizeof(mmCheckpointInstance);
+        }
+
+        virtual AGE_API void Draw(int lod) override
+        {
+            hook::Thunk<0x43F650>::Call<void>(this, lod);
+        }
+    };
+    ASSERT_SIZEOF(mmCheckpointInstance, 0x5C);
 }
