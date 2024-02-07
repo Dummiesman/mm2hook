@@ -49,6 +49,14 @@ namespace MM2
             return _rNumLanes.get(this);
     }
 
+    float aiPath::GetLaneDistances(int lane, int side) const
+    {
+        if (side == 0)
+            return _lLaneDistances.get(this)[lane];
+        else
+            return _rLaneDistances.get(this)[lane];
+    }
+
     Vector3 aiPath::GetCableCarVertex(int section, int side) const
     {
         if (this->HasCableCarLine(side)) 

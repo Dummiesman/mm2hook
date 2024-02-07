@@ -73,6 +73,7 @@ namespace MM2
         AGE_API Vector3 operator/(float value) const;
         AGE_API Vector3 operator*(float value) const;
         AGE_API Vector3 operator%(const Vector3& vec) const;
+        AGE_API Vector3 Vector3::Multiply(const Vector3& vec) const;
 
         explicit operator Vector2() const;
         explicit operator Vector4() const;

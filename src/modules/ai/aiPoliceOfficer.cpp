@@ -77,6 +77,11 @@ short aiPoliceOfficer::GetState() const
 	return _vehiclePhysics.ptr(this)->GetState();
 }
 
+void aiPoliceOfficer::SetState(aiVehiclePhysicsState state)
+{
+	_vehiclePhysics.ptr(this)->SetState(state);
+}
+
 int aiPoliceOfficer::GetCurrentLap() const
 {
 	return _vehiclePhysics.ptr(this)->GetCurrentLap();
@@ -105,6 +110,11 @@ int aiPoliceOfficer::GetPoliceState() const
 	return _policeState.get(this);
 }
 
+void aiPoliceOfficer::SetPoliceState(aiPoliceState state)
+{
+	_policeState.set(this, state);
+}
+
 void MM2::aiPoliceOfficer::ChooseRandomAppBehavior()
 {
 	short chosenBehavior = _behaviorList.ptr(this)[(int)(frand() * _behaviorCount.get(this))];
@@ -114,6 +124,117 @@ void MM2::aiPoliceOfficer::ChooseRandomAppBehavior()
 AGE_API bool aiPoliceOfficer::InPersuit() const					     { return hook::Thunk<0x53E400>::Call<bool>(this); }
 AGE_API void aiPoliceOfficer::StartSiren()                           { hook::Thunk<0x53DBF0>::Call<void>(this); }
 AGE_API void aiPoliceOfficer::StopSiren()                            { hook::Thunk<0x53DC40>::Call<void>(this); }
+
+AGE_API BOOL aiPoliceOfficer::Fov(vehCar* perpCar)
+{
+	if (!hook::Thunk<0x53E2A0>::Call<BOOL>(this, perpCar))
+		return FALSE;
+
+	Vector3 copPosition = this->GetCar()->GetCarSim()->GetICS()->GetPosition();
+	Vector3 perpPosition = perpCar->GetCarSim()->GetICS()->GetPosition();
+
+	lvlSegment segment;
+	lvlIntersection intersection;
+
+	copPosition.Y += 1.f;
+	perpPosition.Y += 1.f;
+
+	segment.Set(copPosition, perpPosition, 0, nullptr);
+	return dgPhysManager::Instance->Collide(segment, &intersection, 0, nullptr, (ushort)RoomFlags::SpecialBound, 0) == FALSE;
+}
+
+AGE_API BOOL aiPoliceOfficer::Collision(vehCar* perpCar)             { return hook::Thunk<0x53E370>::Call<BOOL>(this, perpCar); }
+AGE_API BOOL aiPoliceOfficer::HitMe(vehCar* perpCar)                 { return hook::Thunk<0x53E390>::Call<BOOL>(this, perpCar); }
+
+AGE_API BOOL aiPoliceOfficer::IsPerpACop(vehCar* perpCar)
+{
+	char* vehName = perpCar->GetCarDamage()->GetName(); // we can't use vehCarSim because the game forces vpcop to vpmustang99...
+	return vehCarAudioContainer::IsPolice(vehName) == TRUE;
+}
+
+AGE_API BOOL aiPoliceOfficer::OffRoad(vehCar* perpCar)
+{
+	auto AIMAP = aiMap::GetInstance();
+	auto carSim = perpCar->GetCarSim();
+
+	int outId;
+	auto currentComponentType = AIMAP->MapComponentType(perpCar->GetModel()->GetRoomId(), &outId);
+
+	if (currentComponentType == aiMapComponentType::Road)
+	{
+		auto path = AIMAP->Path(outId);
+		auto carPosition = carSim->GetICS()->GetPosition();
+
+		float outDistanceFromCenter;
+		if (path->IsPosOnRoad(carPosition, 0.f, &outDistanceFromCenter) == 2) // Sidewalk
+			return TRUE;
+	}
+	else if (currentComponentType == aiMapComponentType::None || currentComponentType == aiMapComponentType::Shortcut)
+	{
+		return TRUE;
+	}
+
+	return FALSE;
+}
+
+AGE_API BOOL aiPoliceOfficer::WrongWay(vehCar* perpCar)
+{
+	auto AIMAP = aiMap::GetInstance();
+	auto carSim = perpCar->GetCarSim();
+
+	int outId;
+	auto currentComponentType = AIMAP->MapComponentType(perpCar->GetModel()->GetRoomId(), &outId);
+
+	if (currentComponentType == aiMapComponentType::Road)
+	{
+		auto path = AIMAP->Path(outId);
+		auto carMatrix = carSim->GetICS()->GetMatrix();
+
+		int leftSide = 0;
+		int rightSide = 1;
+		int rdVertIdx = path->RoadVertice(carMatrix.GetRow(3), rightSide);
+
+		Vector3 delta = carMatrix.GetRow(3) - path->GetCenterVertex(rdVertIdx);
+		Vector3 oriX = delta.Multiply(path->GetSideDirection(rdVertIdx));
+		Vector3 forwardDirection = path->GetForwardDirection(rdVertIdx);
+
+		bool carDirection = carMatrix.m22 * forwardDirection.Z + carMatrix.m20 * forwardDirection.X >= 0.f;
+		bool carInReverse = carSim->GetTransmission()->GetGear() == 0;
+		bool ambientsDriveOnLeft = AIMAP->GetCityData()->AreAmbientsDriveOnLeft();
+
+		float distToSide = -(oriX.X + oriX.Y + oriX.Z);
+		float sideWidth = 0.f;
+
+		ambientsDriveOnLeft ? distToSide *= -1.f : distToSide *= 1.f;
+		carDirection ? distToSide *= 1.f : distToSide *= -1.f;
+		carInReverse ? distToSide *= 1.f : distToSide *= -1.f;
+
+		if (!path->GetLaneCount(leftSide))
+		{
+			sideWidth = 9999.f;
+
+			carDirection ? sideWidth *= -1.f : sideWidth *= 1.f;
+			carInReverse ? sideWidth *= 1.f : sideWidth *= -1.f;
+		}
+
+		if (!path->GetLaneCount(rightSide))
+		{
+			sideWidth = -9999.f;
+
+			carDirection ? sideWidth *= -1.f : sideWidth *= 1.f;
+			carInReverse ? sideWidth *= 1.f : sideWidth *= -1.f;
+		}
+
+		if (distToSide >= sideWidth)
+		{
+			if (path->GetLaneDistances(2 * path->GetLaneCount(rightSide) + 1, rightSide) >= distToSide)
+				return TRUE;
+		}
+	}
+
+	return FALSE;
+}
+
 void AGE_API aiPoliceOfficer::DetectPerpetrator()                    { hook::Thunk<0x53DFD0>::Call<void>(this); }
 void AGE_API aiPoliceOfficer::PerpEscapes()                          { hook::Thunk<0x53F170>::Call<void>(this); }
 

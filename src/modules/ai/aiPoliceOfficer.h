@@ -58,17 +58,25 @@ namespace MM2
         vehCar* GetFollowedCar() const;
         vehCar* GetCar() const;
         short GetState() const;
+        void SetState(aiVehiclePhysicsState state);
         int GetCurrentLap() const;
         int GetLapCount() const;
         void DrawRouteThroughTraffic() const;
         void DrawId() const;
         int GetPoliceState() const;
+        void SetPoliceState(aiPoliceState state);
 
         void ChooseRandomAppBehavior();
         
         AGE_API bool InPersuit() const;
         AGE_API void StartSiren();
         AGE_API void StopSiren();
+        AGE_API BOOL Fov(vehCar* perpCar);
+        AGE_API BOOL Collision(vehCar* perpCar);
+        AGE_API BOOL HitMe(vehCar* perpCar);
+        AGE_API BOOL IsPerpACop(vehCar* perpCar);
+        AGE_API BOOL OffRoad(vehCar* perpCar);
+        AGE_API BOOL WrongWay(vehCar* perpCar);
 
         static void BindLua(LuaState L);
     };
