@@ -69,7 +69,7 @@ namespace MM2
 
         bool AreAmbientsDriveOnLeft()
         {
-            return this->AmbientsDriveOnLeft == true;
+            return this->AmbientsDriveOnLeft;
         }
 
         static void BindLua(LuaState L) {
