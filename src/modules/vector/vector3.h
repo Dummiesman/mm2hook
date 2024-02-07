@@ -61,6 +61,7 @@ namespace MM2
         AGE_API void Min(const Vector3& vec1, const Vector3& vec2);
         AGE_API void Max(const Vector3& vec1, const Vector3& vec2);
         AGE_API bool IsEqual(const Vector3& vec) const;
+        AGE_API Vector3 Multiply(const Vector3& vec) const;
         AGE_API void Print() const;
         AGE_API void Print(LPCSTR caption);
         AGE_API void operator*=(const Vector3& vec);
@@ -73,7 +74,6 @@ namespace MM2
         AGE_API Vector3 operator/(float value) const;
         AGE_API Vector3 operator*(float value) const;
         AGE_API Vector3 operator%(const Vector3& vec) const;
-        AGE_API Vector3 Vector3::Multiply(const Vector3& vec) const;
 
         explicit operator Vector2() const;
         explicit operator Vector4() const;

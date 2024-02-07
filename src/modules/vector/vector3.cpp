@@ -149,6 +149,10 @@ namespace MM2
         return vec.X == this->X && vec.Y == this->Y && vec.Z == this->Z;
     }
 
+    AGE_API Vector3 Vector3::Multiply(const Vector3& vec) const {
+        return Vector3(this->X * vec.X, this->Y * vec.Y, this->Z * vec.Z);
+    }
+
     AGE_API void Vector3::Print() const
     {
         Printf("%f,%f,%f", this->X, this->Y, this->Z);
@@ -189,10 +193,6 @@ namespace MM2
     }
     AGE_API Vector3 Vector3::operator%(const Vector3& vec) const {
         return hook::Thunk<0x541770>::Call<Vector3>(this, &vec);
-    }
-
-    AGE_API Vector3 Vector3::Multiply(const Vector3& vec) const {
-        return Vector3(this->X * vec.X, this->Y * vec.Y, this->Z * vec.Z);
     }
 
     Vector3::operator Vector2() const
