@@ -199,7 +199,7 @@ AGE_API BOOL aiPoliceOfficer::WrongWay(vehCar* perpCar)
 		Vector3 forwardDirection = path->GetForwardDirection(rdVertIdx);
 
 		bool carDirection = carMatrix.m22 * forwardDirection.Z + carMatrix.m20 * forwardDirection.X >= 0.f;
-		bool carInReverse = carSim->GetTransmission()->GetGear() == 0;
+		bool carInReverse = carSim->GetTransmission()->GetGear() == 0 && carSim->GetSpeedMPH() > 5.f;
 		bool ambientsDriveOnLeft = AIMAP->GetCityData()->AreAmbientsDriveOnLeft();
 
 		float distToSide = -(oriX.X + oriX.Y + oriX.Z);
