@@ -771,6 +771,7 @@
     <ClCompile Include="src\modules\ai\aiMap.cpp" />
     <ClCompile Include="src\modules\ai\aiPath.cpp" />
     <ClCompile Include="src\modules\ai\aiPedestrian.cpp" />
+    <ClCompile Include="src\modules\ai\aiPoliceForce.cpp" />
     <ClCompile Include="src\modules\ai\aiPoliceOfficer.cpp" />
     <ClCompile Include="src\modules\ai\aiVehicle.cpp" />
     <ClCompile Include="src\modules\ai\aiVehicleAmbient.cpp" />
