@@ -28,17 +28,17 @@ namespace MM2
             hook::Thunk<0x524180>::Call<void>(this);
         }
 
-        AGE_API void LoadAll()                              { hook::Thunk<0x5244F0>::Call<void>(this); }
-        AGE_API void Load(char* cinfoName)                  { hook::Thunk<0x524330>::Call<void>(this, cinfoName); }
-        AGE_API int GetCityID(char const *city)             { return hook::Thunk<0x524270>::Call<int>(this, city); }
+        AGE_API void LoadAll()                                 { hook::Thunk<0x5244F0>::Call<void>(this); }
+        AGE_API void Load(char* cinfoName)                     { hook::Thunk<0x524330>::Call<void>(this, cinfoName); }
+        AGE_API int GetCityID(char const *basename)            { return hook::Thunk<0x524270>::Call<int>(this, basename); }
 
-        AGE_API mmCityInfo * GetCityInfo(int city)          { return hook::Thunk<0x5241F0>::Call<mmCityInfo *>(this, city); }
-        AGE_API mmCityInfo * GetCityInfo(char const* city)  { return hook::Thunk<0x524220>::Call<mmCityInfo *>(this, city); }
+        AGE_API mmCityInfo * GetCityInfo(int id)               { return hook::Thunk<0x5241F0>::Call<mmCityInfo *>(this, id); }
+        AGE_API mmCityInfo * GetCityInfo(char const* basename) { return hook::Thunk<0x524220>::Call<mmCityInfo *>(this, basename); }
 
-        AGE_API mmCityInfo * GetCurrentCity(void)           { return hook::Thunk<0x524320>::Call<mmCityInfo *>(this); }
+        AGE_API mmCityInfo * GetCurrentCity(void)              { return hook::Thunk<0x524320>::Call<mmCityInfo *>(this); }
 
-        AGE_API void SetCurrentCity(char const* city)       { hook::Thunk<0x5242C0>::Call<void>(this, city); }
-        AGE_API void Print()                                { hook::Thunk<0x524420>::Call<void>(this); }
+        AGE_API void SetCurrentCity(char const* basename)      { hook::Thunk<0x5242C0>::Call<void>(this, basename); }
+        AGE_API void Print()                                   { hook::Thunk<0x524420>::Call<void>(this); }
 
         //helper
         inline int GetNumCities() {
