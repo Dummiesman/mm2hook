@@ -260,6 +260,13 @@ namespace MM2
         return hook::Thunk<0x548320>::Call<bool>(this, &matrix);
     }
 
+    AGE_API bool aiPath::IsOneWay() const
+    {
+        int lc0 = GetLaneCount(0);
+        int lc1 = GetLaneCount(1);
+        return (lc0 == 0 && lc1 != 0) || (lc1 == 0 && lc0 != 0);
+    }
+
     void aiPath::Draw() const
     {
         Vector3 drawOffset = Vector3(0.0f, 0.5f, 0.0f);

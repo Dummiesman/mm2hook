@@ -121,8 +121,8 @@ void MM2::aiPoliceOfficer::ChooseRandomAppBehavior()
 	_apprehendState.set(this, (aiPoliceApprehendState)chosenBehavior);
 }
 
-AGE_API void MM2::aiPoliceOfficer::Reset()							{ hook::Thunk<0x53DAA0>::Call<void>(this); }
-AGE_API bool aiPoliceOfficer::InPersuit() const					     { return hook::Thunk<0x53E400>::Call<bool>(this); }
+AGE_API void aiPoliceOfficer::Reset()                                { hook::Thunk<0x53DAA0>::Call<void>(this); }
+AGE_API bool aiPoliceOfficer::InPersuit() const                      { return hook::Thunk<0x53E400>::Call<bool>(this); }
 AGE_API void aiPoliceOfficer::StartSiren()                           { hook::Thunk<0x53DBF0>::Call<void>(this); }
 AGE_API void aiPoliceOfficer::StopSiren()                            { hook::Thunk<0x53DC40>::Call<void>(this); }
 
@@ -157,14 +157,15 @@ AGE_API BOOL aiPoliceOfficer::OffRoad(vehCar* perpCar)
 {
 	auto AIMAP = aiMap::GetInstance();
 	auto carSim = perpCar->GetCarSim();
+	auto carPosition = carSim->GetICS()->GetPosition();
 
-	int outId;
-	auto currentComponentType = AIMAP->MapComponentType(perpCar->GetModel()->GetRoomId(), &outId);
+	short outId, outType;
+	AIMAP->MapComponent(carPosition, &outId, &outType, perpCar->GetModel()->GetRoomId());
 
+	auto currentComponentType = static_cast<aiMapComponentType>(outType);
 	if (currentComponentType == aiMapComponentType::Road)
 	{
 		auto path = AIMAP->Path(outId);
-		auto carPosition = carSim->GetICS()->GetPosition();
 
 		float outDistanceFromCenter;
 		if (path->IsPosOnRoad(carPosition, 0.f, &outDistanceFromCenter) == 2) // Sidewalk
@@ -182,55 +183,31 @@ AGE_API BOOL aiPoliceOfficer::WrongWay(vehCar* perpCar)
 {
 	auto AIMAP = aiMap::GetInstance();
 	auto carSim = perpCar->GetCarSim();
+	auto carMatrix = carSim->GetICS()->GetMatrix();
+	auto carVelocity = carSim->GetICS()->GetVelocity();
 
-	int outId;
-	auto currentComponentType = AIMAP->MapComponentType(perpCar->GetModel()->GetRoomId(), &outId);
+	short outId, outType;
+	AIMAP->MapComponent(carMatrix.GetRow(3), &outId, &outType, perpCar->GetModel()->GetRoomId());
 
-	if (currentComponentType == aiMapComponentType::Road)
+	if (static_cast<aiMapComponentType>(outType) == aiMapComponentType::Road)
 	{
 		auto path = AIMAP->Path(outId);
-		auto carMatrix = carSim->GetICS()->GetMatrix();
+		int vIndex = path->RoadVertice(carMatrix.GetRow(3), 1);
 
-		int leftSide = 0;
-		int rightSide = 1;
-		int rdVertIdx = path->RoadVertice(carMatrix.GetRow(3), rightSide);
+		Vector3 zOri = path->GetForwardDirection(vIndex);
+		float ddot = zOri.Dot(carMatrix.GetRow(2)) * -1.0f;
+		float vddot = carVelocity.Dot(carMatrix.GetRow(2));
 
-		Vector3 delta = carMatrix.GetRow(3) - path->GetCenterVertex(rdVertIdx);
-		Vector3 oriX = delta.Multiply(path->GetSideDirection(rdVertIdx));
-		Vector3 forwardDirection = path->GetForwardDirection(rdVertIdx);
-
-		bool carDirection = carMatrix.m22 * forwardDirection.Z + carMatrix.m20 * forwardDirection.X >= 0.f;
-		bool carInReverse = carSim->GetTransmission()->GetGear() == 0 && carSim->GetSpeedMPH() > 5.f;
-		bool ambientsDriveOnLeft = AIMAP->GetCityData()->AreAmbientsDriveOnLeft();
-
-		float distToSide = -(oriX.X + oriX.Y + oriX.Z);
-		float sideWidth = 0.f;
-
-		ambientsDriveOnLeft ? distToSide *= -1.f : distToSide *= 1.f;
-		carDirection ? distToSide *= 1.f : distToSide *= -1.f;
-		carInReverse ? distToSide *= 1.f : distToSide *= -1.f;
-
-		if (!path->GetLaneCount(leftSide))
+		int reverseSide = AIMAP->GetCityData()->AreAmbientsDriveOnLeft() ? 0 : 1;
+		if (!path->IsOneWay())
 		{
-			sideWidth = 9999.f;
-
-			carDirection ? sideWidth *= -1.f : sideWidth *= 1.f;
-			carInReverse ? sideWidth *= 1.f : sideWidth *= -1.f;
+			Vector3 localPos = carMatrix.GetRow(3) - path->GetCenterVertex(vIndex);
+			Vector3 xOri = path->GetSideDirection(vIndex);
+			int side = (localPos.Dot(xOri) > 0) ? 1 : 0;
+			if (side == reverseSide) ddot *= -1.0f;
 		}
 
-		if (!path->GetLaneCount(rightSide))
-		{
-			sideWidth = -9999.f;
-
-			carDirection ? sideWidth *= -1.f : sideWidth *= 1.f;
-			carInReverse ? sideWidth *= 1.f : sideWidth *= -1.f;
-		}
-
-		if (distToSide >= sideWidth)
-		{
-			if (path->GetLaneDistances(2 * path->GetLaneCount(rightSide) + 1, rightSide) >= distToSide)
-				return TRUE;
-		}
+		return (ddot > 0 || (ddot <= 0 && vddot > 0.0f && carSim->GetSpeedMPH() >= 10.0f)) ? TRUE : FALSE; // Going backwards, or reversing >10mph
 	}
 
 	return FALSE;

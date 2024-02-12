@@ -114,6 +114,7 @@ namespace MM2
         AGE_API void UpdatePedestrians();
         AGE_API int RoadVertice(Vector3 const& position, int side) const;
         AGE_API bool Direction(Matrix34 const& matrix) const;
+        AGE_API bool IsOneWay() const;
         void Draw() const;
         void DrawNormals() const;
         void DrawId() const;
