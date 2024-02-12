@@ -127,38 +127,13 @@ float hornPlayTime(vehCar *car) {
     return soundPlayTime = 0.f;
 }
 
-BOOL aiPoliceOfficerHandler::OffRoad(vehCar *car) {
-    auto AIMAP = aiMap::GetInstance();
-    auto veh = findVehicle(car);
-    float outVal = 0.f;
-
-    if (veh != nullptr) {
-        auto roomId = car->GetModel()->GetRoomId();
-        auto roadId = veh->CurrentRoadId();
-        auto path = AIMAP->paths[roadId];
-
-        if (path->IsPosOnRoad(car->GetCarSim()->GetICS()->GetPosition(), 0.f, &outVal) > 1 && roomId < 900)
-            return TRUE;
-    }
-
-    for (int i = 0; i < 4; i++)
-    {
-        auto wheel = car->GetCarSim()->GetWheel(i);
-
-        if (!strcmp(wheel->GetCurrentPhysicsMaterial()->GetName(), "grass"))
-            return TRUE;
-    }
-
-    return FALSE;
-}
-
 BOOL aiPoliceOfficerHandler::IsPerpDrivingMadly(vehCar *perpCar) {
-    char *vehName = perpCar->GetCarDamage()->GetName(); // we can't use vehCarSim because the game forces vpcop to vpmustang99...
+    auto police = reinterpret_cast<aiPoliceOfficer*>(this);
 
     // ignore perp if they're a cop
-    if (!hook::StaticThunk<0x4D1A70>::Call<bool>(vehName)) {
+    if (!police->IsPerpACop(perpCar)) {
         if (vehPoliceCarAudio::iNumCopsPursuingPlayer < maximumNumCops || maximumNumCops <= 0) {
-            if (hook::Thunk<0x53E2A0>::Call<BOOL>(this, perpCar))
+            if (police->Fov(perpCar))
             {
                 float speed = perpCar->GetCarSim()->GetSpeedMPH();
                 float speedLimit = getSpeedLimit(perpCar) * 2.857142857142857f;
@@ -167,24 +142,28 @@ BOOL aiPoliceOfficerHandler::IsPerpDrivingMadly(vehCar *perpCar) {
                     LogFile::Printf(1, "PERP DETECTED!!! He's doing %.4f over the speed limit (~%.4fmph)!\n", (speed - speedLimit), speedLimit);
                     return TRUE;
                 }
-                if (hook::Thunk<0x53E370>::Call<BOOL>(this, perpCar)) {
+                if (police->Collision(perpCar)) {
                     LogFile::Printf(1, "PERP IS DOING DAMAGE TO PROPERTY!");
                     return TRUE;
                 }
-                if (aiPoliceOfficerHandler::OffRoad(perpCar)) {
+                if (police->OffRoad(perpCar)) {
                     LogFile::Printf(1, "PERP IS GOING OFFROAD!");
                     return TRUE;
                 }
+                if (police->WrongWay(perpCar)) {
+                    LogFile::Printf(1, "PERP IS DRIVING WRONG WAY ON ROADS!");
+                    return TRUE;
+                }
             }
-            if (hook::Thunk<0x53E390>::Call<BOOL>(this, perpCar)) {
+            if (police->HitMe(perpCar)) {
                 LogFile::Printf(1, "OFFICER INVOLVED COLLISION WITH PERP!");
                 return TRUE;
             }
-            if (burnoutTime(perpCar) > 3.f) {
+            if (burnoutTime(perpCar) > 4.f) {
                 LogFile::Printf(1, "PERP IS DOING BURNOUTS!");
                 return TRUE;
             }
-            if (hornPlayTime(perpCar) > 3.f) {
+            if (hornPlayTime(perpCar) > 4.f) {
                 LogFile::Printf(1, "PERP IS SPAMMING HORN!");
                 return TRUE;
             }
@@ -195,7 +174,9 @@ BOOL aiPoliceOfficerHandler::IsPerpDrivingMadly(vehCar *perpCar) {
 }
 
 BOOL aiPoliceOfficerHandler::IsOppDrivingMadly(vehCar *perpCar) {
-    if (hook::Thunk<0x53E2A0>::Call<BOOL>(this, perpCar))
+    auto police = reinterpret_cast<aiPoliceOfficer*>(this);
+
+    if (police->Fov(perpCar))
     {
         float speed = perpCar->GetCarSim()->GetSpeedMPH();
         float speedLimit = getSpeedLimit(perpCar) * 2.857142857142857f;
@@ -203,14 +184,17 @@ BOOL aiPoliceOfficerHandler::IsOppDrivingMadly(vehCar *perpCar) {
         if (speed > (speedLimit * cfgSpeedLimitTolerance)) {
             return TRUE;
         }
-        if (hook::Thunk<0x53E370>::Call<BOOL>(this, perpCar)) {
+        if (police->Collision(perpCar)) {
             return TRUE;
         }
-        if (aiPoliceOfficerHandler::OffRoad(perpCar)) {
+        if (police->OffRoad(perpCar)) {
+            return TRUE;
+        }
+        if (police->WrongWay(perpCar)) {
             return TRUE;
         }
     }
-    if (hook::Thunk<0x53E390>::Call<BOOL>(this, perpCar)) {
+    if (police->HitMe(perpCar)) {
         return TRUE;
     }
 
@@ -219,39 +203,38 @@ BOOL aiPoliceOfficerHandler::IsOppDrivingMadly(vehCar *perpCar) {
 
 void aiPoliceOfficerHandler::PerpEscapes(bool a1) 
 {
-    auto carAudioContainer = *getPtr<vehCarAudioContainer*>(this, 0x268);
+    auto police = reinterpret_cast<aiPoliceOfficer*>(this);
+    auto carAudioContainer = police->GetCar()->GetCarAudioContainerPtr();
     auto policeCarAudio = carAudioContainer->GetPoliceCarAudioPtr();
     auto AIMAP = aiMap::GetInstance();
-    auto policeOfficer = reinterpret_cast<aiPoliceOfficer*>(this);
 
-    policeOfficer->aiPoliceOfficer::StopSiren();
+    police->aiPoliceOfficer::StopSiren();
 
     if (policeCarAudio != nullptr && a1)
         policeCarAudio->PlayExplosion();
 
-    AIMAP->policeForce->UnRegisterCop(policeOfficer->GetCar(), policeOfficer->GetFollowedCar());
-    *getPtr<WORD>(this, 0x977A) = 0;
-    *getPtr<WORD>(this, 0x280) = 3;
+    AIMAP->policeForce->UnRegisterCop(police->GetCar(), police->GetFollowedCar());
+    police->SetPoliceState(aiPoliceState::Idle);
+    police->SetState(aiVehiclePhysicsState::Stop);
 }
 
 void aiPoliceOfficerHandler::Update() {
-    auto policeOfficer = reinterpret_cast<aiPoliceOfficer*>(this);
-    auto car = policeOfficer->GetCar();
+    auto police = reinterpret_cast<aiPoliceOfficer*>(this);
+    auto car = police->GetCar();
     auto carsim = car->GetCarSim();
-    auto carPos = car->GetModel()->GetPosition();
-    auto level = lvlLevel::GetSingleton();
+    auto singleton = lvlLevel::GetSingleton();
 
-    if (*getPtr<WORD>(this, 0x977A) != 12) {
-        if (level->GetRoomInfo(car->GetModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
-            if (level->GetWaterLevel(car->GetModel()->GetRoomId()) > carsim->GetWorldMatrix()->m31) {
-                PerpEscapes(0);
-                *getPtr<WORD>(this, 0x977A) = 12;
+    if (police->GetPoliceState() != aiPoliceState::Incapacitated) {
+        if (singleton->GetRoomInfo(car->GetModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
+            if (singleton->GetWaterLevel(car->GetModel()->GetRoomId()) > carsim->GetWorldMatrix()->m31) {
+                PerpEscapes(false);
+                police->SetPoliceState(aiPoliceState::Incapacitated);
             }
         }
     }
 
-    if (*getPtr<WORD>(this, 0x977A) == 0)
-        *getPtr<WORD>(this, 0x280) = 3;
+    if (police->GetPoliceState() == aiPoliceState::Idle)
+        police->SetState(aiVehiclePhysicsState::Stop);
 
     //call original
     hook::Thunk<0x53DC70>::Call<void>(this);

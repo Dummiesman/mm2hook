@@ -67,6 +67,11 @@ namespace MM2
             return &this->AmbientTypeData[index];
         }
 
+        bool AreAmbientsDriveOnLeft()
+        {
+            return this->AmbientsDriveOnLeft;
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiCityData>("aiCityData")
                 .addVariable("AmbientsDriveOnLeft", &aiCityData::AmbientsDriveOnLeft, false)

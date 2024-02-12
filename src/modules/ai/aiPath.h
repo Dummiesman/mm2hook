@@ -32,12 +32,14 @@ namespace MM2
         static hook::Field<0x80, Vector3*> _lBoundaryVertices;
         static hook::Field<0x38, short> _lNumLanes;
         static hook::Field<0x3E, short> _lNumSidewalks;
+        static hook::Field<0x44, float*> _lLaneDistances;
         static hook::Field<0xD8, Vector3*> _rLaneVertices;
         static hook::Field<0xDC, Vector3*> _rCableCarVertices;
         static hook::Field<0xE0, Vector3*> _rSubwayVertices;
         static hook::Field<0xE4, Vector3*> _rBoundaryVertices;
         static hook::Field<0x9C, short> _rNumLanes;
         static hook::Field<0xA2, short> _rNumSidewalks;
+        static hook::Field<0xA8, float*> _rLaneDistances;
         static hook::Field<0x104, Vector3*> _sectionVerts;
         static hook::Field<0x108, Vector3*> _sectionOriX;
         static hook::Field<0x10C, Vector3*> _sectionOriY;
@@ -70,6 +72,7 @@ namespace MM2
         aiIntersection* GetIntersection(int num) const;
         int GetSidewalkCount(int side) const;
         int GetLaneCount(int side) const;
+        float GetLaneDistances(int lane, int side) const;
         Vector3 GetCableCarVertex(int section, int side) const;
         Vector3 GetSubwayVertex(int section, int side) const;
         Vector3 GetLaneVertex(int section, int lane, int side) const;
@@ -111,6 +114,7 @@ namespace MM2
         AGE_API void UpdatePedestrians();
         AGE_API int RoadVertice(Vector3 const& position, int side) const;
         AGE_API bool Direction(Matrix34 const& matrix) const;
+        AGE_API bool IsOneWay() const;
         void Draw() const;
         void DrawNormals() const;
         void DrawId() const;

@@ -49,6 +49,14 @@ namespace MM2
             return _rNumLanes.get(this);
     }
 
+    float aiPath::GetLaneDistances(int lane, int side) const
+    {
+        if (side == 0)
+            return _lLaneDistances.get(this)[lane];
+        else
+            return _rLaneDistances.get(this)[lane];
+    }
+
     Vector3 aiPath::GetCableCarVertex(int section, int side) const
     {
         if (this->HasCableCarLine(side)) 
@@ -250,6 +258,13 @@ namespace MM2
     AGE_API bool aiPath::Direction(Matrix34 const& matrix) const
     {
         return hook::Thunk<0x548320>::Call<bool>(this, &matrix);
+    }
+
+    AGE_API bool aiPath::IsOneWay() const
+    {
+        int lc0 = GetLaneCount(0);
+        int lc1 = GetLaneCount(1);
+        return (lc0 == 0 && lc1 != 0) || (lc1 == 0 && lc0 != 0);
     }
 
     void aiPath::Draw() const
