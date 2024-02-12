@@ -43,10 +43,10 @@ namespace MM2
     public:
 
         AGE_API void ComputeConstants()                     { hook::Thunk<0x4D8DC0>::Call<void>(this); }
-        AGE_API float CalcTorqueAtFullThrottle(float a1)    { return hook::Thunk<0x4D8E20>::Call<float>(this, a1); }
-        AGE_API float CalcTorqueAtZeroThrottle(float a1)    { return hook::Thunk<0x4D8EA3>::Call<float>(this, a1); }
-        AGE_API float CalcTorque(float a1)                  { return hook::Thunk<0x4D8ED0>::Call<float>(this, a1); }
-        AGE_API float CalcHPAtFullThrottle(float a1)        { return hook::Thunk<0x4D8F10>::Call<float>(this, a1); }
+        AGE_API float CalcTorqueAtFullThrottle(float av)    { return hook::Thunk<0x4D8E20>::Call<float>(this, av); }
+        AGE_API float CalcTorqueAtZeroThrottle(float av)    { return hook::Thunk<0x4D8EA3>::Call<float>(this, av); }
+        AGE_API float CalcTorque(float throttle)            { return hook::Thunk<0x4D8ED0>::Call<float>(this, throttle); }
+        AGE_API float CalcHPAtFullThrottle(float av)        { return hook::Thunk<0x4D8F10>::Call<float>(this, av); }
 
         /*
             asNode virtuals
