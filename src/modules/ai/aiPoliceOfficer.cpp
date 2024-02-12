@@ -121,6 +121,7 @@ void MM2::aiPoliceOfficer::ChooseRandomAppBehavior()
 	_apprehendState.set(this, (aiPoliceApprehendState)chosenBehavior);
 }
 
+AGE_API void MM2::aiPoliceOfficer::Reset()							{ hook::Thunk<0x53DAA0>::Call<void>(this); }
 AGE_API bool aiPoliceOfficer::InPersuit() const					     { return hook::Thunk<0x53E400>::Call<bool>(this); }
 AGE_API void aiPoliceOfficer::StartSiren()                           { hook::Thunk<0x53DBF0>::Call<void>(this); }
 AGE_API void aiPoliceOfficer::StopSiren()                            { hook::Thunk<0x53DC40>::Call<void>(this); }
@@ -252,6 +253,7 @@ void aiPoliceOfficer::BindLua(LuaState L) {
 		.addPropertyReadOnly("Car", &GetCar)
 		.addPropertyReadOnly("State", &GetState)
 
+		.addFunction("Reset", &Reset)
 		.addFunction("ChaseVehicle", &ChaseVehicle)
 		.addFunction("StartSiren", &StartSiren)
 		.addFunction("StopSiren", &StopSiren)

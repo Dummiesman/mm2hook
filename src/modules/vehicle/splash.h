@@ -15,8 +15,8 @@ namespace MM2
     private:
         phInertialCS* ICS;
         float WaterLevel;
-        float MassMultiplier;
-        float dword_24;
+        float Buoyancy;
+        float Dampening;
         Vector3 WaterLUT[64];
     protected:
         //Lua helpers

@@ -68,6 +68,7 @@ namespace MM2
 
         void ChooseRandomAppBehavior();
         
+        AGE_API void Reset();
         AGE_API bool InPersuit() const;
         AGE_API void StartSiren();
         AGE_API void StopSiren();
