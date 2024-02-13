@@ -195,6 +195,12 @@ void luaSetGlobals()
     Lua::setGlobal(L, "Interface", mmInterface::GetInstance());
     Lua::setGlobal(L, "MMAUDMGRPTR", AudManager::Instance.get());
     Lua::setGlobal(L, "MUSICMANAGERPTR", MMDMusicManager::Instance.get());
+    Lua::setGlobal(L, "AUDMUSICPTR", AudStreamingMusic::Instance.get());
+
+    if (lvlLevel::GetSingleton())
+        Lua::setGlobal(L, "MATERIALMGR", lvlMaterialMgr::GetInstance());
+}
+
 }
 
 LUAMOD_API int luaopen_MM2(lua_State *L)

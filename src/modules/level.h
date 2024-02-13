@@ -1,6 +1,7 @@
 #pragma once
 #include <mm2_common.h>
 
+#include "level\materialmgr.h"
 #include "level\material.h"
 #include "level\inst.h"
 #include "level\level.h"

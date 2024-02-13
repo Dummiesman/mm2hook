@@ -1816,6 +1816,12 @@
     <ClInclude Include="src\modules\mmaudio\ccspeech.h">
       <Filter>Source Files\modules\mmaudio</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\phys\phmaterialmgr.h">
+      <Filter>Source Files\modules\phys</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\level\materialmgr.h">
+      <Filter>Source Files\modules\level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">

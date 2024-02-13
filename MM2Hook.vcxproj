@@ -390,6 +390,7 @@
     <ClInclude Include="src\modules\level\landmark.h" />
     <ClInclude Include="src\modules\level\level.h" />
     <ClInclude Include="src\modules\level\material.h" />
+    <ClInclude Include="src\modules\level\materialmgr.h" />
     <ClInclude Include="src\modules\level\multiroom.h" />
     <ClInclude Include="src\modules\level\pathset.h" />
     <ClInclude Include="src\modules\level\sky.h" />
@@ -543,6 +544,7 @@
     <ClInclude Include="src\modules\phys\phjoint.h" />
     <ClInclude Include="src\modules\phys\phline.h" />
     <ClInclude Include="src\modules\phys\phmaterial.h" />
+    <ClInclude Include="src\modules\phys\phmaterialmgr.h" />
     <ClInclude Include="src\modules\phys\phmath.h" />
     <ClInclude Include="src\modules\phys\phpoly.h" />
     <ClInclude Include="src\modules\phys\phsleep.h" />

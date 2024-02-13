@@ -8,6 +8,7 @@
     phcore
 */
 
+#include "phys\phmaterialmgr.h"
 #include "phys\phmaterial.h"
 #include "phys\phline.h"
 #include "phys\phpoly.h"
