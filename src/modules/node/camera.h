@@ -186,6 +186,12 @@ namespace MM2
             hook::Thunk<0x522050>::Call<void>(this);
         }
 
+        void SetApproachOn(bool value) { ApproachOn = (value) ? TRUE : FALSE; }
+        bool GetApproachOn() const     { return ApproachOn == TRUE; }
+        void SetAppAppOn(bool value)   { AppAppOn = (value) ? TRUE : FALSE; }
+        bool GetAppAppOn() const       { return AppAppOn == TRUE; }
+            
+
         //overrides
         AGE_API void FileIO(datParser &parser) override     { hook::Thunk<0x5229D0>::Call<void>(this, &parser); }
     
@@ -198,8 +204,8 @@ namespace MM2
                     return obj;
                  })
                 .addVariableRef("Target", &camAppCS::Target)
-                .addVariable("ApproachOn", &camAppCS::ApproachOn)
-                .addVariable("AppAppOn", &camAppCS::AppAppOn)
+                .addProperty("ApproachOn", &GetApproachOn, &SetApproachOn)
+                .addProperty("AppAppOn", &GetAppAppOn, &SetAppAppOn)
                 .addVariable("AppRot", &camAppCS::AppRot)
                 .addVariable("AppXRot", &camAppCS::AppXRot)
                 .addVariable("AppYPos", &camAppCS::AppYPos)
@@ -377,7 +383,33 @@ namespace MM2
 
     class camTrackCS : public camCarCS {
     protected:
-        byte buffer[0x298 - sizeof(camCarCS)];
+        int dword_110;
+        Vector3 Offset;
+        int CollideType; //0, 1, or 2
+        BOOL MinMaxOn;
+        int TrackBreak; //0, 1, or 2
+        float MinAppXZPos;
+        float MaxAppXZPos;
+        float MinSpeed;
+        float MaxSpeed;
+        float AppInc;
+        float AppDec;
+        float MinHardSteer;
+        float DriftDelay;
+        float VertOffset;
+        float FrontRate;
+        float RearRate;
+        float FlipDelay;
+        BOOL SteerOn;
+        float SteerMin;
+        float SteerAmt;
+        float HillMin;
+        float HillMax;
+        float HillLerp;
+        float RevDelay;
+        float RevOnApp;
+        float RevOffApp;
+        byte _buffer[0x118];
     private:
         AGE_API void Collide(Vector3 a1)                    { hook::Thunk<0x51EED0>::Call<void>(this, a1); }
         AGE_API void Front(float a1)                        { hook::Thunk<0x51F980>::Call<void>(this, a1); }
@@ -401,6 +433,11 @@ namespace MM2
 
         AGE_API void SwingToRear()                          { hook::Thunk<0x51F920>::Call<void>(this); }
 
+        bool GetSteerOn() const     { return SteerOn == TRUE; }
+        void SetSteerOn(bool value) { SteerOn = (value) ? TRUE : FALSE; }
+        bool GetMinMaxOn() const    { return MinMaxOn == TRUE; }
+        void SetMinMaxOn(bool value) { MinMaxOn = (value) ? TRUE : FALSE; }
+
         //asNode overrides
         AGE_API void AfterLoad() override                   { hook::Thunk<0x51DAF0>::Call<void>(this); }
         AGE_API void FileIO(datParser &parser) override     { hook::Thunk<0x51FA80>::Call<void>(this, &parser); }
@@ -421,6 +458,31 @@ namespace MM2
                     return obj;
                  })
                 .addFunction("SwingToRear", &SwingToRear)
+                .addVariable("Offset", &camTrackCS::Offset)
+                .addVariable("CollideType", &camTrackCS::CollideType)
+                .addProperty("MinMaxOn", &GetMinMaxOn, &SetMinMaxOn)
+                .addVariable("TrackBreak", &camTrackCS::TrackBreak)
+                .addVariable("MinAppXZPos", &camTrackCS::MinAppXZPos)
+                .addVariable("MaxAppXZPos", &camTrackCS::MaxAppXZPos)
+                .addVariable("MinSpeed", &camTrackCS::MinSpeed)
+                .addVariable("MaxSpeed", &camTrackCS::MaxSpeed)
+                .addVariable("AppInc", &camTrackCS::AppInc)
+                .addVariable("AppDec", &camTrackCS::AppDec)
+                .addVariable("MinHardSteer", &camTrackCS::MinHardSteer)
+                .addVariable("DriftDelay", &camTrackCS::DriftDelay)
+                .addVariable("VertOffset", &camTrackCS::VertOffset)
+                .addVariable("FrontRate", &camTrackCS::FrontRate)
+                .addVariable("RearRate", &camTrackCS::RearRate)
+                .addVariable("FlipDelay", &camTrackCS::FlipDelay)
+                .addProperty("SteerOn", &GetSteerOn, &SetSteerOn)
+                .addVariable("SteerMin", &camTrackCS::SteerMin)
+                .addVariable("SteerAmt", &camTrackCS::SteerAmt)
+                .addVariable("HillMin", &camTrackCS::HillMin)
+                .addVariable("HillMax", &camTrackCS::HillMax)
+                .addVariable("HillLerp", &camTrackCS::HillLerp)
+                .addVariable("RevDelay", &camTrackCS::RevDelay)
+                .addVariable("RevOnApp", &camTrackCS::RevOnApp)
+                .addVariable("RevOffApp", &camTrackCS::RevOffApp)
                 .endClass();
         }
     };
@@ -445,12 +507,12 @@ namespace MM2
             hook::Thunk<0x406800>::Call<void>(this);
         }
 
-        bool getAzimuthLock()
+        bool GetAzimuthLock()
         {
             return this->AzimuthLock == TRUE;
         }
 
-        void setAzimuthLock(bool lock)
+        void SetAzimuthLock(bool lock)
         {
             this->AzimuthLock = (lock) ? TRUE : FALSE;
         }
@@ -473,7 +535,7 @@ namespace MM2
                     return obj;
                  })
                 //properties
-                .addProperty("AzimuthLock", &getAzimuthLock, &setAzimuthLock)
+                .addProperty("AzimuthLock", &GetAzimuthLock, &SetAzimuthLock)
                 .addVariable("Height", &camPolarCS::PolarHeight)
                 .addVariable("Delta", &camPolarCS::PolarDelta)
                 .addVariable("Distance", &camPolarCS::PolarDistance)
@@ -581,6 +643,11 @@ namespace MM2
         float OverrideFar; // camera far? (4th param in gfxViewport::Perspective)
         float OverrideNear; // camera near? (3rd param in gfxViewport::Perspective)
         int unk_48; // no idea; completely unused?
+    private:
+        //helpers for lua calls
+        bool NewCam(camCarCS* cam, int type, float time) {
+            return NewCam(cam, type, time, datCallback::NullCallback) == TRUE;
+        }
     public:
         AGE_API camViewCS(void) {
             scoped_vtable x(this);
@@ -613,11 +680,6 @@ namespace MM2
         AGE_API void Update() override                      { hook::Thunk<0x51FFC0>::Call<void>(this); }
         AGE_API void Reset() override                       { hook::Thunk<0x520010>::Call<void>(this); }
         AGE_API void FileIO(datParser &parser) override     { hook::Thunk<0x5200D0>::Call<void>(this, &parser); }
-
-        //helpers for lua calls
-        bool NewCam(camCarCS *cam, int type, float time) {
-            return NewCam(cam, type, time, datCallback::NullCallback) == TRUE;
-        }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<camViewCS, asNode>("camViewCS")
