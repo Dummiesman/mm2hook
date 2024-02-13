@@ -133,7 +133,7 @@ namespace MM2
         hook::Thunk<0x4795C0>::Call<void>(this, &mtx);
     }
     AGE_API void Vector3::Lerp(float t, const Vector3& vec1, const Vector3& vec2) {
-        this->X = (vec2.X - vec1.X) * t + vec1.Z;
+        this->X = (vec2.X - vec1.X) * t + vec1.X;
         this->Y = (vec2.Y - vec1.Y) * t + vec1.Y;
         this->Z = (vec2.Z - vec1.Z) * t + vec1.Z;
     }

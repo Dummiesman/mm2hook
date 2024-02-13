@@ -38,9 +38,9 @@ namespace MM2
         AGE_API void SubtractScaled(const Vector3& vec, float scale);
         AGE_API void Scale(float scale);
         AGE_API void InvScale(float scale);
-        AGE_API void RotateX(float angle);
-        AGE_API void RotateY(float angle);
-        AGE_API void RotateZ(float angle);
+        AGE_API void RotateX(float angle); // Rotate the X axis of this vector by angle degrees (in radians)
+        AGE_API void RotateY(float angle); // Rotate the Y axis of this vector by angle degrees (in radians)
+        AGE_API void RotateZ(float angle); // Rotate the Z axis of this vector by angle degrees (in radians)
         AGE_API void RotateAboutAxis(float angle, int axis);
         AGE_API float Angle(const Vector3& vec) const;
         AGE_API float FastAngle(const Vector3& vec) const;
@@ -48,7 +48,7 @@ namespace MM2
         AGE_API void Cross(const Vector3& vec);
         AGE_API void Cross(const Vector3& vec1, const Vector3& vec2);
         AGE_API float Dist(const Vector3& vec) const;
-        AGE_API float FlatDist(const Vector3& vec) const;
+        AGE_API float FlatDist(const Vector3& vec) const;  // The distance from this vector to vec on the XZ plane
         AGE_API float Dot(const Vector3& vec) const;
         AGE_API void Dot(const Vector3& vec, const Matrix34& mtx);
         AGE_API void Dot3x3(const Matrix34& mtx);
