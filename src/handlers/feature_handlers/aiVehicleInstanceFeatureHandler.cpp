@@ -12,35 +12,9 @@ static ConfigValue<int> cfgAmbientHeadlightStyle("AmbientHeadlightStyle", 0);
 */
 Matrix34 aiVehicleMatrix = Matrix34();
 
-void aiVehicleInstanceFeatureHandler::Draw(int a1) {
-    auto inst = reinterpret_cast<aiVehicleInstance*>(this);
-    if (inst->GetGeomIndex() == 0)
-        return;
-
-    //setup renderer
-    Matrix34 GARBAGE;
-    Matrix34 carMatrix = inst->GetMatrix(&GARBAGE);
-    gfxRenderState::SetWorldMatrix(carMatrix);
-
-    //get our shader set
-    auto shaderSet = *getPtr<signed short>(this, 0x1E);
-    auto shaders = inst->GetShader(shaderSet);
-
-    //draw plight
-    if (aiMap::GetInstance()->showHeadlights) {
-        modStatic* plighton = inst->GetGeomBase(aiVehicleInstance::PLIGHTOFF_GEOM_ID)->GetHighLOD();
-        if (plighton != nullptr)
-            inst->DrawPart(plighton, &carMatrix, shaders, inst->GetRoomId());
-    }
-    else {
-        modStatic* plightoff = inst->GetGeomBase(aiVehicleInstance::PLIGHTON_GEOM_ID)->GetHighLOD();
-        if (plightoff != nullptr)
-            inst->DrawPart(plightoff, &carMatrix, shaders, inst->GetRoomId());
-    }
-
-
-    //call original
-    hook::Thunk<0x552160>::Call<void>(this, a1);
+void aiVehicleInstanceFeatureHandler::Draw(int lod)
+{
+    reinterpret_cast<aiVehicleInstance*>(this)->aiVehicleInstance::Draw(lod);
 }
 
 void aiVehicleInstanceFeatureHandler::DrawGlow() {
@@ -49,7 +23,7 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
         return;
 
     //setup renderer
-    Matrix34 carMatrix = inst->GetMatrix(&aiVehicleMatrix);
+    Matrix34 carMatrix = inst->GetMatrix(aiVehicleMatrix);
     gfxRenderState::SetWorldMatrix(carMatrix);
 
     //get our shader set
@@ -147,28 +121,6 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
     }
 }
 
-void aiVehicleInstanceFeatureHandler::ModStaticDraw(modShader* a1) {
-    auto mod = reinterpret_cast<modStatic*>(this);
-    hook::Type<gfxTexture*> g_ReflectionMap = 0x628914;
-    bool isSoftware = *(bool*)0x6830D4;
-
-    //convert world matrix for reflection drawing
-    auto& worldMatrix = gfxRenderState::GetWorldMatrix();
-    Matrix34 envInput = Matrix34();
-    worldMatrix.ToMatrix34(envInput);
-
-    //draw car part
-    mod->Draw(a1);
-
-    //draw reflections
-    auto state = &MMSTATE;
-    if (g_ReflectionMap != nullptr && !isSoftware && state->EnableReflections) {
-        modShader::BeginEnvMap(g_ReflectionMap, envInput);
-        mod->DrawEnvMapped(a1, g_ReflectionMap, 1.0f);
-        modShader::EndEnvMap();
-    }
-}
-
 void aiVehicleInstanceFeatureHandler::AddGeomHook(const char* pkgName, const char* name, int flags) {
 
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, name, flags);
@@ -177,6 +129,12 @@ void aiVehicleInstanceFeatureHandler::AddGeomHook(const char* pkgName, const cha
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "plightoff", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tslight0", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tslight1", flags);
+    hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "swhl0", flags);
+    hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "swhl1", flags);
+    hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "swhl2", flags);
+    hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "swhl3", flags);
+    hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "swhl4", flags);
+    hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "swhl5", flags);
 }
 
 void aiVehicleInstanceFeatureHandler::VehicleSpline_DrawId()
@@ -190,19 +148,11 @@ void aiVehicleInstanceFeatureHandler::Ambient_DrawId()
 }
 
 void aiVehicleInstanceFeatureHandler::Install() {
-    InstallCallback("aiVehicleInstance::aiVehicleInstance", "Adds brake light and pop-up lights geometries.",
+    InstallCallback("aiVehicleInstance::aiVehicleInstance", "Adds more geometries.",
         &AddGeomHook, {
             cb::call(0x551F2F),
         }
     );
-
-    if (vehCarModel::PartReflections) {
-        InstallCallback("aiVehicleInstance::DrawPart", "Draws reflections on car parts.",
-            &ModStaticDraw, {
-                cb::call(0x55291F), // aiVehicleInstance::DrawPart
-            }
-        );
-    }
 
     InstallVTableHook("aiVehicleInstance::Draw",
         &Draw, {

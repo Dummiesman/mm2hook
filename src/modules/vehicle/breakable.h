@@ -74,7 +74,7 @@ namespace MM2
         AGE_API void Reset()                                { hook::Thunk<0x4D8710>::Call<void>(this); }
 
 
-        AGE_API void Draw(const Matrix34* a1, modShader* a2, int a3)
+        AGE_API void Draw(const Matrix34& a1, modShader* a2, int a3)
         {
             for (auto i = this->first; i; i = i->next)
             {
@@ -85,7 +85,7 @@ namespace MM2
                     {
                         Matrix34 drawMatrix = Matrix34();
                         drawMatrix.Set(i->matrix);
-                        drawMatrix.Dot(*a1);
+                        drawMatrix.Dot(a1);
 
                         //setup renderer
                         gfxRenderState::SetWorldMatrix(drawMatrix);
@@ -99,7 +99,7 @@ namespace MM2
                             bool isSoftware = *(bool*)0x6830D4;
 
                             float reflectionIntensity;
-                            auto reflectionMap = lvlLevel::GetSingleton()->GetEnvMap(0, a1->GetRow(3), reflectionIntensity);
+                            auto reflectionMap = lvlLevel::GetSingleton()->GetEnvMap(0, a1.GetRow(3), reflectionIntensity);
                             if (a3 == 3 && reflectionMap != nullptr)
                             {
                                 modShader::BeginEnvMap(reflectionMap, drawMatrix);

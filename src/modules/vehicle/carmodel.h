@@ -25,9 +25,9 @@ namespace MM2
 
     class vehCarModel : public lvlInstance {
     public:
-        /*
-    Model Index Constants
-*/
+    /*
+        Model Index Constants
+    */
         static const int SHADOW_GEOM_ID = 1;
         static const int HLIGHT_GEOM_ID = 2;
         static const int TLIGHT_GEOM_ID = 3;
