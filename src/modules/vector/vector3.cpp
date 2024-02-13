@@ -137,6 +137,12 @@ namespace MM2
         this->Y = (vec2.Y - vec1.Y) * t + vec1.Y;
         this->Z = (vec2.Z - vec1.Z) * t + vec1.Z;
     }
+    AGE_API void Vector3::Negate()
+    {
+        this->X = -this->X;
+        this->Y = -this->Y;
+        this->Z = -this->Z;
+    }
     AGE_API void Vector3::Negate(const Vector3& vec) {
         this->X = -vec.X;
         this->Y = -vec.Y;
@@ -271,7 +277,7 @@ namespace MM2
             .addFunction("FastAngle", &FastAngle)
             .addFunction("FlatDist", &FlatDist)
             .addFunction("Approach", &Approach)
-            .addFunction("Negate", &Negate)
+            .addFunction("Negate", static_cast<void(Vector3::*)(const Vector3&)>(&Vector3::Negate))
             .addFunction("Min", &Min)
             .addFunction("Max", &Max)
             .addFunction("Print", static_cast<void(Vector3::*)(LPCSTR)>(&Vector3::Print))

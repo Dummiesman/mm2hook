@@ -23,8 +23,14 @@ namespace MM2
         AGE_API float Mag2(void) const;
         AGE_API void Set(float x, float y);
         AGE_API void Set(const Vector2& vec);
-        bool IsEqual(const Vector2& vec) const;
+        AGE_API bool IsEqual(const Vector2& vec) const;
         AGE_API void Normalize();
+        AGE_API void Negate(const Vector2& vec);
+        AGE_API void Negate();
+        AGE_API void Min(const Vector2& vec1, const Vector2& vec2);
+        AGE_API void Max(const Vector2& vec1, const Vector2& vec2);
+        AGE_API void Print() const;
+        AGE_API void Print(LPCSTR caption);
 
         Vector2 operator+(Vector2& vec);
         Vector2 operator-(const Vector2 vec) const;

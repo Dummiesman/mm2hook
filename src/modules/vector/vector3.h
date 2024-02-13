@@ -54,6 +54,7 @@ namespace MM2
         AGE_API void Dot3x3(const Matrix34& mtx);
         AGE_API void Dot3x3Transpose(const Matrix34& mtx);
         AGE_API void Lerp(float t, const Vector3& vec1, const Vector3& vec2);
+        AGE_API void Negate();
         AGE_API void Negate(const Vector3& vec);
         AGE_API void Normalize();
         AGE_API void HSVtoRGB();

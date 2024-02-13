@@ -44,6 +44,40 @@ namespace MM2
         this->Y *= mul;
     }
 
+    AGE_API void Vector2::Negate(const Vector2& vec)
+    {
+        this->X = -vec.X;
+        this->Y = -vec.Y;
+    }
+
+    AGE_API void Vector2::Negate()
+    {
+        this->X = -this->X;
+        this->Y = -this->Y;
+    }
+
+    AGE_API void Vector2::Min(const Vector2& vec1, const Vector2& vec2)
+    {
+        this->X = (vec1.X < vec2.X) ? vec1.X : vec2.X;
+        this->Y = (vec1.Y < vec2.Y) ? vec1.Y : vec2.Y;
+    }
+
+    AGE_API void Vector2::Max(const Vector2& vec1, const Vector2& vec2)
+    {
+        this->X = (vec1.X > vec2.X) ? vec1.X : vec2.X;
+        this->Y = (vec1.Y > vec2.Y) ? vec1.Y : vec2.Y;
+    }
+
+    AGE_API void Vector2::Print() const
+    {
+        Printf("%f,%f", this->X, this->Y);
+    }
+
+    AGE_API void Vector2::Print(LPCSTR caption)
+    {
+        Printf("%s: %f,%f", caption, this->X, this->Y);
+    }
+
     Vector2 Vector2::operator+(Vector2& vec) {
         return Vector2(this->X + vec.X, this->Y + vec.Y);
     }
@@ -84,6 +118,10 @@ namespace MM2
             .addFunction("Mag", &Mag)
             .addFunction("Mag2", &Mag2)
             .addFunction("Normalize", &Normalize)
+            .addFunction("Negate", static_cast<void(Vector2::*)(const Vector2&)>(&Vector2::Negate))
+            .addFunction("Min", &Min)
+            .addFunction("Max", &Max)
+            .addFunction("Print", static_cast<void(Vector2::*)(LPCSTR)>(&Vector2::Print))
             .endClass();
     }
 
