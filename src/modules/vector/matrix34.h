@@ -36,20 +36,20 @@ namespace MM2
         Matrix34(void);
         Matrix34(float m00, float m01, float m02, float m10, float m11, float m12, float m20, float m21, float m22, float m30, float m31, float m32);
 
-        void MakeRotate(Vector3 const& axis, float angle);
+        void MakeRotate(Vector3 const& axis, float angle);  // Initializes this matrix to a rotation of angle radians around axis
         void MakeScale(float xScale, float yScale, float zScale);
         void MakeScale(float scale);
-        void MakeRotateZ(float angle);
-        void MakeRotateY(float angle);
-        void MakeRotateX(float angle);
-        void Rotate(Vector3 const& axis, float angle);
-        void RotateFull(Vector3 const& axis, float angle);
-        void RotateX(float angle);
-        void RotateY(float angle);
-        void RotateZ(float angle);
-        void RotateFullX(float angle);
-        void RotateFullY(float angle);
-        void RotateFullZ(float angle);
+        void MakeRotateZ(float angle); // Initializes this matrix to a Z rotation of angle radians
+        void MakeRotateY(float angle); // Initializes this matrix to a Y rotation of angle radians
+        void MakeRotateX(float angle); // Initializes this matrix to a X rotation of angle radians
+        void Rotate(Vector3 const& axis, float angle); // Rotate this matrix around axis by angle degrees (in radians)
+        void RotateFull(Vector3 const& axis, float angle); // Rotate this matrix and its position around axis by angle degrees (in radians)
+        void RotateX(float angle); // Rotate the X axis of this matrix by angle degrees (in radians)
+        void RotateY(float angle); // Rotate the Y axis of this matrix by angle degrees (in radians)
+        void RotateZ(float angle); // Rotate the Z axis of this matrix by angle degrees (in radians)
+        void RotateFullX(float angle); // Rotate the X axis and position of this matrix by angle degrees (in radians)
+        void RotateFullY(float angle); // Rotate the Y axis and position of this matrix by angle degrees (in radians)
+        void RotateFullZ(float angle); // Rotate the Z axis and position of this matrix by angle degrees (in radians)
         void RotateTo(Vector3 const& side, Vector3 const& up);
         void RotateTo(Vector3 const& side, Vector3 const& up, float t);
         void Add(const Matrix34& values);

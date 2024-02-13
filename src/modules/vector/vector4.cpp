@@ -26,7 +26,7 @@ namespace MM2
     AGE_API Vector4& Vector4::Dot3x3(const Vector4& vec, Matrix44 const& mtx)                 { return hook::Thunk<0x4C1200>::Call<Vector4&>(this, &vec, &mtx); }
     AGE_API void Vector4::ComputePlane(const Vector3& vec1, const Vector3& vec2, const Vector3& vec3)
                                                                                               { hook::Thunk<0x4C52D0>::Call<void>(this, &vec1, &vec2, &vec3); }
-    AGE_API void Vector4::ComputePlane(const Vector3& vec1, const Vector3& vec2)              {  hook::Thunk<0x4C53B0>::Call<void>(this, &vec1, &vec2); }
+    AGE_API void Vector4::ComputePlane(const Vector3& vec1, const Vector3& vec2)              { hook::Thunk<0x4C53B0>::Call<void>(this, &vec1, &vec2); }
     AGE_API void Vector4::Min(const Vector4& vec1, const Vector4& vec2)                       { hook::Thunk<0x4C53F0>::Call<void>(this, &vec1, &vec2); }
     AGE_API void Vector4::Max(const Vector4& vec1, const Vector4& vec2)                       { hook::Thunk<0x4C5460>::Call<void>(this, &vec1, &vec2); }
 

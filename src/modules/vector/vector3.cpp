@@ -202,23 +202,31 @@ namespace MM2
         hook::Thunk<0x43DD50>::Call<void>(this, &vec);
     }
     AGE_API void Vector3::operator+=(const Vector3& vec) {
-        hook::Thunk<0x45CCD0>::Call<void>(this, &vec);
+        this->X += vec.X;
+        this->Y += vec.Y;
+        this->Z += vec.Z;
     }
     AGE_API void Vector3::operator-=(const Vector3& vec) {
-        hook::Thunk<0x45CD00>::Call<void>(this, &vec);
+        this->X -= vec.X;
+        this->Y -= vec.Y;
+        this->Z -= vec.Z;
     }
     AGE_API void Vector3::operator+=(Vector3& vec) {
-        hook::Thunk<0x479520>::Call<void>(this, &vec);
+        this->X += vec.X;
+        this->Y += vec.Y;
+        this->Z += vec.Z;
     }
     AGE_API void Vector3::operator-=(Vector3& vec) {
-        hook::Thunk<0x470180>::Call<void>(this, &vec);
+        this->X -= vec.X;
+        this->Y -= vec.Y;
+        this->Z -= vec.Z;
     }
 
     AGE_API Vector3 Vector3::operator+(const Vector3& vec) const {
         return Vector3(this->X + vec.X, this->Y + vec.Y, this->Z + vec.Z);
     }
     AGE_API Vector3 Vector3::operator-(const Vector3& vec) const {
-        return hook::Thunk<0x491860>::Call<Vector3>(this, &vec);
+        return Vector3(this->X - vec.X, this->Y - vec.Y, this->Z - vec.Z);
     }
     AGE_API Vector3 Vector3::operator/(float value) const {
         return Vector3(this->X / value, this->Y / value, this->Z / value);
