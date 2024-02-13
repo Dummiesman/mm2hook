@@ -1,5 +1,6 @@
 #pragma once
 #include <modules\phys\bound.h>
+#include <modules\node\node.h>
 
 namespace MM2
 {
