@@ -62,7 +62,6 @@ namespace MM2
 
         UIBMButton* AddBMButtonLua(int id, LPCSTR name, float x, float y, int numStates, LuaRef onToggleCallback, LuaRef pBoxedValue, int radioButtonValue, int soundIndex, LuaRef hoverCallback);
 
-        //(int id, LPCSTR name, float x, float y, float w, float h, string valuesString, BOOL wrapAround, int maxValue, int nameTextMode, int fontNum, datCallback onValueChanged)
         UITextRoller2* AddTextRoller2Lua(int id, LPCSTR name, IntBox* pBoxedValue, float x, float y, float w, float h, LPCSTR valuesString, bool wrapAround, int maxValue, int nameTextMode, int fontNum, LuaRef onValueChangedCallback)
         {
             auto tempString = string(valuesString);
