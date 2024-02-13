@@ -53,17 +53,13 @@ namespace MM2
         AGE_API void Update() override                            { hook::Thunk<0x553EA0>::Call<void>(this); }
 
         //helpers
-        int getDataCount() {
+        int GetDataCount() {
             return this->numVehicleDatas;
         }
 
-        aiVehicleData * getData(int num) {
-            //clamp
-            int max = getDataCount();
-            if (num >= max)
-                num = max - 1;
-
-            //return data
+        aiVehicleData * GetData(int num) {
+            if (num < 0 || num >= GetDataCount())
+                return nullptr;
             return &this->vehicleDatas[num];
         }
 
@@ -75,8 +71,9 @@ namespace MM2
                 .addFunction("AddVehicleDataEntry", &AddVehicleDataEntry)
                 .addFunction("SaveEntry", &SaveEntry)
 
-                .addPropertyReadOnly("DataCount", &getDataCount)
-                .addFunction("GetData", &getData)
+                .addPropertyReadOnly("NumVehicleDatas", &GetDataCount)
+                .addPropertyReadOnly("DataCount", &GetDataCount) // old naming convention
+                .addFunction("GetData", &GetData)
             .endClass();
         }
     };
