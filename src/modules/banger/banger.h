@@ -30,7 +30,7 @@ namespace MM2
 
     class dgBangerInstance : public lvlInstance {
     private:
-        __int16 DataPack;
+        short DataPack; // Contains type and variant
     public:
         /*
             dgBangerInstance
