@@ -5,8 +5,6 @@
 
 class gfxPipelineHandler {
 public:
-    static  bool g_bConsoleOpen;
-
     static bool HandleKeyPress(DWORD vKey);
 
     static void gfxApplySettings();

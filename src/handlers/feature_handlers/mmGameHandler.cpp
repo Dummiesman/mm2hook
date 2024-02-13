@@ -24,18 +24,10 @@ static float horn_sirenThreshold = 0.15f;
 static bool lastHornButtonState = false;
 
 void mmGameHandler::SendChatMessage(char *message) {
-    if (gfxPipelineHandler::g_bConsoleOpen) {
-        MM2Lua::SendCommand(message);
+    LogFile::Format("Got chat message: %s\n", message);
 
-        // return normal chatbox behavior
-        gfxPipelineHandler::g_bConsoleOpen = false;
-    }
-    else {
-        LogFile::Format("Got chat message: %s\n", message);
-
-        //send to dispatcher
-        GameEventDispatcher::onChatMessage(message);
-    }
+    //send to dispatcher
+    GameEventDispatcher::onChatMessage(message);
 }
 
 void mmGameHandler::InitWeather(void) {

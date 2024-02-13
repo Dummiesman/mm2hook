@@ -11,8 +11,6 @@ using namespace MM2;
     gfxPipelineHandler
 */
 
-bool gfxPipelineHandler::g_bConsoleOpen = false;
-
 void gfxPipelineHandler::gfxApplySettings(void) {
     gfxInterface *gfxInterface = gfxInterfaces[gfxInterfaceChoice];
 
@@ -30,33 +28,7 @@ bool gfxPipelineHandler::HandleKeyPress(DWORD vKey)
     // Inform Lua of any changes beforehand
     MM2Lua::OnKeyPress(vKey);
     
-
     switch (vKey) {
-        // '~'
-        case VK_OEM_3:
-        // '`'
-        case VK_OEM_8:
-        {
-            // tell the game to open a chat box,
-            // and then use a local variable to check if it's open
-            mmGameManager *mgr = mmGameManager::Instance;
-            auto gamePtr = (mgr != NULL) ? mgr->getGame() : NULL;
-
-            if (gamePtr != NULL)
-            {
-                auto popup = gamePtr->GetPopup();
-
-                if (popup != NULL) {
-                    // don't try opening it again if it's already open
-                    if (popup->IsEnabled() && g_bConsoleOpen)
-                        return true;
-
-                    popup->ProcessChat();
-                    g_bConsoleOpen = true;
-                }
-            }
-        } return true;
-
         case VK_F8: {
             if (HookConfig::Read()) {
                 LogFile::WriteLine("Configuration settings reloaded successfully.");
