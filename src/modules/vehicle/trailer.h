@@ -73,7 +73,7 @@ namespace MM2
             lvlInstance virtuals
         */
         virtual AGE_API const Vector3& GetPosition() override;
-        virtual AGE_API const Matrix34& GetMatrix(Matrix34* a1) override;
+        virtual AGE_API const Matrix34& GetMatrix(Matrix34& a1) override;
         virtual AGE_API void SetMatrix(const Matrix34& a1) override;
         virtual AGE_API void Draw(int) override;
         virtual AGE_API unsigned int SizeOf(void) override;

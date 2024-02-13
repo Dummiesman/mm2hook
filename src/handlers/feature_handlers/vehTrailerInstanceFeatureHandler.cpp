@@ -49,7 +49,7 @@ void vehTrailerInstanceFeatureHandler::DrawPart(int a1, int a2, Matrix34* a3, mo
 void vehTrailerInstanceFeatureHandler::Draw(int a1) {
     auto inst = reinterpret_cast<vehTrailerInstance*>(this);
     auto trailer = inst->GetTrailer();
-    auto trailerMtx = inst->GetMatrix(&trailerMatrix);
+    auto trailerMtx = inst->GetMatrix(trailerMatrix);
 
     //get our shader set
     int shaderSet = *getPtr<int>(this, 24);
@@ -106,7 +106,7 @@ void vehTrailerInstanceFeatureHandler::DrawTwhl4(int a1, int a2, Matrix34* a3, m
     auto trailer = inst->GetTrailer();
     auto carsim = trailer->GetCarSim();
 
-    auto trailerMtx = inst->GetMatrix(&trailerMatrix);
+    auto trailerMtx = inst->GetMatrix(trailerMatrix);
 
     float offsetX = carsim->TrailerBackBackLeftWheelPosDiff.Y * trailerMtx.m10 + carsim->TrailerBackBackLeftWheelPosDiff.Z * trailerMtx.m20 + carsim->TrailerBackBackLeftWheelPosDiff.X * trailerMtx.m00;
     float offsetY = carsim->TrailerBackBackLeftWheelPosDiff.Y * trailerMtx.m11 + carsim->TrailerBackBackLeftWheelPosDiff.Z * trailerMtx.m21 + carsim->TrailerBackBackLeftWheelPosDiff.X * trailerMtx.m01;
@@ -123,7 +123,7 @@ void vehTrailerInstanceFeatureHandler::DrawTwhl5(int a1, int a2, Matrix34* a3, m
     auto trailer = inst->GetTrailer();
     auto carsim = trailer->GetCarSim();
 
-    auto trailerMtx = inst->GetMatrix(&trailerMatrix);
+    auto trailerMtx = inst->GetMatrix(trailerMatrix);
 
     float offsetX = carsim->TrailerBackBackRightWheelPosDiff.Y * trailerMtx.m10 + carsim->TrailerBackBackRightWheelPosDiff.Z * trailerMtx.m20 + carsim->TrailerBackBackRightWheelPosDiff.X * trailerMtx.m00;
     float offsetY = carsim->TrailerBackBackRightWheelPosDiff.Y * trailerMtx.m11 + carsim->TrailerBackBackRightWheelPosDiff.Z * trailerMtx.m21 + carsim->TrailerBackBackRightWheelPosDiff.X * trailerMtx.m01;
@@ -147,7 +147,7 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
     int gear = carsim->GetTransmission()->GetGear();
 
     //setup renderer
-    inst->GetMatrix(&trailerMatrix);
+    inst->GetMatrix(trailerMatrix);
     gfxRenderState::SetWorldMatrix(trailerMatrix);
 
     //get our shader set

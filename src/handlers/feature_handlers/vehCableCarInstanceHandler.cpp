@@ -26,7 +26,7 @@ void vehCableCarInstanceHandler::DrawShadow()
 
     // draw drop shadow
     Matrix34 shadowMatrix, dummyMatrix;
-    if (lvlInstance::ComputeShadowMatrix(shadowMatrix, inst->GetRoomId(), inst->GetMatrix(&dummyMatrix)))
+    if (lvlInstance::ComputeShadowMatrix(shadowMatrix, inst->GetRoomId(), inst->GetMatrix(dummyMatrix)))
     {
         //setup renderer
         gfxRenderState::SetWorldMatrix(shadowMatrix);
@@ -51,7 +51,7 @@ void vehCableCarInstanceHandler::DrawGlow()
         return;
 
     //setup renderer
-    Matrix34 instMtx = inst->GetMatrix(&cableCarMatrix);
+    Matrix34 instMtx = inst->GetMatrix(cableCarMatrix);
     memcpy(&cableCarMatrix, &instMtx, sizeof(Matrix34));
     gfxRenderState::SetWorldMatrix(cableCarMatrix);
 

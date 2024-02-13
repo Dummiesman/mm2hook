@@ -204,7 +204,7 @@ int lvlInstance::GetGeomSetCount() {
 Matrix34 lvlInstance::getMatrixLua()
 {
     Matrix34 discard;
-    auto matrix = this->GetMatrix(&discard);
+    auto matrix = this->GetMatrix(discard);
     discard.Set(matrix);
     return discard;
 }

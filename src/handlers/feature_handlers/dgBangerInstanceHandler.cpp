@@ -65,7 +65,7 @@ void dgBangerInstanceHandler::DrawShadow()
     if (model != nullptr)
     {
         Matrix34 shadowMatrix, dummyMatrix;
-        Matrix34 bangerMatrix = banger->GetMatrix(&dummyMatrix);
+        Matrix34 bangerMatrix = banger->GetMatrix(dummyMatrix);
         if (lvlInstance::ComputeShadowProjectionMatrix(shadowMatrix, banger->GetRoomId(), timeWeather->KeyPitch, timeWeather->KeyHeading, bangerMatrix))
         {
             gfxRenderState::SetWorldMatrix(shadowMatrix);
