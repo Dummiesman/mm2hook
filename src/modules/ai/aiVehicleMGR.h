@@ -29,53 +29,28 @@ namespace MM2
         static hook::Type<aiVehicleManager *> Instance;
         static hook::Type<int> SignalClock;
 
-        AGE_API aiVehicleManager(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x553B30>::Call<void>(this);
-        }
-
-        AGE_API virtual ~aiVehicleManager(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x553C2>::Call<void>(this);
-        }
+        AGE_API aiVehicleManager(void);
+        AGE_API virtual ~aiVehicleManager(void);
 
         //members
-        AGE_API void Init(char *unused)                           { hook::Thunk<0x553CE0>::Call<void>(this, unused); }
-        AGE_API int AddVehicleDataEntry(LPCSTR name)              { return hook::Thunk<0x553FA0>::Call<int>(this, name); }
-        AGE_API void SaveEntry()                                  { hook::Thunk<0x5541E0>::Call<void>(this); }
+        AGE_API void Init(char *unused);
+        AGE_API int AddVehicleDataEntry(LPCSTR name);
+        AGE_API void SaveEntry();
         /*
         AGE_API aiVehicleActive Attach
         AGE_API aiVehicleActive Detach
         */
 
         //asNode overrides
-        AGE_API void Reset() override                             { hook::Thunk<0x553D60>::Call<void>(this); }
-        AGE_API void Update() override                            { hook::Thunk<0x553EA0>::Call<void>(this); }
+        AGE_API void Reset() override;
+        AGE_API void Update() override;
 
         //helpers
-        int GetDataCount() {
-            return this->numVehicleDatas;
-        }
-
-        aiVehicleData * GetData(int num) {
-            if (num < 0 || num >= GetDataCount())
-                return nullptr;
-            return &this->vehicleDatas[num];
-        }
+        int GetDataCount();
+        aiVehicleData *GetData(int num);
 
         //lua
-        static void BindLua(LuaState L) {
-            LuaBinding(L).beginExtendClass<aiVehicleManager, asNode>("aiVehicleManager")
-                .addStaticProperty("Instance", [] { return Instance.get(); })
-                
-                .addFunction("AddVehicleDataEntry", &AddVehicleDataEntry)
-                .addFunction("SaveEntry", &SaveEntry)
-
-                .addPropertyReadOnly("NumVehicleDatas", &GetDataCount)
-                .addPropertyReadOnly("DataCount", &GetDataCount) // old naming convention
-                .addFunction("GetData", &GetData)
-            .endClass();
-        }
+        static void BindLua(LuaState L);
     };
 
     ASSERT_SIZEOF(aiVehicleManager, 0x177A4);
