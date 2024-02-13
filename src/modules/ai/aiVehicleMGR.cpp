@@ -69,12 +69,12 @@ namespace MM2
     // Properties
     aiVehicleSpline* aiVehicleInstance::GetSpline()
     {
-        return _spline.get(this);
+        return this->Spline;
     }
 
     int aiVehicleInstance::GetVariant() const
     {
-        return _variant.get(this);
+        return this->Variant;
     }
         
     //overrides

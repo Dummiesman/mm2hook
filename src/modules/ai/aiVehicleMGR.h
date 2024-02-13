@@ -13,6 +13,7 @@ namespace MM2
     extern class asNode;
     extern class ltLight;
     extern class aiVehicleSpline;
+    extern class vehBreakableMgr;
 
     // Class definitions
     class aiVehicleActive 
@@ -67,9 +68,15 @@ namespace MM2
         static const int TSLIGHT1_GEOM_ID = 22;
     public:
         static int AmbientHeadlightStyle;
-    protected:
-        static hook::Field<0x14, aiVehicleSpline*> _spline;
-        static hook::Field<0x1E, short> _variant;
+    private:
+        aiVehicleSpline* Spline;
+        short SignalFrequency;
+        byte SignalState;
+        short LOD;
+        short Variant;
+        vehBreakableMgr* BreakableMgr;
+        Vector3 HeadlightPosition;
+        Vector3 VehiclePosition;
     public:
         aiVehicleInstance(void)             DONOTCALL;
 
