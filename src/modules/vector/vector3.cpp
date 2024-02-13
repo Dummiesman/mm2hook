@@ -61,22 +61,47 @@ namespace MM2
         this->Z *= 1.0f / scale;
     }
     AGE_API void Vector3::RotateX(float angle) {
-        hook::Thunk<0x4C0390>::Call<void>(this, angle);
+        this->Z = cosf(angle) * this->Z + sinf(angle) * this->Y;
+        this->Y = cosf(angle) * this->Y - sinf(angle) * this->Z;
     }
     AGE_API void Vector3::RotateY(float angle) {
-        hook::Thunk<0x4C03D0>::Call<void>(this, angle);
+        this->X = sinf(angle) * this->Z + cosf(angle) * this->X;
+        this->Z = cosf(angle) * this->Z - sinf(angle) * this->X;
     }
     AGE_API void Vector3::RotateZ(float angle) {
-        hook::Thunk<0x4C0400>::Call<void>(this, angle);
+        this->Y = cosf(angle) * this->Y + (angle) * this->X;
+        this->X = cosf(angle) * this->X - (angle) * this->Y;
     }
     AGE_API void Vector3::RotateAboutAxis(float angle, int axis) {
-        hook::Thunk<0x4C0020>::Call<void>(this, angle, axis);
+        float asin = sinf(angle);
+        float acos = cosf(angle);
+        switch (axis)
+        {
+        case 'z':
+            this->Y = acos * this->Y + asin * this->X;
+            this->X = acos * this->X - asin * this->Y;
+            break;
+        case 'x':
+            this->Z = asin * this->Y + acos * this->Z;
+            this->Y = acos * this->Y - asin * this->Z;
+            break;
+        case 'y':
+            this->X = acos * this->X + asin * this->Z;
+            this->Z = acos * this->Z - asin * this->X;
+            break;
+        }
     }
     AGE_API float Vector3::Angle(const Vector3& vec) const {
-        return hook::Thunk<0x4C0430>::Call<float>(this, &vec);
+        float mag = sqrtf(vec.Mag2() * this->Mag2());
+        float dotDivMag = this->Dot(vec) / mag;
+        if (dotDivMag > 0.99999988)
+            return 0.0;
+        if (dotDivMag >= -1.0)
+            return acosf(dotDivMag);
+        return 3.1415927f;
     }
     AGE_API float Vector3::FastAngle(const Vector3& vec) const {
-        return hook::Thunk<0x4C0500>::Call<float>(this, &vec);
+        return acosf(vec.Z * this->Z + vec.Y * this->Y + vec.X * this->X);
     }
     AGE_API bool Vector3::Approach(const Vector3& vec, float rate, float time) {
         return hook::Thunk<0x4BFF20>::Call<bool>(this, &vec, rate, time);
@@ -107,11 +132,15 @@ namespace MM2
     AGE_API void Vector3::Dot3x3Transpose(const Matrix34& mtx) {
         hook::Thunk<0x4795C0>::Call<void>(this, &mtx);
     }
-    AGE_API void Vector3::Lerp(float p1, const Vector3& vec1, const Vector3& vec2) {
-        hook::Thunk<0x494C00>::Call<void>(this, p1, &vec1, &vec2);
+    AGE_API void Vector3::Lerp(float t, const Vector3& vec1, const Vector3& vec2) {
+        this->X = (vec2.X - vec1.X) * t + vec1.Z;
+        this->Y = (vec2.Y - vec1.Y) * t + vec1.Y;
+        this->Z = (vec2.Z - vec1.Z) * t + vec1.Z;
     }
     AGE_API void Vector3::Negate(const Vector3& vec) {
-        hook::Thunk<0x480AC0>::Call<void>(this, &vec);
+        this->X = -vec.X;
+        this->Y = -vec.Y;
+        this->Z = -vec.Z;
     }
     AGE_API void Vector3::Normalize()
     {
