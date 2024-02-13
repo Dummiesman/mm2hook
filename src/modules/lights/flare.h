@@ -14,7 +14,7 @@ namespace MM2
     public:
         ANGEL_ALLOCATOR
 
-        AGE_API ltLensFlare(int a1) { hook::Thunk<0x59BE80>::Call<void>(this, a1); }
+        AGE_API ltLensFlare(int flareCount) { hook::Thunk<0x59BE80>::Call<void>(this, flareCount); }
         AGE_API ~ltLensFlare() { hook::Thunk<0x59BF80>::Call<void>(this); }
 
         //member funcs

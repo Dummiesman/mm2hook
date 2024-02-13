@@ -69,21 +69,21 @@ namespace MM2
             }
             if (this->LensFlarePtr == nullptr)
             {
-                this->LensFlarePtr = new ltLensFlare(0x14);
+                this->LensFlarePtr = new ltLensFlare(20);
             }
             return true;
         }
 
         AGE_API bool AddLight(Vector3 const & position, Vector3 const & color)                    
         { 
-            if (this->ltLightPool != nullptr && this->LightCount < 8)
+            if (this->ltLightPool != nullptr && this->LightCount < vehSiren::MAX_LIGHTS)
             {
                 this->HasLights = true;
                 ltLightPool[LightCount].Type = 1;
                 ltLightPool[LightCount].Color = color;
                 extraLightPositions[LightCount] = position;
                 ltLightPool[LightCount].SpotExponent = 3.f;
-                ltLightPool[LightCount].Direction = Vector3(1.f, 0.f, 0.f);
+                ltLightPool[LightCount].Direction = Vector3(1.0f, 0.0f, 0.0f);
                 ltLightPool[LightCount].Direction.RotateY(LightCount * 1.5707964f);
                 ++this->LightCount;
                 return true;
@@ -110,7 +110,7 @@ namespace MM2
             }
         }
 
-        AGE_API void Draw(Matrix34* a1)
+        AGE_API void Draw(Matrix34 const& mtx)
         {
             if (this->ltLightPool == nullptr)
                 return;
@@ -121,13 +121,13 @@ namespace MM2
                 auto light = &this->ltLightPool[i];
                 auto lightPos = this->extraLightPositions[i];
 
-                light->Position = a1->Transform(lightPos);
+                light->Position = mtx.Transform(lightPos);
                 light->DrawGlow(static_cast<Vector3>(gfxRenderState::GetCameraMatrix().GetRow(3)));
             }
             ltLight::DrawGlowEnd();
 
             //draw lensFlare
-            hook::Thunk<0x4D6880>::Call<void>(this, a1);
+            hook::Thunk<0x4D6880>::Call<void>(this, &mtx);
         }
 
         static void BindLua(LuaState L) {
@@ -146,9 +146,6 @@ namespace MM2
                 //members
                 .addFunction("Init", &Init)
                 .addFunction("AddLight", &AddLight)
-                .addFunction("Reset", &Reset)
-                .addFunction("Draw", &Draw)
-                .addFunction("Update", &Update)
               
                 .endClass();
         }
