@@ -1230,7 +1230,7 @@ namespace MM2
                 //MM2 siren
                 if (siren != nullptr && siren->HasLights && siren->Active)
                 {
-                    siren->Draw(this->carSim->GetWorldMatrix());
+                    siren->Draw(*this->carSim->GetWorldMatrix());
                 }
             }
             if (vehCarModel::SirenType == 1 || vehCarModel::SirenType == 2) {

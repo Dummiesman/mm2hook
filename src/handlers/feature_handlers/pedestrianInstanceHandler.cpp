@@ -90,7 +90,7 @@ void pedestrianInstanceHandler::DrawShadow()
 
     bool prevLighting = gfxRenderState::SetLighting(true);
 
-    if (lvlInstance::ComputeShadowMatrix(&shadowMatrix, inst->GetRoomId(), pedMatrix))
+    if (lvlInstance::ComputeShadowMatrix(shadowMatrix, inst->GetRoomId(), *pedMatrix))
     {
         float angle = lightDirection.X * shadowMatrix.m10 + lightDirection.Z * shadowMatrix.m12;
         shadowMatrix.SetRow(1, Vector3(lightDirection.X, -angle, lightDirection.Z));
