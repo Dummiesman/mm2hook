@@ -61,33 +61,38 @@ namespace MM2
         this->Z *= 1.0f / scale;
     }
     AGE_API void Vector3::RotateX(float angle) {
+        float tmp = cosf(angle) * this->Y - sinf(angle) * this->Z;
         this->Z = cosf(angle) * this->Z + sinf(angle) * this->Y;
-        this->Y = cosf(angle) * this->Y - sinf(angle) * this->Z;
+        this->Y = tmp;
     }
     AGE_API void Vector3::RotateY(float angle) {
+        float tmp = cosf(angle) * this->Z - sinf(angle) * this->X;
         this->X = sinf(angle) * this->Z + cosf(angle) * this->X;
-        this->Z = cosf(angle) * this->Z - sinf(angle) * this->X;
+        this->Z = tmp;
     }
     AGE_API void Vector3::RotateZ(float angle) {
-        this->Y = cosf(angle) * this->Y + (angle) * this->X;
-        this->X = cosf(angle) * this->X - (angle) * this->Y;
+        float tmp = cosf(angle) * this->X - sinf(angle) * this->Y;
+        this->Y = cosf(angle) * this->Y + sinf(angle) * this->X;
+        this->X = tmp;
     }
     AGE_API void Vector3::RotateAboutAxis(float angle, int axis) {
-        float asin = sinf(angle);
-        float acos = cosf(angle);
+        float tmp;
         switch (axis)
         {
-        case 'z':
-            this->Y = acos * this->Y + asin * this->X;
-            this->X = acos * this->X - asin * this->Y;
-            break;
         case 'x':
-            this->Z = asin * this->Y + acos * this->Z;
-            this->Y = acos * this->Y - asin * this->Z;
+            tmp = cosf(angle) * this->Y - sinf(angle) * this->Z;
+            this->Z = cosf(angle) * this->Z + sinf(angle) * this->Y;
+            this->Y = tmp;
             break;
         case 'y':
-            this->X = acos * this->X + asin * this->Z;
-            this->Z = acos * this->Z - asin * this->X;
+            tmp = cosf(angle) * this->Z - sinf(angle) * this->X;
+            this->X = sinf(angle) * this->Z + cosf(angle) * this->X;
+            this->Z = tmp;
+            break;
+        case 'z':
+            tmp = cosf(angle) * this->X - sinf(angle) * this->Y;
+            this->Y = cosf(angle) * this->Y + sinf(angle) * this->X;
+            this->X = tmp;
             break;
         }
     }
