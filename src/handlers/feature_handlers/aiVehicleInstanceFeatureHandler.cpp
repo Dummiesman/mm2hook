@@ -41,7 +41,7 @@ void aiVehicleInstanceFeatureHandler::DrawShadow()
     if (model != nullptr)
     {
         Matrix34 shadowMatrix, dummyMatrix;
-        Matrix34 instanceMatrix = inst->GetMatrix(&dummyMatrix);
+        Matrix34 instanceMatrix = inst->GetMatrix(dummyMatrix);
 
         if (lvlInstance::ComputeShadowProjectionMatrix(shadowMatrix, inst->GetRoomId(), timeWeather->KeyPitch, timeWeather->KeyHeading, instanceMatrix))
         {
