@@ -71,6 +71,11 @@ namespace MM2
         return &this->vehicleDatas[num];
     }
 
+    ltLight * aiVehicleManager::GetSharedLight()
+    {
+        return this->sharedLight;
+    }
+
     //lua
     void aiVehicleManager::BindLua(LuaState L) {
         LuaBinding(L).beginExtendClass<aiVehicleManager, asNode>("aiVehicleManager")
@@ -193,7 +198,7 @@ namespace MM2
                     if (wheelModel != nullptr)
                     {
                         modStatic* sWheelModel = this->GetGeom(lod, SWHL0_GEOM_ID + i);
-                        if (this->Spline->GetSpeed() > 20.f && sWheelModel != nullptr && vehCarModel::EnableSpinningWheels)
+                        if (this->Spline->GetSpeed() > 20.0f && sWheelModel != nullptr && vehCarModel::EnableSpinningWheels)
                         {
                             DrawPart(sWheelModel, wheelMatrix, shaders, vehCarModel::PartReflections);
                         }
@@ -214,7 +219,7 @@ namespace MM2
                     whl4Matrix.Dot(this->GetMatrix(aiVehicleMatrix));
 
                     modStatic* swhl4Model = this->GetGeom(lod, SWHL4_GEOM_ID);
-                    if (this->Spline->GetSpeed() > 20.f && swhl4Model != nullptr && vehCarModel::EnableSpinningWheels)
+                    if (this->Spline->GetSpeed() > 20.0f && swhl4Model != nullptr && vehCarModel::EnableSpinningWheels)
                     {
                         DrawPart(swhl4Model, whl4Matrix, shaders, vehCarModel::PartReflections);
                     }
@@ -234,7 +239,7 @@ namespace MM2
                     whl5Matrix.Dot(this->GetMatrix(aiVehicleMatrix));
 
                     modStatic* swhl5Model = this->GetGeom(lod, SWHL5_GEOM_ID);
-                    if (this->Spline->GetSpeed() > 20.f && swhl5Model != nullptr && vehCarModel::EnableSpinningWheels)
+                    if (this->Spline->GetSpeed() > 20.0f && swhl5Model != nullptr && vehCarModel::EnableSpinningWheels)
                     {
                         DrawPart(swhl5Model, whl5Matrix, shaders, vehCarModel::PartReflections);
                     }
@@ -268,6 +273,129 @@ namespace MM2
 
     AGE_API void aiVehicleInstance::DrawShadow()                         { hook::Thunk<0x552CC0>::Call<void>(this); }
     AGE_API void aiVehicleInstance::DrawShadowMap()                      { hook::Thunk<0x552F30>::Call<void>(this); }
+
+    AGE_API void aiVehicleInstance::DrawGlow()
+    {
+        if (this->GetGeomIndex() == 0)
+            return;
+
+        //get shaders
+        auto shaders = this->GetShader(this->GetVariant());
+
+        //setup renderer
+        gfxRenderState::SetWorldMatrix(this->GetMatrix(aiVehicleMatrix));
+
+        //get lights
+        modStatic* hlight = this->GetGeomBase(HLIGHT_GEOM_ID)->GetHighestLOD();
+        modStatic* tlight = this->GetGeomBase(TLIGHT_GEOM_ID)->GetHighestLOD();
+        modStatic* slight0 = this->GetGeomBase(SLIGHT0_GEOM_ID)->GetHighestLOD();
+        modStatic* slight1 = this->GetGeomBase(SLIGHT1_GEOM_ID)->GetHighestLOD();
+        modStatic* blight = this->GetGeomBase(BLIGHT_GEOM_ID)->GetHighestLOD();
+        modStatic* tslight0 = this->GetGeomBase(TSLIGHT0_GEOM_ID)->GetHighestLOD();
+        modStatic* tslight1 = this->GetGeomBase(TSLIGHT1_GEOM_ID)->GetHighestLOD();
+
+        //draw brake light
+        if (blight != nullptr)
+        {
+            if (this->Spline->GetRailSet()->GetAccelFactor() < 0.0f || this->Spline->GetSpeed() == 0.0f)
+                blight->Draw(shaders);
+        }
+
+        //draw taillight
+        if (tlight != nullptr)
+        {
+            //draw brake copy
+            if (this->Spline->GetRailSet()->GetAccelFactor() < 0.0f || this->Spline->GetSpeed() == 0.0f)
+                tlight->Draw(shaders);
+            //draw headlight copy
+            if (aiMap::GetInstance()->showHeadlights)
+                tlight->Draw(shaders);
+        }
+
+        //draw left signal
+        if (this->SignalState & 1)
+        {
+            if ((aiVehicleManager::SignalClock + (int)this->SignalFrequency) & 8)
+            {
+                if (slight0 != nullptr)
+                    slight0->Draw(shaders);
+                if (tslight0 != nullptr)
+                    tslight0->Draw(shaders);
+            }
+        }
+        else {
+            if (tslight0 != nullptr) {
+                //draw brake copy
+                if (this->Spline->GetRailSet()->GetAccelFactor() < 0.0f || this->Spline->GetSpeed() == 0.0f)
+                    tslight0->Draw(shaders);
+                //draw headlight copy
+                if (aiMap::GetInstance()->showHeadlights)
+                    tslight0->Draw(shaders);
+            }
+        }
+
+        //draw right signal
+        if (this->SignalState & 2)
+        {
+            if ((aiVehicleManager::SignalClock + (int)this->SignalFrequency) & 8)
+            {
+                if (slight1 != nullptr)
+                    slight1->Draw(shaders);
+                if (tslight1 != nullptr)
+                    tslight1->Draw(shaders);
+            }
+        }
+        else {
+            if (tslight1 != nullptr) {
+                //draw brake copy
+                if (this->Spline->GetRailSet()->GetAccelFactor() < 0.0f || this->Spline->GetSpeed() == 0.0f)
+                    tslight1->Draw(shaders);
+                //draw headlight copy
+                if (aiMap::GetInstance()->showHeadlights)
+                    tslight1->Draw(shaders);
+            }
+        }
+
+        //draw headlights
+        if (aiVehicleInstance::AmbientHeadlightStyle == 0 || aiVehicleInstance::AmbientHeadlightStyle == 2)
+        {
+            //MM2 headlights
+            if (aiMap::GetInstance()->showHeadlights)
+            {
+                ltLight::DrawGlowBegin();
+
+                auto light = aiVehicleManager::Instance->GetSharedLight();
+                auto lightPos = this->HeadlightPosition;
+                auto carMatrix = this->GetMatrix(aiVehicleMatrix);
+
+                light->Direction = Vector3(-carMatrix.m20, -carMatrix.m21, -carMatrix.m22);
+                light->Position = carMatrix.Transform(lightPos);
+
+                modStatic* headlight0 = this->GetGeomBase(HEADLIGHT0_GEOM_ID)->GetHighestLOD();
+                if (headlight0 != nullptr)
+                    light->DrawGlow(static_cast<Vector3>(gfxRenderState::GetCameraMatrix().GetRow(3)));
+
+                modStatic* headlight1 = this->GetGeomBase(HEADLIGHT1_GEOM_ID)->GetHighestLOD();
+                if (headlight1 != nullptr)
+                {
+                    lightPos.X *= -1.0f;
+                    light->Position = carMatrix.Transform(lightPos);
+                    light->DrawGlow(static_cast<Vector3>(gfxRenderState::GetCameraMatrix().GetRow(3)));
+                }
+
+                ltLight::DrawGlowEnd();
+            }
+        }
+        if (aiVehicleInstance::AmbientHeadlightStyle == 1 || aiVehicleInstance::AmbientHeadlightStyle == 2)
+        {
+            //MM1 headlights
+            gfxRenderState::SetWorldMatrix(this->GetMatrix(aiVehicleMatrix));
+
+            if (hlight != nullptr && aiMap::GetInstance()->showHeadlights)
+                hlight->Draw(shaders);
+        }
+    }
+
     AGE_API void aiVehicleInstance::DrawReflected(float intensity)       { hook::Thunk<0x552CB0>::Call<void>(this, intensity); }
     AGE_API unsigned int aiVehicleInstance::SizeOf()                     { return hook::Thunk<0x553060>::Call<unsigned int>(this); };
     AGE_API phBound* aiVehicleInstance::GetBound(int type)               { return hook::Thunk<0x552F40>::Call<phBound*>(this, type); };

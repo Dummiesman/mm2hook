@@ -74,6 +74,7 @@ namespace MM2
         //helpers
         int GetDataCount();
         aiVehicleData *GetData(int num);
+        ltLight *GetSharedLight();
 
         //lua
         static void BindLua(LuaState L);
@@ -141,6 +142,7 @@ namespace MM2
         AGE_API void Draw(int lod) override;
         AGE_API void DrawShadow() override;
         AGE_API void DrawShadowMap() override;
+        AGE_API void DrawGlow() override;
         AGE_API void DrawReflected(float intensity) override;
         AGE_API unsigned int SizeOf() override;
         AGE_API phBound* GetBound(int type) override;
