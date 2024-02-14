@@ -3,6 +3,8 @@
 
 using namespace MM2;
 
+static ConfigValue<bool> cfgPropShadows("3DShadows", false);
+
 /*
     dgBangerInstanceHandler
 */
@@ -101,39 +103,17 @@ void dgBangerInstanceHandler::dgBangerManager_Init(int poolSize)
 
 void dgBangerInstanceHandler::Install()
 {
-    InstallVTableHook("dgBangerInstance::DrawShadow",
-        &DrawShadow, {
-            0x5B14C4,
-            0x5B153C,
-            0x5B15E8,
-            0x5B1658,
-            0x5B54DC,
-            0x5B5688,
-            0x5B5704,
-            0x5B57C8,
-            0x5B5FBC,
-            0x5B6104,
-            0x5B61B0
+    InstallCallback("aiTrafficLightInstance::DrawGlow", "Make traffic light banger lights double sided.",
+        &DrawGlow, {
+            cb::call(0x53CCFD),
         }
     );
 
-    InstallCallback("dgBangerInstance::Init", "Hook BeginGeom to set instance shadowing flag.",
-        &dgBangerInstance_BeginGeom, {
-            cb::call(0x53C7DE), // aiTrafficLightInstance::Init
-            cb::call(0x441C86), // dgUnhitBangerInstance::Init
+    InstallCallback("dgBangerInstance::DrawGlow", "Use custom tglDrawParticle.",
+        &tglDrawParticle, {
+            cb::call(0x441966),
         }
     );
-
-    //InstallCallback("dgBangerManager::Init", "Hook Init to set instance shadowing flag.",
-    //    &dgBangerManager_Init, {
-    //        cb::call(0x4129F4), // mmGame::Init
-    //    }
-    //);
-
-    // increases the maximum distance from 5 to 10 meters to enable shadow rendering for very tall props 
-    InstallPatch({ 0xD8, 0x25, 0x28, 0x4, 0x5B, 0x0 }, {
-        0x464501
-    });
 
     // makes banger glows double sided
     InstallVTableHook("dgBangerInstance::DrawGlow",
@@ -149,18 +129,43 @@ void dgBangerInstanceHandler::Install()
         }
     );
 
-    InstallCallback("aiTrafficLightInstance::DrawGlow", "Make traffic light banger lights double sided.",
-        &DrawGlow, {
-            cb::call(0x53CCFD),
-        }
-    );
-
-    InstallCallback("dgBangerInstance::DrawGlow", "Use custom tglDrawParticle.",
-        &tglDrawParticle, {
-            cb::call(0x441966),
-        }
-    );
-
     GameEventDispatcher::RegisterStateEndCallback(Reset);
+
+    if (cfgPropShadows.Get())
+    {
+        InstallVTableHook("dgBangerInstance::DrawShadow",
+            &DrawShadow, {
+                0x5B14C4,
+                0x5B153C,
+                0x5B15E8,
+                0x5B1658,
+                0x5B54DC,
+                0x5B5688,
+                0x5B5704,
+                0x5B57C8,
+                0x5B5FBC,
+                0x5B6104,
+                0x5B61B0
+            }
+        );
+
+        InstallCallback("dgBangerInstance::Init", "Hook BeginGeom to set instance shadowing flag.",
+            &dgBangerInstance_BeginGeom, {
+                cb::call(0x53C7DE), // aiTrafficLightInstance::Init
+                cb::call(0x441C86), // dgUnhitBangerInstance::Init
+            }
+        );
+
+        //InstallCallback("dgBangerManager::Init", "Hook Init to set instance shadowing flag.",
+        //    &dgBangerManager_Init, {
+        //        cb::call(0x4129F4), // mmGame::Init
+        //    }
+        //);
+
+        // increases the maximum distance from 5 to 10 meters to enable shadow rendering for very tall props 
+        InstallPatch({ 0xD8, 0x25, 0x28, 0x4, 0x5B, 0x0 }, {
+            0x464501
+            });
+    }
 }
 

@@ -127,6 +127,7 @@ namespace MM2
         static bool WheelReflections;
         static bool mm1StyleTransmission; //god this is horrible...
         static bool breakableRenderTweak;
+        static bool Enable3DShadows;
 
         //light states
         static bool ShowHeadlights;
