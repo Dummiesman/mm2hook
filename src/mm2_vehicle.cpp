@@ -28,6 +28,7 @@ bool vehCarModel::mm1StyleTransmission = false;
 bool vehCarModel::breakableRenderTweak = false;
 
 bool vehCarModel::Enable3DDamage = true;
+bool vehCarModel::Enable3DShadows = true;
 
 /*
    vehBreakableMgr
