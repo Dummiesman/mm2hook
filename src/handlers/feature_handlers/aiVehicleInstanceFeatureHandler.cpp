@@ -2,10 +2,8 @@
 
 using namespace MM2;
 
-/*
-    Model Index Constants
-*/
 static ConfigValue<int> cfgAmbientHeadlightStyle("AmbientHeadlightStyle", 0);
+static ConfigValue<bool> cfgAmbientShadows("3DShadows", false);
 
 /*
     aiVehicleInstanceFeatureHandler
@@ -147,6 +145,40 @@ void aiVehicleInstanceFeatureHandler::DrawGlow() {
     }
 }
 
+void aiVehicleInstanceFeatureHandler::DrawShadow()
+{
+    // call original
+    hook::Thunk<0x552CC0>::Call<void>(this);
+    
+    auto inst = reinterpret_cast<aiVehicleInstance*>(this);
+    auto timeWeather = cityLevel::GetCurrentLighting();
+
+    if (MMSTATE->TimeOfDay == 3 || lvlLevel::GetSingleton()->GetRoomInfo(inst->GetRoomId())->Flags & static_cast<int>(RoomFlags::Subterranean))
+        return;
+
+    bool prevLighting = gfxRenderState::SetLighting(true);
+
+    //get shaders
+    auto shaders = inst->GetShader(inst->GetVariant());
+
+    //get model
+    modStatic* model = inst->GetGeomBase(0)->GetHighestLOD();
+
+    if (model != nullptr)
+    {
+        Matrix34 shadowMatrix, dummyMatrix;
+        Matrix34 instanceMatrix = inst->GetMatrix(&dummyMatrix);
+
+        if (lvlInstance::ComputeShadowProjectionMatrix(shadowMatrix, inst->GetRoomId(), timeWeather->KeyPitch, timeWeather->KeyHeading, instanceMatrix))
+        {
+            gfxRenderState::SetWorldMatrix(shadowMatrix);
+            model->DrawShadowed(shaders, ComputeShadowIntensity(timeWeather->KeyColor));
+        }
+    }
+
+    gfxRenderState::SetLighting(prevLighting);
+}
+
 void aiVehicleInstanceFeatureHandler::ModStaticDraw(modShader* a1) {
     auto mod = reinterpret_cast<modStatic*>(this);
     hook::Type<gfxTexture*> g_ReflectionMap = 0x628914;
@@ -216,6 +248,14 @@ void aiVehicleInstanceFeatureHandler::Install() {
             0x5B5944
         }
     );
+
+    if (cfgAmbientShadows.Get()) {
+        InstallVTableHook("aiVehicleInstance::DrawShadow",
+            &DrawShadow, {
+                0x5B593C
+            }
+        );
+    }
 
     InstallVTableHook("aiVehicleAmbient::DrawId",
         &Ambient_DrawId, {

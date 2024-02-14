@@ -1,5 +1,7 @@
 #pragma once
 #include "carmodel.h"
+#include <modules\city\citylevel.h>
+#include <modules\mmcityinfo\state.h>
 
 namespace MM2
 {
@@ -1040,7 +1042,44 @@ namespace MM2
         gfxRenderState::SetAlphaRef(oldAlphaRef);
     }
 
-    AGE_API void vehCarModel::DrawShadow()                  { hook::Thunk<0x4CE940>::Call<void>(this); }
+    AGE_API void vehCarModel::DrawShadow()                  
+    {
+        if (!this->GetVisible())
+            return;
+
+        // draw drop shadow
+        hook::Thunk<0x4CE940>::Call<void>(this); 
+
+        // TEST: 3D!
+        if (!vehCarModel::Enable3DShadows)
+            return;
+        auto timeWeather = cityLevel::GetCurrentLighting();
+
+        if (MMSTATE->TimeOfDay == 3 || lvlLevel::GetSingleton()->GetRoomInfo(this->GetRoomId())->Flags & static_cast<int>(RoomFlags::Subterranean))
+            return;
+
+        bool prevLighting = gfxRenderState::SetLighting(true);
+
+        //get shaders
+        auto shaders = this->GetShader(this->GetVariant());
+
+        //get model
+        modStatic* model = this->GetGeomBase(0)->GetHighestLOD();
+
+        if (model != nullptr)
+        {
+            Matrix34 shadowMatrix, dummyMatrix;
+            Matrix34 instanceMatrix = this->GetMatrix(&dummyMatrix);
+
+            if (lvlInstance::ComputeShadowProjectionMatrix(shadowMatrix, this->GetRoomId(), timeWeather->KeyPitch, timeWeather->KeyHeading, instanceMatrix))
+            {
+                gfxRenderState::SetWorldMatrix(shadowMatrix);
+                model->DrawShadowed(shaders, ComputeShadowIntensity(timeWeather->KeyColor));
+            }
+        }
+        gfxRenderState::SetLighting(prevLighting);
+    }
+
     AGE_API void vehCarModel::DrawShadowMap()               { hook::Thunk<0x4CEA90>::Call<void>(this); }
         
     AGE_API void vehCarModel::DrawGlow()
