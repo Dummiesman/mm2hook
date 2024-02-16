@@ -15,8 +15,10 @@ namespace MM2
     // Class definitions
     class modStatic {
     public:
+        static bool s_CheapShadows;
+    public:
         uint8_t PacketCount;
-        uint8_t Flags;
+        uint8_t Flags; // 2 = Has alpha, 4 = High Cloud Shadowx, 8 = Low Cloud Shadows
         uint16_t FvfFlags;
         uint8_t *ShaderIndices;
         gfxPacket **ppPackets;
