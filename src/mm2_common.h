@@ -157,12 +157,13 @@ namespace MM2 {
         {
             this->size = size;
             this->text = (char*)malloc(size+1);
+            memset(this->text, 0x00, size + 1);
         }
 
-        char* GetBoxedValuePointer() { return text; }
-        LPCSTR GetConstBoxedValuePointer() { return text; }
+        char* GetBoxedValuePointer() const { return text; }
+        LPCSTR GetConstBoxedValuePointer() const { return text; }
         void SetText(LPCSTR text) { strcpy_s(this->text, size, text); }
-
+        int GetBufferSize() const { return this->size; }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<CharBox>("CharBox")
