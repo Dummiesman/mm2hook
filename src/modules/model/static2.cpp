@@ -6,6 +6,8 @@
 
 using namespace MM2;
 
+bool modStatic::s_CheapShadows = false;
+
 static gfxMaterial ColorMaterialTmp[2]; // Keep two around since AGE compares material changes by ptr
 static int ColorMaterialTmpIdx = 0;
 static gfxMaterial ShadowMaterial;
@@ -70,7 +72,6 @@ AGE_API void modStatic::Draw(modShader *shaders) const
 
 AGE_API void modStatic::DrawShadowed(modShader* shaders, float intensity) const
 {
-	gfxRenderState::FlushMasked();
 	bool lastAlphaEnable = gfxRenderState::GetAlphaEnabled();
 
 	ShadowMaterial.Diffuse = Vector4(0.0f, 0.0f, 0.0f, intensity);
@@ -79,10 +80,12 @@ AGE_API void modStatic::DrawShadowed(modShader* shaders, float intensity) const
 	ShadowMaterial.Specular = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
 	ShadowMaterial.Shininess = 0.0f;
 	gfxRenderState::SetMaterial(&ShadowMaterial);
+	if((this->Flags & 2) == 0 || shaders == nullptr || s_CheapShadows) gfxRenderState::SetTexture(0, nullptr);
+	gfxRenderState::FlushMasked();
 
 	for (int i = 0; i < this->PacketCount; i++)
 	{
-		if (shaders != nullptr)
+		if (!s_CheapShadows && (this->Flags & 2) != 0 && shaders != nullptr)
 		{
 			auto shader = shaders[this->ShaderIndices[i]];
 			gfxRenderState::SetTexture(0, shader.GetTexture());

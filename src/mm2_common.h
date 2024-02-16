@@ -157,12 +157,13 @@ namespace MM2 {
         {
             this->size = size;
             this->text = (char*)malloc(size+1);
+            memset(this->text, 0x00, size + 1);
         }
 
-        char* GetBoxedValuePointer() { return text; }
-        LPCSTR GetConstBoxedValuePointer() { return text; }
+        char* GetBoxedValuePointer() const { return text; }
+        LPCSTR GetConstBoxedValuePointer() const { return text; }
         void SetText(LPCSTR text) { strcpy_s(this->text, size, text); }
-
+        int GetBufferSize() const { return this->size; }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<CharBox>("CharBox")
@@ -269,15 +270,14 @@ namespace MM2 {
         luaBind<FloatBox>(L);
         luaBind<LocFont>(L);
 
-        typedef void(__cdecl* printer_type)(LPCSTR);
         LuaBinding(L)
-            .addFunction("Printf", (printer_type)&Printf)
-            .addFunction("Messagef", (printer_type)&Messagef)
-            .addFunction("Displayf", (printer_type)&Displayf)
-            .addFunction("Warningf", (printer_type)&Warningf)
-            .addFunction("Errorf", (printer_type)&Errorf)
-            .addFunction("Quitf", (printer_type)&Quitf)
-            .addFunction("Abortf", (printer_type)&Abortf)
+            .addFunction("Print", [](LPCSTR msg) { Printf("%s", msg); })
+            .addFunction("Message", [](LPCSTR msg) { Messagef("%s", msg); })
+            .addFunction("Display", [](LPCSTR msg) { Displayf("%s", msg); })
+            .addFunction("Warning", [](LPCSTR msg) { Warningf("%s", msg); })
+            .addFunction("Error", [](LPCSTR msg) { Errorf("%s", msg); })
+            .addFunction("Quit", [](LPCSTR msg) { Quitf("%s", msg); })
+            .addFunction("Abort", [](LPCSTR msg) { Abortf("%s", msg); })
 
             .addFunction("AngelReadString", &AngelReadString);
     }

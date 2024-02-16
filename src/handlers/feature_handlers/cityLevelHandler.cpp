@@ -219,5 +219,9 @@ void cityLevelHandler::Install() {
     // moves ped lod threshold to writable memory
     mem::write(0x54BC3D + 2, &ped_LodThreshold);
     mem::write(0x57B6CE + 2, &ped_LodThreshold);
+
+    // move shadow render threshold from furthest possible -> L lod
+    mem::write(0x445E23 + 2, obj_LowThresh.ptr());
+    mem::write(0x445DC6 + 2, obj_LowThresh.ptr());
 }
 
