@@ -157,7 +157,7 @@ namespace MM2
                 {
                     modStatic* wheelModel = this->GetGeom(lod, WHL0_GEOM_ID + i);
                     if (wheelModel != nullptr)
-                        DrawPart(wheelModel, vehicleActive->GetWheel(i)->GetMatrix(), shaders, vehCarModel::PartReflections);
+                        DrawPart(lod, WHL0_GEOM_ID + i, vehicleActive->GetWheel(i)->GetMatrix(), shaders, vehCarModel::PartReflections);
                 }
 
                 modStatic* whl4Model = this->GetGeom(lod, WHL4_GEOM_ID);
@@ -169,7 +169,7 @@ namespace MM2
                     whl4Matrix.SetRow(3, data->GetWheelPosition(4));
                     whl4Matrix.Dot(this->GetMatrix(aiVehicleMatrix));
 
-                    DrawPart(whl4Model, whl4Matrix, shaders, vehCarModel::PartReflections);
+                    DrawPart(lod, WHL4_GEOM_ID, whl4Matrix, shaders, vehCarModel::PartReflections);
                 }
 
                 modStatic* whl5Model = this->GetGeom(lod, WHL5_GEOM_ID);
@@ -181,7 +181,7 @@ namespace MM2
                     whl5Matrix.SetRow(3, data->GetWheelPosition(5));
                     whl5Matrix.Dot(this->GetMatrix(aiVehicleMatrix));
 
-                    DrawPart(whl5Model, whl5Matrix, shaders, vehCarModel::PartReflections);
+                    DrawPart(lod, WHL5_GEOM_ID, whl5Matrix, shaders, vehCarModel::PartReflections);
                 }
             }
             else {
@@ -200,10 +200,10 @@ namespace MM2
                         modStatic* sWheelModel = this->GetGeom(lod, SWHL0_GEOM_ID + i);
                         if (this->Spline->GetSpeed() > 20.0f && sWheelModel != nullptr && vehCarModel::EnableSpinningWheels)
                         {
-                            DrawPart(sWheelModel, wheelMatrix, shaders, vehCarModel::PartReflections);
+                            DrawPart(lod, SWHL0_GEOM_ID + i, wheelMatrix, shaders, vehCarModel::PartReflections);
                         }
                         else {
-                            DrawPart(wheelModel, wheelMatrix, shaders, vehCarModel::PartReflections);
+                            DrawPart(lod, WHL0_GEOM_ID + i, wheelMatrix, shaders, vehCarModel::PartReflections);
                         }
                     }
                 }
@@ -221,10 +221,10 @@ namespace MM2
                     modStatic* swhl4Model = this->GetGeom(lod, SWHL4_GEOM_ID);
                     if (this->Spline->GetSpeed() > 20.0f && swhl4Model != nullptr && vehCarModel::EnableSpinningWheels)
                     {
-                        DrawPart(swhl4Model, whl4Matrix, shaders, vehCarModel::PartReflections);
+                        DrawPart(lod, SWHL4_GEOM_ID, whl4Matrix, shaders, vehCarModel::PartReflections);
                     }
                     else {
-                        DrawPart(whl4Model, whl4Matrix, shaders, vehCarModel::PartReflections);
+                        DrawPart(lod, WHL4_GEOM_ID, whl4Matrix, shaders, vehCarModel::PartReflections);
                     }
                 }
 
@@ -241,10 +241,10 @@ namespace MM2
                     modStatic* swhl5Model = this->GetGeom(lod, SWHL5_GEOM_ID);
                     if (this->Spline->GetSpeed() > 20.0f && swhl5Model != nullptr && vehCarModel::EnableSpinningWheels)
                     {
-                        DrawPart(swhl5Model, whl5Matrix, shaders, vehCarModel::PartReflections);
+                        DrawPart(lod, SWHL5_GEOM_ID, whl5Matrix, shaders, vehCarModel::PartReflections);
                     }
                     else {
-                        DrawPart(whl5Model, whl5Matrix, shaders, vehCarModel::PartReflections);
+                        DrawPart(lod, WHL5_GEOM_ID, whl5Matrix, shaders, vehCarModel::PartReflections);
                     }
                 }
             }
@@ -254,17 +254,15 @@ namespace MM2
         if (lod >= 2)
         {
             modStatic* plighton = this->GetGeom(lod, PLIGHTON_GEOM_ID);
-            if (plighton != nullptr)
+            if (plighton != nullptr && aiMap::GetInstance()->showHeadlights)
             {
-                if (aiMap::GetInstance()->showHeadlights)
-                    DrawPart(plighton, this->GetMatrix(aiVehicleMatrix), shaders, lod == 3);
+                DrawPart(lod, PLIGHTON_GEOM_ID, this->GetMatrix(aiVehicleMatrix), shaders, lod == 3);
             }
 
             modStatic* plightoff = this->GetGeom(lod, PLIGHTOFF_GEOM_ID);
-            if (plightoff != nullptr)
+            if (plightoff != nullptr && !aiMap::GetInstance()->showHeadlights)
             {
-                if (!aiMap::GetInstance()->showHeadlights)
-                    DrawPart(plightoff, this->GetMatrix(aiVehicleMatrix), shaders, lod == 3);
+                DrawPart(lod, PLIGHTOFF_GEOM_ID, this->GetMatrix(aiVehicleMatrix), shaders, lod == 3);
             }
         }
 
@@ -401,7 +399,7 @@ namespace MM2
     AGE_API phBound* aiVehicleInstance::GetBound(int type)               { return hook::Thunk<0x552F40>::Call<phBound*>(this, type); };
         
     //members
-    aiVehicleData* aiVehicleInstance::GetData()                          { return hook::Thunk<0x553F80>::Call<aiVehicleData*>(this); }
+    AGE_API aiVehicleData* aiVehicleInstance::GetData()                  { return hook::Thunk<0x553F80>::Call<aiVehicleData*>(this); }
     AGE_API void aiVehicleInstance::DrawPart(modStatic* model, const Matrix34& matrix, modShader* shaders, int unused)
                                                                          { hook::Thunk<0x552870>::Call<void>(this, model, &matrix, shaders, unused); }
 

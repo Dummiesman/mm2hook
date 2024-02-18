@@ -148,7 +148,7 @@ namespace MM2
         AGE_API phBound* GetBound(int type) override;
 
         //members
-        aiVehicleData* GetData();
+        AGE_API aiVehicleData* GetData();
         AGE_API void DrawPart(modStatic* model, const Matrix34& matrix, modShader* shaders, int unused);
         AGE_API void DrawPart(int lod, int geomId, const Matrix34& matrix, modShader* shaders);
         void DrawPartReflected(int lod, int geomId, const Matrix34& matrix, modShader* shaders);
