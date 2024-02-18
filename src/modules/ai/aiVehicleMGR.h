@@ -106,14 +106,14 @@ namespace MM2
         static const int BLIGHT_GEOM_ID = 18;
         static const int PLIGHTON_GEOM_ID = 19;
         static const int PLIGHTOFF_GEOM_ID = 20;
-        static const int TSLIGHT0_GEOM_ID = 21;
-        static const int TSLIGHT1_GEOM_ID = 22;
-        static const int SWHL0_GEOM_ID = 23;
-        static const int SWHL1_GEOM_ID = 24;
-        static const int SWHL2_GEOM_ID = 25;
-        static const int SWHL3_GEOM_ID = 26;
-        static const int SWHL4_GEOM_ID = 27;
-        static const int SWHL5_GEOM_ID = 28;
+        static const int SWHL0_GEOM_ID = 21;
+        static const int SWHL1_GEOM_ID = 22;
+        static const int SWHL2_GEOM_ID = 23;
+        static const int SWHL3_GEOM_ID = 24;
+        static const int SWHL4_GEOM_ID = 25;
+        static const int SWHL5_GEOM_ID = 26;
+        static const int TSLIGHT0_GEOM_ID = 27;
+        static const int TSLIGHT1_GEOM_ID = 28;
     public:
         static int AmbientHeadlightStyle;
     private:

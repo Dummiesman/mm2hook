@@ -59,14 +59,14 @@ void aiVehicleInstanceFeatureHandler::AddGeomHook(const char* pkgName, const cha
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "blight", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "plighton", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "plightoff", flags);
-    hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tslight0", flags);
-    hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tslight1", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "swhl0", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "swhl1", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "swhl2", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "swhl3", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "swhl4", flags);
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "swhl5", flags);
+    hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tslight0", flags);
+    hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tslight1", flags);
 }
 
 void aiVehicleInstanceFeatureHandler::VehicleSpline_DrawId()
