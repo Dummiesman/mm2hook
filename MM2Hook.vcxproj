@@ -777,6 +777,7 @@
     <ClCompile Include="src\modules\ai\aiPoliceOfficer.cpp" />
     <ClCompile Include="src\modules\ai\aiVehicle.cpp" />
     <ClCompile Include="src\modules\ai\aiVehicleAmbient.cpp" />
+    <ClCompile Include="src\modules\ai\aiVehicleMGR.cpp" />
     <ClCompile Include="src\modules\ai\aiVehiclePhysics.cpp" />
     <ClCompile Include="src\modules\ai\aiVehiclePhysicsWrapper.cpp" />
     <ClCompile Include="src\modules\ai\aiVehicleSpline.cpp" />

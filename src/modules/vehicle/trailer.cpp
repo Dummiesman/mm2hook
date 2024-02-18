@@ -74,9 +74,9 @@ namespace MM2
         return hook::Thunk<0x4D7810>::Call<const Vector3&>(this);
     }
 
-    AGE_API const Matrix34& vehTrailerInstance::GetMatrix(Matrix34* a1)
+    AGE_API const Matrix34& vehTrailerInstance::GetMatrix(Matrix34& a1)
     {
-        return hook::Thunk<0x4D77F0>::Call<const Matrix34&>(this);
+        return hook::Thunk<0x4D77F0>::Call<const Matrix34&>(this, &a1);
     }
 
     AGE_API void vehTrailerInstance::SetMatrix(const Matrix34& a1)

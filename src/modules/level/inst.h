@@ -131,7 +131,7 @@ namespace MM2
         virtual AGE_API void Reset();
         virtual AGE_API const Vector3 & GetPosition() PURE;
         virtual AGE_API int IsVisible(const gfxViewport* a1);
-        virtual AGE_API const Matrix34 & GetMatrix(Matrix34 *a1) PURE;
+        virtual AGE_API const Matrix34 & GetMatrix(Matrix34 &a1) PURE;
         virtual AGE_API void SetMatrix(const Matrix34 & a1) PURE;
         
         virtual AGE_API void SetVariant(int a1);

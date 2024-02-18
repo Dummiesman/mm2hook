@@ -22,6 +22,7 @@ namespace MM2
         static hook::Field<0xD4, aiVehicleInstance*> _vehicleInstance;
         static hook::Field<0xD8, Matrix34*> _matrix;
         static hook::Field<0xF4, float> _curSpeed;
+        static hook::Field<0xFC, float> _wheelRotation;
     public:
         aiVehicleSpline()                               DONOTCALL;
         aiVehicleSpline(const aiVehicleSpline &&)           DONOTCALL;
@@ -52,6 +53,8 @@ namespace MM2
         //fields
         float GetSpeed() const;
         void SetSpeed(float speed);
+        float GetWheelRotation() const;
+        void SetWheelRotation(float rotation);
         aiRailSet* GetRailSet();
         aiVehicleInstance* GetInst() const;
         void SetMatrix(Matrix34 const& mtx);

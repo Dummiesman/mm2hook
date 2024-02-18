@@ -61,7 +61,7 @@ namespace MM2
                                                             { return hook::Thunk<0x467940>::Call<const Vector3 &>(this); }
         virtual AGE_API int IsVisible(const gfxViewport & a1)
                                                             { return hook::Thunk<0x467950>::Call<int>(this, &a1); }
-        virtual AGE_API const Matrix34 & GetMatrix(Matrix34 *a1)
+        virtual AGE_API const Matrix34 & GetMatrix(Matrix34 &a1)
                                                             { return hook::Thunk<0x4679A0>::Call<const Matrix34 &>(this, a1); }
         virtual AGE_API void SetMatrix(const Matrix34 & a1) { hook::Thunk<0x4679F0>::Call<void>(this, &a1); }
         
@@ -96,8 +96,8 @@ namespace MM2
                                                             { return hook::Thunk<0x467A50>::Call<const Vector3 &>(this); }
         virtual AGE_API int IsVisible(const gfxViewport *a1)
                                                             { return hook::Thunk<0x467A60>::Call<int>(this, a1); }
-        virtual AGE_API const Matrix34 & GetMatrix(Matrix34 *a1)
-                                                            { return hook::Thunk<0x467AB0>::Call<const Matrix34 &>(this, a1); }
+        virtual AGE_API const Matrix34 & GetMatrix(Matrix34 &a1)
+                                                            { return hook::Thunk<0x467AB0>::Call<const Matrix34 &>(this, &a1); }
         virtual AGE_API void SetMatrix(const Matrix34 & a1) { hook::Thunk<0x467AC0>::Call<void>(this, &a1); }
         
         virtual AGE_API unsigned int SizeOf(void) override  { return sizeof(lvlFixedMatrix); }

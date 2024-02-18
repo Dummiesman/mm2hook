@@ -180,7 +180,7 @@ namespace MM2
             lvlInstance virtuals
         */
         virtual AGE_API const Vector3& GetPosition() override      { return hook::Thunk<0x441FC0>::Call<const Vector3&>(this); }
-        virtual AGE_API const Matrix34& GetMatrix(Matrix34* a1)    { return hook::Thunk<0x441F70>::Call<const Matrix34&>(this, a1); };
+        virtual AGE_API const Matrix34& GetMatrix(Matrix34& a1)    { return hook::Thunk<0x441F70>::Call<const Matrix34&>(this, &a1); };
         virtual AGE_API void SetMatrix(const Matrix34& a1) override
                                                                    { hook::Thunk<0x441F40>::Call<void>(this, &a1); }
         virtual AGE_API unsigned int SizeOf(void)                  { return hook::Thunk<0x442AE0>::Call<unsigned int>(this); }
@@ -205,7 +205,7 @@ namespace MM2
             lvlInstance virtuals
         */
         virtual AGE_API const Vector3& GetPosition() override { return hook::Thunk<0x442000>::Call<const Vector3&>(this); }
-        virtual AGE_API const Matrix34& GetMatrix(Matrix34* a1) { return hook::Thunk<0x441FF0>::Call<const Matrix34&>(this, a1); };
+        virtual AGE_API const Matrix34& GetMatrix(Matrix34& a1) { return hook::Thunk<0x441FF0>::Call<const Matrix34&>(this, &a1); };
         virtual AGE_API void SetMatrix(const Matrix34& a1) override
         {
             hook::Thunk<0x441FD0>::Call<void>(this, a1);

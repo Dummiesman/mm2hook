@@ -1822,6 +1822,7 @@
     <ClInclude Include="src\modules\level\materialmgr.h">
       <Filter>Source Files\modules\level</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\localize\localize.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2722,6 +2723,9 @@
       <Filter>Source Files\modules\level</Filter>
     </ClCompile>
     <ClCompile Include="src\modules\ai\aiPoliceForce.cpp">
+      <Filter>Source Files\modules\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\ai\aiVehicleMGR.cpp">
       <Filter>Source Files\modules\ai</Filter>
     </ClCompile>
   </ItemGroup>

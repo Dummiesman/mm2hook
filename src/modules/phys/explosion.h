@@ -123,7 +123,7 @@ namespace MM2
             return temp;
         }
 
-        virtual AGE_API const Matrix34& GetMatrix(Matrix34* a1) override
+        virtual AGE_API const Matrix34& GetMatrix(Matrix34& a1) override
         {
             return this->Matrix;
         }

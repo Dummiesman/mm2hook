@@ -709,7 +709,7 @@ namespace MM2
 
         //draw BREAK objects above the body
         if (breakableRenderTweak)
-            this->genBreakableMgr->Draw(this->carSim->GetWorldMatrix(), shaders, lod);
+            this->genBreakableMgr->Draw(*this->carSim->GetWorldMatrix(), shaders, lod);
 
         //setup renderer
         gfxRenderState::SetWorldMatrix(*this->carSim->GetWorldMatrix());
@@ -721,7 +721,7 @@ namespace MM2
 
         //draw BREAK objects below the body
         if (!breakableRenderTweak)
-            this->genBreakableMgr->Draw(this->carSim->GetWorldMatrix(), shaders, lod);
+            this->genBreakableMgr->Draw(*this->carSim->GetWorldMatrix(), shaders, lod);
 
         //draw decal
         auto decalGeom = this->GetGeom(lod, DECAL_GEOM_ID);

@@ -25,7 +25,7 @@ namespace MM2
         */
 
         virtual AGE_API const Vector3 & GetPosition() override              { return hook::Thunk<0x43F520>::Call<Vector3 const &>(this); }
-        virtual AGE_API const Matrix34 & GetMatrix(Matrix34 *a1) override   { return hook::Thunk<0x43F530>::Call<Matrix34 const &>(this, a1); }
+        virtual AGE_API const Matrix34 & GetMatrix(Matrix34 &a1) override   { return hook::Thunk<0x43F530>::Call<Matrix34 const &>(this, &a1); }
         virtual AGE_API void SetMatrix(const Matrix34 & a1) override        { hook::Thunk<0x43F550>::Call<void>(this, &a1); }
         virtual AGE_API void SetVariant(int a1) override                    { hook::Thunk<0x43FC60>::Call<void>(this, a1); }
 
