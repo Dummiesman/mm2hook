@@ -1822,6 +1822,12 @@
     <ClInclude Include="src\modules\level\materialmgr.h">
       <Filter>Source Files\modules\level</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\gizmo\gizmoinst.h">
+      <Filter>Source Files\modules\gizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\gizmo\sailboat.h">
+      <Filter>Source Files\modules\gizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">

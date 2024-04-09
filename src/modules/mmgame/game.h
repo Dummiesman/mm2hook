@@ -16,6 +16,7 @@ namespace MM2
     extern class mmViewMgr;
     extern class gizBridgeMgr;
     extern class gizTrainMgr;
+    extern class gizSailboatMgr;
     extern class mmRaceData;
 
     // Class definitions
@@ -39,6 +40,7 @@ namespace MM2
         static hook::Field<0x240, mmViewMgr> _viewManager;
         static hook::Field<0x270, int> _state;
         static hook::Field<0x408, float> _stateTimer;
+        static hook::Field<0x7670, gizSailboatMgr*> _sailboatManager;
         static hook::Field<0x767C, gizBridgeMgr*> _bridgeManager;
         static hook::Field<0x7680, gizTrainMgr*> _trainManager;
     public:
@@ -68,6 +70,10 @@ namespace MM2
 
         mmViewMgr* GetViewManager(void) const {
             return _viewManager.ptr(this);
+        }
+
+        gizSailboatMgr* GetSailboatManager(void) const {
+            return _sailboatManager.get(this);
         }
 
         gizBridgeMgr* GetBridgeManager(void) const {
@@ -130,6 +136,7 @@ namespace MM2
                 //properties
                 .addProperty("State", &GetState, &SwitchState)
                 .addProperty("Sounds", &GetSounds, &SetSounds)
+                .addPropertyReadOnly("SailboatManager", &GetSailboatManager)
                 .addPropertyReadOnly("TrainManager", &GetTrainManager)
                 .addPropertyReadOnly("BridgeManager", &GetBridgeManager)
                 .addPropertyReadOnly("Player", &GetPlayer)

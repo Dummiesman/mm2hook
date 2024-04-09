@@ -23,6 +23,8 @@ namespace MM2
         luaBind<gizTrainCar>(L);
         luaBind<gizTrain>(L);
         luaBind<gizTrainMgr>(L);
-
+        luaBind<gizInstance>(L);
+        luaBind<gizSailboat>(L);
+        luaBind<gizSailboatMgr>(L);
     }
 }

@@ -4,8 +4,10 @@
 
 #include "gizmo\pathspline.h"
 #include "gizmo\pathspline_wrapper.h"
+#include "gizmo\gizmoinst.h"
 #include "gizmo\bridge.h"
 #include "gizmo\train.h"
+#include "gizmo\sailboat.h"
 
 namespace MM2
 {
