@@ -57,6 +57,7 @@ namespace MM2
             .addProperty("Ambient", &GetAmbient, &SetAmbient)
             
             .addFunction("ComputeAmbientLightLevels", &ComputeAmbientLightLevels)
+            .addFunction("FileIO", &FileIO)
             .endClass();
     }
 
