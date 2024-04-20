@@ -87,6 +87,7 @@
       <RemoveUnreferencedCodeData>true</RemoveUnreferencedCodeData>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
       <ObjectFileName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(IntDir)/%(RelativeDir)/</ObjectFileName>
+      <AdditionalOptions>/bigobj /std:c++latest</AdditionalOptions>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
