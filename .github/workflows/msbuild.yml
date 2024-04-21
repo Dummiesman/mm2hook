@@ -46,6 +46,6 @@ jobs:
       with:
         name: mm2hook
         path: |
-          bin/Debug/MM2Hook.ddl
+          bin/Debug/MM2Hook.dll
           bin/Debug/MM2HookLoader.dll
           bin/Debug/mm2hook.ini
