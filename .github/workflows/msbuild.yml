@@ -39,8 +39,7 @@ jobs:
         sdk-version: 18362
 
     - name: Run build script
-      working-directory: ${{ env.GITHUB_WORKSPACE }}
-      run: cmd /c "build.bat --zip"
+      run: .\build.bat --zip
 
     - name: Upload zip to release
       uses: svenstaro/upload-release-action@v2
