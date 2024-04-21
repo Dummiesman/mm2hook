@@ -44,7 +44,7 @@ jobs:
         winsdk-build-version: 18362
 
     - name: Run build script
-      run: .\build.bat --zip
+      run: .\build.bat --zip --debug
 
     - name: Upload zip to release
       uses: svenstaro/upload-release-action@v2
