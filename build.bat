@@ -10,19 +10,40 @@ IF /I "%explorercmdx%"=="%shellcmdx%" (
     SET IN_SHELL=0
 )
 
-REM construct default paths to MSVC build tools
-SET "BUILDTOOLS_PATH=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\"
+REM default paths for MSVC build tools
+SET "MSVC_BUILDTOOLS_PATH=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\"
 SET "VCVARS=VC\Auxiliary\Build\vcvarsall.bat"
 SET "MSBUILD=MSBuild\Current\Bin\amd64\MSBuild.exe"
 
-SET TARGET_BUILD=release
+REM look for MSVC install
+SET "MSVC_2022_X86_PATH=C:\Program Files (x86)\Microsoft Visual Studio\2022\BuildTools\"
+SET "MSVC_2022_X64_PATH=C:\Program Files\Microsoft Visual Studio\2022\BuildTools\"
+SET "MSVC_2022_ENTERPRISE_PATH=C:\Program Files\Microsoft Visual Studio\2022\Enterprise\"
+
+if exist "%MSVC_2022_ENTERPRISE_PATH%" (
+    SET "MSVC_BUILDTOOLS_PATH=%MSVC_2022_ENTERPRISE_PATH%"
+)
+
+if exist "%MSVC_2022_X64_PATH%" (
+    SET "MSVC_BUILDTOOLS_PATH=%MSVC_2022_X64_PATH%"
+)
+
+if exist "%MSVC_2022_X86_PATH%" (
+    SET "MSVC_BUILDTOOLS_PATH=%MSVC_2022_X86_PATH%"
+)
+
+SET TARGET_BUILD=Release
+SET CREATE_ZIP=0
 
 REM iterate over input arguments
 :input
 IF "%~1"=="" GOTO endinput
 
-IF "%~1"=="-d" SET TARGET_BUILD=debug
-IF "%~1"=="--debug" SET TARGET_BUILD=debug
+IF "%~1"=="-d" SET TARGET_BUILD=Debug
+IF "%~1"=="--debug" SET TARGET_BUILD=Debug
+
+IF "%~1"=="-z" SET CREATE_ZIP=1
+IF "%~1"=="--zip" SET CREATE_ZIP=1
 
 IF "%~1"=="-?" GOTO usage
 IF "%~1"=="--help" GOTO usage
@@ -42,15 +63,22 @@ REM input processing finished
 SET "VCVARS_PATH=%BUILDTOOLS_PATH%%VCVARS%"
 SET "MSBUILD_PATH=%BUILDTOOLS_PATH%%MSBUILD%"
 
-call "%VCVARS_PATH%" x86 10.0.18362.0
-"%MSBUILD_PATH%" MM2Hook.sln /p:configuration=%TARGET_BUILD% /p:platform=x86
+echo call "%VCVARS_PATH%" x86 10.0.18362.0
+echo "%MSBUILD_PATH%" MM2Hook.sln /p:configuration=%TARGET_BUILD% /p:platform=x86
 SET "EXIT_CODE=%ERRORLEVEL%"
 
 ECHO.
 ECHO Finished %TARGET_BUILD% build, exit code %EXIT_CODE%
-ECHO.
+
+IF %EXIT_CODE%==0 IF %CREATE_ZIP%==1 (
+    ECHO.
+    ECHO Creating release zip...
+    TAR -a -c -C "bin\%TARGET_BUILD%" -v -f "bin\%TARGET_BUILD%\mm2hook.zip" MM2Hook.dll MM2HookLoader.dll mm2hook.ini
+    ECHO Release zip created!
+)
 
 IF %IN_SHELL%==0 (
+    ECHO.
     ECHO Press any key to exit...
     PAUSE>nul
 )
