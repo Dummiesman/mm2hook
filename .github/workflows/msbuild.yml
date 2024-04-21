@@ -33,11 +33,6 @@ jobs:
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
 
-#    - name: Get Windows SDK
-#      uses: GuillaumeFalourd/setup-windows10-sdk-action@v2
-#      with:
-#        sdk-version: 18362
-
     - name: Get Windows SDK
       uses: fbactions/setup-winsdk@v2
       with:
@@ -46,12 +41,8 @@ jobs:
     - name: Run build script
       run: .\build.bat --zip --debug
 
-    - name: Upload zip to release
-      uses: svenstaro/upload-release-action@v2
+    - name: Upload release artifact
+      uses: actions/upload-artifact@v4
       with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: bin/Release/mm2hook.zip
-        tag: ${{ github.ref }}
-        overwrite: true
-        file_glob: true
-
+        name: mm2hook
+        path: bin/Release/mm2hook.zip
