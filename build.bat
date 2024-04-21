@@ -63,8 +63,8 @@ REM input processing finished
 SET "VCVARS_PATH=%BUILDTOOLS_PATH%%VCVARS%"
 SET "MSBUILD_PATH=%BUILDTOOLS_PATH%%MSBUILD%"
 
-echo call "%VCVARS_PATH%" x86 10.0.18362.0
-echo "%MSBUILD_PATH%" MM2Hook.sln /p:configuration=%TARGET_BUILD% /p:platform=x86
+CALL "%VCVARS_PATH%" x86 10.0.18362.0
+"%MSBUILD_PATH%" MM2Hook.sln /p:configuration=%TARGET_BUILD% /p:platform=x86
 SET "EXIT_CODE=%ERRORLEVEL%"
 
 ECHO.
