@@ -39,13 +39,10 @@ jobs:
         winsdk-build-version: 18362
 
     - name: Run build script
-      run: .\build.bat --debug
+      run: .\build.bat
 
     - name: Upload release artifact
       uses: actions/upload-artifact@v4
       with:
         name: mm2hook
-        path: |
-          bin/Debug/MM2Hook.dll
-          bin/Debug/MM2HookLoader.dll
-          bin/Debug/mm2hook.ini
+        path: bin/Release/out/
