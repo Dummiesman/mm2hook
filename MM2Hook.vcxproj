@@ -374,6 +374,7 @@
     <ClInclude Include="src\modules\gfx\viewport.h" />
     <ClInclude Include="src\modules\gizmo.h" />
     <ClInclude Include="src\modules\gizmo\bridge.h" />
+    <ClInclude Include="src\modules\gizmo\ferry.h" />
     <ClInclude Include="src\modules\gizmo\gizmoinst.h" />
     <ClInclude Include="src\modules\gizmo\pathspline.h" />
     <ClInclude Include="src\modules\gizmo\pathspline_wrapper.h" />

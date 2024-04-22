@@ -26,5 +26,7 @@ namespace MM2
         luaBind<gizInstance>(L);
         luaBind<gizSailboat>(L);
         luaBind<gizSailboatMgr>(L);
+        luaBind<gizFerry>(L);
+        luaBind<gizFerryMgr>(L);
     }
 }

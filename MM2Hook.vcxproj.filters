@@ -1828,6 +1828,9 @@
     <ClInclude Include="src\modules\gizmo\sailboat.h">
       <Filter>Source Files\modules\gizmo</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\gizmo\ferry.h">
+      <Filter>Source Files\modules\gizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
