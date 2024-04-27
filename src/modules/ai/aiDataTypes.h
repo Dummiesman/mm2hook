@@ -55,19 +55,31 @@ namespace MM2
         float float_4c;
         char dword_50;
 
-        LPCSTR GetBasename() {
+        LPCSTR GetBasename() const
+        {
             return Basename;
         }
 
-        LPCSTR GetWaypointFileName() {
+        LPCSTR GetWaypointFileName() const
+        {
             return WaypointFileName;
+        }
+
+        void SetBasename(LPCSTR basename)
+        {
+            strcpy_s(Basename, basename);
+        }
+
+        void SetWaypointFileName(LPCSTR name)
+        {
+            strcpy_s(WaypointFileName, name);
         }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<HookmanData>("HookmanData")
-                .addPropertyReadOnly("Basename", &GetBasename)
-                .addPropertyReadOnly("WaypointFileName", &GetWaypointFileName)
-                .addVariable("HideoutPosition", &HookmanData::HideoutPosition, false)
+                .addProperty("Basename", &GetBasename, &SetBasename)
+                .addProperty("WaypointFileName", &GetWaypointFileName, &SetWaypointFileName)
+                .addVariable("HideoutPosition", &HookmanData::HideoutPosition)
                 .endClass();
         }
     };
@@ -87,26 +99,38 @@ namespace MM2
         char AvoidOpponents;
         char BadPathfinding;
 
-        LPCSTR GetBasename() {
+        LPCSTR GetBasename() const 
+        {
             return Basename;
         }
 
-        LPCSTR GetWaypointFileName() {
+        LPCSTR GetWaypointFileName() const 
+        {
             return WaypointFileName;
+        }
+
+        void SetBasename(LPCSTR basename)
+        {
+            strcpy_s(Basename, basename);
+        }
+
+        void SetWaypointFileName(LPCSTR name)
+        {
+            strcpy_s(WaypointFileName, name);
         }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<OpponentData>("OpponentData")
-                .addPropertyReadOnly("Basename", &GetBasename)
-                .addPropertyReadOnly("WaypointFileName", &GetWaypointFileName)
-                .addVariable("MaxThrottle", &OpponentData::MaxThrottle, false)
-                .addVariable("TurnBrakingThreshold", &OpponentData::TurnBrakingThreshold, false)
-                .addVariable("TurnRadius", &OpponentData::TurnRadius, false)
-                .addVariable("TurnSpeedMultiplier", &OpponentData::TurnSpeedMultiplier, false)
-                .addVariable("AvoidTraffic", &OpponentData::AvoidTraffic, false)
-                .addVariable("AvoidProps", &OpponentData::AvoidProps, false)
-                .addVariable("AvoidPlayers", &OpponentData::AvoidPlayers, false)
-                .addVariable("AvoidOpponents", &OpponentData::AvoidOpponents, false)
+                .addProperty("Basename", &GetBasename, &SetBasename)
+                .addProperty("WaypointFileName", &GetWaypointFileName, &SetWaypointFileName)
+                .addVariable("MaxThrottle", &OpponentData::MaxThrottle)
+                .addVariable("TurnBrakingThreshold", &OpponentData::TurnBrakingThreshold)
+                .addVariable("TurnRadius", &OpponentData::TurnRadius)
+                .addVariable("TurnSpeedMultiplier", &OpponentData::TurnSpeedMultiplier)
+                .addVariable("AvoidTraffic", &OpponentData::AvoidTraffic)
+                .addVariable("AvoidProps", &OpponentData::AvoidProps)
+                .addVariable("AvoidPlayers", &OpponentData::AvoidPlayers)
+                .addVariable("AvoidOpponents", &OpponentData::AvoidOpponents)
                 .endClass();
         }
     };
@@ -121,17 +145,22 @@ namespace MM2
         int Unk1;
         int Flags;
 
-        LPCSTR GetBasename() {
+        LPCSTR GetBasename() const {
             return Basename;
+        }
+
+        void SetBasename(LPCSTR basename)
+        {
+            strcpy_s(Basename, basename);
         }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<PoliceData>("PoliceData")
-                .addPropertyReadOnly("Basename", &GetBasename)
-                .addVariable("Position", &PoliceData::Position, false)
-                .addVariable("Rotation", &PoliceData::Rotation, false)
-                .addVariable("ChaseDistance", &PoliceData::ChaseDistance, false)
-                .addVariable("Flags", &PoliceData::Flags, false)
+                .addProperty("Basename", &GetBasename, &SetBasename)
+                .addVariable("Position", &PoliceData::Position)
+                .addVariable("Rotation", &PoliceData::Rotation)
+                .addVariable("ChaseDistance", &PoliceData::ChaseDistance)
+                .addVariable("Flags", &PoliceData::Flags)
                 .endClass();
         }
     };
