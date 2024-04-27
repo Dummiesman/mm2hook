@@ -75,6 +75,16 @@ namespace MM2
         void SetVariant(int variant)        { m_Variant = variant; }
         void SetCurrentFrame(int frame)     { m_Frame = frame; }
         void Start(int nextStateIndex)      { hook::Thunk<0x57B550>::Call<void>(this, nextStateIndex); }
+
+        // lua
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginClass< pedAnimationInstance>("pedAnimationInstance")
+                .addPropertyReadOnly("State", &GetCurrentState)
+                .addPropertyReadOnly("NextState", &GetNextState)
+                .addProperty("Variant", &GetVariant, &SetVariant)
+                .addFunction("SetVariant", &SetVariant) // lvlInstance parity
+                .endClass();
+        }
     };
 
     // Lua initialization

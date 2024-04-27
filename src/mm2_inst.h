@@ -20,5 +20,6 @@ namespace MM2
         luaBind<lvlLandmark>(L);
         luaBind<dgExplosionInstance>(L);
         luaBind<aiPedestrianInstance>(L);
+        luaBind<pedAnimationInstance>(L);
     }
 }
