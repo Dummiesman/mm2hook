@@ -12,6 +12,8 @@ namespace MM2
     class UITextDropdown : public uiWidget {
 	private:
 		char _buffer[0x94];
+    protected:
+        static hook::Field<0xAC, int*> _pValue;
     private:
         void AssignStringLua(LPCSTR cstring)
         {
@@ -42,8 +44,19 @@ namespace MM2
         void AssignString(string str)                       { hook::Thunk<0x4E81A0>::Call<void>(this, str); }
         void SetDisabledMask(int mask)                      { hook::Thunk<0x4E8800>::Call<void>(this, mask); }
 
+        int GetSelectedIndex() const
+        {
+            return *_pValue.get(this);
+        }
+
+        void SetSelectedIndex(int index)
+        {
+            *_pValue.get(this) = index;
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<UITextDropdown, uiWidget>("UITextDropdown")
+                .addProperty("SelectedIndex", &GetSelectedIndex, &SetSelectedIndex)
                 .addFunction("AssignString", &AssignStringLua)
                 .addFunction("SetDisabledMask", &SetDisabledMask)
                 .endClass();
