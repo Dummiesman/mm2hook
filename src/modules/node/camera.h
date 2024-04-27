@@ -54,6 +54,8 @@ namespace MM2
         float BlendGoal;
         float CameraFOV;
         float CameraNear;
+    private:
+        static hook::Type<float> sm_CameraFar;
     public:
         AGE_API camBaseCS(void) {
             scoped_vtable x(this);
@@ -101,6 +103,16 @@ namespace MM2
             this->view = view;
         }
 
+        static float GetCameraFar()
+        {
+            return sm_CameraFar.get();
+        }
+
+        static void SetCameraFar(float value)
+        {
+            sm_CameraFar.set(value);
+        }
+
         //asNode overrides
         AGE_API void AfterLoad() override                   { hook::Thunk<0x521F30>::Call<void>(this); }
         AGE_API void FileIO(datParser &parser) override     { hook::Thunk<0x521EA0>::Call<void>(this, &parser); }
@@ -126,6 +138,8 @@ namespace MM2
                     MM2Lua::MarkForCleanupOnShutdown(obj);
                     return obj;
                  })
+                .addStaticProperty("CameraFar", &GetCameraFar, &SetCameraFar)
+
                 .addProperty("FOV", &GetFOV, &SetFOV)
                 .addProperty("CameraFOV", &GetFOV, &SetFOV)
 
@@ -246,7 +260,7 @@ namespace MM2
             hook::Thunk<0x521490>::Call<void>(this);
         }
 
-        AGE_API void Init(vehCar *car, LPCSTR *name)        { hook::Thunk<0x5214A0>::Call<void>(this, car, name); }
+        AGE_API void Init(vehCar *car, LPCSTR name)        { hook::Thunk<0x5214A0>::Call<void>(this, car, name); }
 
         //overrides
         AGE_API void FileIO(datParser &parser) override     { hook::Thunk<0x5214E0>::Call<void>(this, &parser); }

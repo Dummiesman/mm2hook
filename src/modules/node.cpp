@@ -6,3 +6,9 @@ using namespace MM2;
 */
 
 declfield(asCullManager::Instance)(0x661784);
+
+/*
+    camBaseCS
+*/
+
+declfield(camBaseCS::sm_CameraFar)(0x5D4420);
