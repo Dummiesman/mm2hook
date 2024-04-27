@@ -40,6 +40,14 @@ namespace MM2
 
         virtual AGE_API dgPhysEntity * AttachEntity(void)   { return hook::Thunk<0x57B730>::Call<dgPhysEntity *>(this); }
         virtual AGE_API bool IsCollidable(void)             { return hook::Thunk<0x57B780>::Call<bool>(this); }
+
+        // lua
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<aiPedestrianInstance, lvlInstance>("aiPedestrianInstance")
+                .addPropertyReadOnly("Pedestrian", &GetPedestrian)
+                .addPropertyReadOnly("AnimationInstance", &GetAnimationInstance)
+                .endClass();
+        }
     };
 
     ASSERT_SIZEOF(aiPedestrianInstance, 0x2C);
