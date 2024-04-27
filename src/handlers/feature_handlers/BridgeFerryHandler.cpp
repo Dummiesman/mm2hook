@@ -27,6 +27,15 @@ void BridgeFerryHandler::Draw(int lod) {
     reinterpret_cast<dgBangerInstance*>(this)->dgBangerInstance::Draw(lod);
 }
 
+int BridgeFerryHandler::InitHook(const char* a1, const Matrix34& a2, int a3)
+{
+    // Set INST_STATIC flag to allow shadow rendering, and bypass the render distance cutoff
+    auto inst = reinterpret_cast<dgUnhitBangerInstance*>(this);
+    int retval = inst->Init(a1, a2, a3);
+    inst->SetFlags((inst->GetFlags() & ~64) | 1024); // unset shadow since it breaks 3D shadows, and set INST_STATIC
+    return retval;
+}
+
 void BridgeFerryHandler::Install() {
     // revert bridges/ferries to how they were in the betas
     InstallVTableHook("Bridge/Ferry: Cull", &Cull, {
@@ -37,5 +46,12 @@ void BridgeFerryHandler::Install() {
     InstallVTableHook("Bridge/Ferry: Draw", &Draw, {
         0x5B5FB8, // gizBridge::Draw
         0x5B61AC, // gizFerry::Draw
+        });
+
+
+    InstallCallback("Bridge/Ferry: Init", 
+        &InitHook, {
+            //cb::call(0x57944A), // Ferries cannot use this because they move rooms more than once. x| (static inst chain only works once)
+            cb::call(0x577570)
         });
 }
