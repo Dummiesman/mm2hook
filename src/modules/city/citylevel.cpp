@@ -71,7 +71,7 @@ namespace MM2
     float ComputeShadowIntensity(Vector3 keyColor)
     {
         float average = (keyColor.X + keyColor.Y + keyColor.Z) / 3.0f;
-        return min(average, 0.75f);
+        return min(average, 0.6f);
     }
 
     /*
@@ -108,8 +108,8 @@ namespace MM2
     AGE_API void cityLevel::Draw(const gfxViewport& a1, uint a2) 
                                                                 { hook::Thunk<0x445400>::Call<void>(this, &a1, a2); }
 
-    AGE_API int cityLevel::FindRoomId(Vector3 const& a1, int a2) const
-                                                        { return hook::Thunk<0x446A60>::Call<int>(this, &a1, a2); }
+    AGE_API int cityLevel::FindRoomId(Vector3 const& position, int previousRoom) const
+                                                        { return hook::Thunk<0x446A60>::Call<int>(this, &position, previousRoom); }
     AGE_API int cityLevel::GetNeighborCount(int room) const 
                                                         { return hook::Thunk<0x446C20>::Call<int>(this, room); }
     AGE_API int cityLevel::GetNeighbors(int* neighbourRooms, int room) const  
@@ -127,7 +127,7 @@ namespace MM2
     AGE_API const class lvlLevelBound* cityLevel::GetBound()
                                                         { return hook::Thunk<0x443930>::Call<class lvlLevelBound*>(this); }
     AGE_API void cityLevel::SetObjectDetail(int a1)       { hook::Thunk<0x443E50>::Call<void>(this, a1); }
-    AGE_API float cityLevel::GetWaterLevel(int a1) const  { return hook::Thunk<0x445280>::Call<float>(this, a1); }
+    AGE_API float cityLevel::GetWaterLevel(int room) const  { return hook::Thunk<0x445280>::Call<float>(this, room); }
     AGE_API float cityLevel::GetLightingIntensity(Vector3 const& a1) const
                                                         { return hook::Thunk<0x445290>::Call<float>(this, a1); }
     AGE_API void cityLevel::SetPtxHeight(asParticles& a1) { hook::Thunk<0x4452A0>::Call<void>(this, &a1); }
@@ -225,7 +225,7 @@ namespace MM2
             })
 
             //sky singleton
-            .addStaticProperty("Sky", [] { return &Sky; })
+            .addStaticProperty("Sky", []() -> lvlSky* { return &Sky; })
             .endClass();
     }
 }
