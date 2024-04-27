@@ -10,8 +10,7 @@ static ConfigValue<float> cfgFerrySpeedMultiplier("FerrySpeedMultiplier", 5.0f);
 
 void gizFerryHandler::SetSpeed(float value) {
     value *= cfgFerrySpeedMultiplier;
-
-    hook::Thunk<0x579520>::Call<void>(this, value);
+    reinterpret_cast<gizFerry*>(this)->SetSpeed(value);
 }
 
 void gizFerryHandler::Install() {
