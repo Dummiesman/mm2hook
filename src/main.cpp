@@ -715,6 +715,7 @@ public:
             Add any patches/callbacks here that must be initialized prior to the game's entry point.
             This should be used for very very advanced callbacks/patches only!
         */
+        memSafeHeapHandler::Install();
     }
 };
 
