@@ -24,11 +24,18 @@ namespace MM2
         virtual AGE_API void Reset(void) override           { hook::Thunk<0x578320>::Call<void>(this); }
         virtual AGE_API unsigned int SizeOf(void) override  { return sizeof(gizSailboat); }
 
+        /*
+            gizSailboat
+        */
+        AGE_API void SetSpeed(float speed)                  { hook::Thunk<0x578490>::Call<void>(this, speed); }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<gizSailboat, gizInstance>("gizSailboat")
+                .addFunction("SetSpeed", &SetSpeed)
                 .endClass();
         }
     };
+    ASSERT_SIZEOF(gizSailboat, 0x50);
 
     class gizSailboatMgr : public asNode
     {
@@ -67,5 +74,5 @@ namespace MM2
                 .endClass();
         }
     };
-
+    ASSERT_SIZEOF(gizSailboatMgr, 0x2C);
 }
