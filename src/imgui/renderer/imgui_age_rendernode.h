@@ -79,7 +79,7 @@ private:
 public:
     ANGEL_ALLOCATOR 
 
-    mmImGuiManager::mmImGuiManager(bool renderAutomatically) 
+    mmImGuiManager::mmImGuiManager(bool renderAutomatically) : asNode()
     {
         // delete instance if we already have one
         if (mmImGuiManager::Instance != nullptr) {
@@ -142,7 +142,6 @@ public:
 
         this->renderAutomatically = renderAutomatically;
         mmImGuiManager::Instance = this;
-        asNode::asNode();
     }
 
     mmImGuiManager::~mmImGuiManager()
@@ -153,8 +152,6 @@ public:
         ImPlot::DestroyContext();
         ImGui::DestroyContext();
         mmImGuiManager::Instance = nullptr;
-
-        asNode::~asNode();
     }
 
 	virtual void Cull() override {
