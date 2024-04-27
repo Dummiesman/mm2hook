@@ -240,7 +240,8 @@ void vehCarSim::BindLua(LuaState L) {
         .addPropertyReadOnly("Engine", &GetEngine)
         .addPropertyReadOnly("Speed", &GetSpeedMPH)
 
-        .addPropertyReadOnly("WorldMatrix", &GetWorldMatrix)
+        .addFunction("GetWorldMatrixPtr", &GetWorldMatrix)
+        .addPropertyReadOnly("WorldMatrix", &GetWorldMatrix) // Deprecated!
 
         .addVariable("CenterOfGravity", &vehCarSim::CenterOfGravity)
         .addVariable("SSSValue", &vehCarSim::SSSValue)
