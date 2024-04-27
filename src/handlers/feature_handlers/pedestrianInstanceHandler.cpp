@@ -3,6 +3,8 @@
 using namespace MM2;
 
 static ConfigValue<bool> cfgRagdolls("Ragdolls", true);
+static ConfigValue<bool> cfgPedShadows("3DShadows", false);
+
 hook::Type<float> FrameFraction2 = 0x6B4724;
 hook::Type<int> FrameDelta2 = 0x6B4720;
 
@@ -345,11 +347,13 @@ void pedestrianInstanceHandler::Install()
         }
     );
 
-    InstallVTableHook("aiPedestrianInstance::DrawShadow",
-        &DrawShadow, {
-            0x5B6320
-        }
-    );
+    if (cfgPedShadows.Get()) {
+        InstallVTableHook("aiPedestrianInstance::DrawShadow",
+            &DrawShadow, {
+                0x5B6320
+            }
+        );
+    }
 
     InstallVTableHook("aiPedestrianInstance::GetBound",
         &GetBound, {
