@@ -413,6 +413,7 @@
     <ClInclude Include="src\modules\mmcityinfo\citylist.h" />
     <ClInclude Include="src\modules\mmcityinfo\infobase.h" />
     <ClInclude Include="src\modules\mmcityinfo\playerdata.h" />
+    <ClInclude Include="src\modules\mmcityinfo\playerdir.h" />
     <ClInclude Include="src\modules\mmcityinfo\position.h" />
     <ClInclude Include="src\modules\mmcityinfo\racedata.h" />
     <ClInclude Include="src\modules\mmcityinfo\state.h" />

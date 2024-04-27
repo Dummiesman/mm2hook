@@ -1831,6 +1831,9 @@
     <ClInclude Include="src\modules\gizmo\ferry.h">
       <Filter>Source Files\modules\gizmo</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\mmcityinfo\playerdir.h">
+      <Filter>Source Files\modules\mmcityinfo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
