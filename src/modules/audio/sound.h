@@ -1,6 +1,7 @@
 #pragma once
 #include <mm2_common.h>
 #include <modules\node\node.h>
+#include "control.h"
 
 namespace MM2
 {
@@ -12,7 +13,16 @@ namespace MM2
     // Class definitions
     class AudSoundBase : public asNode {
     private:
-        byte _buffer[0x40];
+        char* SubPath;
+        char* Extension;
+        audControl* Control;
+        int Flags;
+        int* SoundHandles;
+        int SoundHandleIndex;
+        int NumSoundHandles;
+        bool dword_34; // IsStreaming? Set by AudStream
+        void** EchoEffects;
+        int Effects;
     private:
         //lua helper
         bool LoadLua(LPCSTR wavName, int handleIndex) {
