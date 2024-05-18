@@ -49,11 +49,13 @@ namespace MM2
         int ResolveCrashProgress(const char* city)               { return hook::Thunk<0x5279D0>::Call<int>(this, city); }
 
         LPCSTR GetName()                                         { return Name; }
+        LPCSTR GetNetName()                                      { return NetName; }
 
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<mmPlayerData, mmInfoBase>("mmPlayerData")
                 .addPropertyReadOnly("Name", &GetName)
+                .addPropertyReadOnly("NetName", &GetNetName)
                 .addProperty("TagID", &GetTagID, &SetTagID)
                 .addFunction("GetProgress", &GetProgress)
                 .addFunction("GetPassedMask", &GetPassedMask)
