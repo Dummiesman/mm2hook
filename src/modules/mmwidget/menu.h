@@ -86,6 +86,56 @@ namespace MM2
         uiWidget* AddIconWLua(int id, LPCSTR name, LPCSTR bitmap, float x, float y, float w, float h, LuaRef callback);
         uiWidget* AddToggleLua(int id, LPCSTR name, IntBox* pValue, float x, float y, float w, float h, int fontSize, int buttonType, LuaRef callback);
         uiWidget* AddVScrollBarLua(int id, IntBox* pValue, float x, float y, float w, float h, float rangeMin, float rangeMax, int a10, int a11, LuaRef callback);
+
+        int luaWidgetUpcast(lua_State* L, uiWidget* widget)
+        {
+            if (widget == nullptr)
+            {
+                LuaState(L).push(nullptr);
+            }
+            else 
+            {
+                auto vtblPtr = *reinterpret_cast<uintptr_t*>(widget);
+                switch (vtblPtr)
+                {
+                case 0x5B3778:
+                    LuaState(L).push(reinterpret_cast<UIBMLabel*>(widget));
+                    break;
+                case 0x5B3714:
+                    LuaState(L).push(reinterpret_cast<UILabel*>(widget));
+                    break;
+                case 0x5B364C:
+                    LuaState(L).push(reinterpret_cast<UISlider*>(widget));
+                    break;
+                case 0x5B33E0:
+                    LuaState(L).push(reinterpret_cast<UITextDropdown*>(widget));
+                    break;
+                case 0x5B34B4:
+                    LuaState(L).push(reinterpret_cast<UITextRoller2*>(widget));
+                    break;
+                case 0x5B3310:
+                    LuaState(L).push(reinterpret_cast<UITextField*>(widget));
+                    break;
+                case 0x5B39FC:
+                    LuaState(L).push(reinterpret_cast<UIBMButton*>(widget));
+                    break;
+                default:
+                    LuaState(L).push(widget);
+                    break;
+                }
+            }
+            return 1;
+        }
+
+        int luaGetWidgetByID(lua_State* L, int id)
+        {
+            return luaWidgetUpcast(L, GetWidgetByID(id));
+        }
+
+        int luaGetWidget(lua_State* L, int index)
+        {
+            return luaWidgetUpcast(L, GetWidget(index));
+        }
     protected:
         // constructor for inherited classes to use like PUMenuBase
         UIMenu() {}
@@ -245,6 +295,11 @@ namespace MM2
             this->PreviousMenu = ID;
         }
 
+        const char* GetName() const
+        {
+            return this->Name;
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<UIMenu, asNode>("UIMenu")
                 .addFactory([](int id) {
@@ -254,8 +309,9 @@ namespace MM2
                 .addPropertyReadOnly("ID", &GetID)
                 .addPropertyReadOnly("NumWidgets", &GetWidgetCount)
                 .addPropertyReadOnly("WidgetID", &GetWidgetID)
-                .addFunction("GetWidget", &GetWidget)
-                .addFunction("GetWidgetByID", &GetWidgetByID)
+                .addPropertyReadOnly("Name", &GetName)
+                .addFunction("GetWidget", &luaGetWidget)
+                .addFunction("GetWidgetByID", &luaGetWidgetByID)
                 .addFunction("SetPreviousMenu", &SetPreviousMenu)
                 .addFunction("SetBstate", &SetBstate)
                 .addFunction("AssignBackground", &AssignBackground)
