@@ -552,14 +552,14 @@ AGE_API void MM2::dgPhysManager::NewMover(lvlInstance* instanceA, lvlInstance* i
     }
 }
 
-void dgPhysManager::DeclareMover(lvlInstance* instance, int a3, int a4)
+void dgPhysManager::DeclareMover(lvlInstance* instance, int priority, int flags)
 {
     if (instance->GetRoomId() == 0) {
         Errorf("PHYS.DeclareMover : mover not even in city");
         return;
     }
     
-    if (instance->GetEntity() == nullptr && (a4 & 1) != 0) {
+    if (instance->GetEntity() == nullptr && (flags & 1) != 0) {
         Errorf("dgPhysManager::DeclareMover : cant update a mover with no physEntity");
         return;
     }
@@ -570,7 +570,7 @@ void dgPhysManager::DeclareMover(lvlInstance* instance, int a3, int a4)
         auto entry = &Table[i];
         if (entry->GetInstance() == instance) 
         {
-            entry->SetFlags(entry->GetFlags() | a4);
+            entry->SetFlags(entry->GetFlags() | flags);
             return;
         }
     }
@@ -582,9 +582,9 @@ void dgPhysManager::DeclareMover(lvlInstance* instance, int a3, int a4)
     }
 
     auto entry = &Table[NumActiveMovers];
-    entry->Set(instance->GetEntity(), instance, a4, a3);
+    entry->Set(instance->GetEntity(), instance, flags, priority);
 
-    if (a3 > 2)
+    if (priority > 2)
     {
         // add active and neighbor rooms to active room list
         int neighborCount = lvlLevel::GetSingleton()->GetNeighborCount(instance->GetRoomId());
@@ -610,7 +610,7 @@ void dgPhysManager::DeclareMover(lvlInstance* instance, int a3, int a4)
             }
         }
     }
-    if (a3 == 4)
+    if (priority == 4)
     {
         dgPhysManager::PlayerInst = instance;
     }
@@ -628,12 +628,12 @@ AGE_API bool MM2::dgPhysManager::CollideInstances(lvlInstance* instanceA, lvlIns
     return hook::Thunk<0x469620>::Call<bool>(this, instanceA, instanceB);
 }
 
-AGE_API bool MM2::dgPhysManager::Collide(lvlSegment& segment, lvlIntersection* intersection, int a4, lvlInstance* ignoreInstance, ushort flags1, int flags2)
+AGE_API bool MM2::dgPhysManager::Collide(lvlSegment& segment, lvlIntersection* intersection, int room, lvlInstance* ignoreInstance, int instFlags, int instExcludeFlags)
 {
     physTotalProbes++;
 
     auto probeTimer = Timer::Timer();
-    bool res = hook::Thunk<0x468E40>::Call<bool>(this, &segment, intersection, a4, ignoreInstance, flags1, flags2);
+    bool res = hook::Thunk<0x468E40>::Call<bool>(this, &segment, intersection, room, ignoreInstance, instFlags, instExcludeFlags);
 
     float probeTime = (Timer::Ticks() - probeTimer.TickCount) * Timer::TicksToMilliseconds;
     this->TotalProbeTime += probeTime;

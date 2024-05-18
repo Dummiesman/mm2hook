@@ -171,10 +171,10 @@ namespace MM2
         AGE_API void NewMover(lvlInstance* instance);
         AGE_API void NewMover(lvlInstance* instanceA, lvlInstance* instanceB);
         AGE_API void NewMover(lvlInstance* instanceA, lvlInstance* instanceB, lvlInstance* instanceC);
-        AGE_API void DeclareMover(lvlInstance* instance, int a3, int a4);
+        AGE_API void DeclareMover(lvlInstance* instance, int priority, int flags);
         AGE_API bool TrivialCollideInstances(lvlInstance* instanceA, lvlInstance* instanceB);
         AGE_API bool CollideInstances(lvlInstance* instanceA, lvlInstance* instanceB);
-        AGE_API bool Collide(lvlSegment& segment, lvlIntersection* intersection, int a4, lvlInstance* ignoreInstance, ushort flags1, int flags2);
+        AGE_API bool Collide(lvlSegment& segment, lvlIntersection* intersection, int room, lvlInstance* ignoreInstance, int instFlags, int instExcludeFlags = 0x00);
         void ResetTable();
         void Reset();
         void Update();
