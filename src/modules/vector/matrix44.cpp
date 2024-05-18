@@ -117,18 +117,18 @@ namespace MM2
     AGE_API void Matrix44::Bezier(void)                                              { hook::Thunk<0x4C0820>::Call<void>(this); }
     AGE_API void Matrix44::CatmullRom(void)                                          { hook::Thunk<0x4C08C0>::Call<void>(this); }
     AGE_API float Matrix44::Determinant(void) const                                  { return hook::Thunk<0x4C134A>::Call<float>(this); }
-    AGE_API void Matrix44::Add(const Matrix44* a1)                                   { hook::Thunk<0x4C0A30>::Call<void>(this, a1); }
-    AGE_API void Matrix44::AddScaled(const Matrix44* a1, float a2)                   { hook::Thunk<0x4C0CB0>::Call<void>(this, a1, a2); }
+    AGE_API void Matrix44::Add(const Matrix44& mtx)                                  { hook::Thunk<0x4C0A30>::Call<void>(this, &mtx); }
+    AGE_API void Matrix44::AddScaled(const Matrix44& mtx, float scale)               { hook::Thunk<0x4C0CB0>::Call<void>(this, &mtx, scale); }
     AGE_API void Matrix44::Dot(const Matrix44& a1)                                   { hook::Thunk<0x4C0D50>::Call<void>(this, &a1); }
     AGE_API void Matrix44::FastInverse(const Matrix44& a1)                           { hook::Thunk<0x4C1260>::Call<void>(this, &a1); }
     AGE_API void Matrix44::FromMatrix34(const Matrix34 & a1)                         { hook::Thunk<0x4C0970>::Call<void>(this, &a1); }
     AGE_API void Matrix44::InvertTo(Matrix44& a1)                                    { hook::Thunk<0x4C1510>::Call<void>(this, &a1); }
-    AGE_API void Matrix44::MakeRotX(float a1)                                        { hook::Thunk<0x4C1C00>::Call<void>(this, a1); }
-    AGE_API void Matrix44::MakeRotY(float a1)                                        { hook::Thunk<0x4C1C50>::Call<void>(this, a1); }
-    AGE_API void Matrix44::MakeRotZ(float a1)                                        { hook::Thunk<0x4C1CA0>::Call<void>(this, a1); }
+    AGE_API void Matrix44::MakeRotX(float angle)                                     { hook::Thunk<0x4C1C00>::Call<void>(this, angle); }
+    AGE_API void Matrix44::MakeRotY(float angle)                                     { hook::Thunk<0x4C1C50>::Call<void>(this, angle); }
+    AGE_API void Matrix44::MakeRotZ(float angle)                                     { hook::Thunk<0x4C1CA0>::Call<void>(this, angle); }
     AGE_API void Matrix44::Print(LPCSTR name) const                                  { hook::Thunk<0x4C1CF0>::Call<void>(this, name); }
-    AGE_API void Matrix44::Set(const Matrix44* a1)                                   { hook::Thunk<0x4C07B0>::Call<void>(this, a1); }
-    AGE_API void Matrix44::Subtract(const Matrix44* a1)                              { hook::Thunk<0x4C0B70>::Call<void>(this, a1); }
+    AGE_API void Matrix44::Set(const Matrix44* mtx)                                  { hook::Thunk<0x4C07B0>::Call<void>(this, mtx); }
+    AGE_API void Matrix44::Subtract(const Matrix44& mtx)                             { hook::Thunk<0x4C0B70>::Call<void>(this, &mtx); }
     AGE_API void Matrix44::ToMatrix34(Matrix34 & a1) const                           { hook::Thunk<0x4C09E0>::Call<void>(this, &a1); }
     AGE_API void Matrix44::Transform4(const Vector3* in, const Vector4* out, int count) 
                                                                                      { hook::Thunk<0x4C1D60>::Call<void>(this, in, out, count); }
@@ -201,7 +201,7 @@ namespace MM2
             .addVariable("m33", &Matrix44::m33)
             .addStaticFunction("Convert", &Convert)
 
-            .addStaticProperty("I", []() { return Matrix44::I; })
+            .addStaticProperty("I", []() -> Matrix44 { return Matrix44::I; })
 
             .addFunction("GetColumn", &GetColumn)
             .addFunction("GetRow", &GetRow)

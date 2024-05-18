@@ -146,6 +146,15 @@ namespace MM2
         hook::Thunk<0x4BD380>::Call<void>(this, &side, &up, t);
     }
 
+    Vector3 Matrix34::GetEulers()
+    {
+        Vector3 vec;
+        vec.X = atan2f(this->m12, this->m22);
+        vec.Y = asinf(-this->m02);
+        vec.Z = atan2f(this->m01, this->m00);
+        return vec;
+    }
+
     void Matrix34::Add(const Matrix34& values) {
         this->m00 += values.m00;
         this->m01 += values.m01;
@@ -444,7 +453,7 @@ namespace MM2
             .addVariable("m31", &Matrix34::m31)
             .addVariable("m32", &Matrix34::m32)
 
-            .addStaticProperty("I", []() { return Matrix34::I; })
+            .addStaticProperty("I", []() -> Matrix34 { return Matrix34::I; })
 
             .addFunction("GetColumn", &GetColumn)
             .addFunction("GetRow", &GetRow)
@@ -461,6 +470,7 @@ namespace MM2
             .addFunction("Scale", static_cast<void(Matrix34::*)(float, float, float)>(&Matrix34::Scale))
             .addFunction("Normalize", &Matrix34::Normalize)
             .addFunction("Dot", &Matrix34::Dot)
+            .addFunction("GetEulers", &GetEulers)
             .addFunction("Rotate", &Matrix34::Rotate)
             .addFunction("RotateFull", &Matrix34::RotateFull)
             .addFunction("RotateTo", static_cast<void(Matrix34::*)(const Vector3&, const Vector3&, float)>(&Matrix34::RotateTo), LUA_ARGS(const Vector3&, const Vector3&, _def<float, 1, 1>))
