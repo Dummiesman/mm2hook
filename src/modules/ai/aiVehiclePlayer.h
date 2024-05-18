@@ -42,6 +42,12 @@ namespace MM2
         int CurrentLane(void) override                      FORWARD_THUNK;
         int CurrentRoadId(void) override                    FORWARD_THUNK;
         void DrawId(void) const override                    FORWARD_THUNK;
+
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<aiVehiclePlayer, aiVehicle>("aiVehiclePlayer")
+                .addPropertyReadOnly("Car", &GetCar)
+                .endClass();
+        }
     };
 
     ASSERT_SIZEOF(aiVehiclePlayer, 0x30);
