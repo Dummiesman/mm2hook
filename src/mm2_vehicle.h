@@ -32,6 +32,9 @@ namespace MM2
         luaBind<vehTrailer>(L);
         luaBind<vehTrailerInstance>(L);
 
+        luaBind<vehEngineSampleWrapper>(L);
+        luaBind<vehEngineAudio>(L);
+
         luaBind<vehCarAudio>(L);
         luaBind<vehNitroCarAudio>(L);
         luaBind<vehSemiCarAudio>(L);
