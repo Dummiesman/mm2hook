@@ -44,6 +44,7 @@ namespace MM2
         static hook::Field<0x108, Vector3*> _sectionOriX;
         static hook::Field<0x10C, Vector3*> _sectionOriY;
         static hook::Field<0x110, Vector3*> _sectionOriZ;
+        static hook::Field<0x114, Vector3*> _tangent;
         static hook::Field<0x118, aiIntersection*> _intersectionA;
         static hook::Field<0x13C, aiIntersection*> _intersectionB;
         static hook::Field<0x90, aiObstacle**> _lVehicles;
@@ -81,6 +82,7 @@ namespace MM2
         Vector3 GetSideDirection(int section) const;
         Vector3 GetUpDirection(int section) const;
         Vector3 GetForwardDirection(int section) const;
+        Vector3 GetTangent(int section) const;
         Vector3 GetLeftBoundary(int section) const;
         Vector3 GetRightBoundary(int section) const;
         float GetWidth() const;

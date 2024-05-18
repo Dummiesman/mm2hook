@@ -117,6 +117,11 @@ namespace MM2
         return _sectionOriZ.get(this)[section];
     }
 
+    Vector3 aiPath::GetTangent(int section) const
+    {
+        return _tangent.get(this)[section];
+    }
+
     Vector3 aiPath::GetLeftBoundary(int section) const
     {
         return _lBoundaryVertices.get(this)[this->NumVerts() + section];
@@ -376,6 +381,7 @@ namespace MM2
             .addFunction("GetSideDirection", &GetSideDirection)
             .addFunction("GetUpDirection", &GetUpDirection)
             .addFunction("GetForwardDirection", &GetForwardDirection)
+            .addFunction("GetTangent", &GetTangent)
             .addFunction("GetLeftBoundary", &GetLeftBoundary)
             .addFunction("GetRightBoundary", &GetRightBoundary)
             .addFunction("GetRoomID", &GetRoomId)
