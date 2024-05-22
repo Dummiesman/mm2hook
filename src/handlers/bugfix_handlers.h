@@ -36,6 +36,7 @@
 #include "bugfix_handlers/vehCarAudioContainerBugfixHandler.h"
 #include "bugfix_handlers/vehTrailerHandler.h"
 #include "bugfix_handlers/vehSemiCarAudioBugfixHandler.h"
+#include "bugfix_handlers/vehSplashHandler.h"
 
 class aiPoliceOfficerHandler {
 public:

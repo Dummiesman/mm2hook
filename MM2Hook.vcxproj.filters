@@ -1834,6 +1834,9 @@
     <ClInclude Include="src\modules\mmcityinfo\playerdir.h">
       <Filter>Source Files\modules\mmcityinfo</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\vehSplashHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2735,6 +2738,9 @@
     </ClCompile>
     <ClCompile Include="src\modules\ai\aiPoliceForce.cpp">
       <Filter>Source Files\modules\ai</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\vehSplashHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
