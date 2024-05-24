@@ -33,6 +33,13 @@ namespace MM2
         float InvLength;
         lvlSegmentInfo* SegmentInfo;
 
+        lvlSegment()
+        {
+            IsVertical = false;
+            InvLength = 0.0f;
+            SegmentInfo = nullptr;
+        }
+
         AGE_API void Set(Vector3 const & startPosition, Vector3 const & endPosition, int flag, lvlSegmentInfo* info)                  
                                                                 { hook::Thunk<0x469F90>::Call<void>(this, &startPosition, &endPosition, flag, info);}
     };
