@@ -21,6 +21,17 @@ namespace MM2
     // Class definitions
     class lvlInstance
     {
+    public:
+        // Instance flags
+        static const int INST_BANGER = 1 << 1;
+        static const int INST_VEHICLE = 1 << 3;
+        static const int INST_WHEELCOLLISION = 1 << 5;
+        static const int INST_SHADOW = 1 << 6;
+        static const int INST_GLOW = 1 << 7;
+        static const int INST_LANDMARK = 1 << 8;
+        static const int INST_VISIBLE = 1 << 9;
+        static const int INST_STATIC = 1 << 10;
+        static const int INST_SHADOW_RGL = 1 << 13;
     private:
         byte Owner;
         byte Subtype;
