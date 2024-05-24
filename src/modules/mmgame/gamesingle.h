@@ -11,6 +11,8 @@ namespace MM2
 
     // Class definitions
     class mmGameSingle : public mmGame {
+    private:
+        byte _buffer[0x60];
     protected:
         static hook::Field<0x76D0, short> _opponentFinishPositions;
         static hook::Field<0x768C, int> _opponentCurrentWaypoint;
@@ -79,4 +81,5 @@ namespace MM2
                 .endClass();
         }
     };
+    ASSERT_SIZEOF(mmGameSingle, 0x76E8);
 }
