@@ -33,12 +33,9 @@ void vehCarHandler::InitCarAudio(LPCSTR a1, BOOL a2) {
     }
 
     //Automatic vehtypes system
-    bool vehicleHasSiren = false;
-    if (car->GetSiren() != nullptr) {
-        vehicleHasSiren = car->GetSiren()->HasLights && car->GetSiren()->LightCount > 0;
-    }
+    bool vehicleHasSiren = car->GetSiren() != nullptr && car->GetSiren()->GetLightCount() > 0;
 
-    if (vehicleHasSiren || flagsId == 8 && !vehCarAudioContainer::IsPolice(a1)) {
+    if ((vehicleHasSiren || flagsId & 8) && !vehCarAudioContainer::IsPolice(a1)) {
         Displayf("%s has a lightbar, but is not in the vehtypes file. Adding it.", a1);
         string_buf<128> sirenBuffer("%s,ENDOFDATA", a1);
         vehCarAudioContainer::RegisterPoliceNames(NULL, (LPCSTR)sirenBuffer);
@@ -108,8 +105,8 @@ void vehCarHandler::Update() {
 
     if ((lightbar0 != nullptr && !lightbar0->isAttached) ||
         (lightbar1 != nullptr && !lightbar1->isAttached)) {
-        if (siren != nullptr && siren->Active) {
-            siren->Active = false;
+        if (siren != nullptr && siren->IsActive()) {
+            siren->SetActive(false);
             audio->StopSiren();
         }
     }
