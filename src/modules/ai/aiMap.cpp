@@ -200,6 +200,10 @@ namespace MM2
     AGE_API aiPedestrian * aiMap::Pedestrian(int num) const     { return hook::Thunk<0x534AB0>::Call<aiPedestrian *>(this, num); }
     AGE_API aiIntersection* aiMap::Intersection(int num) const  { return hook::Thunk<0x534880>::Call<aiIntersection*>(this, num); }
     AGE_API aiPath* aiMap::Path(int num) const                  { return hook::Thunk<0x534850>::Call<aiPath*>(this, num); }
+    AGE_API void aiMap::AdjustAmbients(int prevRoom, int nextRoom, int playerId)
+                                                                { hook::Thunk<0x539DD0>::Call<void>(this, prevRoom, nextRoom, playerId); }
+    AGE_API void aiMap::AdjustPedestrians(int prevRoom, int nextRoom, int playerId)
+                                                                { hook::Thunk<0x539A20>::Call<void>(this, prevRoom, nextRoom, playerId); }
     AGE_API aiPath* aiMap::DetRdSegBetweenInts(aiIntersection* intersectionA, aiIntersection* intersectionB, bool* outRdEndsAtB)
                                                                 { return hook::Thunk<0x53A680>::Call<aiPath*>(this, intersectionA, intersectionB, outRdEndsAtB); }
     aiMapComponentType aiMap::MapComponentType(int room, int* outId)
@@ -230,6 +234,8 @@ namespace MM2
             .addFunction("CTFOpponent", &CTFOpponent)
             .addFunction("Vehicle", &Vehicle)
             .addFunction("Intersection", &Intersection)
+            .addFunction("AdjustAmbients", &AdjustAmbients)
+            .addFunction("AdjustPedestrians", &AdjustPedestrians)
             .addFunction("DetRdSegBetweenInts", &detRdSegBetweenIntsLua)
             .addPropertyReadOnly("CityData", &GetCityData)
             .addPropertyReadOnly("RaceData", &GetRaceData)

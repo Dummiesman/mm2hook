@@ -239,6 +239,8 @@ namespace MM2
         AGE_API aiPedestrian* Pedestrian(int num) const;
         AGE_API aiIntersection* Intersection(int num) const;
         AGE_API aiPath* Path(int num) const;
+        AGE_API void AdjustAmbients(int prevRoom, int nextRoom, int playerId);
+        AGE_API void AdjustPedestrians(int prevRoom, int nextRoom, int playerId);
         AGE_API aiPath* DetRdSegBetweenInts(aiIntersection* intersectionA, aiIntersection* intersectionB, bool* outRdEndsAtB);
         aiMapComponentType MapComponentType(int room, int* outId);
         int MapComponent(const Vector3& position, short* outId, short* outType, int room);
