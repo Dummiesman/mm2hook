@@ -13,7 +13,11 @@ namespace MM2
     class mmSingleRoam : public mmGameSingle
     {
     private:
-        byte _buffer[0x76F0];
+        const static int STATE_BEGIN = 0;
+        const static int STATE_ROAMING = 1;
+        const static int STATE_DAMAGEDOUT = 2;
+    private:
+        mmSingleRoamMusicData music;
     public:
         AGE_API mmSingleRoam(void) {
             //scoped_vtable x(this);

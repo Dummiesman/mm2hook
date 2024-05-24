@@ -13,7 +13,8 @@ namespace MM2
     class mmSingleRace : public mmGameSingle
     {
     private:
-        byte _buffer[0x76F0 - sizeof(asNode) - 0x4];
+        mmSingleRaceMusicData* music;
+        int dword_76ec; // Honestly no idea, seems this is never referenced (maybe was some debug value?)
     public:
         ANGEL_ALLOCATOR
 
