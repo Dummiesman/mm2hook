@@ -121,9 +121,10 @@ void MM2::aiGoalAvoidPlayer::AvoidPlayer()
     auto ourMtx = Vehicle->GetMatrix();
 
     Vector3 playerPosition = playerMtx.GetRow(3);
+    Vector3 playerPositionPredicted = player->GetCar()->GetICS()->GetVelocity() + playerPosition;
     Vector3 ourPosition = ourMtx.GetRow(3);
 
-    Vector3 positionDifference = playerPosition - ourPosition;
+    Vector3 positionDifference = playerPositionPredicted - ourPosition;
 
     float xDot = positionDifference.Dot(ourMtx.GetRow(0));
     float zDot = positionDifference.Dot(ourMtx.GetRow(2) * -1.0f);
