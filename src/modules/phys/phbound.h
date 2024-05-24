@@ -57,6 +57,8 @@ namespace MM2
 
         }
     public:
+        ANGEL_ALLOCATOR
+
         phBound(BoundType type)
         {
             hook::Thunk<0x4871B0>::Call<void>(this, static_cast<int>(type));
@@ -69,7 +71,7 @@ namespace MM2
         */
         AGE_API virtual void CenterBound()              { hook::Thunk<0x4872A0>::Call<void>(this); }
         AGE_API virtual phMaterial const * GetMaterial(int a1)     PURE;
-        AGE_API virtual int GetNumMaterials()           { return hook::Thunk<0x45CF30>::Call<int>(this); }
+        AGE_API virtual int GetNumMaterials() const     { return hook::Thunk<0x45CF30>::Call<int>(this); }
         AGE_API virtual float SetFriction()             { return hook::Thunk<0x45CF60>::Call<float>(this); }
         AGE_API virtual void SetFriction(float a1)      { hook::Thunk<0x45CF40>::Call<void>(this, a1); }
         AGE_API virtual float SetElasticity()           { return hook::Thunk<0x45CF70>::Call<float>(this); }
@@ -102,7 +104,10 @@ namespace MM2
         {
             return hook::Thunk<0x45CFA0>::Call<float>(this, &a1, &a2, a3, a4);
         }
-        AGE_API virtual Vector3 const& GetVertex(int a1) { return hook::Thunk<0x487730>::Call<Vector3 const&>(this, a1); }
+        AGE_API virtual Vector3 const& GetVertex(int index)
+        { 
+            return hook::Thunk<0x487730>::Call<Vector3 const&>(this, index); 
+        }
 
 
         static void BindLua(LuaState L) {
