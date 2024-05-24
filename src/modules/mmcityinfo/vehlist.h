@@ -30,8 +30,8 @@ namespace MM2
 
         AGE_API void LoadAll()                               { hook::Thunk<0x524950>::Call<void>(this); }
 
-        AGE_API mmVehInfo * GetVehicleInfo(int id)           { return hook::Thunk<0x5245E0>::Call<mmVehInfo *>(this, id); }
-        AGE_API mmVehInfo * GetVehicleInfo(const char *basename)   
+        AGE_API mmVehInfo * GetVehicleInfo(int id) const     { return hook::Thunk<0x5245E0>::Call<mmVehInfo *>(this, id); }
+        AGE_API mmVehInfo * GetVehicleInfo(const char *basename) const  
                                                              { return hook::Thunk<0x524610>::Call<mmVehInfo *>(this, basename); }
         AGE_API int GetVehicleID(const char* basename)       { return hook::Thunk<0x5246B0>::Call<int>(this, basename); }
 
@@ -48,8 +48,8 @@ namespace MM2
             LuaBinding(L).beginClass<mmVehList>("mmVehList")
                 .addFunction("Print", &Print)
                 .addPropertyReadOnly("NumVehicles", &GetNumVehicles)
-                .addFunction("GetVehicleInfo", static_cast<mmVehInfo *(mmVehList::*)(const char*)>(&GetVehicleInfo))
-                .addFunction("GetVehicleInfoByIndex", static_cast<mmVehInfo *(mmVehList::*)(int)>(&GetVehicleInfo))
+                .addFunction("GetVehicleInfo", static_cast<mmVehInfo* (mmVehList::*)(const char*) const>(&GetVehicleInfo))
+                .addFunction("GetVehicleInfoByIndex", static_cast<mmVehInfo* (mmVehList::*)(int) const>(&GetVehicleInfo))
                 .addFunction("GetVehicleID", &GetVehicleID)
                 .addFunction("SetDefaultVehicle", &SetDefaultVehicle)
                 .endClass();
