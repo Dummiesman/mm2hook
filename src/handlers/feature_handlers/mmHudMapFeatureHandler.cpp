@@ -154,7 +154,7 @@ void mmHudMapFeatureHandler::DrawPlayer() {
         int iconColor = 5;
         if (audio->IsPolice(vehName)) {
             iconColor = 2;
-            if (siren != nullptr && siren->Active) {
+            if (siren != nullptr && siren->IsActive()) {
                 if (elapsedTime3)
                     iconColor = 1;
             }
@@ -169,7 +169,7 @@ void mmHudMapFeatureHandler::DrawPlayer() {
 
         if (audio->IsPolice(vehName)) 
         {
-            if (siren != nullptr && siren->Active) 
+            if (siren != nullptr && siren->IsActive()) 
             {
                 DrawIcon(2, playerMtx);
                 if (elapsedTime1)
@@ -177,7 +177,7 @@ void mmHudMapFeatureHandler::DrawPlayer() {
                 if (elapsedTime2)
                     DrawIcon(-1, playerMtx);
             }
-            if (siren != nullptr && !siren->Active) 
+            if (siren != nullptr && !siren->IsActive())
             {
                 DrawIcon(-1, playerMtx);
             }
@@ -191,7 +191,7 @@ void mmHudMapFeatureHandler::DrawPlayer() {
     {
         int iconIndex = 8;
         if (audio->IsPolice(vehName)) {
-            if (siren != nullptr && siren->Active) 
+            if (siren != nullptr && siren->IsActive())
             {
                 iconIndex = 2;
                 if (elapsedTime1)
@@ -199,7 +199,7 @@ void mmHudMapFeatureHandler::DrawPlayer() {
                 if (elapsedTime2)
                     iconIndex = -1;
             }
-            if (siren != nullptr && !siren->Active) 
+            if (siren != nullptr && !siren->IsActive())
             {
                 iconIndex = 4;
             }

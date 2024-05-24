@@ -264,7 +264,7 @@ void vehTrailerInstanceFeatureHandler::DrawGlow() {
     auto siren = car->GetSiren();
 
     //draw siren
-    if (siren != nullptr && siren->Active) {
+    if (siren != nullptr && siren->IsActive()) {
         int sirenStage = fmod(datTimeManager::ElapsedTime, 2 * vehCarModel::SirenCycle) >= vehCarModel::SirenCycle ? 1 : 0;
         if (sirenStage == 0 && siren0 != nullptr) {
             siren0->Draw(shaders);
