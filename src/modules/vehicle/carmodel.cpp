@@ -125,7 +125,7 @@ namespace MM2
             for (int i = 4; i < 8; i++)
             {
                 string_buf<16> buffer("srn%d", i);
-                InitSirenLight(basename, buffer, SRN4_GEOM_ID + i);
+                InitSirenLight(basename, buffer, SRN4_GEOM_ID + i - 4);
             }
         }
     }
