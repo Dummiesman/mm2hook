@@ -26,6 +26,10 @@ namespace MM2
             return control;
         }
 
+        const char* GetPath() const
+        {
+            return hook::Thunk<0x5A04E0>::Call<const char*>(this);
+        }
 
         void Init(audManager::AUDTYPE type, audManager* manager)
         {
