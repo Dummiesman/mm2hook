@@ -9,8 +9,9 @@ using namespace MM2;
 static ConfigValue<bool> cfgVehicleDebug("VehicleDebug", "vehicleDebug", false);
 
 void vehCarHandler::InitCar(LPCSTR vehName, int a2, int a3, bool a4, bool a5) {
+    auto car = reinterpret_cast<vehCar*>(this);
     Displayf("Initializing vehicle (\"%s\", %d, %d, %s, %s)", vehName, a2, a3, bool_str(a4), bool_str(a5));
-    get<vehCar>()->Init(vehName, a2, a3, a4, a5);
+    car->Init(vehName, a2, a3, a4, a5);
 }
 
 const phBound * vehCarHandler::GetModelBound(int a1) {
