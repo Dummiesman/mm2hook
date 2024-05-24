@@ -40,6 +40,8 @@ namespace MM2
         static hook::Field<0x94, mmPopup *> _popup;
         static hook::Field<0x240, mmViewMgr> _viewManager;
         static hook::Field<0x270, int> _state;
+        static hook::Field<0x276, bool> _aimapLoaded;
+        static hook::Field<0x277, bool> _aimapEnabled;
         static hook::Field<0x408, float> _stateTimer;
         static hook::Field<0x7670, gizSailboatMgr*> _sailboatManager;
         static hook::Field<0x7674, gizFerryMgr*> _ferryManager;
@@ -100,6 +102,11 @@ namespace MM2
 
         void SetSounds(AudSoundBase* sounds) {
             _gameSounds.set(this, sounds);
+        }
+
+        bool IsAILoaded() const
+        {
+            return _aimapLoaded.get(this);
         }
 
         AGE_API void RespawnXYZ(Vector3& pos, float& rot, bool disallowHighwaySpawning, bool disallowAlleySpawning, bool useNetIdForSeed)
