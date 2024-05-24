@@ -42,14 +42,17 @@ namespace MM2
         this->PreLoadShader(variant);
         this->GetGenBreakableMgr()->SetVariant(variant);
         this->GetMechBreakableMgr()->SetVariant(variant);
+        this->InitSirenLights(this->GetCar()->GetCarDamage()->GetName());
+        this->InitHeadlights(this->GetCar()->GetCarDamage()->GetName());
         //this->Optimize(variant); crash
         this->variant = variant;
 
+        // setup damage
         if (texelDamage) {
             auto bodyEntry = this->GetGeomBase();
             if (bodyEntry->GetHighLOD() != nullptr)
             {
-                texelDamage->Init(bodyEntry->GetHighLOD(), bodyEntry->pShaders[this->GetVariant()], bodyEntry->numShadersPerVariant);
+                texelDamage->Init(bodyEntry->GetHighLOD(), bodyEntry->pShaders[variant], bodyEntry->numShadersPerVariant);
             }
         }
     }
@@ -94,6 +97,7 @@ namespace MM2
                                                         { hook::Thunk<0x4CDC50>::Call<void>(this, manager, basename, breakableName, geomId, someId); }
     AGE_API void vehCarModel::InitSirenLight(const char* basename, const char* mtxName, int geomId)
     {
+        Vector3 outColor = Vector3::ORIGIN;
         auto sirenGeom = this->GetGeom(3, geomId);
         if (sirenGeom != nullptr)
         {
@@ -101,13 +105,97 @@ namespace MM2
             Matrix34 outMatrix;
 
             GetPivot(outMatrix, basename, mtxName);
-            this->GetSurfaceColor(sirenGeom, &siren->ltLightPool[siren->LightCount].Color);
-            siren->AddLight(outMatrix.GetRow(3), siren->ltLightPool[siren->LightCount].Color);
-        }
-            
+            this->GetSurfaceColor(sirenGeom, &outColor);
+            siren->AddLight(outMatrix.GetRow(3), outColor);
+        }    
     }
 
-    AGE_API void vehCarModel::BreakElectrics(Vector3* a1)            { hook::Thunk<0x4CEFE0>::Call<void>(this, a1); }
+    void vehCarModel::InitSirenLights(const char* basename)
+    {
+        auto siren = this->car->GetSiren();
+        if (siren != nullptr)
+        {
+            siren->Init();
+            siren->RemoveAllLights();
+            for (int i = 0; i < 4; i++)
+            {
+                string_buf<16> buffer("srn%d", i);
+                InitSirenLight(basename, buffer, SRN0_GEOM_ID + i);
+            }
+            for (int i = 4; i < 8; i++)
+            {
+                string_buf<16> buffer("srn%d", i);
+                InitSirenLight(basename, buffer, SRN4_GEOM_ID + i);
+            }
+        }
+    }
+
+    void vehCarModel::InitHeadlights(const char* basename)
+    {
+        Matrix34 outMatrix = Matrix34::I;
+
+        // load headlights
+        auto headlight0geom = this->GetGeom(3, HEADLIGHT0_GEOM_ID);
+        auto headlight1geom = this->GetGeom(3, HEADLIGHT1_GEOM_ID);
+
+        if (this->headlights)
+        {
+            delete[] this->headlights;
+            this->headlights = nullptr;
+        }
+        if (headlight0geom != nullptr && headlight1geom != nullptr)
+        {
+            this->headlights = new ltLight[2];
+            
+            GetPivot(outMatrix, basename, "headlight0");
+            headlights[0].Color = Vector3(1.f, 1.f, 1.f);
+            headlights[0].Type = 1;
+            headlights[0].SpotExponent = 3.f;
+            this->GetSurfaceColor(headlight0geom, &headlights[0].Color);
+            this->headlightPositions[0] = Vector3(outMatrix.m30, outMatrix.m31, outMatrix.m32);
+
+            GetPivot(outMatrix, basename, "headlight1");
+            headlights[1].Color = Vector3(1.f, 1.f, 1.f);
+            headlights[1].Type = 1;
+            headlights[1].SpotExponent = 3.f;
+            this->GetSurfaceColor(headlight1geom, &headlights[1].Color);
+            this->headlightPositions[1] = outMatrix.GetRow(3);
+        }
+
+        // load extra headlights
+        int EXTRA_HEADLIGHT_COUNT = 6; 
+        for (int i = 0; i < EXTRA_HEADLIGHT_COUNT; i++)
+        {
+            if (extraHeadlights[i])
+            {
+                delete extraHeadlights[i];
+                extraHeadlights[i] = nullptr;
+            }
+        }
+
+        for (int i = 0; i < EXTRA_HEADLIGHT_COUNT; i++)
+        {
+            auto headlightGeom = this->GetGeom(3, HEADLIGHT2_GEOM_ID + i);
+            if (headlightGeom == nullptr)
+                continue;
+
+            Matrix34 outMatrix;
+
+            string_buf<16> buffer("headlight%d", i + 2);
+            GetPivot(outMatrix, basename, buffer);
+            extraHeadlights[i] = new ltLight();
+            extraHeadlights[i]->Color = Vector3(1.f, 1.f, 1.f);
+            extraHeadlights[i]->Type = 1;
+            extraHeadlights[i]->SpotExponent = 3.f;
+            this->GetSurfaceColor(headlightGeom, &extraHeadlights[i]->Color);
+            this->extraHeadlightPositions[i] = outMatrix.GetRow(3);
+        }
+    }
+
+    AGE_API void vehCarModel::BreakElectrics(Vector3* localImpactPos)     
+    {
+        hook::Thunk<0x4CEFE0>::Call<void>(this, localImpactPos); 
+    }
     
     AGE_API void vehCarModel::ClearDamage()                          
     {
@@ -213,7 +301,7 @@ namespace MM2
     }
 
     AGE_API bool vehCarModel::GetVisible()                           { return hook::Thunk<0x4CF070>::Call<bool>(this); }
-    AGE_API void vehCarModel::SetVisible(bool a1)                    { hook::Thunk<0x4CF050>::Call<void>(this, a1); }
+    AGE_API void vehCarModel::SetVisible(bool visible)               { hook::Thunk<0x4CF050>::Call<void>(this, visible); }
         
     AGE_API void vehCarModel::DrawHeadlights(bool rotate)
     {
@@ -474,7 +562,6 @@ namespace MM2
             if (bodyEntry->GetHighLOD() != nullptr)
             {
                 this->texelDamage = new fxTexelDamage();
-
                 if (!texelDamage->Init(bodyEntry->GetHighLOD(), bodyEntry->pShaders[this->GetVariant()], bodyEntry->numShadersPerVariant)) 
                 {
                     delete texelDamage;
@@ -489,7 +576,6 @@ namespace MM2
         {
             auto bodyEntry = this->GetGeomBase(0);
             auto bodyDamageEntry = this->GetGeomBase(BODYDAMAGE_GEOM_ID);
-
             if (bodyEntry->GetHighLOD() != nullptr && bodyDamageEntry->GetHighLOD() != nullptr)
             {
                 this->damage3D = new fxDamage3D();
@@ -501,64 +587,9 @@ namespace MM2
         if (hasGeometry)
             lvlInstance::Optimize(this->variant);
 
-        //init siren lights
-        auto siren = this->car->GetSiren();
-        if (siren != nullptr) 
-        {
-            siren->Init();
-            InitSirenLight(basename, "srn0", SRN0_GEOM_ID);
-            InitSirenLight(basename, "srn1", SRN1_GEOM_ID);
-            InitSirenLight(basename, "srn2", SRN2_GEOM_ID);
-            InitSirenLight(basename, "srn3", SRN3_GEOM_ID);
-            InitSirenLight(basename, "srn4", SRN4_GEOM_ID);
-            InitSirenLight(basename, "srn5", SRN5_GEOM_ID);
-            InitSirenLight(basename, "srn6", SRN6_GEOM_ID);
-            InitSirenLight(basename, "srn7", SRN7_GEOM_ID);
-        }
-
-        //load headlights
-        auto headlight0geom = this->GetGeom(3, HEADLIGHT0_GEOM_ID);
-        auto headlight1geom = this->GetGeom(3, HEADLIGHT1_GEOM_ID);
-
-        if (headlight0geom != nullptr && headlight1geom != nullptr)
-        {
-            this->headlights = new ltLight[2];
-            Matrix34 outMatrix;
-
-            GetPivot(outMatrix, basename, "headlight0");
-            headlights[0].Color = Vector3(1.f, 1.f, 1.f);
-            headlights[0].Type = 1;
-            headlights[0].SpotExponent = 3.f;
-            this->GetSurfaceColor(headlight0geom, &headlights[0].Color);
-            this->headlightPositions[0] = Vector3(outMatrix.m30, outMatrix.m31, outMatrix.m32);
-
-            GetPivot(outMatrix, basename, "headlight1");
-            headlights[1].Color = Vector3(1.f, 1.f, 1.f);
-            headlights[1].Type = 1;
-            headlights[1].SpotExponent = 3.f;
-            this->GetSurfaceColor(headlight1geom, &headlights[1].Color);
-            this->headlightPositions[1] = Vector3(outMatrix.m30, outMatrix.m31, outMatrix.m32);
-        }
-            
-
-        //load extra headlights
-        for (int i = 0; i < 6; i++)
-        {
-            auto headlightGeom = this->GetGeom(3, HEADLIGHT2_GEOM_ID + i);
-            if (headlightGeom == nullptr)
-                continue;
-
-            Matrix34 outMatrix;
-
-            string_buf<16> buffer("headlight%d", i + 2);
-            GetPivot(outMatrix, basename, buffer);
-            extraHeadlights[i] = new ltLight();
-            extraHeadlights[i]->Color = Vector3(1.f, 1.f, 1.f);
-            extraHeadlights[i]->Type = 1;
-            extraHeadlights[i]->SpotExponent = 3.f;
-            this->GetSurfaceColor(headlightGeom, &extraHeadlights[i]->Color);
-            this->extraHeadlightPositions[i] = Vector3(outMatrix.m30, outMatrix.m31, outMatrix.m32);
-        }
+        //init siren lights and headlights
+        InitSirenLights(basename);
+        InitHeadlights(basename);
 
         //load FNDR offsets
         if (this->GetGeom(3, FNDR0_GEOM_ID) != nullptr)
@@ -1071,7 +1102,7 @@ namespace MM2
             Matrix34 shadowMatrix, dummyMatrix;
             Matrix34 instanceMatrix = this->GetMatrix(&dummyMatrix);
 
-            if (lvlInstance::ComputeShadowProjectionMatrix(shadowMatrix, this->GetRoomId(), timeWeather->KeyPitch, timeWeather->KeyHeading, instanceMatrix))
+            if (lvlInstance::ComputeShadowProjectionMatrix(shadowMatrix, this->GetRoomId(), timeWeather->KeyPitch, timeWeather->KeyHeading, instanceMatrix, this))
             {
                 gfxRenderState::SetWorldMatrix(shadowMatrix);
                 model->DrawShadowed(shaders, ComputeShadowIntensity(timeWeather->KeyColor));
@@ -1231,7 +1262,7 @@ namespace MM2
             if (vehCarModel::HeadlightType == 0 || vehCarModel::HeadlightType == 2) {
                 //MM2 headlights
                 if (vehCarModel::EnableHeadlightFlashing) {
-                    if (siren != nullptr && siren->Active)
+                    if (siren != nullptr && siren->IsActive())
                     {
                         this->DrawHeadlights(true);
                         this->DrawExtraHeadlights(true);
@@ -1267,7 +1298,7 @@ namespace MM2
         if (vehCarModel::SirenType < 3) {
             if (vehCarModel::SirenType == 0 || vehCarModel::SirenType == 2) {
                 //MM2 siren
-                if (siren != nullptr && siren->HasLights && siren->Active)
+                if (siren != nullptr && siren->IsActive())
                 {
                     siren->Draw(*this->carSim->GetWorldMatrix());
                 }
@@ -1276,7 +1307,7 @@ namespace MM2
                 //MM1 siren
                 gfxRenderState::SetWorldMatrix(*this->carSim->GetWorldMatrix());
 
-                if (siren != nullptr && siren->Active) {
+                if (siren != nullptr && siren->IsActive()) {
                     int sirenStage = fmod(datTimeManager::ElapsedTime, 2 * vehCarModel::SirenCycle) >= vehCarModel::SirenCycle ? 1 : 0;
                     if (sirenStage == 0 && siren0 != nullptr) {
                         siren0->Draw(shaders);

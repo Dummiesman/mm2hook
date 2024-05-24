@@ -26,8 +26,8 @@ namespace MM2
     class vehCarModel : public lvlInstance {
     public:
         /*
-    Model Index Constants
-*/
+            Model Index Constants
+        */
         static const int SHADOW_GEOM_ID = 1;
         static const int HLIGHT_GEOM_ID = 2;
         static const int TLIGHT_GEOM_ID = 3;
@@ -201,11 +201,13 @@ namespace MM2
         AGE_API void GetSurfaceColor(modStatic* model, Vector3* outVector);
         AGE_API void InitBreakable(vehBreakableMgr* manager, const char* basename, const char* breakableName, int geomId, int someId);
         AGE_API void InitSirenLight(const char* basename, const char* mtxName, int geomId);
-        AGE_API void BreakElectrics(Vector3* a1);
+        void InitSirenLights(const char* basename);
+        void InitHeadlights(const char* basename);
+        AGE_API void BreakElectrics(Vector3* localImpactPos);
         AGE_API void ClearDamage();
         AGE_API void EjectOneshot();
         AGE_API bool GetVisible();
-        AGE_API void SetVisible(bool a1);
+        AGE_API void SetVisible(bool visible);
         AGE_API void DrawHeadlights(bool rotate);
         AGE_API void DrawExtraHeadlights(bool rotate);
         AGE_API void DrawPart(modStatic* model, const Matrix34* matrix, modShader* shaders);
