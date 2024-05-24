@@ -12,12 +12,23 @@ namespace MM2
     // Forward declarations
     class asNetwork;
     struct NETSESSION_DESC;
+    struct NET_RCXHEAD;
 
     // External declarations
-
+    extern struct mmNetworkPlayerData;
 
     // Class definitions
     typedef int DPID; // player ID
+
+    struct NET_RCXHEAD
+    {
+        int destPlayerId;
+        int srcPlayerId;
+        int packetType;
+        int length;
+        float sendTime;
+        void* pData;
+    };
 
     struct NETSESSION_DESC {
         char info[256];
@@ -72,9 +83,12 @@ namespace MM2
     ASSERT_SIZEOF(NETSESSION_DESC, 0x110);
 
     class asNetwork {
-    private:
+    public:
+        static const int CUSTOM_PACKET_ID_START = 10000;
+    public:
         datCallback SysMessageCB;
         datCallback AppMessageCB;
+    private:
         IDirectPlay4A *pDPlay;
         IDirectPlayLobby3A *pLobby;
         DPID PlayerID;
@@ -97,6 +111,27 @@ namespace MM2
         {
             return LuaSessionInfo(this->getDPlay(), this->IsHost);
         }
+
+        mmNetworkPlayerData getPlayerDataLua(int id);
+
+        void luaEnumPlayers(LuaRef func)
+        {
+            // set a static ref
+            
+            //
+            //GetPlayers()
+        }
+
+        void sendLua(DPID idTo, int messageType, std::string str, bool gauranteed)
+        {
+            auto cstr = str.c_str();
+            this->Send(idTo, messageType + CUSTOM_PACKET_ID_START, (void*)cstr, str.size(), gauranteed ? TRUE : FALSE);
+        }
+
+        int getPlayersLua()
+        {
+            return this->GetPlayers();
+        }
     public:
         inline bool getInSession() 
         {
@@ -106,6 +141,11 @@ namespace MM2
         inline IDirectPlay4A* getDPlay()
         {
             return this->pDPlay;
+        }
+
+        DPID GetLocalPlayerID() const
+        {
+            return PlayerID;
         }
 
         AGE_API asNetwork(void)                             { hook::Thunk<0x56FCD0>::Call<void>(this); }
@@ -131,9 +171,10 @@ namespace MM2
                                                             { return hook::Thunk<0x570900>::Call<int>(this, a2, lpData, dwDataSize); }
         AGE_API void DestroyPlayer(void)                    { return hook::Thunk<0x5709C0>::Call<void>(this); }
         AGE_API void BootPlayer(DPID idPlayer)              { return hook::Thunk<0x570A00>::Call<void>(this, idPlayer); }
-        AGE_API int GetPlayers(LPGUID lpguidInstance)       { return hook::Thunk<0x570A30>::Call<int>(this, lpguidInstance); }
-        AGE_API char * GetEnumPlayer(int a2)                { return hook::Thunk<0x570A60>::Call<char *>(this, a2); }
-        AGE_API ulong GetPlayerID(int a2)                   { return hook::Thunk<0x570A90>::Call<ulong>(this, a2); }
+        AGE_API int GetPlayers(LPGUID lpguidInstance = nullptr)
+                                                            { return hook::Thunk<0x570A30>::Call<int>(this, lpguidInstance); }
+        AGE_API LPCSTR GetEnumPlayer(int playerIndex)       { return hook::Thunk<0x570A60>::Call<LPCSTR>(this, playerIndex); }
+        AGE_API DPID GetPlayerID(int playerIndex)           { return hook::Thunk<0x570A90>::Call<DPID>(this, playerIndex); }
         AGE_API int GetNumPlayers(void)                     { return hook::Thunk<0x570AD0>::Call<int>(this); }
         AGE_API char* GetPlayerName(DPID idPlayer)          { return hook::Thunk<0x570B90>::Call<char*>(this, idPlayer); }
         AGE_API int GetPlayerName(DPID idPlayer, char *a3)  { return hook::Thunk<0x570C60>::Call<int>(this, idPlayer, a3); }
@@ -171,8 +212,8 @@ namespace MM2
         AGE_API void DumpRxQueueInfo(void)                  { return hook::Thunk<0x5720E0>::Call<void>(this); }
         AGE_API void DumpTxQueueInfo(void)                  { return hook::Thunk<0x572100>::Call<void>(this); }
         AGE_API void ChatMessage(DPID idTo, char *a3)       { return hook::Thunk<0x572120>::Call<void>(this, idTo, a3); }
-        AGE_API int Send(DPID idTo, void *a3, const void *a4, uint a5, int a6)
-                                                            { return hook::Thunk<0x572200>::Call<int>(this, idTo, a3, a4, a5, a6); }
+        AGE_API int Send(DPID idTo, int type, const void *data, uint dataSize, BOOL gauranteed)
+                                                            { return hook::Thunk<0x572200>::Call<int>(this, idTo, type, data, dataSize, gauranteed); }
         AGE_API int GetMyLogicalIndex(void)                 { return hook::Thunk<0x5723F0>::Call<int>(this); }
         AGE_API int GetGameVersion(int a2)                  { return hook::Thunk<0x572430>::Call<int>(this, a2); }
         AGE_API int GetEnumSessionStatus(int a2)            { return hook::Thunk<0x572460>::Call<int>(this, a2); }
@@ -189,8 +230,16 @@ namespace MM2
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<asNetwork>("asNetwork")
+                .addVariable("IsHost", &asNetwork::IsHost, false)
+                .addPropertyReadOnly("PlayerID", &GetLocalPlayerID)
                 .addPropertyReadOnly("InSession", &getInSession)
+                .addPropertyReadOnly("NumPlayers", &GetNumPlayers)
                 .addFunction("GetSessionInfo", &getSessionInfoLua)
+                .addFunction("Send", &sendLua)
+                .addFunction("GetPlayerData", &getPlayerDataLua)
+                .addFunction("GetPlayerID", &GetPlayerID)
+                .addFunction("GetEnumPlayer", &GetEnumPlayer)
+                .addFunction("GetPlayers", &getPlayersLua)
                 .endClass();
         }
     };

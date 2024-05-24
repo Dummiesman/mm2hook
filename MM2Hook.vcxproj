@@ -463,7 +463,9 @@
     <ClInclude Include="src\modules\mminput\input.h" />
     <ClInclude Include="src\modules\mmnetwork.h" />
     <ClInclude Include="src\modules\mmnetwork\luasessinfo.h" />
+    <ClInclude Include="src\modules\mmnetwork\netobject.h" />
     <ClInclude Include="src\modules\mmnetwork\network.h" />
+    <ClInclude Include="src\modules\mmnetwork\playerdata.h" />
     <ClInclude Include="src\modules\mmnetwork\zone.h" />
     <ClInclude Include="src\modules\mmui.h" />
     <ClInclude Include="src\modules\mmui\luaPopup.h" />
@@ -834,6 +836,8 @@
     <ClCompile Include="src\modules\mmgame\wpobject.cpp" />
     <ClCompile Include="src\modules\mminput.cpp" />
     <ClCompile Include="src\modules\mmnetwork.cpp" />
+    <ClCompile Include="src\modules\mmnetwork\netobject.cpp" />
+    <ClCompile Include="src\modules\mmnetwork\network.cpp" />
     <ClCompile Include="src\modules\mmui.cpp" />
     <ClCompile Include="src\modules\mmwidget.cpp" />
     <ClCompile Include="src\modules\mmwidget\menu.cpp" />
