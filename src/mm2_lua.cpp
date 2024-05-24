@@ -163,21 +163,28 @@ void luaSetGlobals()
 {
     mmGameManager *gameMgr = mmGameManager::Instance;
 
-    auto pGame = (gameMgr != NULL) ? gameMgr->getGame() : NULL;
-    auto pPlayer = (pGame != NULL) ? pGame->GetPlayer() : NULL;
-    auto pHUD = (pPlayer != NULL) ? pPlayer->GetHUD() : NULL;
+    auto pGame = (gameMgr != nullptr) ? gameMgr->getGame() : nullptr;
+    auto pPlayer = (pGame != nullptr) ? pGame->GetPlayer() : nullptr;
+    auto pHUD = (pPlayer != nullptr) ? pPlayer->GetHUD() : nullptr;
 
-    if (gameMgr != NULL && gameMgr->isCurrentGameSingleGame())
+    if (gameMgr != nullptr && pGame != nullptr)
     {
-        Lua::setGlobal(L, "Game", (mmGameSingle*)pGame);
-    }
-    else if (gameMgr != NULL &&gameMgr->isCurrentGameMultiGame())
-    {
-        Lua::setGlobal(L, "Game", (mmGameMulti*)pGame);
-    }
-    else
-    {
-        Lua::setGlobal(L, "Game", pGame);
+        if (gameMgr->isCurrentGameSingleGame())
+        {
+            Lua::setGlobal(L, "Game", (mmGameSingle*)pGame);
+        }
+        else if (gameMgr->isCurrentGameMultiGame())
+        {
+            Lua::setGlobal(L, "Game", (mmGameMulti*)pGame);
+        }
+        else
+        {
+            Lua::setGlobal(L, "Game", pGame);
+        }
+        if (pGame->IsAILoaded())
+        {
+            Lua::setGlobal(L, "AIMAP", aiMap::GetInstance());
+        }
     }
 
     Lua::setGlobal(L, "HUD", pHUD);
@@ -186,7 +193,6 @@ void luaSetGlobals()
     Lua::setGlobal(L, "MMSTATE", &MMSTATE);
     Lua::setGlobal(L, "MMCURRPLAYER", &MMCURRPLAYER);
     Lua::setGlobal(L, "NETMGR", &NETMGR);
-    Lua::setGlobal(L, "AIMAP", aiMap::GetInstance());
     Lua::setGlobal(L, "VehicleList", VehicleListPtr.get());
     Lua::setGlobal(L, "CityList", CityListPtr.get());
     Lua::setGlobal(L, "Input", GameInputPtr.get());
