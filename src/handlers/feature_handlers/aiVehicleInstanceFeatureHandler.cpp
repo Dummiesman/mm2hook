@@ -169,7 +169,7 @@ void aiVehicleInstanceFeatureHandler::DrawShadow()
         Matrix34 shadowMatrix, dummyMatrix;
         Matrix34 instanceMatrix = inst->GetMatrix(&dummyMatrix);
 
-        if (lvlInstance::ComputeShadowProjectionMatrix(shadowMatrix, inst->GetRoomId(), timeWeather->KeyPitch, timeWeather->KeyHeading, instanceMatrix))
+        if (lvlInstance::ComputeShadowProjectionMatrix(shadowMatrix, inst->GetRoomId(), timeWeather->KeyPitch, timeWeather->KeyHeading, instanceMatrix, inst))
         {
             gfxRenderState::SetWorldMatrix(shadowMatrix);
             model->DrawShadowed(shaders, ComputeShadowIntensity(timeWeather->KeyColor));

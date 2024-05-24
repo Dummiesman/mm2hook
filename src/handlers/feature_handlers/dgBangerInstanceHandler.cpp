@@ -68,7 +68,7 @@ void dgBangerInstanceHandler::DrawShadow()
     {
         Matrix34 shadowMatrix, dummyMatrix;
         Matrix34 bangerMatrix = banger->GetMatrix(&dummyMatrix);
-        if (lvlInstance::ComputeShadowProjectionMatrix(shadowMatrix, banger->GetRoomId(), timeWeather->KeyPitch, timeWeather->KeyHeading, bangerMatrix))
+        if (lvlInstance::ComputeShadowProjectionMatrix(shadowMatrix, banger->GetRoomId(), timeWeather->KeyPitch, timeWeather->KeyHeading, bangerMatrix, banger))
         {
             gfxRenderState::SetWorldMatrix(shadowMatrix);
             model->DrawShadowed(shaders, ComputeShadowIntensity(timeWeather->KeyColor));
