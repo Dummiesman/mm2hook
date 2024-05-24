@@ -19,9 +19,21 @@ namespace MM2
         /*
             Aud3DObjectManager
         */
+        int AllocateSample(const char* name, int flags)
+        {
+            return hook::Thunk<0x50FCB0>::Call<int>(this, name, flags);
+        }
 
+        AudSoundBase* GetSample(int objectId, int sampleIndex)
+        {
+            return hook::Thunk<0x50F9F0>::Call<AudSoundBase*>(this, objectId, sampleIndex);
+        }
+
+        
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<Aud3DObjectManager>("Aud3DObjectManager")
+                .addFunction("AllocateSample", &AllocateSample)
+                .addFunction("GetSample", &GetSample)
                 .endClass();
         }
     };
