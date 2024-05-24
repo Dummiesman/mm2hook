@@ -1,6 +1,8 @@
 #pragma once
 #include <modules\ped.h>
 #include <modules\level.h>
+#include "pedanim.h"
+#include "ragdollmgr.h"
 
 namespace MM2
 {
@@ -10,8 +12,6 @@ namespace MM2
     // External declarations
     extern class dgPhysEntity;
     extern class lvlInstance;
-
-    extern class pedAnimationInstance;
     extern class aiPedestrian;
 
     // Class definitions
@@ -38,7 +38,15 @@ namespace MM2
             lvlInstance virtuals
         */
 
-        virtual AGE_API dgPhysEntity * AttachEntity(void)   { return hook::Thunk<0x57B730>::Call<dgPhysEntity *>(this); }
+        virtual AGE_API dgPhysEntity * AttachEntity(void)   
+        {
+            if (!GetAnimationInstance()->GetActive())
+            {
+                pedRagdollMgr::Instance->Attach(this);
+            }
+            return (dgPhysEntity*)GetAnimationInstance()->GetActive(); // TODO: Investigate why this is "not convertable"
+        }
+
         virtual AGE_API bool IsCollidable(void)             { return hook::Thunk<0x57B780>::Call<bool>(this); }
 
         // lua

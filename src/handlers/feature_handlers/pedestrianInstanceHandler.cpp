@@ -261,6 +261,11 @@ void pedestrianInstanceHandler::AnimationInstance_Update()
     inst->Start(inst->GetNextState());
 }
 
+dgPhysEntity* pedestrianInstanceHandler::AttachEntity()
+{
+    return reinterpret_cast<aiPedestrianInstance*>(this)->aiPedestrianInstance::AttachEntity();
+}
+
 void pedestrianInstanceHandler::Draw(int a1) 
 {
     auto inst = reinterpret_cast<aiPedestrianInstance*>(this);
@@ -281,10 +286,7 @@ void pedestrianInstanceHandler::Detach()
 {
     auto inst = reinterpret_cast<aiPedestrianInstance*>(this);
     auto entity = inst->GetEntity();
-
-    //call pedActive::Detach
-    if (entity == nullptr)
-        hook::Thunk<0x57C260>::ThisCall<void>(entity);
+    reinterpret_cast<pedActive*>(entity)->Deactivate();
 }
 
 void pedestrianInstanceHandler::FirstImpactCallback()
@@ -296,6 +298,16 @@ void pedestrianInstanceHandler::FirstImpactCallback()
     auto active = reinterpret_cast<pedActive*>(this);
     float force = active->GetICS()->GetImpulse().Mag(); // assumed atm. decompilation of MC1 method yields uninitialized second param.
     reinterpret_cast<aiPedestrianInstance*>(active->GetInst())->GetPedestrian()->GetAudio()->PlayImpactReaction(force);
+}
+
+void pedestrianInstanceHandler::PedActive_Deactivate()
+{
+    reinterpret_cast<pedActive*>(this)->pedActive::Deactivate();
+}
+
+void pedestrianInstanceHandler::PedActive_ColliderInitHook(phBound const* bound, phInertialCS* ics, phSleep* sleep)
+{
+    reinterpret_cast<phCollider*>(this)->Init(pedRagdollMgr::Instance->GetBoundBox(), ics, sleep);
 }
 
 void pedestrianInstanceHandler::Install()
@@ -367,9 +379,27 @@ void pedestrianInstanceHandler::Install()
         }
     );
 
+    InstallVTableHook("aiPedestrianInstance::AttachEntity",
+        &AttachEntity, {
+            0x5B6310
+        }
+    );
+
     InstallVTableHook("aiPedestrianInstance::IsCollidable",
         &IsCollidable , {
             0x5B6340
+        }
+    );
+
+    InstallVTableHook("pedActive::Deactivate",
+        &PedActive_Deactivate, {
+            0x5B63CC
+        }
+    );
+
+    InstallCallback("pedActive::Activate", "Hook collider init",
+        &PedActive_ColliderInitHook, {
+            cb::call(0x57C23B),
         }
     );
 

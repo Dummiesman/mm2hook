@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\ped.h>
+#include <mm2_common.h>
+#include <modules\node\node.h>
 
 namespace MM2
 {
@@ -10,43 +11,36 @@ namespace MM2
     extern class asNode;
     extern class aiPedestrianInstance;
     extern class phBoundBox;
+    extern class pedActiveData;
+    extern class pedActive;
 
     // Class definitions
 
     class pedRagdollMgr : public asNode {
     private:
-        byte _buffer[0x1C];
-    protected:
-        static hook::Field<0x30, phBoundBox *> _boundBox;
+        static const int NUM_RAGDOLLS = 16;
+    private:
+        pedActiveData* m_ActiveData;
+        pedActive* m_Actives;
+        aiPedestrianInstance* m_PedInstances[NUM_RAGDOLLS];
+        phBoundBox* m_BoundBox;
     public:
-        AGE_API pedRagdollMgr(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x57B8B0>::Call<void>(this);
-        }
-
-        virtual AGE_API ~pedRagdollMgr(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x57B910>::Call<void>(this);
-        }
-
+        AGE_API pedRagdollMgr(void);
+        virtual AGE_API ~pedRagdollMgr(void);
         static hook::Type<pedRagdollMgr *> Instance;
 
-        phBoundBox* GetBoundBox() const {
-            return _boundBox.get(this);
-        }
+        phBoundBox* GetBoundBox() const;
 
-        AGE_API void Init(int skelCount, char** skelNames)  { hook::Thunk<0x57B9B0>::Call<void>(this, skelCount, skelNames); }
-        AGE_API pedActive* Attach(aiPedestrianInstance* a1) { return hook::Thunk<0x57BAF0>::Call<pedActive*>(this, a1); }
-        AGE_API void Detach(aiPedestrianInstance* a1)       { hook::Thunk<0x57BB80>::Call<void>(this, a1); }
-        AGE_API bool UnusedActive()                         { return hook::Thunk<0x57BBB0>::Call<bool>(this); }
+        AGE_API void Init(int skelCount, char** skelNames);
+        AGE_API pedActive* Attach(aiPedestrianInstance* a1);
+        AGE_API void Detach(aiPedestrianInstance* a1);
+        AGE_API bool UnusedActive();
 
         /*
             asNode virtuals
         */
 
-        virtual AGE_API void Update()                       { hook::Thunk<0x57BC10>::Call<void>(this); }
-        virtual AGE_API void Reset()                        { hook::Thunk<0x57BBD0>::Call<void>(this); }
+        virtual AGE_API void Update() override;
+        virtual AGE_API void Reset() override;
     };
-
-    ASSERT_SIZEOF(pedRagdollMgr, 0x34);
 }

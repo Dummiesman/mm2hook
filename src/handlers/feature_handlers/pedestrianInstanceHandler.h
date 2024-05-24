@@ -8,12 +8,17 @@ public:
     void DrawRagdoll();
     void AnimationInstance_Draw(bool a1);
     void AnimationInstance_Update();
+    MM2::dgPhysEntity* AttachEntity();
     void Draw(int a1);
     void DrawShadow();
     void Detach();
     bool IsCollidable();
     MM2::phBound * GetBound(int a1);
     void FirstImpactCallback();
+    
+    void PedActive_Deactivate();
+    void PedActive_ColliderInitHook(MM2::phBound const* bound, MM2::phInertialCS* ics, MM2::phSleep* sleep);
+
 
     void aiMapClearPeds(MM2::aiPath* path);
     void aiMapClean();

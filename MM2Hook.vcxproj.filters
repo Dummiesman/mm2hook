@@ -2739,6 +2739,9 @@
     <ClCompile Include="src\modules\ai\aiPoliceForce.cpp">
       <Filter>Source Files\modules\ai</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\ped\ragdollmgr.cpp">
+      <Filter>Source Files\modules\ped</Filter>
+    </ClCompile>
     <ClCompile Include="src\handlers\bugfix_handlers\vehSplashHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>

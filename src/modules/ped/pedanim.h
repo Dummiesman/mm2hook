@@ -14,6 +14,7 @@ namespace MM2
     extern struct crSkeletonData;
     extern class modModel;
     extern class modShader;
+    extern class pedActive;
 
     // Class definitions
     
@@ -53,25 +54,28 @@ namespace MM2
         crSkeleton* GetSkeleton()                               { return pSkeleton; }
         pedAnimationSequence* GetSequence(int index)            { return &Animations[index]; }
         int GetSequenceCount() const                            { return AnimationCount; }
+        int GetHashTableIndex() const                           { return HashTableIndex; }
 
         void DrawSkeleton(int variant, crSkeleton* skeleton)    { hook::Thunk<0x57AB60>::Call<void>(this, variant, skeleton); }
     };
 
     class pedAnimationInstance {
     protected:
-        void* m_Active; // pedActive*
+        pedActive* m_Active;
         pedAnimation* m_Animation;
         int m_Variant;
         __int16 m_Frame;
         unsigned __int8 m_CurrentState;
         unsigned __int8 m_NextState;
     public:
+        pedActive* GetActive() const        { return m_Active; }
         int GetCurrentState() const         { return m_CurrentState; }
         int GetNextState() const            { return m_NextState; }
         pedAnimation * GetAnimation() const { return m_Animation; }
         int GetVariant() const              { return m_Variant; }
         int GetCurrentFrame() const         { return m_Frame; }
 
+        void SetActive(pedActive* active)   { m_Active = active; }
         void SetVariant(int variant)        { m_Variant = variant; }
         void SetCurrentFrame(int frame)     { m_Frame = frame; }
         void Start(int nextStateIndex)      { hook::Thunk<0x57B550>::Call<void>(this, nextStateIndex); }
