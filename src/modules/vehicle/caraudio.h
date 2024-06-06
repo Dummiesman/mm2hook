@@ -18,6 +18,8 @@ namespace MM2
     protected:
         static hook::Field<0x104, vehEngineAudio> _engineAudio;
         static hook::Field<0x118, vehCarSim *> _sim;
+        static hook::Field<0x60, float> _maxAttenDistance;
+        static hook::Field<0x64, float> _volume;
     public:
         /*
             Aud3DObject virtuals
@@ -45,6 +47,17 @@ namespace MM2
         vehEngineAudio* GetEngineAudio() const
         {
             return _engineAudio.ptr(this);
+        }
+
+        void SetMaxAttenuationDistance(float dist)
+        {
+            _maxAttenDistance.set(this, dist);
+        }
+
+        void SetVolume3D(float volume)
+        {
+            // Only applies to horn and  gear?
+            _volume.set(this, volume);
         }
 
         static void BindLua(LuaState L) {

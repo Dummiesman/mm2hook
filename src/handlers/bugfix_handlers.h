@@ -42,9 +42,6 @@ class aiPoliceOfficerHandler {
 public:
     BOOL IsPerpDrivingMadly(MM2::vehCar *perpCar);
     BOOL IsOppDrivingMadly(MM2::vehCar *perpCar);
-    void PerpEscapes(bool a1);
-    void Update();
-
     static void Install();
 };
 

@@ -35,6 +35,10 @@ namespace MM2
         aiRaceData(const aiRaceData &&)                     DONOTCALL;
         virtual ~aiRaceData(void) DONOTCALL;
 
+        float GetCopChaseDistance() const {
+            return this->CopChaseDistance;
+        }
+
         int GetNumPedTypes() const {
             return this->NumPedTypes;
         }

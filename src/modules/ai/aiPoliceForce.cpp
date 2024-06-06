@@ -40,6 +40,20 @@ vehCar* aiPoliceForce::GetChaser(vehCar* perp, int chaserIndex) const
     return nullptr;
 }
 
+bool MM2::aiPoliceForce::IsCopChasingPerp(vehCar* cop, vehCar* perp) const
+{
+    int chaserCount = this->GetNumChasers(perp);
+    for (int i = 0; i < chaserCount; i++)
+    {
+        auto chaser = this->GetChaser(perp, i);
+        if (chaser == cop) 
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 int aiPoliceForce::GetNumPerps() const
 {
     return this->NumPerps;

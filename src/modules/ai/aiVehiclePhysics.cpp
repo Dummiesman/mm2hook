@@ -75,6 +75,26 @@ int MM2::aiVehiclePhysics::GetCurrentComponentIndex() const
 	return _curAiComponentIndex.get(this);
 }
 
+bool MM2::aiVehiclePhysics::IsDamagedOut() const
+{
+	return _damagedOut.get(this) != 0;
+}
+
+float MM2::aiVehiclePhysics::GetBrakeInput() const
+{
+	return _brakeInput.get(this);
+}
+
+float MM2::aiVehiclePhysics::GetThrottleInput() const
+{
+	return _throttleInput.get(this);
+}
+
+float MM2::aiVehiclePhysics::GetSteeringInput() const
+{
+	return _steeringInput.get(this);
+}
+
 AGE_API void aiVehiclePhysics::Init(int id, const char* basename, short canRepair, int audioType)
 															 { hook::Thunk<0x5593E0>::Call<void>(this, id, basename, canRepair, audioType); }
 

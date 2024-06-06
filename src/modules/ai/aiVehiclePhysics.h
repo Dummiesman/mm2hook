@@ -53,12 +53,17 @@ namespace MM2
         static hook::Field<0x9674, short*> _intersectionIds;
         static hook::Field<0x9678, short> _numWayPts;
         static hook::Field<0x967A, short> _curWayPt;
-
         static hook::Field<0x9680, short> _curAiComponentIndex;
         static hook::Field<0x967E, short> _curAiComponentType;
 
         static hook::Field<0x9682, unsigned short> _currentLap;
         static hook::Field<0x9684, unsigned short> _lapCount;
+
+        static hook::Field<0x9686, short> _damagedOut;
+
+        static hook::Field<0x9690, float> _brakeInput;
+        static hook::Field<0x9694, float> _throttleInput;
+        static hook::Field<0x9698, float> _steeringInput;
     public:
         aiVehiclePhysics(void);
         ~aiVehiclePhysics();
@@ -73,6 +78,10 @@ namespace MM2
         int GetLapCount() const;
         aiMapComponentType GetCurrentComponentType() const;
         int GetCurrentComponentIndex() const;
+        bool IsDamagedOut() const;
+        float GetBrakeInput() const;
+        float GetThrottleInput() const;
+        float GetSteeringInput() const;
 
         AGE_API void Init(int id, const char* basename, short circuitMode, int audioType);
         AGE_API void RegisterRoute(short* intersectionIDs, short numIntersections, Vector3 const& endPosition, Vector3 const& endOrientation,
