@@ -260,6 +260,11 @@ namespace MM2
         return hook::Thunk<0x5485E0>::Call<int>(this, &position, side);
     }
 
+    AGE_API float aiPath::SubSectionLength(int sectionBegin, int sectionEnd, int side)
+    {
+        return hook::Thunk<0x547360>::Call<float>(this, sectionBegin, sectionEnd, side);
+    }
+
     AGE_API bool aiPath::Direction(Matrix34 const& matrix) const
     {
         return hook::Thunk<0x548320>::Call<bool>(this, &matrix);
@@ -370,6 +375,7 @@ namespace MM2
             .addFunction("Lane", &Lane)
             .addFunction("Index", &Index)
             .addFunction("RoadVertice", &RoadVertice)
+            .addFunction("SubSectionLength", &SubSectionLength)
             .addFunction("Direction", &Direction)
             .addFunction("GetSidewalkCount", &GetSidewalkCount)
             .addFunction("GetLaneCount", &GetLaneCount)

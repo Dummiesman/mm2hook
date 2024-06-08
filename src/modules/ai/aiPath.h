@@ -14,6 +14,11 @@ namespace MM2
     // Class definitions
 
     class aiPath {
+    public:
+        static const int FLAG_DIVIDED = 0x1;
+        static const int FLAG_ALLEYWAY = 0x2;
+        static const int FLAG_FREEWAY = 0x4;
+        static const int FLAG_FLAT = 0x8;
     private:
         byte _buffer[0x164];
     protected:
@@ -115,6 +120,7 @@ namespace MM2
         AGE_API int Lane(Vector3 const& pos, int roadSide) const;
         AGE_API void UpdatePedestrians();
         AGE_API int RoadVertice(Vector3 const& position, int side) const;
+        AGE_API float SubSectionLength(int sectionBegin, int sectionEnd, int side);
         AGE_API bool Direction(Matrix34 const& matrix) const;
         AGE_API bool IsOneWay() const;
         void Draw() const;
