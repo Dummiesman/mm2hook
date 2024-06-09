@@ -65,6 +65,7 @@ namespace MM2
     private:
         //lua stuff
         std::tuple<int, float> luaIsPosOnRoad(Vector3 const& pos, float margin) const;
+        Vector3 centerPositionLua(float distanceAlongPath);
         int GetBangers(lua_State* L, int section, int side);
         int GetVehicles(lua_State* L, int section, int side);
         int GetPedestrians(lua_State* L, int section, int side);
@@ -109,12 +110,15 @@ namespace MM2
         AGE_API void AddAmbVehicle(aiVehicleSpline* spline, int lane, float dist, int side);
         AGE_API float CenterDist(Vector3 const& pos) const;
         AGE_API float CenterLength(int startIdx, int endIdx) const;
+        AGE_API void CenterPosition(float distanceAlongPath, Vector3& outPos);
         AGE_API int CenterIndex(float distance) const;
         AGE_API void ClearAmbients();
         AGE_API void ClearPeds();
         AGE_API bool HasCableCarLine(int roadSide) const;
         AGE_API bool HasSubwayLine(int roadSide) const;
+        AGE_API float GetHeading(float distanceWithinSection, int section, int roadSide) const;
         AGE_API int IsPosOnRoad(Vector3 const& pos, float margin, float* outDistanceFromCenter) const;
+        AGE_API int NumVehiclesAfterDist(int lane, float distanceAlongPath, int roadSide) const;
         AGE_API int NumVerts() const;
         AGE_API int Index(Vector3 const& pos) const;
         AGE_API int Lane(Vector3 const& pos, int roadSide) const;

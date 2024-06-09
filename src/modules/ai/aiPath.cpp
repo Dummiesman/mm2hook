@@ -10,6 +10,13 @@ namespace MM2
         return std::tuple<int, float>(posOnRoadVal, outVal);
     }
 
+    Vector3 aiPath::centerPositionLua(float distanceAlongPath)
+    {
+        Vector3 outPos = Vector3::ORIGIN;
+        this->CenterPosition(distanceAlongPath, outPos);
+        return outPos;
+    }
+
     float aiPath::GetBaseSpeedLimit() const
     {
         return _baseSpeedLimit.get(this);
@@ -205,6 +212,11 @@ namespace MM2
         return hook::Thunk<0x547340>::Call<float>(this, startIdx, endIdx); 
     }
 
+    AGE_API void aiPath::CenterPosition(float distanceAlongPath, Vector3& outPos)
+    {
+        hook::Thunk<0x547670>::Call<void>(this, distanceAlongPath, &outPos);
+    }
+
     AGE_API int aiPath::CenterIndex(float distance) const
     {
         return hook::Thunk<0x5475D0>::Call<int>(this, distance);
@@ -229,10 +241,20 @@ namespace MM2
     {
         return hook::Thunk<0x5499B0>::Call<bool>(this, roadSide);
     }
+
+    AGE_API float aiPath::GetHeading(float distanceWithinSection, int section, int roadSide) const
+    {
+        return hook::Thunk<0x5473A0>::Call<float>(this, distanceWithinSection, section, roadSide);
+    }
   
     AGE_API int aiPath::IsPosOnRoad(Vector3 const& pos, float margin, float* outDistanceFromCenter) const
     {
         return hook::Thunk<0x548370>::Call<int>(this, &pos, margin, outDistanceFromCenter);
+    }
+
+    AGE_API int aiPath::NumVehiclesAfterDist(int lane, float distanceAlongPath, int roadSide) const
+    {
+        return hook::Thunk<0x548DE0>::Call<int>(this, lane, distanceAlongPath, roadSide);
     }
 
     AGE_API int aiPath::NumVerts() const 
@@ -367,11 +389,14 @@ namespace MM2
             .addFunction("CenterDist", &CenterDist)
             .addFunction("CenterLength", &CenterLength)
             .addFunction("CenterIndex", &CenterIndex)
+            .addFunction("CenterPosition", &centerPositionLua)
             .addFunction("ClearAmbients", &ClearAmbients)
             .addFunction("ClearPeds", &ClearPeds)
             .addFunction("HasCableCarLine", &HasCableCarLine)
             .addFunction("HasSubwayLine", &HasSubwayLine)
+            .addFunction("GetHeading", &GetHeading)
             .addFunction("IsPosOnRoad", &luaIsPosOnRoad)
+            .addFunction("NumVehiclesAfterDist", &NumVehiclesAfterDist)
             .addFunction("Lane", &Lane)
             .addFunction("Index", &Index)
             .addFunction("RoadVertice", &RoadVertice)
