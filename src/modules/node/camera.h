@@ -36,7 +36,19 @@ namespace MM2
             hook::Thunk<0x4A22E0>::Call<void>(this);
         };
 
+        AGE_API void SetView(float fov, float aspect, float nearClip, float farClip)
+                                                            { hook::Thunk<0x4A2E50>::Call<void>(this, fov, aspect, nearClip, farClip); }
+        AGE_API void SetViewport(float left, float top, float width, float height)
+                                                            { hook::Thunk<0x4A2DD0>::Call<void>(this, left, top, width, height, 1); } // last arg appears unused
         AGE_API void Update() override                      { hook::Thunk<0x4A24A0>::Call<void>(this); }
+
+        //lua
+        static void BindLua(LuaState L) {
+            LuaBinding(L).beginExtendClass<asCamera, asNode>("asCamera")
+                .addFunction("SetView", &SetView)
+                .addFunction("SetViewport", &SetViewport)
+                .endClass();
+        }
     };
     ASSERT_SIZEOF(asCamera, 0x170);
 
@@ -721,6 +733,7 @@ namespace MM2
     template<>
     void luaAddModule<module_camera>(LuaState L) {
         //cam base classes
+        luaBind<asCamera>(L);
         luaBind<camBaseCS>(L);
         luaBind<camAppCS>(L);
         luaBind<camCarCS>(L);
