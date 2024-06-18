@@ -34,12 +34,15 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
 
     - name: Get Windows SDK
-      uses: GuillaumeFalourd/setup-windows10-sdk-action@v1.11
+      uses: fbactions/setup-winsdk@v2
       with:
-        sdk-version: 18362
+        winsdk-build-version: 18362
 
-    - name: Build
-      working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
-      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.SOLUTION_FILE_PATH}}
+    - name: Run build script
+      run: .\build.bat
+
+    - name: Upload release artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: mm2hook
+        path: bin/Release/out/
