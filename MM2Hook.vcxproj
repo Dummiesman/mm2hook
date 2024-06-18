@@ -509,6 +509,7 @@
     <ClInclude Include="src\modules\node\random.h" />
     <ClInclude Include="src\modules\node\root.h" />
     <ClInclude Include="src\modules\node\str.h" />
+    <ClInclude Include="src\modules\node\view.h" />
     <ClInclude Include="src\modules\node\__template__.h" />
     <ClInclude Include="src\modules\parse.h" />
     <ClInclude Include="src\modules\parse\csv.h" />

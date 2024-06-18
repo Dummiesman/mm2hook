@@ -1843,6 +1843,9 @@
     <ClInclude Include="src\handlers\bugfix_handlers\vehSplashHandler.h">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\node\view.h">
+      <Filter>Source Files\modules\node</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
