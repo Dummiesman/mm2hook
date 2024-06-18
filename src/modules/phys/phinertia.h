@@ -73,7 +73,7 @@ namespace MM2
         AGE_API void Rotate(Vector3 const & angles);
         AGE_API void ClearInertialValues();
         AGE_API void CalcNetPush(Vector3 const & amount);
-
+        AGE_API void CalcNetTurn(Vector3 const& amount);
         AGE_API void MoveICS();
 
         //lua
