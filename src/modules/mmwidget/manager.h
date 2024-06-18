@@ -8,6 +8,8 @@ namespace MM2
 
     // External declarations
     extern class UIMenu;
+    extern class asCamera;
+    extern class asViewCS;
 
     // Class definitions
     class MenuManager : public asNode {
@@ -16,6 +18,8 @@ namespace MM2
     private:
         static hook::Type<MenuManager*> Instance;
 
+        static hook::Field<0x1C, asCamera*> _camera;
+        static hook::Field<0x20, asViewCS*> _view;
         static hook::Field<0xEC, int> _activeDialogID;
         static hook::Field<0xF8, UIMenu**> _menus;
         static hook::Field<0x138, int> _currentMenuId;
@@ -46,6 +50,29 @@ namespace MM2
             return _menus.get(this)[index];
         }
 
+        UIMenu* GetMenuByID(int id) const
+        {
+            for (int i = 0; i < _menuCount.get(this); i++)
+            {
+                auto menu = _menus.get(this)[i];
+                if (menu->GetID() == id)
+                {
+                    return menu;
+                }
+            }
+            return nullptr;
+        }
+
+        asCamera* GetCamera() const
+        {
+            return _camera.get(this);
+        }
+
+        asViewCS* GetView() const
+        {
+            return _view.get(this);
+        }
+
        AGE_API int AddMenu2(UIMenu* menu)                                { return hook::Thunk<0x4E5B20>::Call<int>(this, menu); }
        AGE_API void DeleteMenu(UIMenu* menu)                             { hook::Thunk<0x4E5B80>::Call<void>(this); }
        AGE_API void Switch(int menuID)                                   { hook::Thunk<0x4E5A30>::Call<void>(this, menuID); }
@@ -64,6 +91,8 @@ namespace MM2
                .addPropertyReadOnly("CurrentMenuID", &GetCurrentMenuID)
                .addPropertyReadOnly("CurrentDialogID", &GetCurrentDialogID)
                .addPropertyReadOnly("NumMenus", &GetMenuCount)
+               .addPropertyReadOnly("Camera", &GetCamera)
+               .addPropertyReadOnly("View", &GetView)
                .addFunction("AddMenu2", &AddMenu2)
                .addFunction("DeleteMenu", &DeleteMenu)
                .addFunction("Switch", &Switch)
@@ -75,6 +104,7 @@ namespace MM2
                .addFunction("FindMenu", &FindMenu)
                .addFunction("GetCurrentMenu", &GetCurrentMenu)
                .addFunction("GetMenu", &GetMenu)
+               .addFunction("GetMenuByID", &GetMenuByID)
                .endClass();
        }
     };
