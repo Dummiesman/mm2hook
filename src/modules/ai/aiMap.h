@@ -101,7 +101,7 @@ namespace MM2
         aiVehicleSpline *ambientSpline;
 
         aiPoliceForce *policeForce;
-        aiPoliceOfficer **policeOfficers;
+        aiPoliceOfficer *policeOfficers;
         short numCops;
         short numCopStartPos;
         short copStartPos[10];
