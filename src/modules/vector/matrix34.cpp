@@ -97,39 +97,45 @@ namespace MM2
         hook::Thunk<0x4BCE60>::Call<void>(this, &axis, angle);
     }
 
-    void Matrix34::RotateX(float angle) {
+    void Matrix34::RotateX(float angle) 
+    { 
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateX(angle);
         this->Dot3x3(rotMatrix);
     }
 
-    void Matrix34::RotateY(float angle) {
+    void Matrix34::RotateY(float angle) 
+    {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateY(angle);
         this->Dot3x3(rotMatrix);
     }
 
-    void Matrix34::RotateZ(float angle) {
+    void Matrix34::RotateZ(float angle) 
+    {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateZ(angle);
         this->Dot3x3(rotMatrix);
     }
 
-    void Matrix34::RotateFullX(float angle) {
+    void Matrix34::RotateFullX(float angle) 
+    {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateX(angle);
         rotMatrix.SetRow(3, Vector3::ORIGIN);
         this->Dot(rotMatrix);
     }
 
-    void Matrix34::RotateFullY(float angle) {
+    void Matrix34::RotateFullY(float angle) 
+    {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateY(angle);
         rotMatrix.SetRow(3, Vector3::ORIGIN);
         this->Dot(rotMatrix);
     }
 
-    void Matrix34::RotateFullZ(float angle) {
+    void Matrix34::RotateFullZ(float angle) 
+    {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateZ(angle);
         rotMatrix.SetRow(3, Vector3::ORIGIN);
