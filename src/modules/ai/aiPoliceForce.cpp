@@ -139,6 +139,15 @@ BOOL aiPoliceForce::RegisterPerp(vehCar* cop, vehCar* perp)
         return FALSE;
     }
 
+    // check if this cop is already chasing this perp
+    for (int i = 0; i < NumChasers[perpIndex]; i++)
+    {
+        if (CopCars[perpIndex][i] == cop)
+        {
+            return TRUE;
+        }
+    }
+
     CopCars[perpIndex][NumChasers[perpIndex]] = cop;
     NumChasers[perpIndex]++;
     timer.TickCount = Timer::Ticks();
@@ -228,6 +237,7 @@ void aiPoliceForce::BindLua(LuaState L) {
         .addFunction("GetNumChasers", &GetNumChasers)
         .addFunction("GetPerp", &GetPerp)
         .addFunction("GetChaser", &GetChaser)
+        .addFunction("IsCopChasingPerp", &IsCopChasingPerp)
         .addFunction("UnRegisterCop", &UnRegisterCop)
         .addFunction("RegisterPerp", &RegisterPerp)
         .addFunction("Find", &Find)
