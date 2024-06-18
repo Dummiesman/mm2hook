@@ -556,6 +556,13 @@ namespace MM2
         lvlInstance::PreLoadShader(this->variant);
 
         //init fxTexelDamage
+        if (this->texelDamage != nullptr)
+        {
+            // delete old texel
+            delete this->texelDamage;
+            this->texelDamage = nullptr;
+        }
+
         if (this->GetGeomIndex() != 0) 
         {
             auto bodyEntry = this->GetGeomBase();
@@ -572,6 +579,13 @@ namespace MM2
         }
 
         //init damage3d
+        if (this->damage3D != nullptr)
+        {
+            // delete old damage
+            delete this->damage3D;
+            this->damage3D = nullptr;
+        }
+
         if (this->GetGeomIndex() != 0 && vehCarModel::Enable3DDamage)
         {
             auto bodyEntry = this->GetGeomBase(0);
