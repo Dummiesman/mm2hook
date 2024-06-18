@@ -21,10 +21,15 @@ namespace MM2
         static hook::Field<0x10, aiRailSet> _railSet;
         static hook::Field<0xD4, aiVehicleInstance*> _vehicleInstance;
         static hook::Field<0xD8, Matrix34*> _matrix;
+        static hook::Field<0xE6, short> _avoidingPlayerIdx;
+        static hook::Field<0xE8, short> _solvedStopOrientation;
+        static hook::Field<0xEC, short> _state;
+        static hook::Field<0xEE, short> _lastState;
+        static hook::Field<0xF2, short> _curReactTicks;
         static hook::Field<0xF4, float> _curSpeed;
     public:
-        aiVehicleSpline()                               DONOTCALL;
-        aiVehicleSpline(const aiVehicleSpline &&)           DONOTCALL;
+        aiVehicleSpline();
+        ~aiVehicleSpline();
 
         void UpdateObstacleMap();
         void Position(Vector3& a1) override;
@@ -50,12 +55,24 @@ namespace MM2
         virtual void StopVoice();
 
         //fields
+        bool SolvedStopOrientation() const;
         float GetSpeed() const;
         void SetSpeed(float speed);
         aiRailSet* GetRailSet();
         aiVehicleInstance* GetInst() const;
         void SetMatrix(Matrix34 const& mtx);
+        
+
+        //members
+        int GetAvoidingPlayerIdx() const;
+        void IncReactTicks();
+        void SwitchState(int newState);
+        void SolveStopOrientation();
         void SolveYPositionAndOrientation();
+        void SolvePositionAndOrientation();
+        BOOL IsThePlayerInFrontOfMe(int playerId) const;
+        BOOL DetectPlayerCollision(int playerId) const;
+        BOOL IsAmbientBlockingPlayer(int playerId) const;
 
         //lua
         static void BindLua(LuaState L);

@@ -5,6 +5,16 @@
 using namespace MM2;
 
 
+MM2::aiVehicleSpline::aiVehicleSpline()
+{
+    hook::Thunk<0x0567DF0>::Call<void>(this);
+}
+
+aiVehicleSpline::~aiVehicleSpline()
+{
+    hook::Thunk<0x567EB0>::Call<void>(this);
+}
+
 void aiVehicleSpline::UpdateObstacleMap()               { hook::Thunk<0x568410>::Call<void>(this); }
 
 void aiVehicleSpline::Position(Vector3 &a1)             { hook::Thunk<0x551C40>::Call<void>(this, &a1); }
@@ -36,6 +46,11 @@ AudImpact* aiVehicleSpline::GetAudImpactPtr()            { return hook::Thunk<0x
 void aiVehicleSpline::PlayHorn(float a1, float a2)       { hook::Thunk<0x551CA0>::Call<void>(this, a1, a2); }
 void aiVehicleSpline::StopVoice()                        { hook::Thunk<0x551CB0>::Call<void>(this); }
 
+bool aiVehicleSpline::SolvedStopOrientation() const
+{
+    return _solvedStopOrientation.get(this) == TRUE;
+}
+
 //fields
 float aiVehicleSpline::GetSpeed() const
 {
@@ -62,9 +77,51 @@ void aiVehicleSpline::SetMatrix(Matrix34 const& mtx)
     _matrix.get(this)->Set(mtx);
 }
 
+int MM2::aiVehicleSpline::GetAvoidingPlayerIdx() const
+{
+    return _avoidingPlayerIdx.get(this);
+}
+
+void aiVehicleSpline::IncReactTicks()
+{
+    _curReactTicks.set(this, _curReactTicks.get(this) + 1);
+}
+
+void MM2::aiVehicleSpline::SwitchState(int newState)
+{
+    _lastState.set(this, _state.get(this));
+    _state.set(this, newState);
+}
+
+void aiVehicleSpline::SolveStopOrientation()
+{
+    this->SolvePositionAndOrientation();
+    _solvedStopOrientation.set(this, TRUE);
+}
+
 void aiVehicleSpline::SolveYPositionAndOrientation()
 {
     hook::Thunk<0x5690C0>::Call<void>(this);
+}
+
+void MM2::aiVehicleSpline::SolvePositionAndOrientation()
+{
+    hook::Thunk<0x5686E0>::Call<void>(this);
+}
+
+BOOL MM2::aiVehicleSpline::IsThePlayerInFrontOfMe(int playerId) const
+{
+    return hook::Thunk<0x569CB0>::Call<BOOL>(this, playerId);
+}
+
+BOOL aiVehicleSpline::DetectPlayerCollision(int playerId) const
+{
+    return hook::Thunk<0x569930>::Call<BOOL>(this, playerId);
+}
+
+BOOL aiVehicleSpline::IsAmbientBlockingPlayer(int playerId) const
+{
+    return hook::Thunk<0x569DD0>::Call<BOOL>(this, playerId);
 }
 
 //lua
