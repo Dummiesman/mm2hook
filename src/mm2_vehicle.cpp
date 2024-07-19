@@ -25,6 +25,7 @@ bool vehCarModel::LeftSignalLightState = false;
 bool vehCarModel::RightSignalLightState = false;
 
 bool vehCarModel::mm1StyleTransmission = false;
+bool vehCarModel::mm1StyleDamage = true;
 bool vehCarModel::breakableRenderTweak = false;
 
 bool vehCarModel::Enable3DDamage = true;

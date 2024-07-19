@@ -91,6 +91,11 @@ namespace MM2
         return damage3D;
     }
 
+    mmDamage* vehCarModel::GetMM1Damage()
+    {
+        return mm1Damage;
+    }
+
     AGE_API void vehCarModel::GetSurfaceColor(modStatic* model, Vector3* outVector)
                                                         { hook::Thunk<0x4CDF00>::Call<void>(this, model, outVector); }
     AGE_API void vehCarModel::InitBreakable(vehBreakableMgr* manager, const char* basename, const char* breakableName, int geomId, int someId)
@@ -205,6 +210,8 @@ namespace MM2
             texelDamage->Reset();
         if (damage3D)
             damage3D->SetNoDamage();
+        if (mm1Damage)
+            mm1Damage->Reset(0);
         
         this->hasEjectedOneshot = false;
         this->wheelBrokenStatus = 0xFFFFFFFF;
@@ -555,45 +562,68 @@ namespace MM2
         //pre-load our variant
         lvlInstance::PreLoadShader(this->variant);
 
-        //init fxTexelDamage
-        if (this->texelDamage != nullptr)
+        if (!vehCarModel::mm1StyleDamage)
         {
-            // delete old texel
-            delete this->texelDamage;
-            this->texelDamage = nullptr;
-        }
-
-        if (this->GetGeomIndex() != 0) 
-        {
-            auto bodyEntry = this->GetGeomBase();
-            if (bodyEntry->GetHighLOD() != nullptr)
+            //init fxTexelDamage
+            if (this->texelDamage != nullptr)
             {
-                this->texelDamage = new fxTexelDamage();
-                if (!texelDamage->Init(bodyEntry->GetHighLOD(), bodyEntry->pShaders[this->GetVariant()], bodyEntry->numShadersPerVariant)) 
+                // delete old texel
+                delete this->texelDamage;
+                this->texelDamage = nullptr;
+            }
+
+            if (this->GetGeomIndex() != 0)
+            {
+                auto bodyEntry = this->GetGeomBase();
+                if (bodyEntry->GetHighLOD() != nullptr)
                 {
-                    delete texelDamage;
-                    texelDamage = nullptr;
-                    Warningf("Vehicle '%s': No damage textures found, disabling texel damage.", basename);
+                    this->texelDamage = new fxTexelDamage();
+                    if (!texelDamage->Init(bodyEntry->GetHighLOD(), bodyEntry->pShaders[this->GetVariant()], bodyEntry->numShadersPerVariant))
+                    {
+                        delete texelDamage;
+                        texelDamage = nullptr;
+                        Warningf("Vehicle '%s': No damage textures found, disabling texel damage.", basename);
+                    }
+                }
+            }
+
+            //init damage3d
+            if (this->damage3D != nullptr)
+            {
+                // delete old damage3D
+                delete this->damage3D;
+                this->damage3D = nullptr;
+            }
+
+            if (this->GetGeomIndex() != 0 && vehCarModel::Enable3DDamage)
+            {
+                auto bodyEntry = this->GetGeomBase(0);
+                auto bodyDamageEntry = this->GetGeomBase(BODYDAMAGE_GEOM_ID);
+                if (bodyEntry->GetHighLOD() != nullptr && bodyDamageEntry->GetHighLOD() != nullptr)
+                {
+                    this->damage3D = new fxDamage3D();
+                    damage3D->Init(bodyEntry->GetHighLOD(), bodyDamageEntry->GetHighLOD());
                 }
             }
         }
-
-        //init damage3d
-        if (this->damage3D != nullptr)
+        else
         {
-            // delete old damage
-            delete this->damage3D;
-            this->damage3D = nullptr;
-        }
-
-        if (this->GetGeomIndex() != 0 && vehCarModel::Enable3DDamage)
-        {
-            auto bodyEntry = this->GetGeomBase(0);
-            auto bodyDamageEntry = this->GetGeomBase(BODYDAMAGE_GEOM_ID);
-            if (bodyEntry->GetHighLOD() != nullptr && bodyDamageEntry->GetHighLOD() != nullptr)
+            //init mm1Damage
+            if (this->mm1Damage != nullptr)
             {
-                this->damage3D = new fxDamage3D();
-                damage3D->Init(bodyEntry->GetHighLOD(), bodyDamageEntry->GetHighLOD());
+                // delete old mm1Damage
+                delete this->mm1Damage;
+                this->mm1Damage = nullptr;
+            }
+
+            if (this->GetGeomIndex() != 0)
+            {
+                auto bodyEntry = this->GetGeomBase();
+                if (bodyEntry->GetHighLOD() != nullptr)
+                {
+                    this->mm1Damage = new mmDamage();
+                    mm1Damage->Init(bodyEntry->GetHighLOD(), bodyEntry->pShaders[this->GetVariant()], bodyEntry->numShadersPerVariant);
+                }
             }
         }
 
@@ -744,6 +774,12 @@ namespace MM2
             shaders = this->texelDamage->CurrentShaders;
         }
 
+        //use mm1 damage
+        if (lod >= 2 && this->mm1Damage != nullptr)
+        {
+            shaders = this->mm1Damage->GetCleanShaders();
+        }
+
         //vppanozgt hack... use full alpha for paintjob 4
         int oldAlphaRef = (&RSTATE->Data)->AlphaRef;
 
@@ -760,9 +796,26 @@ namespace MM2
         gfxRenderState::SetWorldMatrix(*this->carSim->GetWorldMatrix());
 
         //draw the body
-        modStatic* bodyGeom = (damage3D != nullptr && lod >= 2) ? damage3D->GetDeformModel() : this->GetGeom(lod, 0);
-        if (bodyGeom != nullptr)
-            bodyGeom->Draw(shaders);
+        modStatic* bodyGeom = this->GetGeom(lod, 0);
+        if (!mm1StyleDamage)
+        {
+            bodyGeom = (damage3D != nullptr && lod >= 2) ? damage3D->GetDeformModel() : this->GetGeom(lod, 0);
+            if (bodyGeom != nullptr)
+                bodyGeom->Draw(shaders);
+        }
+        else
+        {
+            if (mm1Damage != nullptr)
+            {
+                bodyGeom = lod >= 2 ? mm1Damage->GetCleanModel() : this->GetGeom(lod, 0);
+                if (bodyGeom != nullptr)
+                    bodyGeom->Draw(shaders);
+
+                modStatic* bodyDamage = lod >= 2 ? mm1Damage->GetDamageModel() : this->GetGeom(lod, 0);
+                if (bodyDamage != nullptr)
+                    bodyDamage->Draw(mm1Damage->GetDamageShaders());
+            }
+        }
 
         //draw BREAK objects below the body
         if (!breakableRenderTweak)

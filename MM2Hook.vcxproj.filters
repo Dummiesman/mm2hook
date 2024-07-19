@@ -1846,6 +1846,10 @@
     <ClInclude Include="src\modules\node\view.h">
       <Filter>Source Files\modules\node</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\localize\localize.h" />
+    <ClInclude Include="src\modules\effects\damage.h">
+      <Filter>Source Files\modules\effects</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2759,6 +2763,9 @@
     </ClCompile>
     <ClCompile Include="src\handlers\bugfix_handlers\vehSplashHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\effects\damage.cpp">
+      <Filter>Source Files\modules\effects</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
