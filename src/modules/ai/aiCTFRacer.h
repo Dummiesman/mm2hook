@@ -41,6 +41,8 @@ namespace MM2
         vehCar* GetCar() const;
         int GetId() const;
         short GetState() const;
+        bool CanRepairDamage() const                 { return VehiclePhysics.CanRepairDamage(); }
+        void SetCanRepairDamage(bool value)          { VehiclePhysics.SetCanRepairDamage(true); }
 
         Vector3 GetFlagPosition() const;
         void SetFlagPosition(Vector3 pos);

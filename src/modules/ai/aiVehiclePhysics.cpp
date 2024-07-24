@@ -95,6 +95,16 @@ float MM2::aiVehiclePhysics::GetSteeringInput() const
 	return _steeringInput.get(this);
 }
 
+bool MM2::aiVehiclePhysics::CanRepairDamage() const
+{
+	return _canRepairDamage.get(this) != 0;
+}
+
+void MM2::aiVehiclePhysics::SetCanRepairDamage(bool value)
+{
+	_canRepairDamage.set(this, value ? 1 : 0);
+}
+
 AGE_API void aiVehiclePhysics::Init(int id, const char* basename, short canRepair, int audioType)
 															 { hook::Thunk<0x5593E0>::Call<void>(this, id, basename, canRepair, audioType); }
 
@@ -174,6 +184,7 @@ void aiVehiclePhysics::BindLua(LuaState L) {
 		.addPropertyReadOnly("State", &GetState)
 		.addPropertyReadOnly("CurrentLap", &GetCurrentLap)
 		.addPropertyReadOnly("NumLaps", &GetLapCount)
+		.addPropertyReadOnly("CanRepairDamage", &CanRepairDamage, &SetCanRepairDamage)
 		.addFunction("Init", &initLua)
 		.addFunction("DrawRouteThroughTraffic", &DrawRouteThroughTraffic)
 		.endClass();

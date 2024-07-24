@@ -60,12 +60,13 @@ namespace MM2
         static hook::Field<0x9684, unsigned short> _lapCount;
 
         static hook::Field<0x9686, short> _damagedOut;
+        static hook::Field<0x968C, short> _canRepairDamage;
 
         static hook::Field<0x9690, float> _brakeInput;
         static hook::Field<0x9694, float> _throttleInput;
         static hook::Field<0x9698, float> _steeringInput;
     public:
-        aiVehiclePhysics(void);
+        aiVehiclePhysics();
         ~aiVehiclePhysics();
 
         vehCar* GetCar() const;
@@ -82,6 +83,9 @@ namespace MM2
         float GetBrakeInput() const;
         float GetThrottleInput() const;
         float GetSteeringInput() const;
+
+        bool CanRepairDamage() const;
+        void SetCanRepairDamage(bool value);
 
         AGE_API void Init(int id, const char* basename, short circuitMode, int audioType);
         AGE_API void RegisterRoute(short* intersectionIDs, short numIntersections, Vector3 const& endPosition, Vector3 const& endOrientation,
