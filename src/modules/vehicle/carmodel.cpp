@@ -813,7 +813,7 @@ namespace MM2
 
                 modStatic* bodyDamage = lod >= 2 ? mm1Damage->GetDamageModel() : this->GetGeom(lod, 0);
                 if (bodyDamage != nullptr)
-                    bodyDamage->Draw(mm1Damage->GetDamageShaders());
+                    bodyDamage->Draw(lod >= 2 ? mm1Damage->GetDamageShaders() : shaders);
             }
         }
 
