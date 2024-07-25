@@ -182,21 +182,13 @@ namespace MM2
 
 						if (invertDamage)
 						{
-							damagePacket->SetTri(tri, j);
-							int cleanTri[3];
-							cleanTri[0] = 0;
-							cleanTri[1] = 0;
-							cleanTri[2] = 0;
-							cleanPacket->SetTri(cleanTri, j);
+							damagePacket->SetTri(tri[0], tri[1], tri[2], j);
+							cleanPacket->SetTri(0, 0, 0, j);
 						}
 						else
 						{
-							cleanPacket->SetTri(tri, j);
-							int damageTri[3];
-							damageTri[0] = 0;
-							damageTri[1] = 0;
-							damageTri[2] = 0;
-							damagePacket->SetTri(damageTri, j);
+							cleanPacket->SetTri(tri[0], tri[1], tri[2], j);
+							damagePacket->SetTri(0, 0, 0, j);
 						}
 					}
 				}
@@ -237,21 +229,13 @@ namespace MM2
 						{
 							if (invertDamage)
 							{
-								cleanPacket->SetTri(tri, j);
-								int damageTri[3];
-								damageTri[0] = 0;
-								damageTri[1] = 0;
-								damageTri[2] = 0;
-								damagePacket->SetTri(damageTri, j);
+								cleanPacket->SetTri(tri[0], tri[1], tri[2], j);
+								damagePacket->SetTri(0, 0, 0, j);
 							}
 							else
 							{
-								damagePacket->SetTri(tri, j);
-								int cleanTri[3];
-								cleanTri[0] = 0;
-								cleanTri[1] = 0;
-								cleanTri[2] = 0;
-								cleanPacket->SetTri(cleanTri, j);
+								damagePacket->SetTri(tri[0], tri[1], tri[2], j);
+								cleanPacket->SetTri(0, 0, 0, j);
 							}
 						}
 					}
