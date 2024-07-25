@@ -54,7 +54,7 @@ void vehCarModelFeatureHandler::ApplyImpact(vehDamageImpactInfo* a1)
         auto mm1Damage = damage->GetCar()->GetModel()->GetMM1Damage();
         if (mm1Damage)
         {
-            mm1Damage->Apply(a1->LocalPosition, 0.25f, 0);
+            mm1Damage->Apply(a1->LocalPosition, 0.25f, false);
         }
     }
 }

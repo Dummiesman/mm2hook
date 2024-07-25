@@ -158,7 +158,7 @@ namespace MM2
 			}
 		}
 
-		Reset(0);
+		Reset(false);
 	}
 
 	void mmDamage::Reset(bool invertDamage)

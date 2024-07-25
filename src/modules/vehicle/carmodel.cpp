@@ -211,7 +211,7 @@ namespace MM2
         if (damage3D)
             damage3D->SetNoDamage();
         if (mm1Damage)
-            mm1Damage->Reset(0);
+            mm1Damage->Reset(false);
         
         this->hasEjectedOneshot = false;
         this->wheelBrokenStatus = 0xFFFFFFFF;
