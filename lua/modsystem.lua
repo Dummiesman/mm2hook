@@ -177,7 +177,10 @@ local function processMod(modName, loadedMod)
         -- remove if onModLoaded returned false
         if loadResult then
           -- load any persistent data
-          serializer.deserialize(loadedMod)
+          local ok, err = pcall(serializer.deserialize, loadedMod) 
+          if not ok then 
+            Error("Deserialization error: " .. err)
+          end
           
           -- cache hooks
           for k,v in pairs(loadedMod) do
@@ -377,7 +380,10 @@ local function unload(mod, unloadSubmodules)
   mods[modTable._modInternalName] = nil
   
   -- serialize persistent data
-  serializer.serialize(modTable)
+  local ok, err = pcall(serializer.serialize, modTable) 
+  if not ok then 
+    Error("Serialization error: " .. err)
+  end  
   
   -- clean hooks
   for k,v in pairs(modTable) do
