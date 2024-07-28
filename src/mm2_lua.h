@@ -78,6 +78,11 @@ public:
     static void OnSessionJoin();
     static void OnDebugMessage(int level, const char* text);
 
+    static void OnNetworkMessage(int messageType, std::string data);
+    static void OnPlayerLeaveGame(int id);
+    static void OnPlayerJoinedGame(int id);
+    static void OnPlayerFinishedLoading(int id);
+
     static void OnStateBegin();
     static void OnStateEnd();
 

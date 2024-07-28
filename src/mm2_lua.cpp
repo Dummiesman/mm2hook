@@ -426,6 +426,38 @@ void MM2Lua::OnSessionJoin()
     }
 }
 
+void MM2Lua::OnNetworkMessage(int messageType, std::string data)
+{
+    if (IsInitialized()) {
+        LuaRef func(L, "onNetworkMessage");
+        TryCallFunction(func, messageType, data);
+    }
+}
+
+void MM2Lua::OnPlayerLeaveGame(int id)
+{
+    if (IsInitialized()) {
+        LuaRef func(L, "onPlayerLeaveGame");
+        TryCallFunction(func, id);
+    }
+}
+
+void MM2Lua::OnPlayerJoinedGame(int id)
+{
+    if (IsInitialized()) {
+        LuaRef func(L, "onPlayerJoinGame");
+        TryCallFunction(func, id);
+    }
+}
+
+void MM2Lua::OnPlayerFinishedLoading(int id)
+{
+    if (IsInitialized()) {
+        LuaRef func(L, "onPlayerFinishedLoading");
+        TryCallFunction(func, id);
+    }
+}
+
 void MM2Lua::OnDebugMessage(int level, const char* text)
 {
     if (IsInitialized()) {

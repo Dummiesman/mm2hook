@@ -42,6 +42,7 @@ static init_handler g_feature_handlers[] = {
     CreateHandler<mmPlayerHandler>("mmPlayer"),
     CreateHandler<mmGameHandler>("mmGame"),
     CreateHandler<mmGameMusicDataHandler>("mmGameMusicData"),
+    CreateHandler<mmGameMultiHandler>("mmGameMulti"),
     CreateHandler<aud3DObjectHandler>("aud3DObjectHandler"),
     CreateHandler<audControlHandler>("audControlHandler"),
     CreateHandler<Aud3DObjectManagerHandler>("Aud3DObjectManagerHandler"),
