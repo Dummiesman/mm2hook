@@ -181,9 +181,9 @@ void audManagerHandler::Install() {
     );
 #endif
 
-    InstallCallback("mmRaceSpeech::LoadCityInfo", "Non registry dependent minimum install check.",
+    InstallCallback("AudManager::MinInstall", "Non registry dependent minimum install check.",
         &MinInstall, {
-            cb::call(0x51AA2C),
+            cb::jmp(0x519470),
         }
     );
 }
