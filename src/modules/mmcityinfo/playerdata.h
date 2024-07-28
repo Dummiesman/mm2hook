@@ -24,6 +24,8 @@ namespace MM2
         int RaceId;
         char char_18C;
         char City[80];
+        // todo: make cityrec.h
+        // mmPlayerCityRecord CityRecord;
     public:
         AGE_API mmPlayerData(void) {
             scoped_vtable x(this);

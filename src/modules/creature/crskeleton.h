@@ -53,8 +53,15 @@ namespace MM2
 
     struct crSkeletonData
     {
+    public:
         int NumBones;
         crBoneData* Bones;
+    public:
+        crSkeletonData()
+        {
+            NumBones = 0;
+            Bones = nullptr;
+        }
     };
 
     // Lua initialization
