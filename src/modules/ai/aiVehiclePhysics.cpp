@@ -184,7 +184,7 @@ void aiVehiclePhysics::BindLua(LuaState L) {
 		.addPropertyReadOnly("State", &GetState)
 		.addPropertyReadOnly("CurrentLap", &GetCurrentLap)
 		.addPropertyReadOnly("NumLaps", &GetLapCount)
-		.addPropertyReadOnly("CanRepairDamage", &CanRepairDamage, &SetCanRepairDamage)
+		.addProperty("CanRepairDamage", &CanRepairDamage, &SetCanRepairDamage)
 		.addFunction("Init", &initLua)
 		.addFunction("DrawRouteThroughTraffic", &DrawRouteThroughTraffic)
 		.endClass();
