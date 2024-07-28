@@ -12,9 +12,9 @@ namespace MM2
     // Class definitions
     class mmCityList {
     private:
-        mmCityInfo **cityInfos;
-        int numCities;
-        int curCity;
+        mmCityInfo **m_CityInfos;
+        int m_NumCities;
+        int m_Current;
     public:
         ANGEL_ALLOCATOR
 
@@ -32,17 +32,31 @@ namespace MM2
         AGE_API void Load(char* cinfoName)                     { hook::Thunk<0x524330>::Call<void>(this, cinfoName); }
         AGE_API int GetCityID(char const *basename)            { return hook::Thunk<0x524270>::Call<int>(this, basename); }
 
-        AGE_API mmCityInfo * GetCityInfo(int id)               { return hook::Thunk<0x5241F0>::Call<mmCityInfo *>(this, id); }
-        AGE_API mmCityInfo * GetCityInfo(char const* basename) { return hook::Thunk<0x524220>::Call<mmCityInfo *>(this, basename); }
+        AGE_API mmCityInfo * GetCityInfo(int id) const         { return hook::Thunk<0x5241F0>::Call<mmCityInfo *>(this, id); }
+        AGE_API mmCityInfo * GetCityInfo(char const* basename) const
+                                                               { return hook::Thunk<0x524220>::Call<mmCityInfo *>(this, basename); }
 
         AGE_API mmCityInfo * GetCurrentCity(void)              { return hook::Thunk<0x524320>::Call<mmCityInfo *>(this); }
 
         AGE_API void SetCurrentCity(char const* basename)      { hook::Thunk<0x5242C0>::Call<void>(this, basename); }
         AGE_API void Print()                                   { hook::Thunk<0x524420>::Call<void>(this); }
 
-        //helper
-        inline int GetNumCities() {
-            return this->numCities;
+        int GetNumCities() const
+        {
+            return m_NumCities;
+        }
+
+        bool Exists(const char* basename) const
+        {
+            for (int i = 0; i < m_NumCities; i++)
+            {
+                auto info = GetCityInfo(i);
+                if (!strcmp(info->GetRaceDir(), basename))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         //lua
@@ -50,8 +64,9 @@ namespace MM2
             LuaBinding(L).beginClass<mmCityList>("mmCityList")
                 .addFunction("Print", &Print)
                 .addPropertyReadOnly("NumCities", &GetNumCities)
-                .addFunction("GetCityInfo", static_cast<mmCityInfo * (mmCityList::*)(char const*)>(&GetCityInfo))
-                .addFunction("GetCityInfoByIndex", static_cast<mmCityInfo * (mmCityList::*)(int)>(&GetCityInfo))
+                .addFunction("Exists", &Exists)
+                .addFunction("GetCityInfo", static_cast<mmCityInfo * (mmCityList::*)(char const*)const>(&GetCityInfo))
+                .addFunction("GetCityInfoByIndex", static_cast<mmCityInfo * (mmCityList::*)(int)const>(&GetCityInfo))
                 .addFunction("GetCityID", &GetCityID)
                 .addFunction("SetCurrentCity", &SetCurrentCity)
                 .endClass();
