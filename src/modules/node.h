@@ -16,6 +16,7 @@
 #include "node\eventq.h"
 #include "node\fileio.h"
 #include "node\random.h"
+#include "node\view.h"
 
 namespace MM2
 {
