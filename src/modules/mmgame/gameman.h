@@ -35,7 +35,6 @@ namespace MM2
         mmPlayer* getPlayerSafe() const;
     public:
         ANGEL_ALLOCATOR
-        void* operator new (std::size_t, void* p) throw() { return p; }
 
         static hook::Type<mmGameManager *> Instance;
 
