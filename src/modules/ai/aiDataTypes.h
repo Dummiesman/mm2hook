@@ -140,7 +140,7 @@ namespace MM2
         char Basename[32];
         Vector3 Position;
         float Rotation;
-        float ChaseDistance;
+        float OppDetectRange;
         float OppChaseChance;
         int Unk1;
         int Flags;
@@ -159,7 +159,8 @@ namespace MM2
                 .addProperty("Basename", &GetBasename, &SetBasename)
                 .addVariable("Position", &PoliceData::Position)
                 .addVariable("Rotation", &PoliceData::Rotation)
-                .addVariable("ChaseDistance", &PoliceData::ChaseDistance)
+                .addVariable("OpponentDetectionRange", &PoliceData::OppDetectRange)
+                .addVariable("OpponentChaseChance", &PoliceData::OppDetectRange)
                 .addVariable("Flags", &PoliceData::Flags)
                 .endClass();
         }
