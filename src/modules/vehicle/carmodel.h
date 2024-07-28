@@ -2,6 +2,7 @@
 #include <modules\level\inst.h>
 #include <modules\effects\texeldamage.h>
 #include <modules\effects\damage3d.h>
+#include <modules\effects\damage.h>
 
 #include "car.h"
 #include "breakable.h"
@@ -125,7 +126,8 @@ namespace MM2
         static float HeadlightFlashingSpeed;
         static bool PartReflections;
         static bool WheelReflections;
-        static bool mm1StyleTransmission; //god this is horrible...
+        static bool mm1StyleTransmission;
+        static bool mm1StyleDamage;
         static bool breakableRenderTweak;
         static bool Enable3DShadows;
 
@@ -184,6 +186,7 @@ namespace MM2
         ltLight* extraHeadlights[6]; //HEADLIGHT2-7
         Vector3 extraHeadlightPositions[6];
         fxDamage3D* damage3D;
+        mmDamage* mm1Damage;
     public:
         AGE_API vehCarModel();
         AGE_API ~vehCarModel();
@@ -197,6 +200,7 @@ namespace MM2
         Vector3 GetTrailerHitchOffset();
         fxTexelDamage* GetTexelDamage();
         fxDamage3D* GetDamage3D();
+        mmDamage* GetMM1Damage();
 
         AGE_API void GetSurfaceColor(modStatic* model, Vector3* outVector);
         AGE_API void InitBreakable(vehBreakableMgr* manager, const char* basename, const char* breakableName, int geomId, int someId);

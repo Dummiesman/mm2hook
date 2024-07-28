@@ -3,6 +3,7 @@
 using namespace MM2;
 
 static ConfigValue<bool> cfgMm1StyleTransmission("MM1StyleTransmission", false);
+static ConfigValue<bool> cfgMm1StyleDamage("MM1StyleDamage", true);
 static ConfigValue<bool> cfgEnable3DDamage("3DDamage", true);
 static ConfigValue<bool> cfgCarShadows("3DShadows", false);
 
@@ -49,6 +50,12 @@ void vehCarModelFeatureHandler::ApplyImpact(vehDamageImpactInfo* a1)
         {
             damage3d->Impact(a1->LocalPosition);
         }
+
+        auto mm1Damage = damage->GetCar()->GetModel()->GetMM1Damage();
+        if (mm1Damage)
+        {
+            mm1Damage->Apply(a1->LocalPosition, 0.25f, false);
+        }
     }
 }
 
@@ -70,11 +77,11 @@ void vehCarModelFeatureHandler::DrawShadow()
 }
 
 void vehCarModelFeatureHandler::Install() {
-    InstallPatch({ 0x60, 0x1 }, {
+    InstallPatch({ 0x64, 0x1 }, {
         0x42BB6E + 1, // Change size of vehCarModel on allocation
     });
 
-    InstallPatch({ 0x60, 0x1 }, {
+    InstallPatch({ 0x64, 0x1 }, {
         0x4CDFE0 + 1, // Change size of vehCarModel on SizeOf
     });
 
@@ -149,6 +156,7 @@ void vehCarModelFeatureHandler::Install() {
     vehCarModel::WheelReflections = vehCarModel::PartReflections;
 
     vehCarModel::mm1StyleTransmission = cfgMm1StyleTransmission.Get();
+    vehCarModel::mm1StyleDamage = cfgMm1StyleDamage.Get();
     vehCarModel::breakableRenderTweak = cfgBreakableRenderTweak.Get();
     
     vehCarModel::Enable3DDamage = cfgEnable3DDamage.Get();
