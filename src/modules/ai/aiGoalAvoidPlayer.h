@@ -5,11 +5,12 @@
 namespace MM2
 {
     // Forward declarations
-    class aiVehicleData;
+    class aiGoalAvoidPlayer;
 
     // External declarations
     extern class aiRailSet;
     extern class aiVehicleAmbient;
+    extern class aiVehicleSpline;
 
     // Class definitions
     class aiGoalAvoidPlayer : public aiGoal {

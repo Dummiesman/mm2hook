@@ -115,7 +115,7 @@ void MM2::aiGoalAvoidPlayer::AvoidPlayer()
 {
     // A dumbed down but more predictable approach
     auto aimap = aiMap::GetInstance();
-    auto player = aimap->Player(0);
+    auto player = aimap->Player(Vehicle->GetAvoidingPlayerIdx());
 
     auto playerMtx = player->GetMatrix();
     auto ourMtx = Vehicle->GetMatrix();
@@ -126,34 +126,42 @@ void MM2::aiGoalAvoidPlayer::AvoidPlayer()
 
     Vector3 positionDifference = playerPositionPredicted - ourPosition;
 
-    float xDot = positionDifference.Dot(ourMtx.GetRow(0));
-    float zDot = positionDifference.Dot(ourMtx.GetRow(2) * -1.0f);
+    float xDist = positionDifference.Dot(ourMtx.GetRow(0));
+    float zDist = positionDifference.Dot(ourMtx.GetRow(2) * -1.0f);
+    float dirDot = playerMtx.GetRow(2).Dot(ourMtx.GetRow(2));
 
     auto railSet = Vehicle->GetRailSet();
-    float chance = frand();
-
-    float rotationAmount = 0.0f;
-
-    railSet->SetAccelFactor(railSet->GetAccelFactor() - (10.0f * datTimeManager::Seconds));
-    if (xDot > 0.0f)
+    float decelRate = (Vehicle->GetSpeed() / (zDist - player->BackBumperDistance() - 0.25f)); // Stop just behind the players bumper
+    float maxSpeed = RailSet->GetCurrentLink()->GetBaseSpeedLimit() + RailSet->GetExheedLimit();
+    if (((xDist <= 0.5f && dirDot >= 0.75f) || (player->Speed() <= -3.5f)) && decelRate < 10.0f)
     {
-        rotationAmount = atan2f(xDot + PlayerSideReactDist, zDot);
+        // Brake instead
+        //railSet->SetAccelFactor(-decelRate);
+        railSet->SetAccelFactor(railSet->GetAccelFactor() - (10.0f * datTimeManager::Seconds));
     }
     else
     {
-        rotationAmount = atan2f(xDot - PlayerSideReactDist, zDot);
+        float rotationAmount = 0.0f;
+        railSet->SetAccelFactor(railSet->GetAccelFactor() - (10.0f * datTimeManager::Seconds));
+        if (xDist > 0.0f)
+        {
+            rotationAmount = atan2f(xDist + PlayerSideReactDist, zDist);
+        }
+        else
+        {
+            rotationAmount = atan2f(xDist - PlayerSideReactDist, zDist);
+        }
+        if (rotationAmount < -0.02f) rotationAmount = -0.02f;
+        if (rotationAmount > 0.02f) rotationAmount = 0.02f;
+
+        // applied mathematics
+        float rotationRateMul = Vehicle->GetSpeed() / maxSpeed;
+        Heading += rotationAmount * aimap->avoidThing_2 * rotationRateMul * (datTimeManager::Seconds * 30.0f);
     }
 
-    // applied mathematics
-    float maxSpeed = RailSet->GetCurrentLink()->GetBaseSpeedLimit() + RailSet->GetExheedLimit();
-    float rotationRateMul = Vehicle->GetSpeed() / maxSpeed;
+    
 
-    if (rotationAmount < -0.02f) rotationAmount = -0.02f;
-    if (rotationAmount > 0.02f) rotationAmount = 0.02f;
-
-    Heading += rotationAmount * aimap->avoidThing_2 * rotationRateMul * (datTimeManager::Seconds * 30.0f);
-    ourMtx.MakeRotateY(Heading);
-
+    // adjust speed and set orientation
     Vehicle->SetSpeed((RailSet->GetAccelFactor() * datTimeManager::Seconds) + Vehicle->GetSpeed());
     if (Vehicle->GetSpeed() < 0.25f)
     {
@@ -166,8 +174,8 @@ void MM2::aiGoalAvoidPlayer::AvoidPlayer()
 
     float velocity = Vehicle->GetSpeed() * datTimeManager::Seconds;
     RailSet->SetRoadDist(RailSet->GetRoadDist() + velocity);
+    ourMtx.MakeRotateY(Heading);
     ourMtx.SetRow(3, ourMtx.GetRow(3) - (ourMtx.GetRow(2) * velocity));
     Vehicle->SetMatrix(ourMtx);
-
     Vehicle->SolveYPositionAndOrientation();
 }
