@@ -72,6 +72,7 @@ namespace MM2
 
         //lua function for getting neighbours
         std::vector<int> LuaGetNeighbors(int room);
+        std::tuple<gfxTexture*, float> LuaGetEnvMap(int room, Vector3 const& position);
     protected:
         static hook::Type<lvlLevel*> Singleton;
     public:
