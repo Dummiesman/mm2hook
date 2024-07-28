@@ -1,5 +1,6 @@
 #pragma once
 #include <modules\vector.h>
+#include <modules\creature\crskeleton.h>
 
 namespace MM2
 {
@@ -49,6 +50,11 @@ namespace MM2
         int nColorCount;
         uint16_t HashTableIndex;
     public:
+        pedAnimation() : SkeletonData()
+        {
+
+        }
+
         modModel* GetModel()                                    { return pModel; }
         modShader* GetShaders(int variant)                      { return ppShaders[variant]; }
         crSkeleton* GetSkeleton()                               { return pSkeleton; }
@@ -56,6 +62,7 @@ namespace MM2
         int GetSequenceCount() const                            { return AnimationCount; }
         int GetHashTableIndex() const                           { return HashTableIndex; }
 
+        int LookupSequence(const char* name) const              { return hook::Thunk<0x57A7A0>::Call<int>(this, name); }
         void DrawSkeleton(int variant, crSkeleton* skeleton)    { hook::Thunk<0x57AB60>::Call<void>(this, variant, skeleton); }
     };
 
@@ -68,17 +75,32 @@ namespace MM2
         unsigned __int8 m_CurrentState;
         unsigned __int8 m_NextState;
     public:
-        pedActive* GetActive() const        { return m_Active; }
-        int GetCurrentState() const         { return m_CurrentState; }
-        int GetNextState() const            { return m_NextState; }
-        pedAnimation * GetAnimation() const { return m_Animation; }
-        int GetVariant() const              { return m_Variant; }
-        int GetCurrentFrame() const         { return m_Frame; }
+        pedAnimationInstance()
+        {
+            m_Active = nullptr;
+            m_Animation = nullptr;
+            m_Variant = 0;
+            m_CurrentState = 0;
+            m_NextState = 0;
+            m_Frame = 0;
+        }
 
-        void SetActive(pedActive* active)   { m_Active = active; }
-        void SetVariant(int variant)        { m_Variant = variant; }
-        void SetCurrentFrame(int frame)     { m_Frame = frame; }
-        void Start(int nextStateIndex)      { hook::Thunk<0x57B550>::Call<void>(this, nextStateIndex); }
+        pedActive* GetActive() const         { return m_Active; }
+        int GetCurrentState() const          { return m_CurrentState; }
+        int GetNextState() const             { return m_NextState; }
+        pedAnimation * GetAnimation() const  { return m_Animation; }
+        int GetVariant() const               { return m_Variant; }
+        int GetCurrentFrame() const          { return m_Frame; }
+                                             
+        void SetActive(pedActive* active)    { m_Active = active; }
+        void SetVariant(int variant)         { m_Variant = variant; }
+        void SetCurrentFrame(int frame)      { m_Frame = frame; }
+                                             
+        void Init(const char* pedName)       { hook::Thunk<0x57ADB0>::Call<void>(this, pedName); }
+        void Draw(bool highLod)              { hook::Thunk<0x57B370>::Call<void>(this, highLod); }
+        void Start(int nextStateIndex)       { hook::Thunk<0x57B550>::Call<void>(this, nextStateIndex); }
+        void Update()                        { hook::Thunk<0x57B2F0>::Call<void>(this); }
+        void VerifySequence(int index) const { return hook::Thunk<0x57B520>::Call<void>(this, index); }
 
         // lua
         static void BindLua(LuaState L) {
