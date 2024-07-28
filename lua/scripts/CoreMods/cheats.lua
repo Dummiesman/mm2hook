@@ -32,7 +32,6 @@ local function onModLoaded()
   -- get launch prop from config
   launchProp = HookConfig.GetString("LaunchProp", launchProp)
   launchPropSpeed = HookConfig.GetFloat("LaunchPropSpeed", launchPropSpeed)
-  launchProp = "sp_tree1_s"
 end
 
 local function initLaunchProp()
@@ -118,7 +117,7 @@ end
 local function onUpdate()
   -- fly
   if playerCanFly then
-    if Player.Car.CarSim.Engine.Throttle > 0 and Player.Car.CarSim.Speed < 112 and not Player:IsMaxDamaged() then
+    if Player.Car.CarSim.Engine.Throttle > 0 and Player.Car.CarSim.Speed < 112 and not Player.IsMaxDamaged then
       local ics = Player.Car:GetICS()
       ics.Velocity = ics.Velocity * 1.03
     end

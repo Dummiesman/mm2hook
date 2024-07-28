@@ -12,8 +12,14 @@ imguizmo = require("imguizmo")
 
 json = require("json")
 
--- print to console
-print = function(x) Displayf(tostring(x)) end
+-- output functions
+Warningf = function(fmt, ...)  Warning(string.format(fmt, ...)) end
+Errorf = function(fmt, ...)  Error(string.format(fmt, ...)) end
+Displayf = function(fmt, ...)  Display(string.format(fmt, ...)) end
+Abortf = function(fmt, ...)  Abort(string.format(fmt, ...)) end
+Printf = function(fmt, ...)  Print(string.format(fmt, ...)) end
+Messagef = function(fmt, ...) Message(string.format(fmt, ...)) end
+print = function(x) Message(tostring(x)) end
 
 -- add searcher for zip files
 local vfsSearcher = function(libraryname) 

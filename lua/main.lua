@@ -68,6 +68,10 @@ function onRenderUi()
   end
 end
 
+function onDebugMessage(level, message)
+  modsystem.callHook("onDebugMessage", level, message)
+end
+
 function onChatMessage(message)
   modsystem.callHook("onChatMessage", message)
 end
@@ -101,6 +105,22 @@ end
 
 function onStateEnd()
   modsystem.callHook("onStateEnd")
+end
+
+function onNetworkMessage(msgId, data)
+    modsystem.callHook("onNetworkMessage", msgId, data)
+end
+
+function onPlayerFinishedLoading(id)
+    modsystem.callHook("onPlayerFinishedLoading", id)
+end
+
+function onPlayerJoinGame(id)
+    modsystem.callHook("onPlayerJoinGame", id)
+end
+
+function onPlayerLeaveGame(id)
+    modsystem.callHook("onPlayerLeaveGame", id)
 end
 
 function startup()

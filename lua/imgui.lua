@@ -37,139 +37,148 @@ M.EndRadioButtonGroup = function()
 end
 
 --IMGUI
-M.BeginTooltip =                      function()               ImGui.BeginTooltip()                                    end
-M.EndTooltip =                        function()               ImGui.EndTooltip()                                      end
-                    
-M.BeginMenu =                         function(mNam, enable)   return ImGui.BeginMenu(mNam, boolDefault(enable, true)) end
-M.EndMenu =                           function()               ImGui.EndMenu()                                         end
-M.BeginMenuBar =                      function()               return ImGui.BeginMenuBar()                             end
-M.EndMenuBar =                        function()               ImGui.EndMenuBar()                                      end
-M.BeginMainMenuBar =                  function()               return ImGui.BeginMainMenuBar()                         end
-M.EndMainMenuBar =                    function()               ImGui.EndMainMenuBar()                                  end
-          
-M.Dummy =                             function(sz)             ImGui.Dummy(sz or ZERO_VEC2)                            end        
+M.BeginTooltip =                      function()               ImGui.BeginTooltip()                                       end
+M.EndTooltip =                        function()               ImGui.EndTooltip()                                         end
+                                                                                                                          
+M.BeginMenu =                         function(mNam, enable)   return ImGui.BeginMenu(mNam, boolDefault(enable, true))    end
+M.EndMenu =                           function()               ImGui.EndMenu()                                            end
+M.BeginMenuBar =                      function()               return ImGui.BeginMenuBar()                                end
+M.EndMenuBar =                        function()               ImGui.EndMenuBar()                                         end
+M.BeginMainMenuBar =                  function()               return ImGui.BeginMainMenuBar()                            end
+M.EndMainMenuBar =                    function()               ImGui.EndMainMenuBar()                                     end
+                                                                                                                          
+M.Dummy =                             function(sz)             ImGui.Dummy(sz or ZERO_VEC2)                               end        
+                                                                                                                          
+M.BeginDisabled =                     function(disabled)       ImGui.BeginDisabled(boolDefault(disabled, true))           end
+M.EndDisabled =                       function()               ImGui.EndDisabled()                                        end
+                                                                                                                          
+M.HelpMarker =                        function(text)           ImGui.HelpMarker(text)                                     end
+M.Separator =                         function()               ImGui.Separator()                                          end
+M.SeparatorText =                     function(text)               ImGui.SeparatorText(text)                              end
+                                                                                                                          
+M.AlignTextToFramePadding =           function()               ImGui.AlignTextToFramePadding()                            end
+M.GetTextLineHeight =                 function()               return ImGui.GetTextLineHeight()                           end
+M.CalcItemWidth =                     function()               return ImGui.CalcItemWidth()                               end
+M.GetFrameCount =                     function()               return ImGui.GetFrameCount()                               end
+M.GetFrameHeight =                    function()               return ImGui.GetFrameHeight()                              end
+M.GetFrameHeightWithSpacing =         function()               return ImGui.GetFrameHeightWithSpacing()                   end
+M.Text =                              function(text)           ImGui.Text(text)                                           end
+M.TextWrapped =                       function(text)           ImGui.TextWrapped(text)                                    end
+M.TextColored =                       function(color, text)    ImGui.TextColored(color, text)                             end
+M.LabelText =                         function(label, text)    ImGui.LabelText(label, text)                               end
+M.BulletText =                        function(text)           ImGui.BulletText(text)                                     end
+                                                                                                                          
+M.GetFont =                           function()               return ImGui.GetFont()                                     end       
+M.GetFontSize =                       function()               return ImGui.GetFontSize()                                 end
+M.SetWindowFontScale =                function(scale)          ImGui.SetWindowFontScale(scale)                            end       
+M.PushFont =                          function(font)           ImGui.PushFont(font)                                       end       
+M.PopFont =                           function()               ImGui.PopFont()                                            end       
+                                                                                                                          
+M.GetColumnIndex =                    function()               return ImGui.GetColumnIndex()                              end
+M.GetColumnOffset =                   function(index)          return ImGui.GetColumnOffset(index or -1)                  end
+M.GetColumnsCount =                   function()               return ImGui.GetColumnsCount()                             end
+M.GetColumnWidth =                    function(index)          return ImGui.GetColumnWidth(index or -1)                   end
+M.NextColumn =                        function()               ImGui.NextColumn()                                         end
+M.SetColumnOffset =                   function(index, offset)  ImGui.SetColumnOffset(index, offset)                       end
+M.SetColumnWidth =                    function(index, width)   ImGui.SetColumnWidth(index, width)                         end
+                                                                                                                          
+M.GetMousePos =                       function()               return ImGui.GetMousePos()                                 end        
+M.GetMousePosOnOpeningCurrentPopup =  function()               return ImGui.GetMousePosOnOpeningCurrentPopup()            end        
+M.IsMouseDown =                       function(btn)            return ImGui.IsMouseDown(btn)                              end
+M.IsMouseClicked =                    function(btn,rp)         return ImGui.IsMouseClicked(btn, boolDefault(rp,false))    end
+M.IsMouseReleased =                   function(btn)            return ImGui.IsMouseReleased(btn)                          end
+M.IsAnyMouseDown =                    function()               return ImGui.IsAnyMouseDown()                              end
+M.IsMouseDragging =                   function(btn, lockThrsh) return ImGui.IsMouseDragging(btn. lockThrsh or -1.0)       end
+M.GetMouseDragDelta =                 function(btn, lockThrsh) return ImGui.GetMouseDragDelta(btn, lockThrsh or -1.0)     end
 
-M.BeginDisabled =                     function(disabled)       ImGui.BeginDisabled(boolDefault(disabled, true))        end
-M.EndDisabled =                       function()               ImGui.EndDisabled()                                     end
-          
-M.HelpMarker =                        function(text)           ImGui.HelpMarker(text)                                  end
-M.Separator =                         function()               ImGui.Separator()                                       end
-M.SeparatorText =                     function(text)               ImGui.SeparatorText(text)                           end
-                
-M.AlignTextToFramePadding =           function()               ImGui.AlignTextToFramePadding()                         end
-M.GetTextLineHeight =                 function()               return ImGui.GetTextLineHeight()                        end
-M.CalcItemWidth =                     function()               return ImGui.CalcItemWidth()                            end
-M.GetFrameCount =                     function()               return ImGui.GetFrameCount()                            end
-M.GetFrameHeight =                    function()               return ImGui.GetFrameHeight()                           end
-M.GetFrameHeightWithSpacing =         function()               return ImGui.GetFrameHeightWithSpacing()                end
-M.Text =                              function(text)           ImGui.Text(text)                                        end
-M.TextWrapped =                       function(text)           ImGui.TextWrapped(text)                                 end
-M.TextColored =                       function(color, text)    ImGui.TextColored(color, text)                          end
-M.LabelText =                         function(label, text)    ImGui.LabelText(label, text)                            end
-M.BulletText =                        function(text)           ImGui.BulletText(text)                                  end
+M.IsKeyPressed =                      function(key, _repeat)   return ImGui.IsKeyPressed(key, boolDefault(_repeat, true)) end
+M.IsKeyReleased =                     function(key)            return ImGui.IsKeyReleased(key)                            end
+M.SetKeyboardFocusHere =              function(offset)         ImGui.SetKeyboardFocusHere(offset or 0)                    end
 
-M.GetFont =                           function()               return ImGui.GetFont()                                  end       
-M.GetFontSize =                       function()               return ImGui.GetFontSize()                              end
-M.SetWindowFontScale =                function(scale)          ImGui.SetWindowFontScale(scale)                         end       
-M.PushFont =                          function(font)           ImGui.PushFont(font)                                    end       
-M.PopFont =                           function()               ImGui.PopFont()                                         end       
-
-M.GetColumnIndex =                    function()               return ImGui.GetColumnIndex()                           end
-M.GetColumnOffset =                   function(index)          return ImGui.GetColumnOffset(index or -1)               end
-M.GetColumnsCount =                   function()               return ImGui.GetColumnsCount()                          end
-M.GetColumnWidth =                    function(index)          return ImGui.GetColumnWidth(index or -1)                end
-M.NextColumn =                        function()               ImGui.NextColumn()                                      end
-M.SetColumnOffset =                   function(index, offset)  ImGui.SetColumnOffset(index, offset)                    end
-M.SetColumnWidth =                    function(index, width)   ImGui.SetColumnWidth(index, width)                      end
-
-M.GetMousePos =                       function()               return ImGui.GetMousePos()                              end        
-M.GetMousePosOnOpeningCurrentPopup =  function()               return ImGui.GetMousePosOnOpeningCurrentPopup()         end        
-M.IsMouseDown =                       function(btn)            return ImGui.IsMouseDown(btn)                           end
-M.IsMouseClicked =                    function(btn,rp)         return ImGui.IsMouseClicked(btn, boolDefault(rp,false)) end
-M.IsMouseReleased =                   function(btn)            return ImGui.IsMouseReleased(btn)                       end
-M.IsAnyMouseDown =                    function()               return ImGui.IsAnyMouseDown()                           end
-M.IsMouseDragging =                   function(btn, lockThrsh) return ImGui.IsMouseDragging(btn. lockThrsh or -1.0)    end
-M.GetMouseDragDelta =                 function(btn, lockThrsh) return ImGui.GetMouseDragDelta(btn, lockThrsh or -1.0)  end
-
-M.IsWindowFocused =                   function(focusFlags)     return ImGui.IsWindowFocused(focusFlags or 0)           end
-M.IsWindowHovered =                   function(hoverFlags)     return ImGui.IsWindowHovered(hoverFlags or 0)           end
-M.IsItemActive =                      function()               return ImGui.IsItemActive()                             end
-M.IsItemFocused =                     function()               return ImGui.IsItemFocused()                            end
-M.IsItemHovered =                     function(hoverFlags)     return ImGui.IsItemHovered(hoverFlags or 0)             end
-M.IsAnyItemActive =                   function()               return ImGui.IsAnyItemActive()                          end
-M.IsAnyItemFocused =                  function()               return ImGui.IsAnyItemFocused()                         end
-M.IsAnyItemHovered =                  function()               return ImGui.IsAnyItemHovered()                         end
-M.IsItemActivated =                   function()               return ImGui.IsItemActivated()                          end
-M.IsItemVisible =                     function()               return ImGui.IsItemVisible()                            end
-M.IsItemDeactivated =                 function()               return ImGui.IsItemDeactivated()                        end
-M.IsItemDeactivatedAfterEdit =        function()               return ImGui.IsItemDeactivatedAfterEdit()               end  
-M.IsItemClicked =                     function(btn)            return ImGui.IsItemClicked(btn)                         end
-M.IsItemEdited =                      function()               return ImGui.IsItemEdited()                             end
-M.IsItemToggledOpen =                 function()               return ImGui.IsItemToggledOpen()                        end
-
-M.GetItemRectMin =                    function()               return ImGui.GetItemRectMin()                           end
-M.GetItemRectMax =                    function()               return ImGui.GetItemRectMax()                           end
-M.GetItemRectSize =                   function()               return ImGui.GetItemRectSize()                          end
-
-M.GetWindowSize =                     function()               return ImGui.GetWindowSize()                            end
-M.GetWindowPos =                      function()               return ImGui.GetWindowPos()                             end
-
-M.GetScrollX =                        function()               return ImGui.GetScrollX()                               end
-M.GetScrollY =                        function()               return ImGui.GetScrollY()                               end
-M.GetScrollMaxX =                     function()               return ImGui.GetScrollMaxX()                            end
-M.GetScrollMaxY =                     function()               return ImGui.GetScrollMaxY()                            end
-M.SetScrollHereX =                    function(xr)             return ImGui.SetScrollHereX(xr or 0.5)                  end
-M.SetScrollHereY =                    function(yr)             return ImGui.SetScrollHereY(yr or 0.5)                  end
-M.SetScrollFromPosX =                 function(lx, xr)         return ImGui.SetScrollFromPosX(lx, xr or 0.5)           end
-M.SetScrollFromPosY =                 function(ly, yr)         return ImGui.SetScrollFromPosY(ly, yr or 0.5)           end
-
-M.TreePop =                           function()               ImGui.TreePop()                                         end
-M.TreePush =                          function(id)             ImGui.TreePush(id)                                      end
-M.TreeNode =                          function(label)          return ImGui.TreeNode(label)                            end
-                
-M.PopButtonRepeat =                   function()               ImGui.PopButtonRepeat()                                 end
-M.PushButtonRepeat =                  function(rp)             ImGui.PushButtonRepeat(boolDefault(rp, true))           end
-          
-M.PushItemWidth =                     function(val)            ImGui.PushItemWidth(val)                                end
-M.PopItemWidth =                      function()               ImGui.PopItemWidth()                                    end
-                              
-M.PushStyleColor =                    function(id, val)        ImGui.PushStyleColor(id, val)                           end
-M.PopStyleColor =                     function(c)              ImGui.PopStyleColor(c or 1)                             end
-
-M.PushID  =                           function(id)             ImGui.PushID(tostring(id))                              end
-M.PopID =                             function()               ImGui.PopID()                                           end
-                
-M.SetTooltip =                        function(tooltip)        ImGui.SetTooltip(tooltip)                               end
-                
-M.CenterNextWindow =                  function()               ImGui.CenterNextWindow()                                end
-M.SetItemDefaultFocus =               function()               ImGui.SetItemDefaultFocus()                             end
-M.SetNextItemWidth =                  function(width)          ImGui.SetNextItemWidth(width)                           end
-M.SetNextWindowBgAlpha =              function(alpha)          ImGui.SetNextWindowBgAlpha(alpha)                       end
-M.SetNextWindowContentSize =          function(sz)             ImGui.SetNextWindowContentSize(sz)                      end
-
-M.ColorConvertU32ToFloat4 =           function(col)            return ImGui.ColorConvertU32ToFloat4(col)               end
-M.ColorConvertFloat4ToU32 =           function(col)            return ImGui.ColorConvertFloat4ToU32(col)               end
-
-M.GetClipboardText =                  function()               return ImGui.GetClipboardText()                         end
-M.SetClipboardText =                  function(text)           ImGui.SetClipboardText(text)                            end
-
-M.GetWindowDrawList =                 function()               return ImGui.GetWindowDrawList()                        end
-
-M.GetCursorStartPos =                 function()               return ImGui.GetCursorStartPos()                        end
-M.GetCursorScreenPos =                function()               return ImGui.GetCursorScreenPos()                       end
-M.GetCursorPos =                      function()               return ImGui.GetCursorPos()                             end
-M.GetCursorPosX =                     function()               return ImGui.GetCursorPosX()                            end
-M.GetCursorPosY =                     function()               return ImGui.GetCursorPosY()                            end
-M.SetCursorPos =                      function(pos)            ImGui.SetCursorPos(pos)                                 end
-M.SetCursorPosX =                     function(x)              ImGui.SetCursorPosX(x)                                  end
-M.SetCursorPosY =                     function(y)              ImGui.SetCursorPosY(y)                                  end
-
-M.GetIO =                             function()               return ImGui.GetIO()                                    end
-M.GetStyle =                          function()               return ImGui.GetStyle()                                 end
-
--- StackLayout
-M.SuspendLayout =                     function()               ImGui.SuspendLayout()                                   end
-M.ResumeLayout =                      function()               ImGui.ResumeLayout()                                    end
+M.IsWindowFocused =                   function(focusFlags)     return ImGui.IsWindowFocused(focusFlags or 0)              end
+M.IsWindowHovered =                   function(hoverFlags)     return ImGui.IsWindowHovered(hoverFlags or 0)              end
+M.IsItemActive =                      function()               return ImGui.IsItemActive()                                end
+M.IsItemFocused =                     function()               return ImGui.IsItemFocused()                               end
+M.IsItemHovered =                     function(hoverFlags)     return ImGui.IsItemHovered(hoverFlags or 0)                end
+M.IsAnyItemActive =                   function()               return ImGui.IsAnyItemActive()                             end
+M.IsAnyItemFocused =                  function()               return ImGui.IsAnyItemFocused()                            end
+M.IsAnyItemHovered =                  function()               return ImGui.IsAnyItemHovered()                            end
+M.IsItemActivated =                   function()               return ImGui.IsItemActivated()                             end
+M.IsItemVisible =                     function()               return ImGui.IsItemVisible()                               end
+M.IsItemDeactivated =                 function()               return ImGui.IsItemDeactivated()                           end
+M.IsItemDeactivatedAfterEdit =        function()               return ImGui.IsItemDeactivatedAfterEdit()                  end  
+M.IsItemClicked =                     function(btn)            return ImGui.IsItemClicked(btn)                            end
+M.IsItemEdited =                      function()               return ImGui.IsItemEdited()                                end
+M.IsItemToggledOpen =                 function()               return ImGui.IsItemToggledOpen()                           end
+                                                                                                                          
+M.GetItemRectMin =                    function()               return ImGui.GetItemRectMin()                              end
+M.GetItemRectMax =                    function()               return ImGui.GetItemRectMax()                              end
+M.GetItemRectSize =                   function()               return ImGui.GetItemRectSize()                             end
+                                                                                                                          
+M.GetWindowSize =                     function()               return ImGui.GetWindowSize()                               end
+M.GetWindowPos =                      function()               return ImGui.GetWindowPos()                                end
+                                                                                                                          
+M.GetScrollX =                        function()               return ImGui.GetScrollX()                                  end
+M.GetScrollY =                        function()               return ImGui.GetScrollY()                                  end
+M.GetScrollMaxX =                     function()               return ImGui.GetScrollMaxX()                               end
+M.GetScrollMaxY =                     function()               return ImGui.GetScrollMaxY()                               end
+M.SetScrollX =                        function(v)              return ImGui.SetScrollX(v)                                 end
+M.SetScrollY =                        function(v)              return ImGui.SetScrollY(v)                                 end
+M.SetScrollHereX =                    function(xr)             return ImGui.SetScrollHereX(xr or 0.5)                     end
+M.SetScrollHereY =                    function(yr)             return ImGui.SetScrollHereY(yr or 0.5)                     end
+M.SetScrollFromPosX =                 function(lx, xr)         return ImGui.SetScrollFromPosX(lx, xr or 0.5)              end
+M.SetScrollFromPosY =                 function(ly, yr)         return ImGui.SetScrollFromPosY(ly, yr or 0.5)              end
+                                                                                                                          
+M.TreePop =                           function()               ImGui.TreePop()                                            end
+M.TreePush =                          function(id)             ImGui.TreePush(id)                                         end
+M.TreeNode =                          function(label)          return ImGui.TreeNode(label)                               end
+                                                                                                                          
+M.PopButtonRepeat =                   function()               ImGui.PopButtonRepeat()                                    end
+M.PushButtonRepeat =                  function(rp)             ImGui.PushButtonRepeat(boolDefault(rp, true))              end
+                                                                                                                          
+M.PushItemWidth =                     function(val)            ImGui.PushItemWidth(val)                                   end
+M.PopItemWidth =                      function()               ImGui.PopItemWidth()                                       end
+                                                                                                                          
+M.PushStyleColor =                    function(id, val)        ImGui.PushStyleColor(id, val)                              end
+M.PopStyleColor =                     function(c)              ImGui.PopStyleColor(c or 1)                                end
+                                                                                                                          
+M.PushID  =                           function(id)             ImGui.PushID(tostring(id))                                 end
+M.PopID =                             function()               ImGui.PopID()                                              end
+                                                                                                                          
+M.SetTooltip =                        function(tooltip)        ImGui.SetTooltip(tooltip)                                  end
+                                                                                                                          
+M.CenterNextWindow =                  function()               ImGui.CenterNextWindow()                                   end
+M.SetItemDefaultFocus =               function()               ImGui.SetItemDefaultFocus()                                end
+M.SetNextItemWidth =                  function(width)          ImGui.SetNextItemWidth(width)                              end
+M.SetNextWindowBgAlpha =              function(alpha)          ImGui.SetNextWindowBgAlpha(alpha)                          end
+M.SetNextWindowContentSize =          function(sz)             ImGui.SetNextWindowContentSize(sz)                         end
+M.GetContentRegionAvail =             function()               return ImGui.GetContentRegionAvail()                       end
+                                                                                                                          
+M.ColorConvertU32ToFloat4 =           function(col)            return ImGui.ColorConvertU32ToFloat4(col)                  end
+M.ColorConvertFloat4ToU32 =           function(col)            return ImGui.ColorConvertFloat4ToU32(col)                  end
+                                                                                                                          
+M.GetClipboardText =                  function()               return ImGui.GetClipboardText()                            end
+M.SetClipboardText =                  function(text)           ImGui.SetClipboardText(text)                               end
+                                                                                                                          
+M.GetWindowDrawList =                 function()               return ImGui.GetWindowDrawList()                           end
+M.GetBackgroundDrawList =             function()               return ImGui.GetBackgroundDrawList()                       end
+M.GetForegroundDrawList =             function()               return ImGui.GetForegroundDrawList()                       end
+                                                                                                                          
+M.GetCursorStartPos =                 function()               return ImGui.GetCursorStartPos()                           end
+M.GetCursorScreenPos =                function()               return ImGui.GetCursorScreenPos()                          end
+M.GetCursorPos =                      function()               return ImGui.GetCursorPos()                                end
+M.GetCursorPosX =                     function()               return ImGui.GetCursorPosX()                               end
+M.GetCursorPosY =                     function()               return ImGui.GetCursorPosY()                               end
+M.SetCursorPos =                      function(pos)            ImGui.SetCursorPos(pos)                                    end
+M.SetCursorPosX =                     function(x)              ImGui.SetCursorPosX(x)                                     end
+M.SetCursorPosY =                     function(y)              ImGui.SetCursorPosY(y)                                     end
+                                                                                                                          
+M.GetIO =                             function()               return ImGui.GetIO()                                       end
+M.GetStyle =                          function()               return ImGui.GetStyle()                                    end
+                                                                                                                          
+-- StackLayout                                                                                                            
+M.SuspendLayout =                     function()               ImGui.SuspendLayout()                                      end
+M.ResumeLayout =                      function()               ImGui.ResumeLayout()                                       end
 
 --
 M.CalcTextSize = function(text, hide_text_after_double_hash, wrap_width)
@@ -291,6 +300,21 @@ end
 M.InputText = function(label, text, flags)
   flags = flags or 0
   return ImGui.InputText(label, text, flags)
+end
+
+M.InputTextBoxed = function(label, text, flags)
+  flags = flags or 0
+  return ImGui.InputTextBoxed(label, text, flags)
+end
+
+M.InputTextCallback = function(label, text, flags, cb)
+  flags = flags or 0
+  return ImGui.InputTextCallback(label, text, flags, cb)
+end
+
+M.InputTextBoxedCallback = function(label, text, flags, cb)
+  flags = flags or 0
+  return ImGui.InputTextBoxedCallback(label, text, flags, cb)
 end
 
 M.InputTextMultiline = function(label, text, size, flags)
@@ -998,4 +1022,141 @@ ImGuiTreeNodeFlags_SpanFullWidth            = 1 << 12
 ImGuiTreeNodeFlags_NavLeftJumpsBackHere     = 1 << 13
 ImGuiTreeNodeFlags_CollapsingHeader         = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_NoAutoOpenOnLog
     
+ImGuiKey_Tab                 =512
+ImGuiKey_LeftArrow           =513
+ImGuiKey_RightArrow          =514
+ImGuiKey_UpArrow             =515
+ImGuiKey_DownArrow           =516
+ImGuiKey_PageUp              =517
+ImGuiKey_PageDown            =518
+ImGuiKey_Home                =519
+ImGuiKey_End                 =520
+ImGuiKey_Insert              =521
+ImGuiKey_Delete              =522
+ImGuiKey_Backspace           =523
+ImGuiKey_Space               =524
+ImGuiKey_Enter               =525
+ImGuiKey_Escape              =526
+ImGuiKey_LeftCtrl            =527
+ImGuiKey_LeftShift           =528
+ImGuiKey_LeftAlt             =529
+ImGuiKey_LeftSuper           =530
+ImGuiKey_RightCtrl           =531
+ImGuiKey_RightShift          =532
+ImGuiKey_RightAlt            =533
+ImGuiKey_RightSuper          =534
+ImGuiKey_Menu                =535
+ImGuiKey_0                   =536
+ImGuiKey_1                   =537
+ImGuiKey_2                   =538
+ImGuiKey_3                   =539
+ImGuiKey_4                   =540
+ImGuiKey_5                   =541
+ImGuiKey_6                   =542
+ImGuiKey_7                   =543
+ImGuiKey_8                   =544
+ImGuiKey_9                   =545
+ImGuiKey_A                   =546
+ImGuiKey_B                   =547
+ImGuiKey_C                   =548
+ImGuiKey_D                   =549
+ImGuiKey_E                   =550
+ImGuiKey_F                   =551
+ImGuiKey_G                   =552
+ImGuiKey_H                   =553
+ImGuiKey_I                   =554
+ImGuiKey_J                   =555
+ImGuiKey_K                   =556
+ImGuiKey_L                   =557
+ImGuiKey_M                   =558
+ImGuiKey_N                   =559
+ImGuiKey_O                   =560
+ImGuiKey_P                   =561
+ImGuiKey_Q                   =562
+ImGuiKey_R                   =563
+ImGuiKey_S                   =564
+ImGuiKey_T                   =565
+ImGuiKey_U                   =566
+ImGuiKey_V                   =567
+ImGuiKey_W                   =568
+ImGuiKey_X                   =569
+ImGuiKey_Y                   =570
+ImGuiKey_Z                   =571
+ImGuiKey_F1                  =572
+ImGuiKey_F2                  =573
+ImGuiKey_F3                  =574
+ImGuiKey_F4                  =575
+ImGuiKey_F5                  =576
+ImGuiKey_F6                  =577
+ImGuiKey_F7                  =578
+ImGuiKey_F8                  =579
+ImGuiKey_F9                  =580
+ImGuiKey_F10                 =581
+ImGuiKey_F11                 =582
+ImGuiKey_F12                 =583
+ImGuiKey_Apostrophe          =584
+ImGuiKey_Comma               =585
+ImGuiKey_Minus               =586
+ImGuiKey_Period              =587
+ImGuiKey_Slash               =588
+ImGuiKey_Semicolon           =589
+ImGuiKey_Equal               =590
+ImGuiKey_LeftBracket         =591
+ImGuiKey_Backslash           =592
+ImGuiKey_RightBracket        =593
+ImGuiKey_GraveAccent         =594
+ImGuiKey_CapsLock            =595
+ImGuiKey_ScrollLock          =596
+ImGuiKey_NumLock             =597
+ImGuiKey_PrintScreen         =598
+ImGuiKey_Pause               =599
+ImGuiKey_Keypad0             =600
+ImGuiKey_Keypad1             =601
+ImGuiKey_Keypad2             =602
+ImGuiKey_Keypad3             =603
+ImGuiKey_Keypad4             =604
+ImGuiKey_Keypad5             =605
+ImGuiKey_Keypad6             =606
+ImGuiKey_Keypad7             =607
+ImGuiKey_Keypad8             =608
+ImGuiKey_Keypad9             =609
+ImGuiKey_KeypadDecimal       =610
+ImGuiKey_KeypadDivide        =611
+ImGuiKey_KeypadMultiply      =612
+ImGuiKey_KeypadSubtract      =613
+ImGuiKey_KeypadAdd           =614
+ImGuiKey_KeypadEnter         =615
+ImGuiKey_KeypadEqual         =616
+ImGuiKey_GamepadStart        =617
+ImGuiKey_GamepadBack         =618
+ImGuiKey_GamepadFaceLeft     =619
+ImGuiKey_GamepadFaceRight    =620
+ImGuiKey_GamepadFaceUp       =621
+ImGuiKey_GamepadFaceDown     =622
+ImGuiKey_GamepadDpadLeft     =623
+ImGuiKey_GamepadDpadRight    =624
+ImGuiKey_GamepadDpadUp       =625
+ImGuiKey_GamepadDpadDown     =626
+ImGuiKey_GamepadL1           =627
+ImGuiKey_GamepadR1           =628
+ImGuiKey_GamepadL2           =629
+ImGuiKey_GamepadR2           =630
+ImGuiKey_GamepadL3           =631
+ImGuiKey_GamepadR3           =632
+ImGuiKey_GamepadLStickLeft   =633
+ImGuiKey_GamepadLStickRight  =634
+ImGuiKey_GamepadLStickUp     =635
+ImGuiKey_GamepadLStickDown   =636
+ImGuiKey_GamepadRStickLeft   =637
+ImGuiKey_GamepadRStickRight  =638
+ImGuiKey_GamepadRStickUp     =639
+ImGuiKey_GamepadRStickDown   =640
+ImGuiKey_MouseLeft           =641
+ImGuiKey_MouseRight          =642
+ImGuiKey_MouseMiddle         =643
+ImGuiKey_MouseX1             =644
+ImGuiKey_MouseX2             =645
+ImGuiKey_MouseWheelX         =646
+ImGuiKey_MouseWheelY         =647
+
 return M

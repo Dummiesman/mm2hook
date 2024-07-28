@@ -1,4 +1,5 @@
 local M = {}
+local serializer = require("modserializer")
 
 --exposed vars
 M.useCache = false
@@ -6,6 +7,7 @@ M.useCache = false
 --local vars
 local allowMp = true
 local modsPath = "lua/scripts"
+local hookNames = {"onUpdate", "onUpdatePaused", "onDebugMessage", "onReset", "onStateBegin", "onStateEnd"}
 
 --mods table
 local mods = {}
@@ -15,7 +17,7 @@ local hookCache = {}
 local function callSafe(func, ...)
   local ok, err = pcall(func, ...)
   if not ok then
-    Errorf(err)
+    Error(err)
     return false
   end
   return true
@@ -47,7 +49,7 @@ local function patchFunctionTable(fnTable, fnName, fnNewName)
       fnTable[fnNewName] = fn
     end
     fnTable[fnName] = nil
-    Warningf('FIXME: Patching obsolete function "' .. fnName .. '" to "' .. fnNewName .. '". Please update your code as it uses deprecated API.')
+    Warning('FIXME: Patching obsolete function "' .. fnName .. '" to "' .. fnNewName .. '". Please update your code as it uses deprecated API.')
   end
 end
 
@@ -122,26 +124,26 @@ end
 local function processMod(modName, loadedMod)
     modName = modName:lower()
     if type(loadedMod) ~= "table" then
-        Errorf("  invalid return value.")
+        Error("  invalid return value.")
         return false
     elseif mods[modName] then
-        Errorf("  a mod named '" .. modName .. "' is already loaded.")
+        Error("  a mod named '" .. modName .. "' is already loaded.")
         return false
     else
         if type(loadedMod.info) ~= 'table' then
-          Errorf("  invalid or missing info table, this mod will not be loaded.")
+          Error("  invalid or missing info table, this mod will not be loaded.")
           return false
         end
         
         -- check if we should be loading this mod
         local context = loadedMod.info.context
         if not context or type(context) ~= 'table' then
-          Errorf("  no context information. this mod will not be loaded.")
+          Error("  no context information. this mod will not be loaded.")
           return false
         end
         
         if not checkContext(context, getContexts()) then
-          Displayf("  not specified to run in this context")
+          Display("  not specified to run in this context")
           return false
         end
         
@@ -164,8 +166,8 @@ local function processMod(modName, loadedMod)
         if type(loadedMod.onModLoaded) == 'function' then
           local ok, loadResult = pcall(loadedMod.onModLoaded)
           if not ok then
-            Errorf("  onModLoaded failed, mod will not be loaded")
-            Errorf(loadResult)
+            Error("  onModLoaded failed, mod will not be loaded")
+            Error(loadResult)
             mods[modName] = nil
             return false
           end
@@ -175,15 +177,7 @@ local function processMod(modName, loadedMod)
         -- remove if onModLoaded returned false
         if loadResult then
           -- load any persistent data
-          print("[SERIALIZATION] Attempt to deserialize " .. loadedMod._modInternalName)
-          if PersistentDataStore.Contains(loadedMod._modInternalName) and type(loadedMod.deserialize) == 'function' then
-            print(" ... calling func")
-            local data = PersistentDataStore.Retrieve(loadedMod._modInternalName)
-            loadedMod.deserialize(json.decode(data))
-          else
-            print(" ... NOT found or no func")
-          end
-          PersistentDataStore.Delete(loadedMod._modInternalName)
+          serializer.deserialize(loadedMod)
           
           -- cache hooks
           for k,v in pairs(loadedMod) do
@@ -194,10 +188,10 @@ local function processMod(modName, loadedMod)
             end
           end
           
-          Displayf("  success")
+          Display("  success")
           return true
         else
-          Displayf("  skipped as requested by mod")
+          Display("  skipped as requested by mod")
           mods[modName] = nil
           return false
         end
@@ -205,11 +199,11 @@ local function processMod(modName, loadedMod)
 end
 
 local function loadModFromDisk(rootPath)
-    print("Loading mod: " .. rootPath)
+    Display("Loading mod: " .. rootPath)
     
     local mainPath = rootPath .. "/main.lua"
     if not fileExists(mainPath) then
-      Warningf("Can't load mod at " .. rootPath .. " because main.lua doesn't exist.")
+      Warning("Can't load mod at " .. rootPath .. " because main.lua doesn't exist.")
       return
     end
     
@@ -221,7 +215,7 @@ local function loadModFromDisk(rootPath)
     local ok, mod = pcall(require, convertedPath) 
     if not ok then 
       local err = mod
-      Errorf("An error occurred loading mod at " .. rootPath .. ": " .. err)
+      Error("An error occurred loading mod at " .. rootPath .. ": " .. err)
       return
     end
 
@@ -232,7 +226,7 @@ end
 local function loadModsFromDisk()
     local attrib = lfs.attributes(modsPath)
     if attrib == nil or attrib.mode ~= "directory" then
-        Errorf("modsystem: cannot load mods because mods isn't a directory??")
+        Error("modsystem: cannot load mods because mods isn't a directory??")
         return
     end
         
@@ -249,7 +243,7 @@ local function loadModsFromDisk()
 end
 
 local function loadModFromArchive(path)
-    print("Loading script: " .. path)
+    Display("Loading script: " .. path)
 
     local file = Stream.Open(path, true)
     local text = file:ReadAll()
@@ -258,7 +252,7 @@ local function loadModFromArchive(path)
     local ok, mod = pcall(load, text) 
     if not ok then 
       local err = mod
-      Errorf("An error occurred loading script at " .. path .. ": " .. err)
+      Error("An error occurred loading script at " .. path .. ": " .. err)
       return
     end
 
@@ -272,7 +266,8 @@ local function loadModsFromArchives()
     local loadCityScripts = checkContext({"game"}, getContexts())
     local cityScriptPath = loadCityScripts and "city/" .. MMSTATE.CityName .. "/" or nil
     
-    -- load scripts
+    -- find scripts
+    local modsToLoad = {}
     for file, isDir in datAssetManager.EnumFiles("scripts", false) do
       local slashCount = charCount(file, "/")
       local isLuaFile = endsWith(file:lower(), ".lua")
@@ -280,12 +275,25 @@ local function loadModsFromArchives()
       if isLuaFile then
         if slashCount == 0 then
           -- this file is directly in the scripts subfolder
-          loadModFromArchive("scripts/" .. file)
+          table.insert(modsToLoad, "scripts/" .. file)
         elseif loadCityScripts and slashCount == 2 and startsWith(file, cityScriptPath) then
           -- city specific script
-          loadModFromArchive("scripts/" .. file)
+          table.insert(modsToLoad, "scripts/" .. file)
         end
       end
+    end
+    
+    -- sort and deduplicate
+    table.sort(modsToLoad, function(a, b) return a:lower() < b:lower() end)
+    for i=#modsToLoad,2,-1 do 
+      if modsToLoad[i] == modsToLoad[i-1] then 
+        table.remove(modsToLoad, i)
+      end
+    end
+    
+    -- load them
+    for _,modToLoad in ipairs(modsToLoad) do
+      loadModFromArchive(modToLoad)
     end
 end
 
@@ -299,20 +307,26 @@ end
 local function init()
     createModsDirectory()
     
-    Warningf("modsystem.init: loading mods")
+    Warning("modsystem.init: loading mods")
     loadModsFromDisk()
     loadModsFromArchives()
-    Warningf("modsystem.init: loading mods complete")
+    Warning("modsystem.init: loading mods complete")
 end
 
 --api
+local function listMods()
+  for k,v in pairs(mods) do
+    Display(k)
+  end
+end
+
 local function getMod(name)
   local ret = findMod(name)
   if ret == nil then
-    Errorf("modsystem.getmod: Cannot find " .. name)
-    Errorf("Loaded mods:")
+    Error("modsystem.getmod: Cannot find " .. name)
+    Error("Loaded mods:")
     for k,v in pairs(mods) do
-      Errorf(k)
+      Error(k)
     end
   end
   return ret
@@ -321,20 +335,20 @@ end
 local function registerSubmodule(parentMod, submodule, subpath)
   local parentModTable = findMod(parentMod)
   if parentModTable == nil then
-    Errorf("registerSubmodule: invalid parentMod.")
+    Error("registerSubmodule: invalid parentMod.")
   end
   
   if type(submodule) ~= 'table' then
-    Errorf("registerSubmodule: invalid submodule. Must be mod table.")
+    Error("registerSubmodule: invalid submodule. Must be mod table.")
     return
   end
   
   -- things look in check, lets register this as a submodule
   local submodulePath = parentModTable._modInternalName .. "_" .. subpath:lower()
-  Displayf("  registering submodule " .. submodulePath)
+  Display("  registering submodule " .. submodulePath)
   
   if not parentModTable then
-    Errorf("registerSubmodule: could not find parent module " .. parentModTable._modInternalName .. ".")
+    Error("registerSubmodule: could not find parent module " .. parentModTable._modInternalName .. ".")
     return
   end
   
@@ -346,7 +360,7 @@ end
 local function unload(mod, unloadSubmodules)
   local modTable = findMod(mod)
   if modTable == nil then
-    Errorf("unload: invalid mod")
+    Error("unload: invalid mod")
     return
   end
   
@@ -363,10 +377,7 @@ local function unload(mod, unloadSubmodules)
   mods[modTable._modInternalName] = nil
   
   -- serialize persistent data
-  if type(modTable.serialize) == 'function' then
-    local serializedData = modTable.serialize()
-    PersistentDataStore.Store(modTable._modInternalName, json.encode(serializedData))
-  end
+  serializer.serialize(modTable)
   
   -- clean hooks
   for k,v in pairs(modTable) do
@@ -385,7 +396,7 @@ local function reload(mod)
   -- TODO
   local modTable = findMod(mod)
   if modTable == nil then
-    Errorf("reload: invalid key or mod not loaded")
+    Error("reload: invalid key or mod not loaded")
     return
   end
   
@@ -431,6 +442,7 @@ end
 M.init = init
 
 M.registerSubmodule = registerSubmodule
+M.listMods = listMods
 M.getMod = getMod
 M.unload = unload
 M.reload = reload
