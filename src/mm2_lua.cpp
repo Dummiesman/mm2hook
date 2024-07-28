@@ -207,7 +207,6 @@ void luaSetGlobals()
         Lua::setGlobal(L, "MATERIALMGR", lvlMaterialMgr::GetInstance());
 }
 
-}
 
 LUAMOD_API int luaopen_MM2(lua_State *L)
 {
