@@ -306,6 +306,7 @@
     <ClInclude Include="src\modules\audio\control.h" />
     <ClInclude Include="src\modules\audio\list.h" />
     <ClInclude Include="src\modules\audio\manager.h" />
+    <ClInclude Include="src\modules\audio\object.h" />
     <ClInclude Include="src\modules\audio\sound.h" />
     <ClInclude Include="src\modules\audio\speech.h" />
     <ClInclude Include="src\modules\audio\streamingmusic.h" />

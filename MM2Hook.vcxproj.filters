@@ -1849,6 +1849,8 @@
     <ClInclude Include="src\modules\localize\localize.h" />
     <ClInclude Include="src\modules\effects\damage.h">
       <Filter>Source Files\modules\effects</Filter>
+    <ClInclude Include="src\modules\audio\object.h">
+      <Filter>Source Files\modules\audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@ namespace MM2
     class audControl;
 
     // External declarations
+    extern class audObject;
 
     // Class definitions
     class audControl  {
@@ -34,6 +35,11 @@ namespace MM2
         void Init(audManager::AUDTYPE type, audManager* manager)
         {
             hook::Thunk<0x59FF40>::Call<void>(this, type, manager);
+        }
+
+        audObject* FindObjectByHandle(int handle)
+        {
+            return hook::Thunk<0x5A0300>::Call<audObject*>(this, handle);
         }
 
     };

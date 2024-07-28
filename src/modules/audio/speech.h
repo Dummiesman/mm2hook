@@ -71,8 +71,9 @@ namespace MM2
         AGE_API void SetExtension(LPCSTR extension)             { hook::Thunk<0x510220>::Call<void>(this, extension); }
         AGE_API void SetSubPath(LPCSTR extension)               { hook::Thunk<0x5101D0>::Call<void>(this, extension); }
         AGE_API void SetVolume(float volume)                    { hook::Thunk<0x510480>::Call<void>(this, volume); }
-        AGE_API void Play(int category, float timeUntilPlay)    { hook::Thunk<0x510450>::Call<void>(this, category, timeUntilPlay); }
-        AGE_API void Play(int category, int soundIndex, float timeUntilPlay)    
+        AGE_API void Play(int category, float timeUntilPlay = 0.0f)
+                                                                { hook::Thunk<0x510450>::Call<void>(this, category, timeUntilPlay); }
+        AGE_API void Play(int category, int soundIndex, float timeUntilPlay = 0.0f)    
                                                                 { hook::Thunk<0x05106B0>::Call<void>(this, category, soundIndex, timeUntilPlay); }
         AGE_API void Stop()                                     { hook::Thunk<0x510840>::Call<void>(this); }
         AGE_API void AllocateQueuePlayData()                    { hook::Thunk<0x510350>::Call<void>(this); }
