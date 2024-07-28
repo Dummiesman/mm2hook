@@ -135,7 +135,7 @@ namespace MM2
         aiVehicle* NextAtStopSign;
     public:
         aiVehicle(void)                                     {};
-        aiVehicle(const aiVehicle &&)                       {};
+        ~aiVehicle()                       {};
 
         int GetId() const;
 

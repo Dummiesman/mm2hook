@@ -33,9 +33,8 @@ namespace MM2
     class aiPoliceOfficer {
     public:
         static bool s_EnableRubberBanding;
-    public:
     private:
-        short word_00; // Unused?? Set to -1 on original Init
+        short unk00; // Unused by default seemingly
         aiVehiclePhysics m_VehiclePhysics;
         vehCar* m_FollowCar;
         short m_ID;
@@ -51,6 +50,12 @@ namespace MM2
         short m_PerpComponentType; //  We swap them here so when functions are reimplemented it corrects the issue
         short m_IntersectionIds[100];
         short m_NumIntersectionIds;
+    public:
+        float OpponentChaseChance;
+        float OpponentDetectionRange;
+        float ChaseRange;
+        bool ChasePlayers;
+        bool ChaseOpponents;
     private:
         AGE_API void Push();
         AGE_API void Block();
@@ -60,6 +65,8 @@ namespace MM2
         AGE_API void FollowPerpetrator();
         AGE_API void DetectPerpetrator();
         AGE_API void PerpEscapes(bool playExplosion);
+
+        bool IsPerpBreakingTheLaw(vehCar* perpCar);
     public:
         ANGEL_ALLOCATOR
 
@@ -67,7 +74,7 @@ namespace MM2
         ~aiPoliceOfficer();
 
         void CancelPursuit();
-        void ChaseVehicle(vehCar* chaseMe);
+        bool ChaseVehicle(vehCar* chaseMe);
         int GetId() const;
         const aiVehiclePhysics* GetVehiclePhysics() const;
         int GetApprehendState() const;
@@ -90,15 +97,14 @@ namespace MM2
         AGE_API bool InPersuit() const;
         AGE_API void StartSiren();
         AGE_API void StopSiren();
-        AGE_API BOOL Fov(vehCar* perpCar);
         AGE_API BOOL Collision(vehCar* perpCar);
         AGE_API BOOL HitMe(vehCar* perpCar);
-        AGE_API BOOL IsPerpACop(vehCar* perpCar);
-        AGE_API BOOL OffRoad(vehCar* perpCar);
-        AGE_API BOOL WrongWay(vehCar* perpCar);
+        AGE_API bool IsPerpACop(vehCar* perpCar);
+        AGE_API bool WrongWay(vehCar* perpCar);
+        AGE_API bool OffRoad(vehCar* perpCar);
+        AGE_API bool Fov(vehCar* perpCar);
+        AGE_API bool Speeding(vehCar* perpCar);
 
         static void BindLua(LuaState L);
     };
-
-    ASSERT_SIZEOF(aiPoliceOfficer, 0x9870);
 }

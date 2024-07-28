@@ -1,4 +1,5 @@
 #include "aiPoliceOfficer.h"
+#include "aiRouteRacer.h"
 #include "aiMap.h"
 #include "..\vehicle.h"
 #include "..\rgl.h"
@@ -8,14 +9,13 @@ using namespace MM2;
 
 bool aiPoliceOfficer::s_EnableRubberBanding = true;
 
-aiPoliceOfficer::aiPoliceOfficer(void) 
+aiPoliceOfficer::aiPoliceOfficer(void) : m_VehiclePhysics()
 {
-	hook::Thunk<0x53D910>::Call<void>(this);
 }
 
 MM2::aiPoliceOfficer::~aiPoliceOfficer()
 {
-	hook::Thunk<0x53D920>::Call<void>(this);
+
 }
 
 AGE_API void aiPoliceOfficer::Push()
@@ -70,7 +70,7 @@ void aiPoliceOfficer::FollowPerpetrator() { hook::Thunk<0x53E410>::Call<void>(th
 
 void aiPoliceOfficer::CancelPursuit()
 {
-	if (!InPersuit() || GetFollowedCar() == nullptr)
+	if (m_PoliceState == aiPoliceState::Idle)
 		return;
 
 	// unregister
@@ -85,19 +85,28 @@ void aiPoliceOfficer::CancelPursuit()
 	}
 
 	// stop car and set our state
-	SetPoliceState(aiPoliceState::Idle);
+	m_PoliceState = aiPoliceState::Idle;
 	m_VehiclePhysics.SetState(aiVehiclePhysicsState::Stop);
+	m_FollowCar = nullptr;
 }
 
-void aiPoliceOfficer::ChaseVehicle(vehCar* chaseMe)
+bool aiPoliceOfficer::ChaseVehicle(vehCar* chaseMe)
 {
-    // already chasing this car?
+	if (m_PoliceState == aiPoliceState::Incapacitated)
+		return false;
+
 	auto policeForce = aiMap::GetInstance()->GetPoliceForce();
-    if (policeForce->IsCopChasingPerp(GetCar(), chaseMe))
-      return;
-    
-    // stop chasing the original vehicle first
-	this->CancelPursuit();
+	if (m_PoliceState != aiPoliceState::Idle)
+	{
+		// already chasing this car?
+		if (policeForce->IsCopChasingPerp(GetCar(), chaseMe))
+		{
+			return true;
+		}
+
+		// stop chasing the original vehicle first
+		this->CancelPursuit();
+	}
     
     // chase the new vehicle
     if (policeForce->RegisterPerp(GetCar(), chaseMe))
@@ -110,7 +119,9 @@ void aiPoliceOfficer::ChaseVehicle(vehCar* chaseMe)
 	   
 	   m_PoliceState = aiPoliceState::FollowPerp;
        this->FollowPerpetrator();
+	   return true;
     }
+	return false;
 }
 
 int aiPoliceOfficer::GetId() const
@@ -185,7 +196,15 @@ void MM2::aiPoliceOfficer::Init(int id)
 {
 	auto raceData = aiMap::GetInstance()->GetRaceData();
 	auto ourData = raceData->GetPoliceData(id);
+	auto carsim = m_VehiclePhysics.GetCar()->GetCarSim();
+
 	Init(id, ourData->Basename, ourData->Flags);
+	
+	carsim->SetResetPos(ourData->Position);
+	carsim->SetResetRotation(ourData->Rotation);
+	ChaseRange = raceData->GetCopChaseRange();
+	OpponentDetectionRange = ourData->OppDetectRange;
+	OpponentChaseChance = ourData->OppChaseChance;
 }
 
 void MM2::aiPoliceOfficer::Init(int id, const char* basename, int flags)
@@ -199,8 +218,13 @@ void MM2::aiPoliceOfficer::Init(int id, const char* basename, int flags)
 	//if (flags & 2) m_AllowedBehaviors[m_BehaviorCount++] = 8; // Invalid (potentially was Barricade)
 	if (flags & 4) m_AllowedBehaviors[m_BehaviorCount++] = 4; // Push
 	if (flags & 8) m_AllowedBehaviors[m_BehaviorCount++] = 3; // Ram?
-
 	
+	ChasePlayers = true;
+	ChaseOpponents = true;
+	ChaseRange = 250.0f;
+	OpponentDetectionRange = 50.0f;
+	OpponentChaseChance = 0.5f;
+
 	auto policeAudio = GetVehiclePhysics()->GetCar()->GetCarAudioContainerPtr()->GetPoliceCarAudioPtr();
 	if (policeAudio)
 	{
@@ -213,32 +237,30 @@ void MM2::aiPoliceOfficer::Init(int id, const char* basename, int flags)
 
 AGE_API void aiPoliceOfficer::Reset()  
 {
-	auto raceData = aiMap::GetInstance()->GetRaceData();
-	auto ourData = raceData->GetPoliceData(m_ID);
-
-	auto carsim = m_VehiclePhysics.GetCar()->GetCarSim();
-	carsim->SetResetPos(ourData->Position);
-	carsim->SetResetRotation(ourData->Rotation);
-
 	for (int i = 0; i < 8; i++)
 	{
 		m_OpponentChaseDenyList[i] = 0;
 	}
 	
+	if (m_PoliceState != aiPoliceState::Idle)
+	{
+		aiMap::GetInstance()->GetPoliceForce()->UnRegisterCop(m_VehiclePhysics.GetCar(), m_FollowCar);
+	}
+
 	m_LastPoliceState = -1;
-	m_PoliceState = 0;
+	m_PoliceState = aiPoliceState::Idle;
 	m_ApprehendState = aiPoliceApprehendState::Ram;
 
 	auto policeAudio = m_VehiclePhysics.GetCar()->GetCarAudioContainerPtr()->GetPoliceCarAudioPtr();
 	if (policeAudio)
 	{
 		policeAudio->Reset();
-	}
+	}	
 	this->StopSiren();	
 
 	m_VehiclePhysics.Reset();
 	m_NumIntersectionIds = 0;
-	m_VehiclePhysics.RegisterRoute(m_IntersectionIds, m_NumIntersectionIds, ourData->Position, Vector3::ORIGIN, 
+	m_VehiclePhysics.RegisterRoute(m_IntersectionIds, m_NumIntersectionIds, m_VehiclePhysics.GetCar()->GetCarSim()->GetResetPos(), Vector3::ORIGIN,
 								   0, 0.0f, 5.0f, false, true, true, false, true, false,
 							       1.0f, 2.0f, 0.7f, 75.0f);
 }
@@ -269,7 +291,7 @@ AGE_API void MM2::aiPoliceOfficer::Update()
 				this->ApprehendPerpetrator();
 			}
 
-			if (m_FollowCarDistance > AIMAP->GetRaceData()->GetCopChaseDistance())
+			if (m_FollowCarDistance > ChaseRange)
 			{
 				this->PerpEscapes(false);
 				return;
@@ -319,7 +341,7 @@ AGE_API void MM2::aiPoliceOfficer::Update()
 	}
 
 	// simulate physics if close enough to the perp, or if a player is close
-	if (this->InPersuit() && m_FollowCarDistance <= 250.0f)
+	if (this->InPersuit())
 	{
 		if (m_FollowCarDistance <= 200.0f || !dgPhysManager::sm_OpponentOptimization)
 			dgPhysManager::Instance->DeclareMover(m_VehiclePhysics.GetCar()->GetModel(), 2, 0x1B);
@@ -355,38 +377,36 @@ AGE_API void MM2::aiPoliceOfficer::Update()
 	}
 }
 
-AGE_API bool aiPoliceOfficer::InPersuit() const                      { return hook::Thunk<0x53E400>::Call<bool>(this); }
+AGE_API bool aiPoliceOfficer::InPersuit() const
+{
+	return m_PoliceState != aiPoliceState::Idle && m_PoliceState != aiPoliceState::Incapacitated;
+}
+
 AGE_API void aiPoliceOfficer::StartSiren()                           { hook::Thunk<0x53DBF0>::Call<void>(this); }
 AGE_API void aiPoliceOfficer::StopSiren()                            { hook::Thunk<0x53DC40>::Call<void>(this); }
 
-AGE_API BOOL aiPoliceOfficer::Fov(vehCar* perpCar)
+AGE_API bool aiPoliceOfficer::Fov(vehCar* perpCar)
 {
-	if (!hook::Thunk<0x53E2A0>::Call<BOOL>(this, perpCar))
-		return FALSE;
+	auto ourMatrix = m_VehiclePhysics.GetCar()->GetICS()->GetMatrix();
+	Vector3 dirToCar = perpCar->GetICS()->GetPosition() - m_VehiclePhysics.GetCar()->GetICS()->GetPosition();
 
-	Vector3 copPosition = this->GetCar()->GetCarSim()->GetICS()->GetPosition();
-	Vector3 perpPosition = perpCar->GetCarSim()->GetICS()->GetPosition();
+	float sideDist = ourMatrix.GetRow(0).Dot(dirToCar);
+	float forwardDist = ourMatrix.GetRow(2).Dot(dirToCar * -1.0f);
+	float angle = atan2f(sideDist, forwardDist);
 
-	lvlSegment segment;
-	lvlIntersection intersection;
-
-	copPosition.Y += 1.f;
-	perpPosition.Y += 1.f;
-
-	segment.Set(copPosition, perpPosition, 0, nullptr);
-	return dgPhysManager::Instance->Collide(segment, &intersection, 0, nullptr, (ushort)RoomFlags::SpecialBound, 0) ? FALSE : TRUE;
+	return angle > -1.57f && angle < 1.57f;
 }
 
 AGE_API BOOL aiPoliceOfficer::Collision(vehCar* perpCar)             { return hook::Thunk<0x53E370>::Call<BOOL>(this, perpCar); }
 AGE_API BOOL aiPoliceOfficer::HitMe(vehCar* perpCar)                 { return hook::Thunk<0x53E390>::Call<BOOL>(this, perpCar); }
 
-AGE_API BOOL aiPoliceOfficer::IsPerpACop(vehCar* perpCar)
+AGE_API bool aiPoliceOfficer::IsPerpACop(vehCar* perpCar)
 {
 	char* vehName = perpCar->GetCarDamage()->GetName(); // we can't use vehCarSim because the game forces vpcop to vpmustang99...
-	return vehCarAudioContainer::IsPolice(vehName) ? TRUE : FALSE;
+	return vehCarAudioContainer::IsPolice(vehName);
 }
 
-AGE_API BOOL aiPoliceOfficer::OffRoad(vehCar* perpCar)
+bool aiPoliceOfficer::OffRoad(vehCar* perpCar)
 {
 	auto AIMAP = aiMap::GetInstance();
 	auto carSim = perpCar->GetCarSim();
@@ -402,17 +422,17 @@ AGE_API BOOL aiPoliceOfficer::OffRoad(vehCar* perpCar)
 
 		float outDistanceFromCenter;
 		if (path->IsPosOnRoad(carPosition, 0.f, &outDistanceFromCenter) == 2) // Sidewalk
-			return TRUE;
+			return true;
 	}
 	else if (currentComponentType == aiMapComponentType::None || currentComponentType == aiMapComponentType::Shortcut)
 	{
-		return TRUE;
+		return true;
 	}
 
-	return FALSE;
+	return false;
 }
 
-AGE_API BOOL aiPoliceOfficer::WrongWay(vehCar* perpCar)
+AGE_API bool aiPoliceOfficer::WrongWay(vehCar* perpCar)
 {
 	auto AIMAP = aiMap::GetInstance();
 	auto carSim = perpCar->GetCarSim();
@@ -443,11 +463,101 @@ AGE_API BOOL aiPoliceOfficer::WrongWay(vehCar* perpCar)
 		return (ddot > 0 || (ddot <= 0 && vddot > 0.0f && carSim->GetSpeedMPH() >= 10.0f)) ? TRUE : FALSE; // Going backwards, or reversing >10mph
 	}
 
-	return FALSE;
+	return false;
 }
 
-void AGE_API aiPoliceOfficer::DetectPerpetrator()                    { hook::Thunk<0x53DFD0>::Call<void>(this); }
+AGE_API bool aiPoliceOfficer::Speeding(vehCar* perpCar)
+{
+	auto AIMAP = aiMap::GetInstance();
+	short cmpId, cmpType;
+	AIMAP->MapComponent(perpCar->GetICS()->GetPosition(), &cmpId, &cmpType, perpCar->GetModel()->GetRoomId());
+
+	if (static_cast<aiMapComponentType>(cmpType) == aiMapComponentType::Road || static_cast<aiMapComponentType>(cmpType) == aiMapComponentType::Shortcut)
+	{
+		auto  path = aiMap::GetInstance()->Path(cmpId);
+		float speedLimit = 4.0f + path->GetBaseSpeedLimit() + 1.0f; // Max AI ExheedLimit + Speed Limit + Lenieance so 0.01mph over isn't speeding
+		if (path->GetFlags() & aiPath::FLAG_FREEWAY)
+		{
+			speedLimit += (max(path->GetLaneCount(0), path->GetLaneCount(1)) - 1) * 5.0f; // Maximum freeway limit
+		}
+		return perpCar->GetCarSim()->GetSpeed() > speedLimit;
+	}
+	return false;
+}
+
+void AGE_API aiPoliceOfficer::DetectPerpetrator() 
+{
+	if (m_LastPoliceState != m_PoliceState)
+	{
+		m_LastPoliceState = m_PoliceState;
+	}
+
+	auto AIMAP = aiMap::GetInstance();
+	auto policeForce = AIMAP->GetPoliceForce();
+
+	// look for players
+	if (ChasePlayers)
+	{
+		for (int i = 0; i < AIMAP->GetPlayerCount(); i++)
+		{
+			auto player = AIMAP->Player(i);
+			auto playerCar = player->GetCar();
+			auto ourCar = m_VehiclePhysics.GetCar();
+			float dist2 = (playerCar->GetICS()->GetPosition() - ourCar->GetICS()->GetPosition()).Mag2();
+
+			if (dist2 < 5625.0f && this->Fov(playerCar) && this->IsPerpBreakingTheLaw(playerCar))
+			{
+				if (this->ChaseVehicle(playerCar))
+				{
+					return;
+				}
+			}
+		}
+	}
+
+	// look for opponents
+	if (ChaseOpponents)
+	{
+		for (int i = 0; i < AIMAP->GetOpponentCount(); i++)
+		{
+			if (!m_OpponentChaseDenyList[i])
+			{
+				auto opponent = AIMAP->Opponent(i);
+				auto opponentCar = opponent->GetCar();
+				auto ourCar = m_VehiclePhysics.GetCar();
+				float dist2 = (opponentCar->GetICS()->GetPosition() - ourCar->GetICS()->GetPosition()).Mag2();
+
+				if (dist2 < 5625.0f && dist2 < (OpponentDetectionRange * OpponentDetectionRange) 
+					&& this->Fov(opponentCar) && this->IsPerpBreakingTheLaw(opponentCar))
+				{
+					float chance = frand();
+					if (chance <= OpponentChaseChance)
+					{
+						if (this->ChaseVehicle(opponentCar))
+						{
+							return;
+						}
+					}
+					else
+					{
+						m_OpponentChaseDenyList[i] = TRUE;
+					}
+				}
+			}
+		}
+	}
+}
+
 void AGE_API aiPoliceOfficer::PerpEscapes(bool playExplosion)        { hook::Thunk<0x53F170>::Call<void>(this, playExplosion); }
+
+bool MM2::aiPoliceOfficer::IsPerpBreakingTheLaw(vehCar* perpCar)
+{
+	if (aiMap::GetInstance()->GetPoliceForce()->GetNumChasers(perpCar))
+	{
+		return true;
+	}
+	return !this->IsPerpACop(perpCar) && (this->OffRoad(perpCar) || this->Speeding(perpCar));
+}
 
 void aiPoliceOfficer::BindLua(LuaState L) {
 	LuaBinding(L).beginClass<aiPoliceOfficer>("aiPoliceOfficer")
@@ -465,11 +575,18 @@ void aiPoliceOfficer::BindLua(LuaState L) {
 		.addPropertyReadOnly("InPursuit", &InPersuit)
 		.addPropertyReadOnly("InPersuit", &InPersuit)
 
+		.addVariable("ChaseRange", &aiPoliceOfficer::ChaseRange)
+		.addVariable("ChasePlayers", &aiPoliceOfficer::ChasePlayers)
+		.addVariable("ChaseOpponents", &aiPoliceOfficer::ChaseOpponents)
+		.addVariable("OpponentChaseChance", &aiPoliceOfficer::OpponentChaseChance)
+		.addVariable("OpponentDetectionRange", &aiPoliceOfficer::OpponentDetectionRange)
+
 		.addPropertyReadOnly("Car", &GetCar)
 		.addPropertyReadOnly("State", &GetState)
 
 		.addFunction("Init", static_cast<void (aiPoliceOfficer::*)(int, const char*, int)>(&Init))
 		.addFunction("Reset", &Reset)
+		.addFunction("Update", &Update)
 		.addFunction("CancelPursuit", &CancelPursuit)
 		.addFunction("ChaseVehicle", &ChaseVehicle)
 		.addFunction("StartSiren", &StartSiren)

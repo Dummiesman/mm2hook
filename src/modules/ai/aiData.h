@@ -16,7 +16,7 @@ namespace MM2
         char RaceFileName[16];
         char RaceDirectory[128];
         bool AmbientLaneChanges;
-        float CopChaseDistance;
+        float CopChaseRange;
         ushort ExceptionCount;
         ushort PoliceCount;
         ushort OpponentCount;
@@ -35,8 +35,8 @@ namespace MM2
         aiRaceData(const aiRaceData &&)                     DONOTCALL;
         virtual ~aiRaceData(void) DONOTCALL;
 
-        float GetCopChaseDistance() const {
-            return this->CopChaseDistance;
+        float GetCopChaseRange() const {
+            return this->CopChaseRange;
         }
 
         int GetNumPedTypes() const {
@@ -123,6 +123,11 @@ namespace MM2
             return &this->AmbientTypeData[index];
         }
 
+        bool AmbientsChangeLanes() const
+        {
+            return AmbientLaneChanges;
+        }
+
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<aiRaceData>("aiRaceData")
@@ -132,7 +137,7 @@ namespace MM2
                 .addPropertyReadOnly("NumExceptions", &GetExceptionCount)
                 .addPropertyReadOnly("NumAmbientTypes", &GetNumAmbientTypes)
                 .addFunction("GetAmbientType", &GetAmbientTypeData)
-                .addVariable("CopChaseDistance", &aiRaceData::CopChaseDistance)
+                .addVariable("CopChaseDistance", &aiRaceData::CopChaseRange)
                 .addVariable("AmbientLaneChanges", &aiRaceData::AmbientLaneChanges)
                 .addFunction("GetOpponent", &GetOpponentData)
                 .addFunction("GetHookman", &GetHookmanData)
