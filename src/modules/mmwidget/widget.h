@@ -35,7 +35,7 @@ namespace MM2
         uint32_t dword3C;
         uint32_t WidgetID;
         BOOL ReadOnly;
-        const char *pTooltipText;
+        const char *Name;
         uint32_t dword4C;
         Vector2 Position;
         Vector2 Size;
@@ -57,9 +57,15 @@ namespace MM2
                                                             { hook::Thunk<0x4E73E0>::Call<void>(this, x, y); }
         virtual AGE_API float GetScreenHeight(void)         { return hook::Thunk<0x4E73F0>::Call<float>(this); }
 
+        const char* GetName() const
+        {
+            return Name;
+        }
+
         static void BindLua(LuaState L) {            
             LuaBinding(L).beginClass<uiWidget>("uiWidget")
                 .addProperty("Enabled", &getEnabledLua, &setEnabledLua)
+                .addPropertyReadOnly("Name", &GetName)
                 .addFunction("Enable", &Enable)
                 .addFunction("Disable", &Disable)
                 .addFunction("TurnOn", &TurnOn)
