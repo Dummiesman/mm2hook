@@ -521,6 +521,7 @@
     <ClInclude Include="src\modules\ped\pedactive.h" />
     <ClInclude Include="src\modules\ped\pedanim.h" />
     <ClInclude Include="src\modules\ped\pedinst.h" />
+    <ClInclude Include="src\modules\ped\pedscripted.h" />
     <ClInclude Include="src\modules\ped\ragdollmgr.h" />
     <ClInclude Include="src\modules\ped\__template__.h" />
     <ClInclude Include="src\modules\phys.h" />
@@ -854,6 +855,7 @@
     <ClCompile Include="src\modules\node\linear.cpp" />
     <ClCompile Include="src\modules\parse.cpp" />
     <ClCompile Include="src\modules\ped.cpp" />
+    <ClCompile Include="src\modules\ped\pedscripted.cpp" />
     <ClCompile Include="src\modules\ped\ragdollmgr.cpp" />
     <ClCompile Include="src\modules\phys.cpp" />
     <ClCompile Include="src\modules\phys\phinertia.cpp" />

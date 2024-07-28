@@ -2768,6 +2768,8 @@
     </ClCompile>
     <ClCompile Include="src\modules\effects\damage.cpp">
       <Filter>Source Files\modules\effects</Filter>
+    <ClCompile Include="src\modules\ped\pedscripted.cpp">
+      <Filter>Source Files\modules\ped</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
