@@ -65,6 +65,12 @@ void vehCarModelFeatureHandler::SetVariant(int a1)
     model->vehCarModel::SetVariant(a1);
 }
 
+const Matrix34& vehCarModelFeatureHandler::GetMatrix(Matrix34* a1)
+{
+    auto model = reinterpret_cast<vehCarModel*>(this);
+    return model->vehCarModel::GetMatrix(a1);
+}
+
 void vehCarModelFeatureHandler::DrawGlow() {
     auto model = reinterpret_cast<vehCarModel*>(this);
     model->vehCarModel::DrawGlow();
@@ -77,13 +83,9 @@ void vehCarModelFeatureHandler::DrawShadow()
 }
 
 void vehCarModelFeatureHandler::Install() {
-    InstallPatch({ 0x64, 0x1 }, {
-        0x42BB6E + 1, // Change size of vehCarModel on allocation
-    });
-
-    InstallPatch({ 0x64, 0x1 }, {
-        0x4CDFE0 + 1, // Change size of vehCarModel on SizeOf
-    });
+    // write new vehCarModel size
+    mem::write(0x42BB6E + 1, sizeof(vehCarModel));
+    mem::write(0x4CDFE0 + 1, sizeof(vehCarModel));
 
     InstallCallback("vehCarModel::Init", "Use rewritten vehCarModel init.",
         &vehCarModel::Init, {
@@ -131,6 +133,12 @@ void vehCarModelFeatureHandler::Install() {
     InstallVTableHook("vehCarModel::DrawShadow",
         &DrawShadow, {
             0x5B2CE0
+        }
+    );
+
+    InstallVTableHook("vehCarModel::GetMatrix",
+        &GetMatrix, {
+            0x5B2CBC
         }
     );
 
