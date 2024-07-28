@@ -27,9 +27,11 @@ Multiple declarations will cause compiler errors!
 //
 #define ANGEL_ALLOCATOR void* operator new(size_t size)                     { return hook::StaticThunk<0x577360>::Call<void*>(size); } \
                         void* operator new[](size_t size)                   { return hook::StaticThunk<0x577360>::Call<void*>(size); } \
+                        void* operator new(size_t size, void* buf)          { /*Placement New*/ return buf; } \
                         void operator delete(void * pointer)                { hook::StaticThunk<0x577380>::Call<void>(pointer);}       \
                         void operator delete(void * pointer, size_t size)   { hook::StaticThunk<0x577380>::Call<void>(pointer);}       \
-                        void operator delete[](void * pointer)              { hook::StaticThunk<0x5773C0>::Call<void>(pointer);}
+                        void operator delete[](void * pointer)              { hook::StaticThunk<0x5773C0>::Call<void>(pointer);}       \
+                        void operator delete(void* ptr, void* buf)          { /*Placement Delete*/ } 
 
 #define LEVEL_ALLOCATOR void* operator new(size_t size)          { return hook::StaticThunk<0x463110>::Call<void*>(size); } \
                         void operator delete(void * pointer)     { hook::StaticThunk<0x463170>::Call<void>(pointer);}       
