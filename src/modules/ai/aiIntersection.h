@@ -30,10 +30,14 @@ namespace MM2
         //lua stuff
         int GetBangers(lua_State* L);
         int GetVehicles(lua_State* L);
+        std::tuple<bool, int, int, int> luaIsSubwayStart();
+        std::tuple<bool, int> luaIsSubwayEnd();
     public:
         aiIntersection(void)                                DONOTCALL;
         aiIntersection(const aiIntersection &&)             DONOTCALL;
 
+        AGE_API bool IsSubwayStart(int* outStartPathId, int* outSideA, int* outSideB);
+        AGE_API bool IsSubwayEnd(int* outEndPathId);
         AGE_API int NumSources() const;
         AGE_API int NumSinks() const;
         void DrawId() const;

@@ -13,6 +13,30 @@ namespace MM2
         return CppFunctor::make<aiObstacleLuaIterator>(L, this->vehicles);
     }
 
+    std::tuple<bool, int, int, int> aiIntersection::luaIsSubwayStart()
+    {
+        int pathId, sideA, sideB;
+        bool result = this->IsSubwayStart(&pathId, &sideA, &sideB);
+        return std::make_tuple(result, pathId, sideA, sideB);
+    }
+
+    std::tuple<bool, int> aiIntersection::luaIsSubwayEnd()
+    {
+        int pathId;
+        bool result = this->IsSubwayEnd(&pathId);
+        return std::make_tuple(result, pathId);
+    }
+
+    AGE_API bool aiIntersection::IsSubwayStart(int* outStartPathId, int* outSideA, int* outSideB)
+    {
+        return hook::Thunk<0x54A2B0>::Call<bool>(this, outStartPathId, outSideA, outSideB);
+    }
+
+    AGE_API bool aiIntersection::IsSubwayEnd(int* outEndPathId)
+    {
+        return hook::Thunk<0x54A340>::Call<bool>(this, outEndPathId);
+    }
+
     AGE_API int aiIntersection::NumSources() const
     {
         return hook::Thunk<0x549D60>::Call<int>(this); 
@@ -73,6 +97,8 @@ namespace MM2
             .addPropertyReadOnly("NumPaths", &GetPathCount)
             .addPropertyReadOnly("NumSinks", &NumSinks)
             .addPropertyReadOnly("NumSources", &NumSources)
+            .addFunction("IsSubwayStart", &luaIsSubwayStart)
+            .addFunction("IsSubwayEnd", &luaIsSubwayEnd)
             .addFunction("DrawId", &DrawId)
             .addFunction("DrawPaths", &DrawPaths)
             .addFunction("GetPath", &GetPath)
