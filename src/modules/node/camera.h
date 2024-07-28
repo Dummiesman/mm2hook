@@ -22,6 +22,34 @@ namespace MM2
     extern class vehCar;
 
     // Class definitions
+    struct Spline : public asNode
+    {
+        /* This isn't really used at all, but it's a member of camTrackCS */
+    public:
+        int npoints;
+        float* a;
+        float* b;
+        float* c;
+        float* d;
+        float* cc0;
+        float* cc1;
+        float* cc2;
+        float* cc3;
+        float* v;
+        float* dword_40;
+        float* dword_44;
+        float t0;
+        float t1;
+        float t2;
+        float t3;
+        float dword_58;
+        float dword_5c;
+        float timeEnd;
+        float timeStart;
+        int dword_68;
+    };
+    ASSERT_SIZEOF(Spline, 0x6C);
+
     class asCamera : public asNode {
     private:
         byte _buffer[0x158];
@@ -75,8 +103,6 @@ namespace MM2
         }
 
         virtual AGE_API ~camBaseCS(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x521DF0>::Call<void>(this);
         }
 
         //fields
@@ -208,8 +234,6 @@ namespace MM2
         }
 
         virtual AGE_API ~camAppCS(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x522050>::Call<void>(this);
         }
 
         void SetApproachOn(bool value) { ApproachOn = (value) ? TRUE : FALSE; }
@@ -268,8 +292,6 @@ namespace MM2
         }
 
         virtual AGE_API ~camCarCS(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x521490>::Call<void>(this);
         }
 
         AGE_API void Init(vehCar *car, LPCSTR name)        { hook::Thunk<0x5214A0>::Call<void>(this, car, name); }
@@ -435,7 +457,11 @@ namespace MM2
         float RevDelay;
         float RevOnApp;
         float RevOffApp;
-        byte _buffer[0x118];
+        byte _buffer1[0x3C];
+        Spline m_Spline;
+        byte _buffer2[0x68];
+        int CollideFlags1;
+        int CollideFlags2;
     private:
         AGE_API void Collide(Vector3 a1)                    { hook::Thunk<0x51EED0>::Call<void>(this, a1); }
         AGE_API void Front(float a1)                        { hook::Thunk<0x51F980>::Call<void>(this, a1); }
@@ -453,8 +479,6 @@ namespace MM2
         }
 
         virtual AGE_API ~camTrackCS(void) {
-            scoped_vtable x(this);
-            hook::Thunk<0x51DA80>::Call<void>(this);
         }
 
         AGE_API void SwingToRear()                          { hook::Thunk<0x51F920>::Call<void>(this); }
