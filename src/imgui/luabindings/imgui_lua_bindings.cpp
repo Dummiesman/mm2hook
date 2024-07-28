@@ -1431,6 +1431,8 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("IsWindowDocked", &ImGui::IsWindowDocked)
 
         .addFunction("GetWindowDrawList", &ImGui::GetWindowDrawList)
+        .addFunction("GetBackgroundDrawList", static_cast<ImDrawList*(*)()>(&ImGui::GetBackgroundDrawList))
+        .addFunction("GetForegroundDrawList", static_cast<ImDrawList* (*)()>(&ImGui::GetForegroundDrawList))
 
         .addFunction("ColorConvertU32ToFloat4", &ImGui::ColorConvertU32ToFloat4)
         .addFunction("ColorConvertFloat4ToU32", &ImGui::ColorConvertFloat4ToU32)
