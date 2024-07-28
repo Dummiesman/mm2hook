@@ -85,6 +85,13 @@ void gfxPacket::GetTri(int* out, int index)
     out[2] = Indices[(3 * index) + 2];
 }
 
+void gfxPacket::SetTri(int tri0, int tri1, int tri2, int index)
+{
+    Indices[(3 * index) + 0] = tri0;
+    Indices[(3 * index) + 1] = tri1;
+    Indices[(3 * index) + 2] = tri2;
+}
+
 void gfxPacket::SetNormal(const Vector3 & normal, int index) 
 {
     hook::Thunk<0x4B3D90>::Call<void>(this, &normal, index);

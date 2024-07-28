@@ -52,6 +52,7 @@ namespace MM2
         void GetNormal(Vector3& out, int index);
         void GetTexCoord(Vector2& out, int index);
         void GetTri(int* out, int index);
+        void SetTri(int tri0, int tri1, int tri2, int index);
         void SetNormal(const Vector3& normal, int index);
         void SetPosition(const Vector3& position, int index);
         void SetTexCoord(const Vector2& coord, int index);
