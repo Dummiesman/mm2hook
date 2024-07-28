@@ -208,6 +208,7 @@
     <ClInclude Include="src\handlers\feature_handlers\mmDirSndHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmExternalViewHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmGameHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\mmGameMultiHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmGameMusicDataHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmHudMapFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmIconsHandler.h" />
@@ -723,6 +724,7 @@
     <ClCompile Include="src\handlers\feature_handlers\mmDirSndHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmExternalViewHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmGameHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\mmGameMultiHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmGameMusicDataHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmHudMapFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmIconsHandler.cpp" />

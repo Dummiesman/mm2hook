@@ -1837,11 +1837,17 @@
     <ClInclude Include="src\modules\mmnetwork\netobject.h">
       <Filter>Source Files\modules\mmnetwork</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmGameMultiHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
     <ClInclude Include="src\modules\mmnetwork\playerdata.h">
       <Filter>Source Files\modules\mmnetwork</Filter>
     </ClInclude>
     <ClInclude Include="src\handlers\bugfix_handlers\vehSplashHandler.h">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\modules\ped\pedscripted.h">
+      <Filter>Source Files\modules\ped</Filter>
     </ClInclude>
     <ClInclude Include="src\modules\node\view.h">
       <Filter>Source Files\modules\node</Filter>
@@ -2756,6 +2762,9 @@
     </ClCompile>
     <ClCompile Include="src\modules\mmnetwork\netobject.cpp">
       <Filter>Source Files\modules\mmnetwork</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmGameMultiHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
     <ClCompile Include="src\modules\mmnetwork\network.cpp">
       <Filter>Source Files\modules\mmnetwork</Filter>
