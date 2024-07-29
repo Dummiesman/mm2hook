@@ -48,11 +48,24 @@ namespace MM2
         this->variant = variant;
 
         // setup damage
-        if (texelDamage) {
+        if (texelDamage) 
+        {
             auto bodyEntry = this->GetGeomBase();
             if (bodyEntry->GetHighLOD() != nullptr)
             {
+                delete texelDamage;
+                texelDamage = new fxTexelDamage();
                 texelDamage->Init(bodyEntry->GetHighLOD(), bodyEntry->pShaders[variant], bodyEntry->numShadersPerVariant);
+            }
+        }
+        if (mm1Damage)
+        {
+            auto bodyEntry = this->GetGeomBase();
+            if (bodyEntry->GetHighLOD() != nullptr)
+            {
+                delete mm1Damage;
+                mm1Damage = new mmDamage();
+                mm1Damage->Init(bodyEntry->GetHighLOD(), bodyEntry->pShaders[variant], bodyEntry->numShadersPerVariant);
             }
         }
     }
