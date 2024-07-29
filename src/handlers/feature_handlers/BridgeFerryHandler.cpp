@@ -23,6 +23,13 @@ using namespace MM2;
 
 void BridgeFerryHandler::Cull() {}
 
+int BridgeFerryHandler::IsVisibleFerry(gfxViewport const& viewport)
+{
+    auto inst = reinterpret_cast<lvlInstance*>(this);
+    int visibleResult = inst->lvlInstance::IsVisible(viewport);
+    return max(visibleResult, 1);
+}
+
 void BridgeFerryHandler::DrawFerry(int lod) {
     reinterpret_cast<dgBangerInstance*>(this)->dgBangerInstance::Draw(lod);
 }
@@ -63,6 +70,9 @@ void BridgeFerryHandler::Install() {
     InstallVTableHook("Bridge/Ferry: Cull", &Cull, {
             0x5B6008, // gizBridgeMgr::Cull
             0x5B61FC, // gizFerryMgr::Cull
+        });
+    InstallVTableHook("Ferry: IsVisible", &IsVisibleFerry, {
+            0x5B6188, // lvlInstance::IsVisible
         });
     InstallVTableHook("Ferry: Draw", &DrawFerry, {
         0x5B61AC, // gizFerry::Draw
