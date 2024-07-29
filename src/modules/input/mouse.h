@@ -100,7 +100,10 @@ namespace MM2
                 .addStaticFunction("GetButtonDown", &GetButtonDown)
                 .addStaticFunction("GetButton", &GetButton)
                 .addStaticProperty("x", &GetX)
-                .addStaticProperty("y", &GetY)   
+                .addStaticProperty("y", &GetY)
+                .addStaticProperty("dX", &GetXDelta)
+                .addStaticProperty("dY", &GetYDelta)
+                .addStaticProperty("dZ", &GetScrollDelta)
                 .endClass();
         }
     };
