@@ -45,6 +45,7 @@ namespace MM2
                 .addPropertyReadOnly("State", &GetState)
                 .addPropertyReadOnly("CurrentLap", &GetCurrentLap)
                 .addPropertyReadOnly("NumLaps", &GetLapCount)
+                .addProperty("CanRepairDamage", &CanRepairDamage, &SetCanRepairDamage)
 
                 .addFunction("Init", &Init)
                 .addFunction("DrawRouteThroughTraffic", &DrawRouteThroughTraffic)
