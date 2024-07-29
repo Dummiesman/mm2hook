@@ -38,5 +38,6 @@ namespace MM2
         }
     };
 
+    declhook(0x6B1494, _Type<Aud3DObjectManager*>, AUD3DOBJMGRPTR);
     ASSERT_SIZEOF(Aud3DObjectManager, 0x198);
 }
