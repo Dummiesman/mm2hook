@@ -482,8 +482,8 @@ bool lvlInstance::BeginGeomWithGroup(const char* a1, const char* a2, const char*
 */
 
 AGE_API void lvlInstance::Reset()                        { hook::Thunk<0x463280>::Call<void>(this); }
-AGE_API int lvlInstance::IsVisible(const gfxViewport *a1)
-                                                    { return hook::Thunk<0x4649F0>::Call<int>(this, a1); }
+AGE_API int lvlInstance::IsVisible(gfxViewport const& viewport)
+                                                    { return hook::Thunk<0x4649F0>::Call<int>(this, &viewport); }
         
 AGE_API void lvlInstance::SetVariant(int a1)             { hook::Thunk<0x4643D0>::Call<void>(this, a1); }
 AGE_API const float lvlInstance::GetRadius()             { return hook::Thunk<0x4643E0>::Call<float>(this); }
