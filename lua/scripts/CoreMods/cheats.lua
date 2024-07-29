@@ -21,6 +21,10 @@ local restoreBridgeAngle = math.rad(27.0)
 local restoreWeatherFriction = 1.0
 local restoreEggFriction = 1.0
 
+-- dizzy
+local dizzyCheatStatus = false
+local restoreSkyRotationRate = 0.0
+
 -- launch prop
 local launchProp = "sp_mailbox_f"
 local launchPropSpeed = 25.0
@@ -77,6 +81,13 @@ local function onChatMessage(message)
       gizBridge.GoalAngle = restoreBridgeAngle
       gizBridge.LiftSpeed = restoreBridgeSpeed
     end
+  elseif message == "/dizzy" then
+    dizzyCheatStatus = not dizzyCheatStatus
+    if dizzyCheatStatus then
+      cityLevel.Sky.RotationRate = 3.14
+    else
+      cityLevel.Sky.RotationRate = restoreSkyRotationRate
+    end
   end
 end
 
@@ -112,6 +123,7 @@ local function onStateBegin()
   restoreWeatherFriction = vehWheel.WeatherFriction
   restoreBridgeSpeed = gizBridge.LiftSpeed
   restoreBridgeAngle = gizBridge.GoalAngle
+  restoreSkyRotationRate = cityLevel.Sky.RotationRate
 end
 
 local function onUpdate()
