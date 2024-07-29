@@ -1021,7 +1021,25 @@ ImGuiTreeNodeFlags_SpanAvailWidth           = 1 << 11
 ImGuiTreeNodeFlags_SpanFullWidth            = 1 << 12
 ImGuiTreeNodeFlags_NavLeftJumpsBackHere     = 1 << 13
 ImGuiTreeNodeFlags_CollapsingHeader         = ImGuiTreeNodeFlags_Framed | ImGuiTreeNodeFlags_NoTreePushOnOpen | ImGuiTreeNodeFlags_NoAutoOpenOnLog
-    
+
+ImDrawListFlags_None                    = 0
+ImDrawListFlags_AntiAliasedLines        = 1 << 0
+ImDrawListFlags_AntiAliasedLinesUseTex  = 1 << 1
+ImDrawListFlags_AntiAliasedFill         = 1 << 2
+ImDrawListFlags_AllowVtxOffset          = 1 << 3
+
+ImDrawFlags_None                        = 0
+ImDrawFlags_Closed                      = 1 << 0
+ImDrawFlags_RoundCornersTopLeft         = 1 << 4
+ImDrawFlags_RoundCornersTopRight        = 1 << 5
+ImDrawFlags_RoundCornersBottomLeft      = 1 << 6
+ImDrawFlags_RoundCornersBottomRight     = 1 << 7
+ImDrawFlags_RoundCornersNone            = 1 << 8
+ImDrawFlags_RoundCornersTop             = ImDrawFlags_RoundCornersTopLeft | ImDrawFlags_RoundCornersTopRight
+ImDrawFlags_RoundCornersBottom          = ImDrawFlags_RoundCornersBottomLeft | ImDrawFlags_RoundCornersBottomRight
+ImDrawFlags_RoundCornersLeft            = ImDrawFlags_RoundCornersBottomLeft | ImDrawFlags_RoundCornersTopLeft
+ImDrawFlags_RoundCornersRight           = ImDrawFlags_RoundCornersBottomRight | ImDrawFlags_RoundCornersTopRight
+
 ImGuiKey_Tab                 =512
 ImGuiKey_LeftArrow           =513
 ImGuiKey_RightArrow          =514
