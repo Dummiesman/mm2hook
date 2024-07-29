@@ -122,6 +122,7 @@ namespace MM2
             vehWheel
         */
 
+        Vector3 GetPosition() const;
         Matrix34 GetMatrix() const;
         bool IsGrounded() const;
         lvlMaterial* GetCurrentPhysicsMaterial();
