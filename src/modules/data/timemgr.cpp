@@ -35,13 +35,13 @@ namespace MM2
 
     void datTimeManager::BindLua(LuaState L) {
         LuaBinding(L).beginClass<datTimeManager>("datTimeManager")
-            .addStaticProperty("Seconds", [] {return Seconds.get(); })
-            .addStaticProperty("InvSeconds", [] {return InvSeconds.get(); })
-            .addStaticProperty("FPS", [] {return FPS.get(); })
-            .addStaticProperty("ActualSeconds", [] {return ActualSeconds.get(); })
-            .addStaticProperty("FrameCount", []() {return FrameCount.get(); })
-            .addStaticProperty("ElapsedTime", []() {return ElapsedTime.get(); })
-            .addStaticProperty("PrevElapsedTime", []() {return PrevElapsedTime.get(); })
+            .addStaticProperty("Seconds", []() -> float {return Seconds.get(); })
+            .addStaticProperty("InvSeconds", []() -> float {return InvSeconds.get(); })
+            .addStaticProperty("FPS", []() -> float {return FPS.get(); })
+            .addStaticProperty("ActualSeconds", []() -> float {return ActualSeconds.get(); })
+            .addStaticProperty("FrameCount", []() -> unsigned int {return FrameCount.get(); })
+            .addStaticProperty("ElapsedTime", []() -> float {return ElapsedTime.get(); })
+            .addStaticProperty("PrevElapsedTime", []() -> float {return PrevElapsedTime.get(); })
             .addStaticFunction("FixedFrame", &FixedFrame, LUA_ARGS(float, _def<int, 1>))
             .addStaticFunction("RealTime", &RealTime, LUA_ARGS(_def<float, 0>))
             .endClass();
