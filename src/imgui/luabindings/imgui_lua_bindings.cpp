@@ -1043,6 +1043,7 @@ static void ImguiBindLua(LuaState L) {
         .endClass();
 
     LuaBinding(L).beginClass<ImDrawList>("ImDrawList")
+        .addVariable("Flags", &ImDrawList::Flags)
         .addFunction("AddLine", &ImDrawList::AddLine, LUA_ARGS(const ImVec2 &, const ImVec2 &, ImU32, _def<float, 1>))
         .addFunction("AddTriangle", &ImDrawList::AddTriangle, LUA_ARGS(const ImVec2&, const ImVec2&, const ImVec2&, ImU32, _def<float, 1>))
         .addFunction("AddTriangleFilled", &ImDrawList::AddTriangleFilled, LUA_ARGS(const ImVec2&, const ImVec2&, const ImVec2&, ImU32))
