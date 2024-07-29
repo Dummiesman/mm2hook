@@ -5,8 +5,10 @@
 
 class BridgeFerryHandler {
 public:
+    void InitBridge(const char* name, const MM2::Matrix34& matrix);
     void Cull();
-    void Draw(int lod);
+    void DrawFerry(int lod);    
+    void DrawBridge(int lod);
 
     static void Install();
 };
