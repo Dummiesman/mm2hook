@@ -28,7 +28,7 @@ namespace MM2
         int GetCurrentLap() const                    { return _vehiclePhysics.ptr(this)->GetCurrentLap(); }
         int GetLapCount() const                      { return _vehiclePhysics.ptr(this)->GetLapCount(); }
         bool CanRepairDamage() const                 { return _vehiclePhysics.ptr(this)->CanRepairDamage(); }
-        void SetCanRepairDamage(bool value)          { _vehiclePhysics.ptr(this)->SetCanRepairDamage(true); }
+        void SetCanRepairDamage(bool value)          { _vehiclePhysics.ptr(this)->SetCanRepairDamage(value); }
 
         void DrawRouteThroughTraffic()
         {

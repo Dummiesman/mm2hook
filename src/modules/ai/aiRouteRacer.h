@@ -28,7 +28,7 @@ namespace MM2
         int GetCurrentLap() const                    { return _vehiclePhysics.ptr(this)->GetCurrentLap(); }
         int GetLapCount() const                      { return _vehiclePhysics.ptr(this)->GetLapCount(); }
         bool CanRepairDamage() const                 { return _vehiclePhysics.ptr(this)->CanRepairDamage(); }
-        void SetCanRepairDamage(bool value)          { _vehiclePhysics.ptr(this)->SetCanRepairDamage(true); }
+        void SetCanRepairDamage(bool value)          { _vehiclePhysics.ptr(this)->SetCanRepairDamage(value); }
 
         AGE_API void Init(int id, const char* raceDir)          { hook::Thunk<0x53D060>::Call<void>(this, id, raceDir);}
         AGE_API int Finished()                                  { return hook::Thunk<0x53D6E0>::Call<int>(this); }

@@ -50,7 +50,7 @@ inline bool aiCTFRacer::CanRepairDamage() const
 
 inline void aiCTFRacer::SetCanRepairDamage(bool value) 
 {
-    VehiclePhysics.SetCanRepairDamage(true); 
+    VehiclePhysics.SetCanRepairDamage(value); 
 }
 
 AGE_API void aiCTFRacer::Init(int id, const char* basename) 
