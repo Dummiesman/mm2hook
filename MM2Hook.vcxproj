@@ -235,6 +235,7 @@
     <ClInclude Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\vehWheelHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\vglHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\ViewDistanceHandler.h" />
     <ClInclude Include="src\handlers\print_handler.h" />
     <ClInclude Include="src\hook.h" />
     <ClInclude Include="src\handlers\lua_drawable.h" />
@@ -751,6 +752,7 @@
     <ClCompile Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\vehWheelHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\vglHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\ViewDistanceHandler.cpp" />
     <ClCompile Include="src\handlers\print_handler.cpp" />
     <ClCompile Include="src\hook.cpp" />
     <ClCompile Include="src\handlers\lua_drawable.cpp" />

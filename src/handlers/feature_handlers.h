@@ -68,5 +68,6 @@
 #include "feature_handlers/vehTrailerFeatureHandler.h"
 #include "feature_handlers/vehTrailerInstanceFeatureHandler.h"
 #include "feature_handlers/vehWheelHandler.h"
+#include "feature_handlers/ViewDistanceHandler.h"
 #include "feature_handlers/vglHandler.h"
 

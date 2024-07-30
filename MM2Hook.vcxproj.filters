@@ -1859,6 +1859,9 @@
     <ClInclude Include="src\modules\audio\object.h">
       <Filter>Source Files\modules\audio</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\ViewDistanceHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2781,6 +2784,9 @@
     </ClCompile>
     <ClCompile Include="src\modules\ped\pedscripted.cpp">
       <Filter>Source Files\modules\ped</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\ViewDistanceHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -83,6 +83,7 @@ static init_handler g_feature_handlers[] = {
     CreateHandler<mmCityListHandler>("mmCityList"),
 
     CreateHandler<PUMainHandler>("PUMain"),
+    CreateHandler<ViewDistanceHandler>("ViewDistanceHandler"),
 
     CreateHandler<fxTexelDamageHandler>("fxTexelDamage"),
 
