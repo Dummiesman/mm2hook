@@ -54,7 +54,7 @@ AGE_API pedActive* pedRagdollMgr::Attach(aiPedestrianInstance* ped)
     // reset if there's already an active in this slot
     if (m_PedInstances[attachToIndex])
     {
-        m_PedInstances[attachToIndex]->Reset();
+        m_PedInstances[attachToIndex]->Detach();
     }
     
     // setup this active
