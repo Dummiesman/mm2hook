@@ -91,8 +91,11 @@ local function historyReset()
 end
 
 local function executeCommand(cmd)
-  -- insert into command history, log command to console, and reset history position
-  table.insert(commandHistory, cmd)
+  -- insert into command history (if we didn't execute the last command over again)
+  -- log command to console, and reset history position
+  if #commandHistory == 0 or commandHistory[#commandHistory] ~= cmd then
+    table.insert(commandHistory, cmd)
+  end
   insertCommandMessage(cmd)
   trimCommandHistory()
   historyReset()
