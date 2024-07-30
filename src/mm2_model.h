@@ -19,6 +19,11 @@ namespace MM2
         luaBind<modStatic>(L);
         luaBind<asMeshSetForm>(L);
 
-        //LuaBinding(L).addFunction("GetPivot", &GetPivot);
+        LuaBinding(L).addFunction("GetPivot", [](const char* basename, const char* file) -> std::tuple<bool, Matrix34> {
+            Matrix34 mtx;
+            mtx.Zero();
+            bool retval = GetPivot(mtx, basename, file);
+            return std::make_tuple(retval, mtx);
+        });
     }
 }
