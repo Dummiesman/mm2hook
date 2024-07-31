@@ -1862,6 +1862,9 @@
     <ClInclude Include="src\handlers\feature_handlers\ViewDistanceHandler.h">
       <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\node\dof.h">
+      <Filter>Source Files\modules\node</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2787,6 +2790,9 @@
     </ClCompile>
     <ClCompile Include="src\handlers\feature_handlers\ViewDistanceHandler.cpp">
       <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\node\dof.cpp">
+      <Filter>Source Files\modules\node</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -504,6 +504,7 @@
     <ClInclude Include="src\modules\node\camera.h" />
     <ClInclude Include="src\modules\node\cullable.h" />
     <ClInclude Include="src\modules\node\cullmgr.h" />
+    <ClInclude Include="src\modules\node\dof.h" />
     <ClInclude Include="src\modules\node\event.h" />
     <ClInclude Include="src\modules\node\eventq.h" />
     <ClInclude Include="src\modules\node\fileio.h" />
@@ -856,6 +857,7 @@
     <ClCompile Include="src\modules\model\model2.cpp" />
     <ClCompile Include="src\modules\model\static2.cpp" />
     <ClCompile Include="src\modules\node.cpp" />
+    <ClCompile Include="src\modules\node\dof.cpp" />
     <ClCompile Include="src\modules\node\linear.cpp" />
     <ClCompile Include="src\modules\parse.cpp" />
     <ClCompile Include="src\modules\ped.cpp" />
