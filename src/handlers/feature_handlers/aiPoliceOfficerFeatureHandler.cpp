@@ -69,6 +69,13 @@ void aiPoliceOfficerFeatureHandler::Install() {
     mem::write(0x53BD1C + 1, newSize);
     mem::write(0x534C90 + 1, newSize);
 
+    InstallCallback("aiMap::Police", "Use new AIMAP::Police implementation.",
+        &aiMap::Police, {
+            cb::call(0x41A1D5),
+            cb::call(0x41A210),
+        }
+    );
+
     InstallCallback("aiPoliceOfficer", "Use new constructor.",
         &PlacementNew, {
             cb::jmp(0x53D910),
