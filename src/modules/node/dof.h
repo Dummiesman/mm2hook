@@ -4,7 +4,7 @@
 namespace MM2
 {
     // Forward declarations
-    class asDofCs;
+    class asDofCS;
 
     // External declarations
 
