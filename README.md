@@ -26,12 +26,26 @@ Also included are complimentary bug-fixes for random crashes, as well as a fix f
 3) Place all files in your Midtown Madness 2 installation directory and enjoy!
 
 **Note for Wine users:** In order to use this on Wine, you must open winecfg, go to the Libraries tab, and add an override for dinput. Set the override to either "native" or "native then builtin"
- 
+
+## Building
+Using a recent version of the Visual Studio IDE (including Visual Studio 2022 14.39) *should* more or less work as expected. If you'd prefer to use something else, a [simple build script](build.bat) is also available.
+
+Note that this still requires installing parts of the [Build Tools for Visual Studio](https://visualstudio.microsoft.com/downloads/#build-tools-for-visual-studio-2022) to work:
+
+- `C++/CLI support for v143 build tools` (latest should be fine)
+- `MSVC v143 - VS 2022 C++ x64/x86 build tools` (latest should be fine)
+- `C++ ATL for latest v143 build tools (x86 & x64)`
+- `C++ MFC for latest v143 build tools (x86 & x64)`
+- `Windows 10 SDK (10.0.18362.0)`
+- `Windows Universal C Runtime`
+- `C++ Build Tools core features`
+- `C++ core features`
+
 ## Contributing
 If you'd like to contribute to the project, please [fork](https://help.github.com/articles/about-forks/) the project and submit a [pull request](https://help.github.com/articles/about-pull-requests/).
- 
+
 All contributions are welcomed, including ones that fix something as simple as a typo.
- 
+
 #### Coding Style
 Please use spaces instead of tabs, and try to keep your code consistent with the rest of the project.
 
