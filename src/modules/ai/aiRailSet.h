@@ -11,14 +11,31 @@ namespace MM2
 
     // Class definitions
     class aiRailSet {
+    private:
+        byte _buffer[0xA0];
     protected:
         static hook::Field<0x98, float> _speed;
         static hook::Field<0x14, float> _roadDist;
         static hook::Field<0x2C, short> _curLane;
         static hook::Field<0x3C, aiPath*> _curLink;
+        static hook::Field<0x40, short> _side;
         static hook::Field<0x44, float> _accelFactor;
         static hook::Field<0x48, float> _exheedLimit;
     public:
+        aiRailSet()
+        {
+            hook::Thunk<0x556D50>::Call<void>(this);
+        }
+
+        ~aiRailSet()
+        {
+            hook::Thunk<0x556E10>::Call<void>(this);
+        }
+        int GetRoadSide() const
+        {
+            return _side.get(this);
+        }
+
         float GetSpeed() const
         {
             return _speed.get(this);

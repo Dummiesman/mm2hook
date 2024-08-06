@@ -8,6 +8,7 @@
 #include "gizmo\bridge.h"
 #include "gizmo\train.h"
 #include "gizmo\sailboat.h"
+#include "gizmo\ferry.h"
 
 namespace MM2
 {

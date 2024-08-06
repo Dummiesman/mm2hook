@@ -145,6 +145,7 @@ namespace MM2
                                                                     { hook::Thunk<0x4760D0>::Call<void>(this, mass, inertiaBoxX, inertiaBoxY, inertiaBoxZ); }
     AGE_API void phInertialCS::Rotate(Vector3 const & angles)       { hook::Thunk<0x476A00>::Call<void>(this, &angles); }
     AGE_API void phInertialCS::CalcNetPush(Vector3 const & amount)  { hook::Thunk<0x478700>::Call<void>(this, &amount); }
+    AGE_API void phInertialCS::CalcNetTurn(Vector3 const& amount)   { hook::Thunk<0x478820>::Call<void>(this, &amount); }
     AGE_API void phInertialCS::ClearInertialValues()                { hook::Thunk<0x476B20>::Call<void>(this); }
         
     AGE_API void phInertialCS::MoveICS()                            { hook::Thunk<0x478680>::Call<void>(this); }
@@ -161,6 +162,7 @@ namespace MM2
             .addFunction("Rotate", &Rotate)
             .addFunction("ClearInertialValues", &ClearInertialValues)
             .addFunction("CalcNetPush", &CalcNetPush)
+            .addFunction("CalcNetTurn", &CalcNetTurn)
             .addFunction("MoveICS", &MoveICS)
 
             .addFunction("AddForce", &AddForce)

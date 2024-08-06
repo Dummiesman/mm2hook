@@ -23,6 +23,7 @@ namespace MM2
         luaBind<aiMapStats>(L);
         luaBind<aiObstacle>(L);
         luaBind<aiVehicle>(L);
+        luaBind<aiVehiclePlayer>(L);
         luaBind<aiVehicleSpline>(L);
         luaBind<aiVehicleAmbient>(L);
         luaBind<aiVehiclePhysics>(L);

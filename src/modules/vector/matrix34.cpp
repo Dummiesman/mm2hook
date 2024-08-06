@@ -97,39 +97,45 @@ namespace MM2
         hook::Thunk<0x4BCE60>::Call<void>(this, &axis, angle);
     }
 
-    void Matrix34::RotateX(float angle) {
+    void Matrix34::RotateX(float angle) 
+    { 
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateX(angle);
         this->Dot3x3(rotMatrix);
     }
 
-    void Matrix34::RotateY(float angle) {
+    void Matrix34::RotateY(float angle) 
+    {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateY(angle);
         this->Dot3x3(rotMatrix);
     }
 
-    void Matrix34::RotateZ(float angle) {
+    void Matrix34::RotateZ(float angle) 
+    {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateZ(angle);
         this->Dot3x3(rotMatrix);
     }
 
-    void Matrix34::RotateFullX(float angle) {
+    void Matrix34::RotateFullX(float angle) 
+    {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateX(angle);
         rotMatrix.SetRow(3, Vector3::ORIGIN);
         this->Dot(rotMatrix);
     }
 
-    void Matrix34::RotateFullY(float angle) {
+    void Matrix34::RotateFullY(float angle) 
+    {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateY(angle);
         rotMatrix.SetRow(3, Vector3::ORIGIN);
         this->Dot(rotMatrix);
     }
 
-    void Matrix34::RotateFullZ(float angle) {
+    void Matrix34::RotateFullZ(float angle) 
+    {
         Matrix34 rotMatrix = Matrix34();
         rotMatrix.MakeRotateZ(angle);
         rotMatrix.SetRow(3, Vector3::ORIGIN);
@@ -144,6 +150,15 @@ namespace MM2
     void Matrix34::RotateTo(Vector3 const& side, Vector3 const& up, float t)
     {
         hook::Thunk<0x4BD380>::Call<void>(this, &side, &up, t);
+    }
+
+    Vector3 Matrix34::GetEulers()
+    {
+        Vector3 vec;
+        vec.X = atan2f(this->m12, this->m22);
+        vec.Y = asinf(-this->m02);
+        vec.Z = atan2f(this->m01, this->m00);
+        return vec;
     }
 
     void Matrix34::Add(const Matrix34& values) {
@@ -444,7 +459,7 @@ namespace MM2
             .addVariable("m31", &Matrix34::m31)
             .addVariable("m32", &Matrix34::m32)
 
-            .addStaticProperty("I", []() { return Matrix34::I; })
+            .addStaticProperty("I", []() -> Matrix34 { return Matrix34::I; })
 
             .addFunction("GetColumn", &GetColumn)
             .addFunction("GetRow", &GetRow)
@@ -461,6 +476,7 @@ namespace MM2
             .addFunction("Scale", static_cast<void(Matrix34::*)(float, float, float)>(&Matrix34::Scale))
             .addFunction("Normalize", &Matrix34::Normalize)
             .addFunction("Dot", &Matrix34::Dot)
+            .addFunction("GetEulers", &GetEulers)
             .addFunction("Rotate", &Matrix34::Rotate)
             .addFunction("RotateFull", &Matrix34::RotateFull)
             .addFunction("RotateTo", static_cast<void(Matrix34::*)(const Vector3&, const Vector3&, float)>(&Matrix34::RotateTo), LUA_ARGS(const Vector3&, const Vector3&, _def<float, 1, 1>))

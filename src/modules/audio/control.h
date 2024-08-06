@@ -9,6 +9,7 @@ namespace MM2
     class audControl;
 
     // External declarations
+    extern class audObject;
 
     // Class definitions
     class audControl  {
@@ -26,10 +27,19 @@ namespace MM2
             return control;
         }
 
+        const char* GetPath() const
+        {
+            return hook::Thunk<0x5A04E0>::Call<const char*>(this);
+        }
 
         void Init(audManager::AUDTYPE type, audManager* manager)
         {
             hook::Thunk<0x59FF40>::Call<void>(this, type, manager);
+        }
+
+        audObject* FindObjectByHandle(int handle)
+        {
+            return hook::Thunk<0x5A0300>::Call<audObject*>(this, handle);
         }
 
     };

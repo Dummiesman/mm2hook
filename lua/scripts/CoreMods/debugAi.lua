@@ -34,7 +34,7 @@ local function onUpdate()
 end
 
 local function onStateBegin()
-  
+
 end
 
 local function drawObstacle(obstacle, nonAccidentColor, radius)
@@ -167,33 +167,35 @@ end
 local function drawMenuBar()
   if imgui.BeginMenu("Debug") then
      if imgui.BeginMenu("AI") then
-       if imgui.MenuItem("Enable", nil, enabled) then
-          enabled = not enabled
-       end
-       imgui.Separator()
-       
-       if imgui.MenuItem("Show Component Info", nil, showComponentInfo) then
-          showComponentInfo = not showComponentInfo
-       end
-       if imgui.MenuItem("Draw Paths", nil, drawPaths) then
-          drawPaths = not drawPaths
-       end
-       if imgui.MenuItem("Draw Intersections", nil, drawIntersections) then
-          drawIntersections = not drawIntersections
-       end
-       if imgui.MenuItem("Draw Pedestrian Debug", nil, drawPedDebug) then
-          drawPedDebug = not drawPedDebug
-       end
-       if imgui.MenuItem("Draw Traffic Debug", nil, drawAmbientDebug) then
-          drawAmbientDebug = not drawAmbientDebug
-       end
-       if imgui.MenuItem("Draw Opponent Debug", nil, drawOpponentDebug) then
-          drawOpponentDebug = not drawOpponentDebug
-       end
-       if imgui.MenuItem("Show Obstacles", nil, showObstacles) then
-          showObstacles = not showObstacles
-       end
-       imgui.EndMenu()
+        imgui.BeginDisabled(AIMAP == nil)
+        if imgui.MenuItem("Enable", nil, enabled) then
+           enabled = not enabled
+        end
+        imgui.Separator()
+        
+        if imgui.MenuItem("Show Component Info", nil, showComponentInfo) then
+           showComponentInfo = not showComponentInfo
+        end
+        if imgui.MenuItem("Draw Paths", nil, drawPaths) then
+           drawPaths = not drawPaths
+        end
+        if imgui.MenuItem("Draw Intersections", nil, drawIntersections) then
+           drawIntersections = not drawIntersections
+        end
+        if imgui.MenuItem("Draw Pedestrian Debug", nil, drawPedDebug) then
+           drawPedDebug = not drawPedDebug
+        end
+        if imgui.MenuItem("Draw Traffic Debug", nil, drawAmbientDebug) then
+           drawAmbientDebug = not drawAmbientDebug
+        end
+        if imgui.MenuItem("Draw Opponent Debug", nil, drawOpponentDebug) then
+           drawOpponentDebug = not drawOpponentDebug
+        end
+        if imgui.MenuItem("Show Obstacles", nil, showObstacles) then
+           showObstacles = not showObstacles
+        end
+        imgui.EndDisabled()
+        imgui.EndMenu()
      end
     imgui.EndMenu()
   end

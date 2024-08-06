@@ -7,13 +7,21 @@ namespace MM2
     class mmSingleBlitz;
 
     // External declarations
-
+    extern struct OppIconInfo;
 
     // Class definitions
     class mmSingleBlitz : public mmGameSingle
     {
     private:
-        byte _buffer[0x7710 - sizeof(asNode) - 0x4];
+        BOOL playingTimerWarning;
+        float timeSinceLastTimeWarning;
+        void* music;
+        OppIconInfo* iconInfos;
+        bool outOfTime;
+        int enableIconScaling;
+        float iconMaxScaleDist;
+        float iconMinScale;
+        float iconMaxScale;
     public:
         ANGEL_ALLOCATOR
 

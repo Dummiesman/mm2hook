@@ -14,6 +14,11 @@ namespace MM2
     // Class definitions
 
     class aiPath {
+    public:
+        static const int FLAG_DIVIDED = 0x1;
+        static const int FLAG_ALLEYWAY = 0x2;
+        static const int FLAG_FREEWAY = 0x4;
+        static const int FLAG_FLAT = 0x8;
     private:
         byte _buffer[0x164];
     protected:
@@ -44,6 +49,7 @@ namespace MM2
         static hook::Field<0x108, Vector3*> _sectionOriX;
         static hook::Field<0x10C, Vector3*> _sectionOriY;
         static hook::Field<0x110, Vector3*> _sectionOriZ;
+        static hook::Field<0x114, Vector3*> _tangent;
         static hook::Field<0x118, aiIntersection*> _intersectionA;
         static hook::Field<0x13C, aiIntersection*> _intersectionB;
         static hook::Field<0x90, aiObstacle**> _lVehicles;
@@ -59,6 +65,7 @@ namespace MM2
     private:
         //lua stuff
         std::tuple<int, float> luaIsPosOnRoad(Vector3 const& pos, float margin) const;
+        Vector3 centerPositionLua(float distanceAlongPath);
         int GetBangers(lua_State* L, int section, int side);
         int GetVehicles(lua_State* L, int section, int side);
         int GetPedestrians(lua_State* L, int section, int side);
@@ -81,6 +88,7 @@ namespace MM2
         Vector3 GetSideDirection(int section) const;
         Vector3 GetUpDirection(int section) const;
         Vector3 GetForwardDirection(int section) const;
+        Vector3 GetTangent(int section) const;
         Vector3 GetLeftBoundary(int section) const;
         Vector3 GetRightBoundary(int section) const;
         float GetWidth() const;
@@ -102,17 +110,21 @@ namespace MM2
         AGE_API void AddAmbVehicle(aiVehicleSpline* spline, int lane, float dist, int side);
         AGE_API float CenterDist(Vector3 const& pos) const;
         AGE_API float CenterLength(int startIdx, int endIdx) const;
+        AGE_API void CenterPosition(float distanceAlongPath, Vector3& outPos);
         AGE_API int CenterIndex(float distance) const;
         AGE_API void ClearAmbients();
         AGE_API void ClearPeds();
         AGE_API bool HasCableCarLine(int roadSide) const;
         AGE_API bool HasSubwayLine(int roadSide) const;
+        AGE_API float GetHeading(float distanceWithinSection, int section, int roadSide) const;
         AGE_API int IsPosOnRoad(Vector3 const& pos, float margin, float* outDistanceFromCenter) const;
+        AGE_API int NumVehiclesAfterDist(int lane, float distanceAlongPath, int roadSide) const;
         AGE_API int NumVerts() const;
         AGE_API int Index(Vector3 const& pos) const;
         AGE_API int Lane(Vector3 const& pos, int roadSide) const;
         AGE_API void UpdatePedestrians();
         AGE_API int RoadVertice(Vector3 const& position, int side) const;
+        AGE_API float SubSectionLength(int sectionBegin, int sectionEnd, int side);
         AGE_API bool Direction(Matrix34 const& matrix) const;
         AGE_API bool IsOneWay() const;
         void Draw() const;

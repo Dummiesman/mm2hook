@@ -4,6 +4,7 @@
 #include <modules\model\package.h>
 #include <modules\model\shader.h>
 #include <modules\phys\bound.h>
+#include <modules\phys\physmgr.h>
 
 using namespace MM2;
 
@@ -330,12 +331,70 @@ int lvlInstance::GetVariantCount() const {
     return this->GeomIndex == 0 ? 1 : (&lvlInstance::GetGeomTablePtr()[GeomIndex - 1])->numShaders;
 }
 
-AGE_API bool lvlInstance::ComputeShadowMatrix(Matrix34& outMatrix, int room, Matrix34 const &inMatrix)
-                                                            { return hook::StaticThunk<0x464430>::Call<bool>(&outMatrix, room, &inMatrix); }
-
-AGE_API bool lvlInstance::ComputeShadowProjectionMatrix(Matrix34 & outMatrix, int room, float lightPitch, float lightHeading, Matrix34 const& inMatrix)
+AGE_API bool lvlInstance::ComputeShadowMatrix(Matrix34& outMatrix, int room, Matrix34 const& inMatrix)
 {
-    if (!ComputeShadowMatrix(outMatrix, room, inMatrix))
+    return ComputeShadowMatrix(outMatrix, room, inMatrix, nullptr);
+}
+
+AGE_API bool MM2::lvlInstance::ComputeShadowMatrix(Matrix34& outMatrix, int room, Matrix34 const& inMatrix, lvlInstance* ignoreInstance)
+{
+    auto physmgr = dgPhysManager::Instance.get();
+    lvlIntersection isect = lvlIntersection();
+    lvlSegment segment = lvlSegment();
+
+    // Collide with ground +/- 1m
+    Vector3 startPos = inMatrix.GetRow(3) + (Vector3::YAXIS * 1.0f);
+    Vector3 endPos = inMatrix.GetRow(3) - (Vector3::YAXIS * 1.0f);
+    segment.Set(startPos, endPos, 0xFFFFFFFF, nullptr);
+
+    if (!physmgr->Collide(segment, &isect, room, ignoreInstance, lvlInstance::INST_WHEELCOLLISION))
+    {
+        // Try colliding with a larger range
+        startPos = inMatrix.GetRow(3) + (Vector3::YAXIS * 1.0f);
+        endPos = inMatrix.GetRow(3) - (Vector3::YAXIS * 10.0f); // Default is 5.0 but we need this to be larger for billboard shadowing purposes
+        segment.Set(startPos, endPos, 0xFFFFFFFF, nullptr);
+
+        if (!physmgr->Collide(segment, &isect, room, ignoreInstance, lvlInstance::INST_WHEELCOLLISION))
+        {
+            // Failed to find ground
+            return false;
+        }
+    }
+
+    // Check if ground was flat enough
+    if (isect.IntersectionPoint.Normal.Y < 0.7f)
+    {
+        return false;
+    }
+
+    // Compute shadow matrix
+    outMatrix.Set(inMatrix);
+    if (inMatrix.m11 <= 0.0f)
+    {
+        Vector3 up = inMatrix.GetRow(1);
+        up.Negate();
+        outMatrix.RotateTo(up, isect.IntersectionPoint.Normal);
+
+        up.Set(outMatrix.GetRow(1)); // Haha, upset
+        up.Negate();
+        outMatrix.SetRow(1, up);
+    }
+    else 
+    {
+        outMatrix.RotateTo(inMatrix.GetRow(1), isect.IntersectionPoint.Normal);
+    }
+    outMatrix.SetRow(3, isect.IntersectionPoint.Point);
+    return true;
+}
+
+AGE_API bool MM2::lvlInstance::ComputeShadowProjectionMatrix(Matrix34& outMatrix, int room, float lightPitch, float lightHeading, Matrix34 const& inMatrix)
+{
+    return ComputeShadowProjectionMatrix(outMatrix, room, lightPitch, lightHeading, inMatrix, nullptr);
+}
+
+AGE_API bool lvlInstance::ComputeShadowProjectionMatrix(Matrix34 & outMatrix, int room, float lightPitch, float lightHeading, Matrix34 const& inMatrix, lvlInstance* ignoreInstance)
+{
+    if (!ComputeShadowMatrix(outMatrix, room, inMatrix, ignoreInstance))
         return false;
 
     Vector3 lightDirection;
@@ -423,8 +482,8 @@ bool lvlInstance::BeginGeomWithGroup(const char* a1, const char* a2, const char*
 */
 
 AGE_API void lvlInstance::Reset()                        { hook::Thunk<0x463280>::Call<void>(this); }
-AGE_API int lvlInstance::IsVisible(const gfxViewport *a1)
-                                                    { return hook::Thunk<0x4649F0>::Call<int>(this, a1); }
+AGE_API int lvlInstance::IsVisible(gfxViewport const& viewport)
+                                                    { return hook::Thunk<0x4649F0>::Call<int>(this, &viewport); }
         
 AGE_API void lvlInstance::SetVariant(int a1)             { hook::Thunk<0x4643D0>::Call<void>(this, a1); }
 AGE_API const float lvlInstance::GetRadius()             { return hook::Thunk<0x4643E0>::Call<float>(this); }

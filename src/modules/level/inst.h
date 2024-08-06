@@ -21,6 +21,17 @@ namespace MM2
     // Class definitions
     class lvlInstance
     {
+    public:
+        // Instance flags
+        static const int INST_BANGER = 1 << 1;
+        static const int INST_VEHICLE = 1 << 3;
+        static const int INST_WHEELCOLLISION = 1 << 5;
+        static const int INST_SHADOW = 1 << 6;
+        static const int INST_GLOW = 1 << 7;
+        static const int INST_LANDMARK = 1 << 8;
+        static const int INST_VISIBLE = 1 << 9;
+        static const int INST_STATIC = 1 << 10;
+        static const int INST_SHADOW_RGL = 1 << 13;
     private:
         byte Owner;
         byte Subtype;
@@ -100,7 +111,9 @@ namespace MM2
         int GetVariantCount() const;
 
         static AGE_API bool ComputeShadowMatrix(Matrix34& outMatrix, int room, Matrix34 const& inMatrix);
+        static AGE_API bool ComputeShadowMatrix(Matrix34& outMatrix, int room, Matrix34 const& inMatrix, lvlInstance* ignoreInstance);
         static AGE_API bool ComputeShadowProjectionMatrix(Matrix34& outMatrix, int room, float lightPitch, float lightHeading, Matrix34 const& inMatrix);
+        static AGE_API bool ComputeShadowProjectionMatrix(Matrix34& outMatrix, int room, float lightPitch, float lightHeading, Matrix34 const& inMatrix, lvlInstance* ignoreInstance);
         static AGE_API void ResetInstanceHeap();
         static AGE_API void ResetAll();;
         static AGE_API void SetShadowBillboardMtx(Matrix44& a1);
@@ -130,7 +143,7 @@ namespace MM2
 
         virtual AGE_API void Reset();
         virtual AGE_API const Vector3 & GetPosition() PURE;
-        virtual AGE_API int IsVisible(const gfxViewport* a1);
+        virtual AGE_API int IsVisible(gfxViewport const& viewport);
         virtual AGE_API const Matrix34 & GetMatrix(Matrix34 *a1) PURE;
         virtual AGE_API void SetMatrix(const Matrix34 & a1) PURE;
         

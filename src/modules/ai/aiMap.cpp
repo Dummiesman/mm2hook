@@ -1,5 +1,6 @@
 #include "aiMap.h"
 #include <modules\ai\aiCTFRacer.h>
+#include <modules\ai\aiPoliceOfficer.h>
 
 namespace MM2
 {
@@ -194,16 +195,29 @@ namespace MM2
         return nullptr;
     }
 
-    AGE_API aiPoliceOfficer * aiMap::Police(int num) const      { return hook::Thunk<0x5348F0>::Call<aiPoliceOfficer *>(this, num); }
+    AGE_API aiPoliceOfficer * aiMap::Police(int num) const      
+    {
+        if (num >= 0 && num < this->numCops)
+            return &this->policeOfficers[num];
+        Warningf("Returning a NULL Cop. Idx: %d", num);
+        return nullptr;
+    }
+
     AGE_API aiVehiclePlayer * aiMap::Player(int num) const      { return hook::Thunk<0x534AF0>::Call<aiVehiclePlayer *>(this, num); }
     AGE_API aiVehicleAmbient * aiMap::Vehicle(int num) const    { return hook::Thunk<0x5348B0>::Call<aiVehicleAmbient *>(this, num); }
     AGE_API aiPedestrian * aiMap::Pedestrian(int num) const     { return hook::Thunk<0x534AB0>::Call<aiPedestrian *>(this, num); }
     AGE_API aiIntersection* aiMap::Intersection(int num) const  { return hook::Thunk<0x534880>::Call<aiIntersection*>(this, num); }
     AGE_API aiPath* aiMap::Path(int num) const                  { return hook::Thunk<0x534850>::Call<aiPath*>(this, num); }
+    AGE_API void aiMap::AdjustAmbients(int prevRoom, int nextRoom, int playerId)
+                                                                { hook::Thunk<0x539DD0>::Call<void>(this, prevRoom, nextRoom, playerId); }
+    AGE_API void aiMap::AdjustPedestrians(int prevRoom, int nextRoom, int playerId)
+                                                                { hook::Thunk<0x539A20>::Call<void>(this, prevRoom, nextRoom, playerId); }
     AGE_API aiPath* aiMap::DetRdSegBetweenInts(aiIntersection* intersectionA, aiIntersection* intersectionB, bool* outRdEndsAtB)
                                                                 { return hook::Thunk<0x53A680>::Call<aiPath*>(this, intersectionA, intersectionB, outRdEndsAtB); }
     aiMapComponentType aiMap::MapComponentType(int room, int* outId)
                                                                 { return hook::Thunk<0x537600>::Call<aiMapComponentType>(this, room, outId); }
+
+    // Returns the room index where position was found in
     int aiMap::MapComponent(const Vector3& position, short* outId, short* outType, int room)
                                                                 { return hook::Thunk<0x537680>::Call<int>(this, &position, outId, outType, room); }
     BOOL aiMap::PositionToAIMapComp(const Vector3& position, short* outId, short* outType, short* outRoom, short wantedRoadId)
@@ -217,7 +231,7 @@ namespace MM2
             .addStaticFunction("SetCTFOpponentTypes", &SetCTFOpponentTypes)
             .addFunction("CalcRoute", &calcRouteLua)
             .addFunction("MapComponentType", &mapComponentTypeLua)
-            .addFunction("MapComponent", &mapComponentLua)
+            .addFunction("MapComponent", &mapComponentLua, LUA_ARGS(const Vector3&, _def<int, 0>))
             .addFunction("PositionToAIMapComp", &positionToAIMapCompLua)
             .addFunction("Dump", &Dump)
             .addFunction("TestProbes", &TestProbes, LUA_ARGS(bool))
@@ -230,6 +244,8 @@ namespace MM2
             .addFunction("CTFOpponent", &CTFOpponent)
             .addFunction("Vehicle", &Vehicle)
             .addFunction("Intersection", &Intersection)
+            .addFunction("AdjustAmbients", &AdjustAmbients)
+            .addFunction("AdjustPedestrians", &AdjustPedestrians)
             .addFunction("DetRdSegBetweenInts", &detRdSegBetweenIntsLua)
             .addPropertyReadOnly("CityData", &GetCityData)
             .addPropertyReadOnly("RaceData", &GetRaceData)

@@ -117,7 +117,7 @@ void mmGameHandler::UpdateHorn(bool a1) {
     auto policeAudio = audio->GetPoliceCarAudioPtr();
     char* vehName = car->GetCarDamage()->GetName();
 
-    bool isSirenActive = siren->Active;
+    bool isSirenActive = siren->IsActive();
     bool isVehiclePolice = audio->IsPolice(vehName);
 
     bool cancelHornInput = horn_holdTime < horn_sirenThreshold && isVehiclePolice;
@@ -143,13 +143,13 @@ void mmGameHandler::UpdateHorn(bool a1) {
         if ((lightbar0 == nullptr || (lightbar0 != nullptr && lightbar0->isAttached)) ||
             (lightbar1 == nullptr || (lightbar1 != nullptr && lightbar1->isAttached))) {
             if (buttonReleasedThisFrame && (horn_lastReleaseTime - horn_lastPressTime) < horn_sirenThreshold) {
-                if (siren->Active) {
-                    siren->Active = false;
+                if (siren->IsActive()) {
+                    siren->SetActive(false);
                     audio->StopSiren();
                 }
                 else
                 {
-                    siren->Active = true;
+                    siren->SetActive(true);
                     audio->StartSiren();
                 }
             }

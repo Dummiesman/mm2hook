@@ -231,7 +231,7 @@ void ImGui_ImplAGE_InvalidateDeviceObjects()
     ImGui_ImplAGE_Data* bd = ImGui_ImplAGE_GetBackendData();
     if (bd->Texture)
     {
-        delete bd->Texture;
+        gfxFreeTexture(bd->Texture);
         io.Fonts->SetTexID(0);
     }
 }

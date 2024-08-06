@@ -13,9 +13,11 @@
 #include "node\event.h"
 #include "node\camera.h"
 #include "node\linear.h"
+#include "node\dof.h"
 #include "node\eventq.h"
 #include "node\fileio.h"
 #include "node\random.h"
+#include "node\view.h"
 
 namespace MM2
 {

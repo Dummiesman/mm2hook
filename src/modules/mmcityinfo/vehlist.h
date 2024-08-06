@@ -12,9 +12,9 @@ namespace MM2
     // Class definitions
     class mmVehList {
     private:
-        mmVehInfo **vehInfos;
-        mmVehInfo *defaultVehicle;
-        int numVehicles;
+        mmVehInfo** m_VehInfos;
+        mmVehInfo*  m_DefaultVehicle;
+        int m_NumVehicles;
     public:
         ANGEL_ALLOCATOR
 
@@ -30,26 +30,46 @@ namespace MM2
 
         AGE_API void LoadAll()                               { hook::Thunk<0x524950>::Call<void>(this); }
 
-        AGE_API mmVehInfo * GetVehicleInfo(int id)           { return hook::Thunk<0x5245E0>::Call<mmVehInfo *>(this, id); }
-        AGE_API mmVehInfo * GetVehicleInfo(const char *basename)   
+        AGE_API mmVehInfo * GetVehicleInfo(int id) const     { return hook::Thunk<0x5245E0>::Call<mmVehInfo *>(this, id); }
+        AGE_API mmVehInfo * GetVehicleInfo(const char *basename) const  
                                                              { return hook::Thunk<0x524610>::Call<mmVehInfo *>(this, basename); }
         AGE_API int GetVehicleID(const char* basename)       { return hook::Thunk<0x5246B0>::Call<int>(this, basename); }
 
         AGE_API void SetDefaultVehicle(const char* basename) { hook::Thunk<0x524690>::Call<void>(this, basename); }
         AGE_API void Print()                                 { hook::Thunk<0x524810>::Call<void>(this); }
         
-        //helper
-        inline int GetNumVehicles() {
-            return this->numVehicles;
+        mmVehInfo* GetDefaultVehicle() const
+        {
+            return m_DefaultVehicle;
+        }
+
+        bool Exists(const char* basename) const
+        {
+            for (int i = 0; i < m_NumVehicles; i++)
+            {
+                auto info = GetVehicleInfo(i);
+                if (!strcmp(info->GetBaseName(), basename))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        int GetNumVehicles() 
+        {
+            return m_NumVehicles;
         }
 
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<mmVehList>("mmVehList")
-                .addFunction("Print", &Print)
                 .addPropertyReadOnly("NumVehicles", &GetNumVehicles)
-                .addFunction("GetVehicleInfo", static_cast<mmVehInfo *(mmVehList::*)(const char*)>(&GetVehicleInfo))
-                .addFunction("GetVehicleInfoByIndex", static_cast<mmVehInfo *(mmVehList::*)(int)>(&GetVehicleInfo))
+                .addPropertyReadOnly("DefaultVehicle", &GetDefaultVehicle)
+                .addFunction("Print", &Print)
+                .addFunction("Exists", &Exists)
+                .addFunction("GetVehicleInfo", static_cast<mmVehInfo* (mmVehList::*)(const char*) const>(&GetVehicleInfo))
+                .addFunction("GetVehicleInfoByIndex", static_cast<mmVehInfo* (mmVehList::*)(int) const>(&GetVehicleInfo))
                 .addFunction("GetVehicleID", &GetVehicleID)
                 .addFunction("SetDefaultVehicle", &SetDefaultVehicle)
                 .endClass();

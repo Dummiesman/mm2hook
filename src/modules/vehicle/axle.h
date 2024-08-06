@@ -67,6 +67,9 @@ namespace MM2
                 .addProperty("DampCoef", &GetDampCoef, &SetDampCoef)
                 .addProperty("TorqueCoef", &GetTorqueCoef, &SetTorqueCoef)
 
+                .addPropertyReadOnly("LeftWheel", &GetLeftWheel)
+                .addPropertyReadOnly("RightWheel", &GetRightWheel)
+
                 .addFunction("Init", &Init)
                 .addFunction("ComputeConstants", &ComputeConstants)
 

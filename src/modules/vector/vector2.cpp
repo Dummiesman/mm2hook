@@ -44,6 +44,12 @@ namespace MM2
         this->Y *= mul;
     }
 
+    AGE_API void Vector2::Lerp(float t, const Vector2& vec1, const Vector2& vec2)
+    {
+        this->X = (vec2.X - vec1.X) * t + vec1.X;
+        this->Y = (vec2.Y - vec1.Y) * t + vec1.Y;
+    }
+
     AGE_API void Vector2::Negate(const Vector2& vec)
     {
         this->X = -vec.X;
@@ -118,6 +124,7 @@ namespace MM2
             .addFunction("Mag", &Mag)
             .addFunction("Mag2", &Mag2)
             .addFunction("Normalize", &Normalize)
+            .addFunction("Lerp", &Lerp)
             .addFunction("Negate", static_cast<void(Vector2::*)(const Vector2&)>(&Vector2::Negate))
             .addFunction("Min", &Min)
             .addFunction("Max", &Max)

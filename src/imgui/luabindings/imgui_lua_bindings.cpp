@@ -362,10 +362,37 @@ static bool ImGuiBeginChildLua(const char* str_id, const ImVec2& size_arg, bool 
     return ImGui::BeginChild(str_id, size_arg, border, extra_flags);
 }
 
+static int ImGuiInputTextCB(ImGuiInputTextCallbackData* data)
+{
+    auto cb = (LuaRef*)data->UserData;
+    if (cb->isFunction()) 
+    {
+        int rval = cb->call<int>(data);
+        return rval;
+    }
+    return 0;
+}
+
+static std::string ImGuiInputTextCBLua(const char* label, std::string str, ImGuiInputTextFlags flags, LuaRef cb)
+{
+    ImGui::InputText(label, &str, flags, &ImGuiInputTextCB, &cb);
+    return str;
+}
+
+static bool ImGuiInputTextCBBoxedLua(const char* label, MM2::CharBox* str, ImGuiInputTextFlags flags, LuaRef cb)
+{
+    return ImGui::InputText(label, str->GetBoxedValuePointer(), str->GetBufferSize(), flags, &ImGuiInputTextCB, &cb);
+}
+
 static std::string ImGuiInputTextLua(const char* label, std::string str, ImGuiInputTextFlags flags) 
 {
     ImGui::InputText(label, &str, flags);
     return str;
+}
+
+static bool ImGuiInputTextBoxedLua(const char* label, MM2::CharBox* str, ImGuiInputTextFlags flags)
+{
+    return ImGui::InputText(label, str->GetBoxedValuePointer(), str->GetBufferSize(), flags);
 }
 
 static std::string ImGuiInputTextMultilineLua(const char* label, std::string str, const ImVec2& size, ImGuiInputTextFlags flags)
@@ -827,6 +854,12 @@ static ImWchar* ImFontGlyphRangesBuilder_BuildRanges(ImFontGlyphRangesBuilder& b
     return vec.begin();
 }
 
+// ImGuiTextCallbackData helpers
+static void ImGuiInputTextCallbackData_InsertChars(ImGuiInputTextCallbackData& data, int pos, const char* chars)
+{
+    data.InsertChars(pos, chars);
+}
+
 //
 static void ImguiBindLua(LuaState L) {
     LuaBinding(L).beginClass<ImPlotPoint>("ImPlotPoint")
@@ -894,6 +927,24 @@ static void ImguiBindLua(LuaState L) {
         .addMetaFunction("AddFontFromFileTTF", &ImFontAtlas_AddFontFromFileTTF)
         .addMetaFunction("AddFontFromMemoryTTF", &ImFontAtlas_AddFontFromMemoryTTF)
         .addMetaFunction("AddFontFromMemoryCompressedBase85TTF", &ImFontAtlas_AddFontFromMemoryCompressedBase85TTF)
+        .endClass();
+
+    LuaBinding(L).beginClass<ImGuiInputTextCallbackData>("ImGuiInputTextCallbackData")
+        .addVariable("EventFlag", &ImGuiInputTextCallbackData::EventFlag, false)
+        .addVariable("Flags", &ImGuiInputTextCallbackData::Flags, false)
+        .addVariable("EventChar", &ImGuiInputTextCallbackData::EventChar)
+        .addVariable("EventKey", &ImGuiInputTextCallbackData::EventKey, false)
+        .addVariable("BufTextLen", &ImGuiInputTextCallbackData::BufTextLen)
+        .addVariable("BufSize", &ImGuiInputTextCallbackData::BufSize, false)
+        .addVariable("BufDirty", &ImGuiInputTextCallbackData::BufDirty)
+        .addVariable("CursorPos", &ImGuiInputTextCallbackData::CursorPos)
+        .addVariable("SelectionStart", &ImGuiInputTextCallbackData::SelectionStart)
+        .addVariable("SelectionEnd", &ImGuiInputTextCallbackData::SelectionEnd)
+        .addFunction("DeleteChars", &ImGuiInputTextCallbackData::DeleteChars)
+        .addMetaFunction("InsertChars", &ImGuiInputTextCallbackData_InsertChars)
+        .addFunction("SelectAll", &ImGuiInputTextCallbackData::SelectAll)
+        .addFunction("ClearSelection", &ImGuiInputTextCallbackData::ClearSelection)
+        .addPropertyReadOnly("HasSelection", &ImGuiInputTextCallbackData::HasSelection)
         .endClass();
 
     LuaBinding(L).beginClass<ImGuiIO>("ImGuiIO")
@@ -992,6 +1043,7 @@ static void ImguiBindLua(LuaState L) {
         .endClass();
 
     LuaBinding(L).beginClass<ImDrawList>("ImDrawList")
+        .addVariable("Flags", &ImDrawList::Flags)
         .addFunction("AddLine", &ImDrawList::AddLine, LUA_ARGS(const ImVec2 &, const ImVec2 &, ImU32, _def<float, 1>))
         .addFunction("AddTriangle", &ImDrawList::AddTriangle, LUA_ARGS(const ImVec2&, const ImVec2&, const ImVec2&, ImU32, _def<float, 1>))
         .addFunction("AddTriangleFilled", &ImDrawList::AddTriangleFilled, LUA_ARGS(const ImVec2&, const ImVec2&, const ImVec2&, ImU32))
@@ -1201,6 +1253,9 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("InputFloat3", &ImGuiInputFloat3Lua)
         .addFunction("InputFloat4", &ImGuiInputFloat4Lua)
         .addFunction("InputText", &ImGuiInputTextLua)
+        .addFunction("InputTextBoxed", &ImGuiInputTextBoxedLua)
+        .addFunction("InputTextCallback", &ImGuiInputTextCBLua)
+        .addFunction("InputTextBoxedCallback", &ImGuiInputTextCBBoxedLua)
         .addFunction("InputTextMultiline", &ImGuiInputTextMultilineLua)
         .addFunction("InputTextWithHint", &ImGuiInputTextWithHintLua)
 
@@ -1377,6 +1432,8 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("IsWindowDocked", &ImGui::IsWindowDocked)
 
         .addFunction("GetWindowDrawList", &ImGui::GetWindowDrawList)
+        .addFunction("GetBackgroundDrawList", static_cast<ImDrawList*(*)()>(&ImGui::GetBackgroundDrawList))
+        .addFunction("GetForegroundDrawList", static_cast<ImDrawList* (*)()>(&ImGui::GetForegroundDrawList))
 
         .addFunction("ColorConvertU32ToFloat4", &ImGui::ColorConvertU32ToFloat4)
         .addFunction("ColorConvertFloat4ToU32", &ImGui::ColorConvertFloat4ToU32)

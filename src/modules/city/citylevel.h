@@ -73,8 +73,8 @@ namespace MM2
         AGE_API virtual void PreDraw() override;
         AGE_API virtual void PostDraw() override;
         AGE_API virtual void Draw(const gfxViewport& a1, uint a2) override;
-        AGE_API virtual int FindRoomId(Vector3 const& a1, int a2) const override;
-        AGE_API virtual int GetNeighborCount(int a1) const override;
+        AGE_API virtual int FindRoomId(Vector3 const& position, int previousRoom) const override;
+        AGE_API virtual int GetNeighborCount(int room) const override;
         AGE_API virtual int GetNeighbors(int* neighbourRooms, int room) const override;
         AGE_API virtual int GetTouchedNeighbors(int* a1, int a2, int a3, const Vector4& a4) override;
         AGE_API virtual int GetRoomPerimeter(int roomId, Vector3* out, int outSize) const override;
@@ -83,7 +83,7 @@ namespace MM2
         AGE_API virtual bool GetBoundSphere(Vector4& a1, int a2) override;
         AGE_API virtual const class lvlLevelBound* GetBound() override;
         AGE_API virtual void SetObjectDetail(int a1) override;
-        AGE_API virtual float GetWaterLevel(int a1) const override;
+        AGE_API virtual float GetWaterLevel(int room) const override;
         AGE_API virtual float GetLightingIntensity(Vector3 const& a1) const override;
         AGE_API virtual void SetPtxHeight(asParticles& a1) override;
         AGE_API virtual gfxTexture* GetEnvMap(int room, Vector3 const& position, float& intensity) override;

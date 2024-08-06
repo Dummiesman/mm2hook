@@ -12,17 +12,15 @@ local function onModLoaded()
   modsystem.registerSubmodule(M, require("scripts/CoreMods/debugPhysics"), "debugPhysics")
   modsystem.registerSubmodule(M, require("scripts/CoreMods/debugPosition"), "debugPosition")
   modsystem.registerSubmodule(M, require("scripts/CoreMods/debugBuildDate"), "debugBuildDate")
+  modsystem.registerSubmodule(M, require("scripts/CoreMods/debugFPS"), "debugFPS")
   modsystem.registerSubmodule(M, require("scripts/CoreMods/freecam"), "freecam")
-  --modsystem.registerSubmodule(M, require("scripts/CoreMods/cameraExtensions"), "cameraExtensions")
+  modsystem.registerSubmodule(M, require("scripts/CoreMods/cameraExtensions"), "cameraExtensions")
   modsystem.registerSubmodule(M, require("scripts/CoreMods/lightExtensions"), "lightExtensions")
   modsystem.registerSubmodule(M, require("scripts/CoreMods/sirenExtensions"), "sirenExtensions")
   modsystem.registerSubmodule(M, require("scripts/CoreMods/richpresence"), "richpresence")
   modsystem.registerSubmodule(M, require("scripts/CoreMods/cheats"), "cheats")
   modsystem.registerSubmodule(M, require("scripts/CoreMods/menuLabel"), "menuLabel")
-  
-  if datArgParser.Get("lConsoleTest") then
-    modsystem.registerSubmodule(M, require("scripts/CoreMods/console"), "console")
-  end
+  modsystem.registerSubmodule(M, require("scripts/CoreMods/console"), "console")
 end
 
 --exports

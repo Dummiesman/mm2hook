@@ -18,6 +18,8 @@ namespace MM2
         luaBind<asFileIO>(L);
         luaBind<asCullManager>(L);
         luaBind<asLinearCS>(L);
+        luaBind<asDofCS>(L);
+        luaBind<asViewCS>(L);
         luaBind<luaNode>(L);
         luaBind<Random>(L);
     }

@@ -24,6 +24,7 @@ namespace MM2
         luaBind<mmRaceData>(L);
         luaBind<mmInfoBase>(L);
         luaBind<mmPlayerData>(L);
+        luaBind<mmPlayerDirectory>(L);
         luaBind<dgStatePack>(L);
         luaBind<mmStatePack>(L);
         luaBind<mmPositions>(L);

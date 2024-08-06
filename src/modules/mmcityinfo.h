@@ -10,6 +10,7 @@
 #include "mmcityinfo\racedata.h"
 #include "mmcityinfo\infobase.h"
 #include "mmcityinfo\playerdata.h"
+#include "mmcityinfo\playerdir.h"
 #include "mmcityinfo\position.h"
 
 namespace MM2

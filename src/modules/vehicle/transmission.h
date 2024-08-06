@@ -33,6 +33,11 @@ namespace MM2
         float DownshiftBiasMin;
         float DownshiftBiasMax;
         float GearBias;
+    private:
+        void SetAutomaticLua(bool automatic)
+        {
+            Automatic(automatic ? TRUE : FALSE);
+        }
     public:
         AGE_API void Upshift()                              { hook::Thunk<0x4CF570>::Call<void>(this); }
         AGE_API void Downshift()                            { hook::Thunk<0x4CF5B0>::Call<void>(this); }
@@ -141,11 +146,11 @@ namespace MM2
                 .addVariable("DownshiftBiasMax", &vehTransmission::DownshiftBiasMax)
                 .addVariable("DownshiftBiasMin", &vehTransmission::DownshiftBiasMin)
                 .addVariable("UpshiftBias", &vehTransmission::UpshiftBias)
-                .addPropertyReadOnly("IsAutomatic", &IsAuto)
+                .addProperty("IsAutomatic", &IsAuto, &SetAutomaticLua)
                 .addProperty("Gear", &GetGear, &SetCurrentGear)
 
                 //functions
-                .addFunction("Automatic", &Automatic, LUA_ARGS(bool))
+                .addFunction("Automatic", &SetAutomaticLua)
                 .addFunction("Downshift", &Downshift)
                 .addFunction("Upshift", &Upshift)
                 .addFunction("SetReverse", &SetReverse)

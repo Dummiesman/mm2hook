@@ -9,15 +9,17 @@ namespace MM2
     class vehCarAudio;
 
     // External declarations
-
+    extern class vehEngineAudio;
 
     // Class definitions
-
     class vehCarAudio : public Aud3DObject {
     private:
         byte _buffer[0xD0];
     protected:
+        static hook::Field<0x104, vehEngineAudio> _engineAudio;
         static hook::Field<0x118, vehCarSim *> _sim;
+        static hook::Field<0x60, float> _maxAttenDistance;
+        static hook::Field<0x64, float> _volume;
     public:
         /*
             Aud3DObject virtuals
@@ -42,10 +44,27 @@ namespace MM2
             return _sim.get(this);
         };
 
+        vehEngineAudio* GetEngineAudio() const
+        {
+            return _engineAudio.ptr(this);
+        }
+
+        void SetMaxAttenuationDistance(float dist)
+        {
+            _maxAttenDistance.set(this, dist);
+        }
+
+        void SetVolume3D(float volume)
+        {
+            // Only applies to horn and  gear?
+            _volume.set(this, volume);
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<vehCarAudio, Aud3DObject>("vehCarAudio")
                 .addPropertyReadOnly("IsAirBorne", &IsAirBorne)
                 .addPropertyReadOnly("IsBrakeing", &IsBrakeing)
+                .addPropertyReadOnly("EngineAudio", &GetEngineAudio)
                 .addFunction("SetMinAmpSpeed", &SetMinAmpSpeed)
                 .addFunction("PlayHorn", &PlayHorn)
                 .addFunction("StopHorn", &StopHorn)

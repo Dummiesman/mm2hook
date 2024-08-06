@@ -23,19 +23,61 @@ using namespace MM2;
 
 void BridgeFerryHandler::Cull() {}
 
-void BridgeFerryHandler::Draw(int lod) {
+int BridgeFerryHandler::IsVisibleFerry(gfxViewport const& viewport)
+{
+    auto inst = reinterpret_cast<lvlInstance*>(this);
+    int visibleResult = inst->lvlInstance::IsVisible(viewport);
+    return max(visibleResult, 1);
+}
+
+void BridgeFerryHandler::DrawFerry(int lod) {
     reinterpret_cast<dgBangerInstance*>(this)->dgBangerInstance::Draw(lod);
 }
 
+void BridgeFerryHandler::InitBridge(const char* name, const MM2::Matrix34& matrix)
+{
+    // Mark bridges as static to achieve two things
+    // - Ignore the nodraw distance
+    // - Move them to the start of the instance list so shadows work
+    // As far as I'm aware this has no side effects
+    reinterpret_cast<gizBridge*>(this)->SetFlag(lvlInstance::INST_STATIC);
+    reinterpret_cast<gizBridge*>(this)->Init(name, matrix);
+}
+
+void BridgeFerryHandler::DrawBridge(int lod)
+{
+    // draw the base model
+    reinterpret_cast<dgBangerInstance*>(this)->dgBangerInstance::Draw(lod);
+
+    // cloud shadow
+    auto bridge = reinterpret_cast<gizBridge*>(this);
+    auto geometry = bridge->GetGeom(lod, 0);
+    if (geometry && (geometry->Flags & (vglCloudMapEnable.get() * 2)) != 0)
+    {
+        geometry->DrawOrthoMapped(bridge->GetShader(bridge->GetVariant()), vglCloudMapTexture, 0.0078125f, vglCloudMapEnable);
+    }
+}
+
 void BridgeFerryHandler::Install() {
+    InstallCallback("gizBridge::Init", "Mark instance as static.",
+        &InitBridge, {
+            cb::call(0x577C44),
+            cb::call(0x577C91),
+        }
+    );
+
     // revert bridges/ferries to how they were in the betas
     InstallVTableHook("Bridge/Ferry: Cull", &Cull, {
             0x5B6008, // gizBridgeMgr::Cull
             0x5B61FC, // gizFerryMgr::Cull
         });
-
-    InstallVTableHook("Bridge/Ferry: Draw", &Draw, {
-        0x5B5FB8, // gizBridge::Draw
+    InstallVTableHook("Ferry: IsVisible", &IsVisibleFerry, {
+            0x5B6188, // lvlInstance::IsVisible
+        });
+    InstallVTableHook("Ferry: Draw", &DrawFerry, {
         0x5B61AC, // gizFerry::Draw
+        });
+    InstallVTableHook("Bridge: Draw", &DrawBridge, {
+        0x5B5FB8, // gizBridge::Draw
         });
 }

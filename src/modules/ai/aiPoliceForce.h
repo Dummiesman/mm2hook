@@ -27,6 +27,7 @@ namespace MM2
         int GetNumChasers(vehCar* perp) const;
         vehCar* GetPerp(int perpIndex) const;
         vehCar* GetChaser(vehCar* perp, int chaserIndex) const;
+        bool IsCopChasingPerp(vehCar* cop, vehCar* perp) const;
         int GetNumPerps() const;
         BOOL UnRegisterCop(vehCar* cop, vehCar* perp);
         BOOL RegisterPerp(vehCar* cop, vehCar* perp);

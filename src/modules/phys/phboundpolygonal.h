@@ -38,6 +38,11 @@ namespace MM2
         Vector3* VertexPtr;
         phPolygon* PolygonsPtr;
         phHotEdge* HotEdgePtr;
+    protected:
+        phBoundPolygonal() : phBound()
+        {
+
+        }
     public:
         int GetVertexCount() const
         {

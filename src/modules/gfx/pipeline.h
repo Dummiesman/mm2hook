@@ -187,6 +187,11 @@ namespace MM2
             return gfxPipeline::OrthoVP.get();
         }
 
+        static void Clear(DWORD flags, int color, D3DVALUE dvZ, DWORD dwStencil)
+        {
+            hook::StaticThunk<0x4AADC0>::Call<void>(flags, color, dvZ, dwStencil);
+        }
+
         static void CopyBitmap(int destX, int destY, gfxBitmap* bitmap, int srcX, int srcY, int width, int height, bool srcColorKey) {
             hook::StaticThunk<0x4AB4C0>::Call<void>(destX, destY, bitmap, srcX, srcY, width, height, srcColorKey);
         }

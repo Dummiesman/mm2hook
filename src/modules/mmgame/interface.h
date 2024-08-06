@@ -57,6 +57,7 @@ namespace MM2
 			mmInterface members
 		*/
 		AGE_API void BeDone()								{ hook::Thunk<0x40A5B0>::Call<void>(this); }
+		AGE_API void MultiStartGame()						{ hook::Thunk<0x4107B0>::Call<void>(this); }
 
 		UIMenu* GetMainMenu()								{ return _mainMenu.get(this); }
 		Vehicle* GetVehiclesMenu()						    { return _vehiclesMenu.get(this); }
@@ -69,6 +70,7 @@ namespace MM2
 				.addPropertyReadOnly("VehiclesMenu", &GetVehiclesMenu)
 				.addPropertyReadOnly("AboutMenu", &GetAboutMenu)
 				.addPropertyReadOnly("GraphicsOptionsMenu", &GetGraphicsOptionsMenu)
+				.addFunction("MultiStartGame", &MultiStartGame)
 				.addFunction("BeDone", &BeDone)
 				.endClass();
 		}

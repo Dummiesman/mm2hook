@@ -10,7 +10,7 @@ namespace MM2
     
     // Class definitions
     class aiGoal {
-    private:
+    protected:
         int Ticks;
     public:
         virtual void Reset()            PURE;

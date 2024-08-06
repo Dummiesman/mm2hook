@@ -163,21 +163,28 @@ void luaSetGlobals()
 {
     mmGameManager *gameMgr = mmGameManager::Instance;
 
-    auto pGame = (gameMgr != NULL) ? gameMgr->getGame() : NULL;
-    auto pPlayer = (pGame != NULL) ? pGame->GetPlayer() : NULL;
-    auto pHUD = (pPlayer != NULL) ? pPlayer->GetHUD() : NULL;
+    auto pGame = (gameMgr != nullptr) ? gameMgr->getGame() : nullptr;
+    auto pPlayer = (pGame != nullptr) ? pGame->GetPlayer() : nullptr;
+    auto pHUD = (pPlayer != nullptr) ? pPlayer->GetHUD() : nullptr;
 
-    if (gameMgr != NULL && gameMgr->isCurrentGameSingleGame())
+    if (gameMgr != nullptr && pGame != nullptr)
     {
-        Lua::setGlobal(L, "Game", (mmGameSingle*)pGame);
-    }
-    else if (gameMgr != NULL &&gameMgr->isCurrentGameMultiGame())
-    {
-        Lua::setGlobal(L, "Game", (mmGameMulti*)pGame);
-    }
-    else
-    {
-        Lua::setGlobal(L, "Game", pGame);
+        if (gameMgr->isCurrentGameSingleGame())
+        {
+            Lua::setGlobal(L, "Game", (mmGameSingle*)pGame);
+        }
+        else if (gameMgr->isCurrentGameMultiGame())
+        {
+            Lua::setGlobal(L, "Game", (mmGameMulti*)pGame);
+        }
+        else
+        {
+            Lua::setGlobal(L, "Game", pGame);
+        }
+        if (pGame->IsAILoaded())
+        {
+            Lua::setGlobal(L, "AIMAP", aiMap::GetInstance());
+        }
     }
 
     Lua::setGlobal(L, "HUD", pHUD);
@@ -186,7 +193,6 @@ void luaSetGlobals()
     Lua::setGlobal(L, "MMSTATE", &MMSTATE);
     Lua::setGlobal(L, "MMCURRPLAYER", &MMCURRPLAYER);
     Lua::setGlobal(L, "NETMGR", &NETMGR);
-    Lua::setGlobal(L, "AIMAP", aiMap::GetInstance());
     Lua::setGlobal(L, "VehicleList", VehicleListPtr.get());
     Lua::setGlobal(L, "CityList", CityListPtr.get());
     Lua::setGlobal(L, "Input", GameInputPtr.get());
@@ -200,6 +206,7 @@ void luaSetGlobals()
     if (lvlLevel::GetSingleton())
         Lua::setGlobal(L, "MATERIALMGR", lvlMaterialMgr::GetInstance());
 }
+
 
 LUAMOD_API int luaopen_MM2(lua_State *L)
 {
@@ -415,6 +422,38 @@ void MM2Lua::OnSessionJoin()
     if (IsInitialized()) {
         LuaRef func(L, "onSessionJoin");
         TryCallFunction(func);
+    }
+}
+
+void MM2Lua::OnNetworkMessage(int messageType, std::string data)
+{
+    if (IsInitialized()) {
+        LuaRef func(L, "onNetworkMessage");
+        TryCallFunction(func, messageType, data);
+    }
+}
+
+void MM2Lua::OnPlayerLeaveGame(int id)
+{
+    if (IsInitialized()) {
+        LuaRef func(L, "onPlayerLeaveGame");
+        TryCallFunction(func, id);
+    }
+}
+
+void MM2Lua::OnPlayerJoinedGame(int id)
+{
+    if (IsInitialized()) {
+        LuaRef func(L, "onPlayerJoinGame");
+        TryCallFunction(func, id);
+    }
+}
+
+void MM2Lua::OnPlayerFinishedLoading(int id)
+{
+    if (IsInitialized()) {
+        LuaRef func(L, "onPlayerFinishedLoading");
+        TryCallFunction(func, id);
     }
 }
 

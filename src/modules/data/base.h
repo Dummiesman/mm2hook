@@ -12,6 +12,7 @@ namespace MM2
     // Class definitions
     class Base {
     public:
+        ANGEL_ALLOCATOR
         virtual AGE_API ~Base();
         static void BindLua(LuaState L);
     };

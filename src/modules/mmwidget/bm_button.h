@@ -13,6 +13,8 @@ namespace MM2
     class UIBMButton : public uiWidget {
     private:
         char _buffer[0x6C];
+    protected:
+        static hook::Field<0x90, int*> _pValue; // Pointer to value, may be nullptr
     public:
 
         /*
@@ -34,10 +36,29 @@ namespace MM2
         virtual AGE_API void SetPosition(float x, float y)
                                                             { hook::Thunk<0x4EEB30>::Call<void>(this, x, y); }
         virtual AGE_API float GetScreenHeight(void)         { return hook::Thunk<0x4EF2A0>::Call<float>(this); }
-        
+
+        int GetValue() const
+        {
+            int* ptr = _pValue.get(this);
+            if (ptr == nullptr)
+            {
+                return -1;
+            }
+            return *ptr;
+        }
+
+        void SetValue(int value)
+        {
+            int* ptr = _pValue.get(this);
+            if (ptr != nullptr)
+            {
+                *ptr = value;
+            }
+        }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<UIBMButton, uiWidget>("UIBMButton")
+                .addProperty("Value", &GetValue, &SetValue)
                 .endClass();
         }
     };

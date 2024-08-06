@@ -42,6 +42,7 @@
 #include "feature_handlers/mmExternalViewHandler.h"
 #include "feature_handlers/mmGameHandler.h"
 #include "feature_handlers/mmGameMusicDataHandler.h"
+#include "feature_handlers/mmGameMultiHandler.h"
 #include "feature_handlers/mmHudMapFeatureHandler.h"
 #include "feature_handlers/mmIconsHandler.h"
 #include "feature_handlers/mmInterfaceFeatureHandler.h"
@@ -67,5 +68,6 @@
 #include "feature_handlers/vehTrailerFeatureHandler.h"
 #include "feature_handlers/vehTrailerInstanceFeatureHandler.h"
 #include "feature_handlers/vehWheelHandler.h"
+#include "feature_handlers/ViewDistanceHandler.h"
 #include "feature_handlers/vglHandler.h"
 

@@ -40,6 +40,20 @@ vehCar* aiPoliceForce::GetChaser(vehCar* perp, int chaserIndex) const
     return nullptr;
 }
 
+bool MM2::aiPoliceForce::IsCopChasingPerp(vehCar* cop, vehCar* perp) const
+{
+    int chaserCount = this->GetNumChasers(perp);
+    for (int i = 0; i < chaserCount; i++)
+    {
+        auto chaser = this->GetChaser(perp, i);
+        if (chaser == cop) 
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 int aiPoliceForce::GetNumPerps() const
 {
     return this->NumPerps;
@@ -123,6 +137,15 @@ BOOL aiPoliceForce::RegisterPerp(vehCar* cop, vehCar* perp)
     if (perpIndex < 0 || NumChasers[perpIndex] >= NUM_COPS)
     {
         return FALSE;
+    }
+
+    // check if this cop is already chasing this perp
+    for (int i = 0; i < NumChasers[perpIndex]; i++)
+    {
+        if (CopCars[perpIndex][i] == cop)
+        {
+            return TRUE;
+        }
     }
 
     CopCars[perpIndex][NumChasers[perpIndex]] = cop;
@@ -214,6 +237,7 @@ void aiPoliceForce::BindLua(LuaState L) {
         .addFunction("GetNumChasers", &GetNumChasers)
         .addFunction("GetPerp", &GetPerp)
         .addFunction("GetChaser", &GetChaser)
+        .addFunction("IsCopChasingPerp", &IsCopChasingPerp)
         .addFunction("UnRegisterCop", &UnRegisterCop)
         .addFunction("RegisterPerp", &RegisterPerp)
         .addFunction("Find", &Find)

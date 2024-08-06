@@ -29,6 +29,7 @@ static init_handler g_bugfix_handlers[] = {
     CreateHandler<vehCarAudioContainerBugfixHandler>("vehCarAudioContainer bugfixes"),
     CreateHandler<vehCarDamageHandler>("vehCarDamage"),
     CreateHandler<vehTrailerHandler>("vehTrailer"),
+    CreateHandler<vehSplashHandler>("vehSplash"),
     CreateHandler<vehPoliceCarAudioBugfixHandler>("vehPoliceCarAudio"),
     CreateHandler<vehSemiCarAudioBugfixHandler>("vehSemiCarAudio"),
     CreateHandler<mmViewMgrBugfixHandler>("mmViewMgr"),
@@ -201,45 +202,6 @@ BOOL aiPoliceOfficerHandler::IsOppDrivingMadly(vehCar *perpCar) {
     return FALSE;
 }
 
-void aiPoliceOfficerHandler::PerpEscapes(bool a1) 
-{
-    auto police = reinterpret_cast<aiPoliceOfficer*>(this);
-    auto carAudioContainer = police->GetCar()->GetCarAudioContainerPtr();
-    auto policeCarAudio = carAudioContainer->GetPoliceCarAudioPtr();
-    auto AIMAP = aiMap::GetInstance();
-
-    police->aiPoliceOfficer::StopSiren();
-
-    if (policeCarAudio != nullptr && a1)
-        policeCarAudio->PlayExplosion();
-
-    AIMAP->policeForce->UnRegisterCop(police->GetCar(), police->GetFollowedCar());
-    police->SetPoliceState(aiPoliceState::Idle);
-    police->SetState(aiVehiclePhysicsState::Stop);
-}
-
-void aiPoliceOfficerHandler::Update() {
-    auto police = reinterpret_cast<aiPoliceOfficer*>(this);
-    auto car = police->GetCar();
-    auto carsim = car->GetCarSim();
-    auto singleton = lvlLevel::GetSingleton();
-
-    if (police->GetPoliceState() != aiPoliceState::Incapacitated) {
-        if (singleton->GetRoomInfo(car->GetModel()->GetRoomId())->Flags & static_cast<int>(RoomFlags::HasWater)) {
-            if (singleton->GetWaterLevel(car->GetModel()->GetRoomId()) > carsim->GetWorldMatrix()->m31) {
-                PerpEscapes(false);
-                police->SetPoliceState(aiPoliceState::Incapacitated);
-            }
-        }
-    }
-
-    if (police->GetPoliceState() == aiPoliceState::Idle)
-        police->SetState(aiVehiclePhysicsState::Stop);
-
-    //call original
-    hook::Thunk<0x53DC70>::Call<void>(this);
-}
-
 static ConfigValue<bool> cfgFlyingCopFix("FlyingCopFix", true);
 
 void aiPoliceOfficerHandler::Install() {
@@ -258,17 +220,22 @@ void aiPoliceOfficerHandler::Install() {
         );
     }
 
-    InstallCallback("aiPoliceOfficer::PerpEscapes", "Fixes infinite explosion sounds.",
-        &PerpEscapes, {
-            cb::call(0x53DE83),
-            cb::call(0x53DE9F),
-            cb::call(0x53DEC1),
+    InstallCallback("aiPoliceOfficer::Update", "Use reimplemented Update function.",
+        &aiPoliceOfficer::Update, {
+            cb::call(0x537265),
         }
     );
 
-    InstallCallback("aiPoliceOfficer::Update", "Fixes ai cops being disabled when they jump over water areas.",
-        &Update, {
-            cb::call(0x537265),
+    InstallCallback("aiPoliceOfficer::Init", "Use reimplemented Init function.",
+        static_cast<void (aiPoliceOfficer::*)(int)>(&aiPoliceOfficer::Init), {
+            cb::call(0x535D73),
+        }
+    );
+
+    InstallCallback("aiPoliceOfficer::Update", "Use reimplemented Reset function.",
+        &aiPoliceOfficer::Reset, {
+            cb::call(0x536D8C),
+            cb::call(0x0053DFC5),
         }
     );
 
@@ -277,37 +244,8 @@ void aiPoliceOfficerHandler::Install() {
         0x53E37E,
     });
 
-    // remove Angels water check
-    InstallPatch({ 0xEB }, {
-        0x53DD19
-    });
-
-    // fix cops being freezed when they're away from the player
-    /*
-    InstallPatch({ 0x75 }, {
-        0x53DF4A
-    });
-    */
-
     // fix the physics bug that causes cops to rapidly accelerate while in the air
-    if (cfgFlyingCopFix.Get()) {
-        InstallPatch({ 0xEB }, {
-            0x53DCA7
-        });
-    }
-
-    // fix AIMAP.MapComponent calls mapping to the wrong values
-
-    InstallPatch("Fix cop AIMAP.MapComponent calls.", {
-    0x52 // push edx
-        }, {
-            0x53DD85,   // aiPoliceOfficer::Update
-        });
-    InstallPatch("Fix cop AIMAP.MapComponent calls.", {
-    0x51 // push ecx
-        }, {
-            0x53DD86,   // aiPoliceOfficer::Update
-        });
+    aiPoliceOfficer::s_EnableRubberBanding = !cfgFlyingCopFix.Get();
 }
 
 /*

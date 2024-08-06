@@ -18,10 +18,8 @@ namespace MM2
         int dword_a8;
         phJoint* Joint;
     public:
-        void Init(Matrix34* matrixPtr, phBound const* bound)
-        {
-            hook::Thunk<0x46D870>::Call<void>(this, matrixPtr, bound);
-        }
+        void Init(Matrix34* matrixPtr, phBound const* bound)                { hook::Thunk<0x46D870>::Call<void>(this, matrixPtr, bound); }
+        void Init(phBound const* bound, phInertialCS* ics, phSleep* sleep)  { hook::Thunk<0x46D740>::Call<void>(this, bound, ics, sleep); }
 
         phJoint* GetJoint()
         {

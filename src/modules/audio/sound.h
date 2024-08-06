@@ -1,6 +1,7 @@
 #pragma once
 #include <mm2_common.h>
 #include <modules\node\node.h>
+#include "control.h"
 
 namespace MM2
 {
@@ -12,7 +13,16 @@ namespace MM2
     // Class definitions
     class AudSoundBase : public asNode {
     private:
-        byte _buffer[0x40];
+        char* SubPath;
+        char* Extension;
+        audControl* Control;
+        int Flags;
+        int* SoundHandles;
+        int SoundHandleIndex;
+        int NumSoundHandles;
+        bool dword_34; // IsStreaming? Set by AudStream
+        void** EchoEffects;
+        int Effects;
     private:
         //lua helper
         bool LoadLua(LPCSTR wavName, int handleIndex) {
@@ -61,7 +71,7 @@ namespace MM2
         AGE_API void Stop() { hook::Thunk<0x50E1F0>::Call<void>(this); }
         AGE_API void SetFrequency(float frequency) { hook::Thunk<0x50DAB0>::Call<void>(this, frequency); }
         AGE_API void SetVolume(float volume) { hook::Thunk<0x50DA30>::Call<void>(this, volume); }
-        AGE_API void SetPan(float pan, int handleIndex) { hook::Thunk<0x50DB30>::Call<void>(this, pan, handleIndex); }
+        AGE_API void SetPan(float pan, int handleIndex = -1) { hook::Thunk<0x50DB30>::Call<void>(this, pan, handleIndex); }
         AGE_API void SetSoundHandleIndex(int index) { hook::Thunk<0x50E2C0>::Call<void>(this, index); }
         AGE_API void SetExtension(LPCSTR extension) { hook::Thunk<0x50D900>::Call<void>(this, extension); }
         AGE_API void SetSubPath(LPCSTR path) { hook::Thunk<0x50D8D0>::Call<void>(this, path); }

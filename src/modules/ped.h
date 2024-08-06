@@ -8,6 +8,7 @@
 #include "ped\pedactive.h"
 #include "ped\ragdollmgr.h"
 #include "ped\pedanim.h"
+#include "ped\pedscripted.h"
 
 namespace MM2
 {

@@ -21,35 +21,14 @@ namespace MM2
         mcHookman(void)                                     DONOTCALL;
         mcHookman(const mcHookman &&)                       DONOTCALL;
 
-        int GetId() const
-        {
-            return _id.get(this);
-        }
-
-        aiVehiclePhysics* GetVehiclePhysics() const 
-        {
-            return _vehiclePhysics.ptr(this);
-        }
-
-        vehCar* GetCar() const
-        {
-            return _vehiclePhysics.ptr(this)->GetCar();
-        }
-
-        short GetState() const
-        {
-            return _vehiclePhysics.ptr(this)->GetState();
-        }
-
-        int GetCurrentLap() const
-        {
-            return _vehiclePhysics.ptr(this)->GetCurrentLap();
-        }
-
-        int GetLapCount() const
-        {
-            return _vehiclePhysics.ptr(this)->GetLapCount();
-        }
+        int GetId() const                            { return _id.get(this); }
+        aiVehiclePhysics* GetVehiclePhysics() const  { return _vehiclePhysics.ptr(this); }
+        vehCar* GetCar() const                       { return _vehiclePhysics.ptr(this)->GetCar(); }
+        short GetState() const                       { return _vehiclePhysics.ptr(this)->GetState(); }
+        int GetCurrentLap() const                    { return _vehiclePhysics.ptr(this)->GetCurrentLap(); }
+        int GetLapCount() const                      { return _vehiclePhysics.ptr(this)->GetLapCount(); }
+        bool CanRepairDamage() const                 { return _vehiclePhysics.ptr(this)->CanRepairDamage(); }
+        void SetCanRepairDamage(bool value)          { _vehiclePhysics.ptr(this)->SetCanRepairDamage(value); }
 
         void DrawRouteThroughTraffic()
         {
@@ -63,6 +42,7 @@ namespace MM2
                 .addPropertyReadOnly("State", &GetState)
                 .addPropertyReadOnly("CurrentLap", &GetCurrentLap)
                 .addPropertyReadOnly("NumLaps", &GetLapCount)
+                .addProperty("CanRepairDamage", &CanRepairDamage, &SetCanRepairDamage)
                 .addFunction("DrawRouteThroughTraffic", &DrawRouteThroughTraffic)
                 .endClass();
         }

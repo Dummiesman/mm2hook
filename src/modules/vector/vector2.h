@@ -25,6 +25,7 @@ namespace MM2
         AGE_API void Set(const Vector2& vec);
         AGE_API bool IsEqual(const Vector2& vec) const;
         AGE_API void Normalize();
+        AGE_API void Lerp(float t, const Vector2& vec1, const Vector2& vec2);
         AGE_API void Negate(const Vector2& vec);
         AGE_API void Negate();
         AGE_API void Min(const Vector2& vec1, const Vector2& vec2);

@@ -59,7 +59,7 @@ namespace MM2
             hook::Thunk<0x510090>::Call<void>(this, stream);
         };
 
-        AGE_API virtual ~AudSpeech() {
+        AGE_API ~AudSpeech() {
             scoped_vtable x(this);
             hook::Thunk<0x510120>::Call<void>(this);
         };
@@ -71,8 +71,9 @@ namespace MM2
         AGE_API void SetExtension(LPCSTR extension)             { hook::Thunk<0x510220>::Call<void>(this, extension); }
         AGE_API void SetSubPath(LPCSTR extension)               { hook::Thunk<0x5101D0>::Call<void>(this, extension); }
         AGE_API void SetVolume(float volume)                    { hook::Thunk<0x510480>::Call<void>(this, volume); }
-        AGE_API void Play(int category, float timeUntilPlay)    { hook::Thunk<0x510450>::Call<void>(this, category, timeUntilPlay); }
-        AGE_API void Play(int category, int soundIndex, float timeUntilPlay)    
+        AGE_API void Play(int category, float timeUntilPlay = 0.0f)
+                                                                { hook::Thunk<0x510450>::Call<void>(this, category, timeUntilPlay); }
+        AGE_API void Play(int category, int soundIndex, float timeUntilPlay = 0.0f)    
                                                                 { hook::Thunk<0x05106B0>::Call<void>(this, category, soundIndex, timeUntilPlay); }
         AGE_API void Stop()                                     { hook::Thunk<0x510840>::Call<void>(this); }
         AGE_API void AllocateQueuePlayData()                    { hook::Thunk<0x510350>::Call<void>(this); }
@@ -80,15 +81,20 @@ namespace MM2
                                                                 { hook::Thunk<0x510270>::Call<void>(this, name, endValue, addValue); }
         AGE_API void Update()                                   { hook::Thunk<0x510720>::Call<void>(this); }
 
+        int GetSpeechDataCount() const
+        {
+            return this->SpeechDataCount;
+        }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<AudSpeech>("AudSpeech")
                 .addFactory([](bool stream) {
                     auto object = new AudSpeech(stream);
                     //MM2Lua::MarkForCleanupOnShutdown(object);
-                    return new AudSpeech(stream);
+                    return object;
                 })
                 .addPropertyReadOnly("IsPlaying", &IsPlaying)
+                .addPropertyReadOnly("NumSpeechDatas", &GetSpeechDataCount)
                 .addFunction("SetExtension", &SetExtension)
                 .addFunction("SetSubPath", &SetSubPath)
                 .addFunction("SetVolume", &SetVolume)
@@ -102,4 +108,5 @@ namespace MM2
                 .endClass();
         }
     };
+    ASSERT_SIZEOF(AudSpeech, 0x70);
 }

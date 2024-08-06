@@ -33,12 +33,15 @@ namespace MM2
         AGE_API void AssignCDVolume(float vol)               { hook::Thunk<0x519A30>::Call<void>(this, vol); }
         AGE_API void AssignCDBalance(float vol)              { hook::Thunk<0x519880>::Call<void>(this, vol); }
 
+        AGE_API bool MinInstall() const                      { return hook::Thunk<0x519470>::Call<bool>(this); }
+
         //asNode overrides
         AGE_API virtual void Update() override               { hook::Thunk<0x519D00>::Call<void>(this); }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<AudManager, AudManagerBase>("AudManager")
                 .addStaticFunction("Instance", [] { return (AudManager*)Instance; })
+                .addPropertyReadOnly("MinInstall", &MinInstall)
 
                 .addFunction("GetCCSpeechPtr", &GetCCSpeechPtr)
                 .addFunction("GetCNRSpeechPtr", &GetCNRSpeechPtr)
@@ -51,4 +54,6 @@ namespace MM2
             .endClass();
         }
     };
+
+    declhook(0x6B15D0, _Type<AudManager*>, MMAUDMGRPTR);
 }

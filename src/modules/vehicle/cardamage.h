@@ -78,7 +78,7 @@ namespace MM2
         AGE_API vehCarDamage();
         AGE_API ~vehCarDamage();
                                                           
-        AGE_API void AddDamage(float a1);
+        AGE_API void AddDamage(float amount);
         AGE_API void ClearDamage();
 
         /*

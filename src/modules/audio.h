@@ -3,6 +3,7 @@
 
 #include "audio\manager.h"
 #include "audio\control.h"
+#include "audio\object.h"
 #include "audio\audmanagerbase.h"
 #include "audio\sound.h"
 #include "audio\speech.h"

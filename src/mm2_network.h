@@ -8,6 +8,9 @@ namespace MM2 {
     template<>
     void luaAddModule<module_network>(LuaState L) {        
         luaBind<LuaSessionInfo>(L);
+        luaBind<mmNetworkPlayerData>(L);
         luaBind<asNetwork>(L);
+        luaBind<asNetObject>(L);
+        luaBind<mmNetObject>(L);
     }
 }

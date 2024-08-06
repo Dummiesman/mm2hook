@@ -88,8 +88,8 @@ namespace MM2
             LuaBinding(L).beginClass<gfxTexture>("gfxTexture")
                 .addStaticFunction("CreateRenderTarget", &CreateRenderTarget)
 
-                .addStaticProperty("First", [] { return sm_First.get(); })
-                .addStaticProperty("UseInternalCache", [] { return sm_UseInternalCache.get(); })
+                .addStaticProperty("First", []() -> gfxTexture* { return sm_First.get(); })
+                .addStaticProperty("UseInternalCache", []() -> bool { return sm_UseInternalCache.get(); })
 
                 .addFunction("Clone", &Clone)
 

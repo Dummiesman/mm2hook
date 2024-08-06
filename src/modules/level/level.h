@@ -72,6 +72,7 @@ namespace MM2
 
         //lua function for getting neighbours
         std::vector<int> LuaGetNeighbors(int room);
+        std::tuple<gfxTexture*, float> LuaGetEnvMap(int room, Vector3 const& position);
     protected:
         static hook::Type<lvlLevel*> Singleton;
     public:
@@ -88,9 +89,9 @@ namespace MM2
         AGE_API virtual void PostDraw()                             PURE;
         AGE_API virtual void Draw(const gfxViewport& a1, uint a2)   PURE;
                                                                     
-        AGE_API virtual int FindRoomId(Vector3 const& a1, int a2) const
+        AGE_API virtual int FindRoomId(Vector3 const& position, int previousRoom) const
                                                                     PURE;
-        AGE_API virtual int GetNeighborCount(int a1) const          PURE;
+        AGE_API virtual int GetNeighborCount(int room) const        PURE;
         AGE_API virtual int GetNeighbors(int* a1, int a2) const     PURE;
         AGE_API virtual int GetTouchedNeighbors(int* a1, int a2, int a3, const Vector4& a4)   
                                                                     PURE;
@@ -101,7 +102,7 @@ namespace MM2
         AGE_API virtual bool GetBoundSphere(Vector4& a1, int a2);
         AGE_API virtual const class lvlLevelBound* GetBound()       PURE;
         AGE_API virtual void SetObjectDetail(int a1);
-        AGE_API virtual float GetWaterLevel(int a1) const           PURE;
+        AGE_API virtual float GetWaterLevel(int room) const           PURE;
         AGE_API virtual float GetLightingIntensity(Vector3 const& a1) const
                                                                     PURE;
         AGE_API virtual void SetPtxHeight(asParticles& a1)          PURE;

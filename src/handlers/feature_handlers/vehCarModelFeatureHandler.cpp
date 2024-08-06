@@ -3,6 +3,7 @@
 using namespace MM2;
 
 static ConfigValue<bool> cfgMm1StyleTransmission("MM1StyleTransmission", false);
+static ConfigValue<bool> cfgMm1StyleDamage("MM1StyleDamage", true);
 static ConfigValue<bool> cfgEnable3DDamage("3DDamage", true);
 static ConfigValue<bool> cfgCarShadows("3DShadows", false);
 
@@ -49,6 +50,12 @@ void vehCarModelFeatureHandler::ApplyImpact(vehDamageImpactInfo* a1)
         {
             damage3d->Impact(a1->LocalPosition);
         }
+
+        auto mm1Damage = damage->GetCar()->GetModel()->GetMM1Damage();
+        if (mm1Damage)
+        {
+            mm1Damage->Apply(a1->LocalPosition, 0.25f, false);
+        }
     }
 }
 
@@ -56,6 +63,12 @@ void vehCarModelFeatureHandler::SetVariant(int a1)
 {
     auto model = reinterpret_cast<vehCarModel*>(this);
     model->vehCarModel::SetVariant(a1);
+}
+
+const Matrix34& vehCarModelFeatureHandler::GetMatrix(Matrix34* a1)
+{
+    auto model = reinterpret_cast<vehCarModel*>(this);
+    return model->vehCarModel::GetMatrix(a1);
 }
 
 void vehCarModelFeatureHandler::DrawGlow() {
@@ -70,13 +83,9 @@ void vehCarModelFeatureHandler::DrawShadow()
 }
 
 void vehCarModelFeatureHandler::Install() {
-    InstallPatch({ 0x60, 0x1 }, {
-        0x42BB6E + 1, // Change size of vehCarModel on allocation
-    });
-
-    InstallPatch({ 0x60, 0x1 }, {
-        0x4CDFE0 + 1, // Change size of vehCarModel on SizeOf
-    });
+    // write new vehCarModel size
+    mem::write(0x42BB6E + 1, sizeof(vehCarModel));
+    mem::write(0x4CDFE0 + 1, sizeof(vehCarModel));
 
     InstallCallback("vehCarModel::Init", "Use rewritten vehCarModel init.",
         &vehCarModel::Init, {
@@ -127,6 +136,12 @@ void vehCarModelFeatureHandler::Install() {
         }
     );
 
+    InstallVTableHook("vehCarModel::GetMatrix",
+        &GetMatrix, {
+            0x5B2CBC
+        }
+    );
+
     ConfigValue<bool> cfgEnableSpinningWheels("EnableSpinningWheels", true);
     ConfigValue<bool> cfgPartReflections("ReflectionsOnCarParts", false);
     ConfigValue<bool> cfgHeadlightFlashing("EnableHeadlightFlashing", true);
@@ -149,6 +164,7 @@ void vehCarModelFeatureHandler::Install() {
     vehCarModel::WheelReflections = vehCarModel::PartReflections;
 
     vehCarModel::mm1StyleTransmission = cfgMm1StyleTransmission.Get();
+    vehCarModel::mm1StyleDamage = cfgMm1StyleDamage.Get();
     vehCarModel::breakableRenderTweak = cfgBreakableRenderTweak.Get();
     
     vehCarModel::Enable3DDamage = cfgEnable3DDamage.Get();

@@ -5,6 +5,8 @@
 #include "mmnetwork\zone.h"
 #include "mmnetwork\luasessinfo.h"
 #include "mmnetwork\network.h"
+#include "mmnetwork\netobject.h"
+#include "mmnetwork\playerdata.h"
 
 namespace MM2
 {

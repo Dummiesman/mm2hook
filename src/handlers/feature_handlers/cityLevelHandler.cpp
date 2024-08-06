@@ -19,6 +19,8 @@ hook::Type<float> sdl_VLowThresh(0x5C5708);  // default: 300.0
 hook::Type<float> sdl_LowThresh(0x5C570C);  // default: 100.0
 hook::Type<float> sdl_MedThresh(0x5C5710);  // default: 50.0
 
+hook::Type<bool> sdl_SolidColor(0x62B08E);
+
 static hook::Type<bool> sm_PerRoomLighting = 0x5C5720;
 
 /*
@@ -154,6 +156,9 @@ void cityLevelHandler::SetObjectDetail(int lod) {
     // By default the game doesn't set this based on the detail level
     float pedDrawThreshold = powf(HookConfig::GetProperty("PedestrianLod", 35.5f), 2) * (lod + 1);
     ped_LodThreshold = pedDrawThreshold;
+
+    // Also not set by default
+    sdl_SolidColor = (lod <= 1);
 
     LogFile::Format("[cityLevel::SetObjectDetail]: '%s'\n"
         " - OBJ { %.4f, %.4f, %.4f, %.4f }\n"

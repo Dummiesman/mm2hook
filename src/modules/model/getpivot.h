@@ -3,5 +3,5 @@
 
 namespace MM2
 {
-    extern bool GetPivot(Matrix34 & mtx, LPCSTR basename, LPCSTR file);
+    extern bool GetPivot(Matrix34 & mtx, const char* basename, const char* file);
 }

@@ -19,8 +19,8 @@ namespace MM2
             lvlInstance virtuals
         */
 
-        virtual AGE_API int IsVisible(const gfxViewport *a1) override
-                                                                    { return hook::Thunk<0x468030>::Call<int>(this, a1); }
+        virtual AGE_API int IsVisible(gfxViewport const& viewport) override
+                                                                    { return hook::Thunk<0x468030>::Call<int>(this, &viewport); }
 
         virtual AGE_API int Init(const char* a1, const Matrix34& a2, int a3) override;
         virtual AGE_API void DrawGlow() override;

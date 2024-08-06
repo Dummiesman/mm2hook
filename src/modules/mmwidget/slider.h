@@ -13,6 +13,8 @@ namespace MM2
     class UISlider : public uiWidget {
     private:
        char _buffer[0x5C];
+    protected:
+        static hook::Field<0x9C, float*> _pValue;
     public:
         /*
             asNode virtuals
@@ -30,8 +32,19 @@ namespace MM2
                                                             { hook::Thunk<0x4EC860>::Call<void>(this, x, y); }
         virtual AGE_API float GetScreenHeight(void)         { return hook::Thunk<0x4ECDA0>::Call<float>(this); }
 
+        float GetValue() const
+        {
+            return *_pValue.get(this);
+        }
+
+        void SetValue(float value)
+        {
+            *_pValue.get(this) = value;
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<UISlider, uiWidget>("UISlider")
+                .addProperty("Value", &GetValue, &SetValue)
                 .endClass();
         }
     };

@@ -65,6 +65,11 @@ namespace MM2
         vehWheel
     */
 
+    Vector3 vehWheel::GetPosition() const
+    {
+        return this->WheelMatrix.GetRow(3);
+    }
+
     Matrix34 vehWheel::GetMatrix() const {
         return this->WheelMatrix;
     }
@@ -136,6 +141,9 @@ namespace MM2
             .addPropertyReadOnly("RotationRate", &GetRotationRate)
 
             //functions
+            .addFunction("GetPosition", &GetPosition)
+            .addFunction("GetMatrix", &GetMatrix)
+
             .addFunction("CopyVars", &CopyVars)
             .addFunction("ComputeConstants", &ComputeConstants)
             .addFunction("AddNormalLoad", &AddNormalLoad)

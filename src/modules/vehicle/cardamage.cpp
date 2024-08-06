@@ -33,7 +33,7 @@ void vehCarDamage::setGameCallbackLua(LuaRef fn)
 AGE_API vehCarDamage::vehCarDamage()                              { hook::Thunk<0x4CA380>::Call<void>(this); }
 AGE_API vehCarDamage::~vehCarDamage()                             { hook::Thunk<0x4CA530>::Call<void>(this); }
 
-AGE_API void vehCarDamage::AddDamage(float a1)                    { hook::Thunk<0x4CAEC0>::Call<void>(this, a1); }
+AGE_API void vehCarDamage::AddDamage(float amount)                { hook::Thunk<0x4CAEC0>::Call<void>(this, amount); }
 AGE_API void vehCarDamage::ClearDamage()                          { hook::Thunk<0x4CAE80>::Call<void>(this); }
 
 /*
@@ -104,6 +104,8 @@ void vehCarDamage::BindLua(LuaState L) {
 		.addVariable("TextelDamageRadius", &vehCarDamage::TextelDamageRadius)
 		.addVariable("DoublePivot", &vehCarDamage::DoublePivot)
 		.addVariable("MirrorPivot", &vehCarDamage::MirrorPivot)
+
+		.addVariable("SparkMultiplier", &vehCarDamage::SparkMultiplier)
 
 		.addPropertyReadOnly("Car", &GetCar)
 		.addPropertyReadOnly("EngineSmokeParticles", &GetEngineSmokePtx)

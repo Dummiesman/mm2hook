@@ -43,6 +43,16 @@ short aiCTFRacer::GetState() const
     return GetVehiclePhysics()->GetState();
 }
 
+inline bool aiCTFRacer::CanRepairDamage() const 
+{
+    return VehiclePhysics.CanRepairDamage(); 
+}
+
+inline void aiCTFRacer::SetCanRepairDamage(bool value) 
+{
+    VehiclePhysics.SetCanRepairDamage(value); 
+}
+
 AGE_API void aiCTFRacer::Init(int id, const char* basename) 
 {
     hook::Thunk<0x554470>::Call<void>(this, id, basename); 

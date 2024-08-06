@@ -52,6 +52,7 @@ namespace MM2
         void RotateFullZ(float angle); // Rotate the Z axis and position of this matrix by angle degrees (in radians)
         void RotateTo(Vector3 const& side, Vector3 const& up);
         void RotateTo(Vector3 const& side, Vector3 const& up, float t);
+        Vector3 GetEulers();
         void Add(const Matrix34& values);
         void Normalize();
         void LookAt(const Vector3& from, const Vector3& to);

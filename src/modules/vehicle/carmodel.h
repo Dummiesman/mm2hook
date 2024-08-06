@@ -2,6 +2,7 @@
 #include <modules\level\inst.h>
 #include <modules\effects\texeldamage.h>
 #include <modules\effects\damage3d.h>
+#include <modules\effects\damage.h>
 
 #include "car.h"
 #include "breakable.h"
@@ -26,8 +27,8 @@ namespace MM2
     class vehCarModel : public lvlInstance {
     public:
         /*
-    Model Index Constants
-*/
+            Model Index Constants
+        */
         static const int SHADOW_GEOM_ID = 1;
         static const int HLIGHT_GEOM_ID = 2;
         static const int TLIGHT_GEOM_ID = 3;
@@ -125,7 +126,8 @@ namespace MM2
         static float HeadlightFlashingSpeed;
         static bool PartReflections;
         static bool WheelReflections;
-        static bool mm1StyleTransmission; //god this is horrible...
+        static bool mm1StyleTransmission;
+        static bool mm1StyleDamage;
         static bool breakableRenderTweak;
         static bool Enable3DShadows;
 
@@ -184,6 +186,7 @@ namespace MM2
         ltLight* extraHeadlights[6]; //HEADLIGHT2-7
         Vector3 extraHeadlightPositions[6];
         fxDamage3D* damage3D;
+        mmDamage* mm1Damage;
     public:
         AGE_API vehCarModel();
         AGE_API ~vehCarModel();
@@ -197,15 +200,18 @@ namespace MM2
         Vector3 GetTrailerHitchOffset();
         fxTexelDamage* GetTexelDamage();
         fxDamage3D* GetDamage3D();
+        mmDamage* GetMM1Damage();
 
         AGE_API void GetSurfaceColor(modStatic* model, Vector3* outVector);
         AGE_API void InitBreakable(vehBreakableMgr* manager, const char* basename, const char* breakableName, int geomId, int someId);
         AGE_API void InitSirenLight(const char* basename, const char* mtxName, int geomId);
-        AGE_API void BreakElectrics(Vector3* a1);
+        void InitSirenLights(const char* basename);
+        void InitHeadlights(const char* basename);
+        AGE_API void BreakElectrics(Vector3* localImpactPos);
         AGE_API void ClearDamage();
         AGE_API void EjectOneshot();
         AGE_API bool GetVisible();
-        AGE_API void SetVisible(bool a1);
+        AGE_API void SetVisible(bool visible);
         AGE_API void DrawHeadlights(bool rotate);
         AGE_API void DrawExtraHeadlights(bool rotate);
         AGE_API void DrawPart(modStatic* model, const Matrix34* matrix, modShader* shaders);

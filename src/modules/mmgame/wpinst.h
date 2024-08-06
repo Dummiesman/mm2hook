@@ -37,11 +37,11 @@ namespace MM2
         /// <summary>
         /// Test method
         /// </summary>
-        virtual AGE_API int IsVisible(const gfxViewport* a1) override      
+        virtual AGE_API int IsVisible(gfxViewport const& viewport) override
         { 
             if (!LocalVisibility)
                 return 0;
-            return lvlInstance::IsVisible(a1);
+            return lvlInstance::IsVisible(viewport);
         }
 
         static void BindLua(LuaState L) {

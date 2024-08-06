@@ -264,7 +264,8 @@ namespace MM2
                 .addProperty("ShowTimer", &GetShowTimer, &SetShowTimer)
 
                 .addFunction("Init", &Init, LUA_ARGS(LPCSTR, mmPlayer*, BOOL))
-                .addFunction("SetMessage", static_cast<void (mmHUD::*)(LPCSTR, float, int)>(&SetMessage), LUA_ARGS(LPCSTR, _def<float, 3>, _def<int, 0>))
+                .addFunction("SetMessage", static_cast<void (mmHUD::*)(LPCSTR, float, int)>(&SetMessage), LUA_ARGS(LPCSTR, _def<float, 5>, _def<int, 0>))
+                .addFunction("SetMessage2", static_cast<void (mmHUD::*)(LPCSTR)>(&SetMessage), LUA_ARGS(LPCSTR))
                 .addFunction("StartTimers", &StartTimers)
                 .addFunction("StopTimers", &StopTimers)
                 .addFunction("ResetTimers", &ResetTimers)

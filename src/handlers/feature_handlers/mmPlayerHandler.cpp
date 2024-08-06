@@ -151,8 +151,8 @@ void mmPlayerHandler::Update() {
             audio->SilenceEngine(1);
             engine->SetCurrentTorque(0.f);
             //play explosion sound if siren is activated
-            if (siren != nullptr && siren->Active) {
-                siren->Active = false;
+            if (siren != nullptr && siren->IsActive()) {
+                siren->SetActive(false);
                 audio->StopSiren();
                 PlayExplosion();
             }

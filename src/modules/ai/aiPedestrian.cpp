@@ -45,6 +45,7 @@ Matrix34* aiPedestrian::GetMatrix() const
 
 void aiPedestrian::BindLua(LuaState L) {
 	LuaBinding(L).beginClass<aiPedestrian>("aiPedestrian")
+		.addPropertyReadOnly("Instance", &GetInstance)
 		.addPropertyReadOnly("Audio", &GetAudio)
 		.addFunction("DrawDebug", &DrawDebug)
 		.endClass();

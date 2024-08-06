@@ -170,9 +170,9 @@ AGE_API void modStatic::DrawEnvMapped(modShader* shaders, gfxTexture* envMap, fl
 	}
 }
 
-AGE_API void modStatic::DrawOrthoMapped(modShader *shader, gfxTexture *tex, float a3, uint a4) const
+AGE_API void modStatic::DrawOrthoMapped(modShader *shader, gfxTexture *tex, float scale, uint texFlagMask) const
 { 
-	return hook::Thunk<0x4A4B30>::Call<void>(this, shader, tex, a3, a4); 
+	return hook::Thunk<0x4A4B30>::Call<void>(this, shader, tex, scale, texFlagMask);
 }
 
 AGE_API void modStatic::DrawWithTexGenAndTexMatrix(void) const	    

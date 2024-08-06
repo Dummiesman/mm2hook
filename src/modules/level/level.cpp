@@ -76,6 +76,13 @@ std::vector<int> lvlLevel::LuaGetNeighbors(int room)
     return vec;
 }
 
+std::tuple<gfxTexture*, float> MM2::lvlLevel::LuaGetEnvMap(int room, Vector3 const& position)
+{
+    float intensity = 0.0f;
+    auto texture = this->GetEnvMap(room, position, intensity);
+    return std::make_tuple(texture, intensity); 
+}
+
 AGE_API lvlLevel::lvlLevel() {
     scoped_vtable x(this);
     hook::Thunk<0x4653A0>::Call<void>(this);
@@ -175,6 +182,7 @@ void lvlLevel::BindLua(LuaState L) {
         .addFunction("GetWaterLevel", &GetWaterLevel)
         .addFunction("GetLightingIntensity", &GetLightingIntensity)
         .addFunction("SetPtxHeight", &SetPtxHeight)
+        .addFunction("GetEnvMap", &LuaGetEnvMap)
 
         //functions
         .addFunction("GetRoomInfo", &GetRoomInfo)

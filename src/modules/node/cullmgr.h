@@ -86,6 +86,18 @@ namespace MM2
         AGE_API void DeclareBitmap(asCullable *cullable, gfxBitmap *bitmap)
                                                             { hook::Thunk<0x4A1680>::Call<void>(this, cullable, bitmap); }
 
+        void SetClearColor(Vector4 color) 
+        {
+            this->ClearColor = color.PackColorBGRA();
+        }
+
+        Vector4 GetClearColor() const
+        {
+            Vector4 vec;
+            vec.UnpackColorBGRA(this->ClearColor);
+            return vec;
+        }
+
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<asCullManager, asNode>("asCullManager")

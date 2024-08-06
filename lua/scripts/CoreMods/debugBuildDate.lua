@@ -10,9 +10,6 @@ local enabled = false
 local function onCull()
   if not enabled then return end 
   
-  local physmgr = dgPhysManager.Instance
-  local level = lvlLevel.Singleton
-  
   vglUnbindTexture()
   
   gfxDrawFont(8, 8, "Midtown Madness 2")

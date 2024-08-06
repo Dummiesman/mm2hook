@@ -32,6 +32,9 @@ namespace MM2
         AGE_API float GetHandBrake() const                              { return hook::Thunk<0x52DA70>::Call<float>(this); }
         AGE_API float GetSteering(float(__cdecl* filterFunc)(float) = nullptr) 
                                                                         { return hook::Thunk<0x52DE90>::Call<float>(this, filterFunc); }
+
+        // Values returned are in counter clockwise from 0-1. 0.5 being rear, 0.25 being left, 0.75 being right. 
+        // In between values are also valid
         AGE_API float GetCamPan() const                                 { return hook::Thunk<0x52DF60>::Call<float>(this); }
 
         AGE_API BOOL DeviceConnected() const                            { return hook::Thunk<0x52E0A0>::Call<BOOL>(this); }

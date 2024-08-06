@@ -17,7 +17,7 @@ namespace MM2
         static const int MAX_LIGHTS = 8;
     public:
         static float SirenRotationSpeed;
-    public:
+    private:
         bool HasLights;
         bool Active;
         int LightCount;
@@ -27,17 +27,11 @@ namespace MM2
         ltLensFlare* LensFlarePtr;
         //EXTRA FIELD. The hook expands on this class, this is only possible because it's only used like a pointer in the original MM code
         Vector3 extraLightPositions[vehSiren::MAX_LIGHTS]; //SRN0-7
-
-        //lua helpers
-        inline bool GetHasLights() const 
-        {
-            return HasLights;
-        }
-
-        inline int GetLightCount() const 
-        {
-            return LightCount;
-        }
+    public:
+        bool IsActive() const      { return Active;}
+        void SetActive(bool active) { Active = active; }
+        bool GetHasLights() const  { return HasLights; }
+        int GetLightCount() const  { return LightCount; }
 
         ltLight* GetLight(int index) const 
         {
@@ -72,6 +66,12 @@ namespace MM2
                 this->LensFlarePtr = new ltLensFlare(20);
             }
             return true;
+        }
+
+        void RemoveAllLights()
+        {
+            this->HasLights = false;
+            this->LightCount = 0;
         }
 
         AGE_API bool AddLight(Vector3 const & position, Vector3 const & color)                    
@@ -135,7 +135,7 @@ namespace MM2
                 //variables
                 .addPropertyReadOnly("HasLights", &GetHasLights)
                 .addPropertyReadOnly("LightCount", &GetLightCount)
-                .addVariable("Active", &vehSiren::Active)
+                .addProperty("Active", &IsActive, &SetActive)
                 .addVariable("RotationRate", &vehSiren::RotationRate)
 
                 //lua members

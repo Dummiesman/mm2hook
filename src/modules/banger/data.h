@@ -62,6 +62,8 @@ namespace MM2
             (&this->GlowOffsets[num])->Set(offset);
         }
     public:
+        void InitBound()                                    { hook::Thunk<0x4411C0>::Call<void>(this); }
+
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<dgBangerData, asNode>("dgBangerData")
@@ -98,17 +100,19 @@ namespace MM2
     class dgBangerDataManager : public asNode 
     {
     private:
+        const static int NUM_BANGER_TYPES = 512;
+    private:
         int dataCount;
-        dgBangerData datas[512];
+        dgBangerData datas[NUM_BANGER_TYPES];
         gfxTexture* ParticleSheetTextures[20];
         byte buffer[0x58];
     public:
-        inline int getDataCount()
+        int GetDataCount() const
         {
             return dataCount;
         }
 
-        inline dgBangerData* getData(int id) 
+        dgBangerData* GetData(int id) 
         {
             if (id >= dataCount || id < 0)
                 return nullptr;

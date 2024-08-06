@@ -1,5 +1,6 @@
 #pragma once
 #include <modules\mmwidget\menu.h>
+#include <modules\audio\sound.h>
 
 namespace MM2
 {
@@ -13,6 +14,8 @@ namespace MM2
     {
     private:
         char _buffer[0xE4];
+    protected:
+        hook::Field<0x154, AudSoundBase*> selectionSounds;
     private:
         bool currentVehicleIsLockedLua() 
         {
@@ -41,9 +44,16 @@ namespace MM2
         AGE_API void SetLastUnlockedVehicle()              { hook::Thunk<0x4F6D90>::Call<void>(this); }
         AGE_API BOOL CurrentVehicleIsLocked()              { return hook::Thunk<0x4F6D30>::Call<BOOL>(this); }
 
+        // Get the selection audio for vehicles. Each vehicle occupies a sound handle.
+        AudSoundBase* GetSelectionAudio() const
+        {
+            return selectionSounds.get(this);
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<VehicleSelectBase, UIMenu>("VehicleSelectBase")
                 .addPropertyReadOnly("CurrentVehicleIsLocked", &currentVehicleIsLockedLua)
+                .addPropertyReadOnly("SelectionAudio", &GetSelectionAudio)
                 .addFunction("AllSetCar", &AllSetCar)
                 .addFunction("SetLastUnlockedVehicle", &SetLastUnlockedVehicle)
                 .endClass();

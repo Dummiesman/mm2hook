@@ -67,7 +67,10 @@ void PrintHandler::Print(int level, const char* format, va_list args)
     }
 
     GameEventDispatcher::Printer(level, FormatBuffer);
-    OutputDebugStringA(PrintBuffer);
+    if (IsDebuggerPresent())
+    {
+        OutputDebugStringA(PrintBuffer);
+    }
 
     if (ConsoleLog::IsEnabled()) {
         HANDLE hConsole = ConsoleLog::GetOutputHandle();

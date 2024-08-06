@@ -1,64 +1,58 @@
 local M = {}
 
 M.info = {
-  name = "Core Mods : Camera Submodule",
+  name = "Camera Extensions",
   author = "mm2hook Team",
-  context = {"game"}
+  context = {'game'}
 }
 
-local enableLookAround = false
-local lastPan = 0
+local invertedNear = nil
+local invertedFar = nil
 
-local function onModLoaded()
-  
+local function loadInvertedCam(name)
+  local cam = camTrackCS()
+  cam:Init(Player.Car, string.format("%s_%s", Player.Car.CarDamage.Name, name))
+  cam.Target = Player.Car.CarSim:GetWorldMatrixPtr()
+  cam.ReverseMode = -1
+  cam.ApproachOn = false
+  return cam
 end
 
-local function what()
-  local camView = Player.CamView
-  local cams = {{"FreeCam", Player.FreeCam}, {"FarCam", Player.FarCam}, {"NearCam", Player.NearCam}, {"IndCam", Player.IndCam}, {"DashCam", Player.DashCam}, {"PovCam", Player.PovCam}, {"PointCam", Player.PointCam}, {"PreCam", Player.PreCam}, {"PostCam", Player.PostCam}, {"ThrillCam", Player.ThrillCam}, {"XCam", Player.XCam}, {"MPPostCam", Player.MPPostCam}}
-  
-  for _, ctbl in pairs(cams) do
-    local name = ctbl[1]
-    local value = ctbl[2]
-    
-    if camView:IsCurrentCamera(value) then  
-      print("Current cam is: " .. name)
-      break
-    end
+local function activateLookBehind()
+  if Player.CamView:IsCurrentCamera(Player.NearCam) then
+    Player.CamView:SetCam(invertedNear)
+  elseif Player.CamView:IsCurrentCamera(Player.FarCam) then
+    Player.CamView:SetCam(invertedFar)
   end
+end
+
+local function deactivateLookBehind()
+  if Player.CamView:IsCurrentCamera(invertedNear) then
+    Player.CamView:SetCam(Player.NearCam)
+  elseif Player.CamView:IsCurrentCamera(invertedFar) then
+    Player.CamView:SetCam(Player.FarCam)
+  end
+end
+
+local function onStateBegin()
+  -- have to save/load the CameraFar as it's overwritten from the camera file
+  local prevCameraFar = camBaseCS.CameraFar
+  invertedNear = loadInvertedCam("near")
+  invertedFar = loadInvertedCam("far")
+  camBaseCS.CameraFar = prevCameraFar
 end
 
 local function onUpdate()
-  --what()
-  
-  local pan = Input:GetCamPan()
-  local cam1 = Player.FarCam
-  local cam2 = Player.NearCam
-  local camView = Player.CamView
-  
-  local activeCam = nil
-  if camView:IsCurrentCamera(cam1) then
-    activeCam = cam1
-  elseif camView:IsCurrentCamera(cam2) then
-    activeCam = cam2
-  end
- 
-  if not activeCam then return end
-  
-  if pan ~= lastPan then
-    if pan == 0.5 then
-      -- look back
-      activeCam.ReverseMode = -1
+  if not Player.CamView.IsTransitioning then
+    if Input:GetCamPan() == 0.5 then
+      activateLookBehind()
     else
-      activeCam.ReverseMode = 1
+      deactivateLookBehind()
     end
   end
-  
-  lastPan = pan
 end
 
---exports
-M.onModLoaded = onModLoaded
 M.onUpdate = onUpdate
-
+M.onUpdatePaused = onUpdate
+M.onStateBegin = onStateBegin
 return M

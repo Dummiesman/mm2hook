@@ -176,6 +176,7 @@
     <ClInclude Include="src\handlers\bugfix_handlers\CityListHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehCarAudioHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.h" />
+    <ClInclude Include="src\handlers\bugfix_handlers\vehSplashHandler.h" />
     <ClInclude Include="src\handlers\bugfix_handlers\vehTrailerHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\aiVehicleInstanceFeatureHandler.h" />
@@ -210,6 +211,7 @@
     <ClInclude Include="src\handlers\feature_handlers\mmDirSndHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmExternalViewHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmGameHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\mmGameMultiHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmGameMusicDataHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmHudMapFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmIconsHandler.h" />
@@ -236,6 +238,7 @@
     <ClInclude Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\vehWheelHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\vglHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\ViewDistanceHandler.h" />
     <ClInclude Include="src\handlers\print_handler.h" />
     <ClInclude Include="src\hook.h" />
     <ClInclude Include="src\handlers\lua_drawable.h" />
@@ -308,6 +311,7 @@
     <ClInclude Include="src\modules\audio\control.h" />
     <ClInclude Include="src\modules\audio\list.h" />
     <ClInclude Include="src\modules\audio\manager.h" />
+    <ClInclude Include="src\modules\audio\object.h" />
     <ClInclude Include="src\modules\audio\sound.h" />
     <ClInclude Include="src\modules\audio\speech.h" />
     <ClInclude Include="src\modules\audio\streamingmusic.h" />
@@ -354,6 +358,7 @@
     <ClInclude Include="src\modules\effects.h" />
     <ClInclude Include="src\modules\effects\birth.h" />
     <ClInclude Include="src\modules\effects\card2d.h" />
+    <ClInclude Include="src\modules\effects\damage.h" />
     <ClInclude Include="src\modules\effects\damage3d.h" />
     <ClInclude Include="src\modules\effects\linespark.h" />
     <ClInclude Include="src\modules\effects\ptx.h" />
@@ -377,6 +382,7 @@
     <ClInclude Include="src\modules\gfx\viewport.h" />
     <ClInclude Include="src\modules\gizmo.h" />
     <ClInclude Include="src\modules\gizmo\bridge.h" />
+    <ClInclude Include="src\modules\gizmo\ferry.h" />
     <ClInclude Include="src\modules\gizmo\gizmoinst.h" />
     <ClInclude Include="src\modules\gizmo\pathspline.h" />
     <ClInclude Include="src\modules\gizmo\pathspline_wrapper.h" />
@@ -415,6 +421,7 @@
     <ClInclude Include="src\modules\mmcityinfo\citylist.h" />
     <ClInclude Include="src\modules\mmcityinfo\infobase.h" />
     <ClInclude Include="src\modules\mmcityinfo\playerdata.h" />
+    <ClInclude Include="src\modules\mmcityinfo\playerdir.h" />
     <ClInclude Include="src\modules\mmcityinfo\position.h" />
     <ClInclude Include="src\modules\mmcityinfo\racedata.h" />
     <ClInclude Include="src\modules\mmcityinfo\state.h" />
@@ -463,7 +470,9 @@
     <ClInclude Include="src\modules\mminput\input.h" />
     <ClInclude Include="src\modules\mmnetwork.h" />
     <ClInclude Include="src\modules\mmnetwork\luasessinfo.h" />
+    <ClInclude Include="src\modules\mmnetwork\netobject.h" />
     <ClInclude Include="src\modules\mmnetwork\network.h" />
+    <ClInclude Include="src\modules\mmnetwork\playerdata.h" />
     <ClInclude Include="src\modules\mmnetwork\zone.h" />
     <ClInclude Include="src\modules\mmui.h" />
     <ClInclude Include="src\modules\mmui\luaPopup.h" />
@@ -498,6 +507,7 @@
     <ClInclude Include="src\modules\node\camera.h" />
     <ClInclude Include="src\modules\node\cullable.h" />
     <ClInclude Include="src\modules\node\cullmgr.h" />
+    <ClInclude Include="src\modules\node\dof.h" />
     <ClInclude Include="src\modules\node\event.h" />
     <ClInclude Include="src\modules\node\eventq.h" />
     <ClInclude Include="src\modules\node\fileio.h" />
@@ -507,6 +517,7 @@
     <ClInclude Include="src\modules\node\random.h" />
     <ClInclude Include="src\modules\node\root.h" />
     <ClInclude Include="src\modules\node\str.h" />
+    <ClInclude Include="src\modules\node\view.h" />
     <ClInclude Include="src\modules\node\__template__.h" />
     <ClInclude Include="src\modules\parse.h" />
     <ClInclude Include="src\modules\parse\csv.h" />
@@ -516,6 +527,7 @@
     <ClInclude Include="src\modules\ped\pedactive.h" />
     <ClInclude Include="src\modules\ped\pedanim.h" />
     <ClInclude Include="src\modules\ped\pedinst.h" />
+    <ClInclude Include="src\modules\ped\pedscripted.h" />
     <ClInclude Include="src\modules\ped\ragdollmgr.h" />
     <ClInclude Include="src\modules\ped\__template__.h" />
     <ClInclude Include="src\modules\phys.h" />
@@ -682,6 +694,7 @@
     <ClCompile Include="src\handlers\bugfix_handlers\CityListHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehCarAudioHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\vehSplashHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehTrailerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\aiVehicleInstanceFeatureHandler.cpp" />
@@ -716,6 +729,7 @@
     <ClCompile Include="src\handlers\feature_handlers\mmDirSndHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmExternalViewHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmGameHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\mmGameMultiHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmGameMusicDataHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmHudMapFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmIconsHandler.cpp" />
@@ -742,6 +756,7 @@
     <ClCompile Include="src\handlers\feature_handlers\vehTrailerInstanceFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\vehWheelHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\vglHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\ViewDistanceHandler.cpp" />
     <ClCompile Include="src\handlers\print_handler.cpp" />
     <ClCompile Include="src\hook.cpp" />
     <ClCompile Include="src\handlers\lua_drawable.cpp" />
@@ -803,6 +818,7 @@
     <ClCompile Include="src\modules\directmusic\dmusicobject.cpp" />
     <ClCompile Include="src\modules\effects.cpp" />
     <ClCompile Include="src\modules\effects\birth.cpp" />
+    <ClCompile Include="src\modules\effects\damage.cpp" />
     <ClCompile Include="src\modules\effects\ptx.cpp" />
     <ClCompile Include="src\modules\effects\waterspout.cpp" />
     <ClCompile Include="src\modules\gfx.cpp" />
@@ -833,6 +849,8 @@
     <ClCompile Include="src\modules\mmgame\wpobject.cpp" />
     <ClCompile Include="src\modules\mminput.cpp" />
     <ClCompile Include="src\modules\mmnetwork.cpp" />
+    <ClCompile Include="src\modules\mmnetwork\netobject.cpp" />
+    <ClCompile Include="src\modules\mmnetwork\network.cpp" />
     <ClCompile Include="src\modules\mmui.cpp" />
     <ClCompile Include="src\modules\mmwidget.cpp" />
     <ClCompile Include="src\modules\mmwidget\menu.cpp" />
@@ -842,9 +860,12 @@
     <ClCompile Include="src\modules\model\model2.cpp" />
     <ClCompile Include="src\modules\model\static2.cpp" />
     <ClCompile Include="src\modules\node.cpp" />
+    <ClCompile Include="src\modules\node\dof.cpp" />
     <ClCompile Include="src\modules\node\linear.cpp" />
     <ClCompile Include="src\modules\parse.cpp" />
     <ClCompile Include="src\modules\ped.cpp" />
+    <ClCompile Include="src\modules\ped\pedscripted.cpp" />
+    <ClCompile Include="src\modules\ped\ragdollmgr.cpp" />
     <ClCompile Include="src\modules\phys.cpp" />
     <ClCompile Include="src\modules\phys\phinertia.cpp" />
     <ClCompile Include="src\modules\phys\physmgr.cpp" />
