@@ -48,6 +48,16 @@ namespace MM2
         Printf("%s: %f,%f,%f,%f", caption, this->X, this->Y, this->Z,this->W);
     }
 
+    AGE_API bool Vector4::operator!=(const Vector4& vec)
+    {
+        return !operator==(vec);
+    }
+
+    AGE_API bool Vector4::operator==(const Vector4& vec)
+    {
+        return vec.X == this->X && vec.Y == this->Y && vec.Z == this->Z && vec.W == this->W;
+    }
+
     AGE_API Vector4 Vector4::operator/(float value) const
     {
         return Vector4(this->X / value, this->Y / value, this->Z / value, this->W / value);

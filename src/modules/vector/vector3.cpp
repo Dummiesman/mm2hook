@@ -227,6 +227,16 @@ namespace MM2
         this->Z -= vec.Z;
     }
 
+    AGE_API bool Vector3::operator!=(const Vector3& vec)
+    {
+        return !operator==(vec);
+    }
+
+    AGE_API bool Vector3::operator==(const Vector3& vec)
+    {
+        return vec.X == this->X && vec.Y == this->Y && vec.Z == this->Z;
+    }
+
     AGE_API Vector3 Vector3::operator+(const Vector3& vec) const {
         return Vector3(this->X + vec.X, this->Y + vec.Y, this->Z + vec.Z);
     }
