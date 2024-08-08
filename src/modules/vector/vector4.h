@@ -36,7 +36,7 @@ namespace MM2
         AGE_API void Max(const Vector4& vec1, const Vector4& vec2);
         AGE_API void Lerp(float t, const Vector4& vec1, const Vector4& vec2);
         AGE_API void Print() const;
-        AGE_API void Print(LPCSTR caption);
+        AGE_API void Print(LPCSTR caption) const;
         AGE_API bool operator!=(const Vector4& vec);
         AGE_API bool operator==(const Vector4& vec);
         AGE_API Vector4 operator/(float value) const;

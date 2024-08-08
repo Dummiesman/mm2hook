@@ -31,7 +31,7 @@ namespace MM2
         AGE_API void Min(const Vector2& vec1, const Vector2& vec2);
         AGE_API void Max(const Vector2& vec1, const Vector2& vec2);
         AGE_API void Print() const;
-        AGE_API void Print(LPCSTR caption);
+        AGE_API void Print(LPCSTR caption) const;
 
         Vector2 operator+(Vector2& vec);
         Vector2 operator-(const Vector2 vec) const;

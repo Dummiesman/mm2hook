@@ -79,7 +79,7 @@ namespace MM2
         Printf("%f,%f", this->X, this->Y);
     }
 
-    AGE_API void Vector2::Print(LPCSTR caption)
+    AGE_API void Vector2::Print(LPCSTR caption) const
     {
         Printf("%s: %f,%f", caption, this->X, this->Y);
     }
@@ -128,7 +128,7 @@ namespace MM2
             .addFunction("Negate", static_cast<void(Vector2::*)(const Vector2&)>(&Vector2::Negate))
             .addFunction("Min", &Min)
             .addFunction("Max", &Max)
-            .addFunction("Print", static_cast<void(Vector2::*)(LPCSTR)>(&Vector2::Print))
+            .addFunction("Print", static_cast<void(Vector2::*)(LPCSTR)const>(&Vector2::Print))
             .endClass();
     }
 
