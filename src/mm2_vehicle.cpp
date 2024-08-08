@@ -14,6 +14,7 @@ bool vehCarModel::EnableHeadlightFlashing = true;
 bool vehCarModel::MWStyleTotaledCar = false;
 bool vehCarModel::PartReflections = false;
 bool vehCarModel::WheelReflections = false;
+bool vehCarModel::DamageReflections = false;
 int vehCarModel::SirenType = 0;
 int vehCarModel::HeadlightType = 0;
 float vehCarModel::SirenCycle = 0.25f;
@@ -29,6 +30,7 @@ bool vehCarModel::mm1StyleDamage = true;
 bool vehCarModel::breakableRenderTweak = false;
 
 bool vehCarModel::Enable3DDamage = true;
+bool vehCarModel::Enable3DDynamicDamage = false;
 bool vehCarModel::Enable3DShadows = true;
 
 /*

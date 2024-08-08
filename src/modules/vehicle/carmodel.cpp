@@ -599,25 +599,6 @@ namespace MM2
                     }
                 }
             }
-
-            //init damage3d
-            if (this->damage3D != nullptr)
-            {
-                // delete old damage3D
-                delete this->damage3D;
-                this->damage3D = nullptr;
-            }
-
-            if (this->GetGeomIndex() != 0 && vehCarModel::Enable3DDamage)
-            {
-                auto bodyEntry = this->GetGeomBase(0);
-                auto bodyDamageEntry = this->GetGeomBase(BODYDAMAGE_GEOM_ID);
-                if (bodyEntry->GetHighLOD() != nullptr && bodyDamageEntry->GetHighLOD() != nullptr)
-                {
-                    this->damage3D = new fxDamage3D();
-                    damage3D->Init(bodyEntry->GetHighLOD(), bodyDamageEntry->GetHighLOD());
-                }
-            }
         }
         else
         {
@@ -636,6 +617,28 @@ namespace MM2
                 {
                     this->mm1Damage = new mmDamage();
                     mm1Damage->Init(bodyEntry->GetHighLOD(), bodyEntry->pShaders[this->GetVariant()], bodyEntry->numShadersPerVariant);
+                }
+            }
+        }
+
+        if (vehCarModel::Enable3DDamage)
+        {
+            //init damage3d
+            if (this->damage3D != nullptr)
+            {
+                // delete old damage3D
+                delete this->damage3D;
+                this->damage3D = nullptr;
+            }
+
+            if (this->GetGeomIndex() != 0)
+            {
+                auto bodyEntry = this->GetGeomBase(0);
+                auto bodyDamageEntry = this->GetGeomBase(BODYDAMAGE_GEOM_ID);
+                if (bodyEntry->GetHighLOD() != nullptr)
+                {
+                    this->damage3D = new fxDamage3D();
+                    damage3D->Init(bodyEntry->GetHighLOD(), bodyDamageEntry->GetHighLOD() != nullptr ? bodyDamageEntry->GetHighLOD() : bodyEntry->GetHighLOD(), vehCarModel::mm1StyleDamage);
                 }
             }
         }
@@ -810,13 +813,35 @@ namespace MM2
 
         //draw the body
         modStatic* bodyGeom = this->GetGeom(lod, 0);
-        if (!mm1StyleDamage)
+        if (Enable3DDamage)
         {
-            bodyGeom = (damage3D != nullptr && lod >= 2) ? damage3D->GetDeformModel() : this->GetGeom(lod, 0);
-            if (bodyGeom != nullptr)
-                bodyGeom->Draw(shaders);
+            if (damage3D != nullptr)
+            {
+                bodyGeom = lod >= 2 ? damage3D->GetDeformModel() : this->GetGeom(lod, 0);
+                if (bodyGeom != nullptr)
+                    bodyGeom->Draw(shaders);
+
+                if (mm1StyleDamage)
+                {
+                    modStatic* bodyDamage = lod >= 2 ? damage3D->GetDeformDamageModel() : this->GetGeom(lod, 0);
+                    if (bodyDamage != nullptr)
+                        bodyDamage->Draw(lod >= 2 && mm1Damage != nullptr ? mm1Damage->GetDamageShaders() : shaders);
+
+                    if (DamageReflections)
+                    {
+                        float reflectionIntensity;
+                        auto reflectionMap = lvlLevel::GetSingleton()->GetEnvMap(this->GetRoomId(), this->GetPosition(), reflectionIntensity);
+                        if (lod == 3 && reflectionMap != nullptr && bodyDamage != nullptr)
+                        {
+                            modShader::BeginEnvMap(reflectionMap, *this->carSim->GetWorldMatrix());
+                            bodyDamage->DrawEnvMapped(shaders, reflectionMap, reflectionIntensity);
+                            modShader::EndEnvMap();
+                        }
+                    }
+                }
+            }
         }
-        else
+        else if (mm1StyleDamage)
         {
             if (mm1Damage != nullptr)
             {
@@ -827,7 +852,24 @@ namespace MM2
                 modStatic* bodyDamage = lod >= 2 ? mm1Damage->GetDamageModel() : this->GetGeom(lod, 0);
                 if (bodyDamage != nullptr)
                     bodyDamage->Draw(lod >= 2 ? mm1Damage->GetDamageShaders() : shaders);
+
+                if (DamageReflections)
+                {
+                    float reflectionIntensity;
+                    auto reflectionMap = lvlLevel::GetSingleton()->GetEnvMap(this->GetRoomId(), this->GetPosition(), reflectionIntensity);
+                    if (lod == 3 && reflectionMap != nullptr && bodyDamage != nullptr)
+                    {
+                        modShader::BeginEnvMap(reflectionMap, *this->carSim->GetWorldMatrix());
+                        bodyDamage->DrawEnvMapped(shaders, reflectionMap, reflectionIntensity);
+                        modShader::EndEnvMap();
+                    }
+                }
             }
+        }
+        else
+        {
+            if (bodyGeom != nullptr)
+                bodyGeom->Draw(shaders);
         }
 
         //draw BREAK objects below the body

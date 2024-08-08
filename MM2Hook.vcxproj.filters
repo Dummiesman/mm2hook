@@ -2794,6 +2794,9 @@
     <ClCompile Include="src\modules\node\dof.cpp">
       <Filter>Source Files\modules\node</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\effects\damage3d.cpp">
+      <Filter>Source Files\modules\effects</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AGE.h">

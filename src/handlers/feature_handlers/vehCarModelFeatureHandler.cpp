@@ -5,6 +5,7 @@ using namespace MM2;
 static ConfigValue<bool> cfgMm1StyleTransmission("MM1StyleTransmission", false);
 static ConfigValue<bool> cfgMm1StyleDamage("MM1StyleDamage", true);
 static ConfigValue<bool> cfgEnable3DDamage("3DDamage", true);
+static ConfigValue<bool> cfgEnable3DDynamicDamage("3DDynamicDamage", false);
 static ConfigValue<bool> cfgCarShadows("3DShadows", false);
 
 /*
@@ -48,7 +49,7 @@ void vehCarModelFeatureHandler::ApplyImpact(vehDamageImpactInfo* a1)
         auto damage3d = damage->GetCar()->GetModel()->GetDamage3D();
         if (damage3d)
         {
-            damage3d->Impact(a1->LocalPosition);
+            damage3d->Impact(a1->LocalPosition, vehCarModel::Enable3DDynamicDamage);
         }
 
         auto mm1Damage = damage->GetCar()->GetModel()->GetMM1Damage();
@@ -144,6 +145,7 @@ void vehCarModelFeatureHandler::Install() {
 
     ConfigValue<bool> cfgEnableSpinningWheels("EnableSpinningWheels", true);
     ConfigValue<bool> cfgPartReflections("ReflectionsOnCarParts", false);
+    ConfigValue<bool> cfgDamageReflections("ReflectionsOnDamagedParts", false);
     ConfigValue<bool> cfgHeadlightFlashing("EnableHeadlightFlashing", true);
     ConfigValue<bool> cfgNfsMwStyleTotaledCar("NFSMWStyleTotaledCar", false);
     ConfigValue<bool> cfgBreakableRenderTweak("BreakableRenderTweak", false);
@@ -162,12 +164,14 @@ void vehCarModelFeatureHandler::Install() {
 
     vehCarModel::PartReflections = cfgPartReflections.Get();
     vehCarModel::WheelReflections = vehCarModel::PartReflections;
+    vehCarModel::DamageReflections = cfgDamageReflections.Get();
 
     vehCarModel::mm1StyleTransmission = cfgMm1StyleTransmission.Get();
     vehCarModel::mm1StyleDamage = cfgMm1StyleDamage.Get();
     vehCarModel::breakableRenderTweak = cfgBreakableRenderTweak.Get();
     
     vehCarModel::Enable3DDamage = cfgEnable3DDamage.Get();
+    vehCarModel::Enable3DDynamicDamage = cfgEnable3DDynamicDamage.Get();
     vehCarModel::Enable3DShadows = cfgCarShadows.Get();
 }
 
