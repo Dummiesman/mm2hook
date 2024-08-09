@@ -216,11 +216,12 @@ namespace MM2
                             {
                                 deformAmount = m_VertDeformAmount[currentVertex];
                             }
-                            m_VertDeformAmount[currentVertex] = deformAmount;
+                            if (!dynamicDamage)
+                                m_VertDeformAmount[currentVertex] = deformAmount;
 
                             Vector3 deformedPosition = Vector3::ORIGIN;
                             dynamicDamage ?
-                                deformedPosition.Lerp(0.5f, bodyModelPosition, bodyModelPosition - localImpactPosition * 0.1f) :
+                                deformedPosition.Lerp(deformAmount, bodyModelPosition, fullDamagePosition - localImpactPosition * 0.1f) :
                                 deformedPosition.Lerp(deformAmount, bodyModelPosition, fullDamagePosition);
                             deformPacket->SetPosition(deformedPosition, j);
                             deformDamagePacket->SetPosition(deformedPosition, j);
