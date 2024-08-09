@@ -1865,6 +1865,9 @@
     <ClInclude Include="src\modules\node\dof.h">
       <Filter>Source Files\modules\node</Filter>
     </ClInclude>
+    <ClInclude Include="src\modules\audio\stream.h">
+      <Filter>Source Files\modules\audio</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
