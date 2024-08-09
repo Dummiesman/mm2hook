@@ -39,13 +39,13 @@ namespace MM2
 
     AGE_API void vehCarModel::SetVariant(int variant)
     {
+        this->variant = variant;
         this->PreLoadShader(variant);
         this->GetGenBreakableMgr()->SetVariant(variant);
         this->GetMechBreakableMgr()->SetVariant(variant);
         this->InitSirenLights(this->GetCar()->GetCarDamage()->GetName());
         this->InitHeadlights(this->GetCar()->GetCarDamage()->GetName());
-        //this->Optimize(variant); crash
-        this->variant = variant;
+        this->Optimize(variant);
 
         // setup damage
         if (texelDamage) 
