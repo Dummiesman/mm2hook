@@ -126,6 +126,7 @@ namespace MM2
         static float HeadlightFlashingSpeed;
         static bool PartReflections;
         static bool WheelReflections;
+        static bool DamageReflections;
         static bool mm1StyleTransmission;
         static bool mm1StyleDamage;
         static bool breakableRenderTweak;
@@ -139,6 +140,7 @@ namespace MM2
 
         //3d damage feature
         static bool Enable3DDamage;
+        static bool Enable3DDynamicDamage;
     private:
         bool enabledElectrics[4]; //0/1 are back, 2/3 are front
         vehCar* car;
