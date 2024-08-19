@@ -51,6 +51,7 @@ namespace MM2
         gfxTextureCacheEntry * GetCacheEntry() const { return this->CacheEntry; }
         gfxTexture * GetNext() const                 { return this->Next; }
         gfxTexture * GetNextLOD() const              { return this->NextLOD; }
+        uint GetTexEnv() const                       { return this->TexEnv; }
     public:
         ANGEL_ALLOCATOR
 
@@ -101,6 +102,7 @@ namespace MM2
                 .addPropertyReadOnly("Height", &GetHeight)
                 .addPropertyReadOnly("CacheEntry", &GetCacheEntry)
                 .addPropertyReadOnly("CachePool", &GetPool)
+                .addPropertyReadOnly("TexEnv", &GetTexEnv)
 
                 .endClass();
         }

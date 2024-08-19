@@ -6,6 +6,13 @@ using namespace MM2;
     modStaticHandler
 */
 
+void modStaticHandler::DrawOrthoMapped(modShader* shader, gfxTexture* tex, float scale, uint texFlagMask)
+{
+    auto world = gfxRenderState::GetWorldMatrix();
+    auto position = static_cast<Vector3>(world.GetRow(3));
+    reinterpret_cast<modStatic*>(this)->DrawOrthoMapped(shader, tex, scale, position, texFlagMask);
+}
+
 void modStaticHandler::Install()
 {
     // Use rewritten modStatic functions
@@ -18,6 +25,12 @@ void modStaticHandler::Install()
     InstallCallback("modStatic::DrawEnvMapped", "",
         &modStatic::DrawEnvMapped, {
             cb::jmp(0x4A4A50),
+        }
+    );
+
+    InstallCallback("modStatic::DrawOrthoMapped", "Add world position to ortho map, matching SDL/Instance cloud shadows",
+        &DrawOrthoMapped, {
+            cb::jmp(0x4A4B30),
         }
     );
 

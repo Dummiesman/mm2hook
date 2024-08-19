@@ -21,7 +21,25 @@ namespace MM2
         return hook::StaticThunk<0x4B2E30>::Call<unsigned int>(fvf);
     }
 
+    struct OrthoMapVertex
+    {
+        Vector3 position;
+        int _reserved;
+        int diffuse;
+        int specular;
+        Vector2 uv;
+    };
+
+    struct VertexVNT
+    {
+        Vector3 position;
+        Vector3 normal;
+        Vector2 uv;
+    };
+
     class gfxPacket {
+    private:
+        static hook::Type<OrthoMapVertex> OrthoMapVerts;
     public:
         static hook::Type<bool> gfxForceLVERTEX;
     public:
@@ -63,6 +81,8 @@ namespace MM2
         gfxPacket* GetNext();
         void Draw(int a2 = -1);
         void Draw(const Matrix44* a2, int a3 = -1);
+        void OrthoMap(float scale);
+        void OrthoMap(float scale, Vector3 offset);
         static void DrawList(gfxPacketList const* list);
         static void BindLua(LuaState L);
     };
