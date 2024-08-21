@@ -314,6 +314,7 @@
     <ClInclude Include="src\modules\audio\object.h" />
     <ClInclude Include="src\modules\audio\sound.h" />
     <ClInclude Include="src\modules\audio\speech.h" />
+    <ClInclude Include="src\modules\audio\stream.h" />
     <ClInclude Include="src\modules\audio\streamingmusic.h" />
     <ClInclude Include="src\modules\banger.h" />
     <ClInclude Include="src\modules\banger\active.h" />

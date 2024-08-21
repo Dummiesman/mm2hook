@@ -1,6 +1,7 @@
 #pragma once
 #include "packet.h"
 #include <modules\gfx\stats.h>
+#include <modules\gfx\pipeline.h>
 
 using namespace MM2;
 
@@ -9,6 +10,7 @@ using namespace MM2;
 */
 
 declfield(gfxPacket::gfxForceLVERTEX)(0x6857D8);
+declfield(gfxPacket::OrthoMapVerts)(0x691CF0);
 
 Vector3 gfxPacket::getPositionLua(int index) 
 {
@@ -157,6 +159,38 @@ void MM2::gfxPacket::Draw(const Matrix44* a2, int a3)
     gfxVerts += this->AdjunctCount;
     gfxTris += this->TriCount / 3;
     hook::Thunk<0x4B34E0>::Call<void>(this, a2, a3);
+}
+
+void MM2::gfxPacket::OrthoMap(float scale)
+{
+    this->OrthoMap(scale, Vector3::ORIGIN);
+}
+
+void MM2::gfxPacket::OrthoMap(float scale, Vector3 offset)
+{
+    auto verts = reinterpret_cast<VertexVNT*>(this->Vertices);
+    auto orthoVerts = OrthoMapVerts.ptr();
+
+    for (int i = 0; i < this->AdjunctCount; i++)
+    {
+        auto& vert = verts[i];
+        auto& orthoVert = orthoVerts[i];
+        Vector3 offsetVert = offset + vert.position;
+
+        orthoVert.position = vert.position;
+        orthoVert.diffuse = 0xFFFFFFFF;
+        orthoVert.specular = 0x00000000;
+        orthoVert.uv.X = ((offsetVert.X + offsetVert.Y) * scale);
+        orthoVert.uv.Y = ((offsetVert.Z + offsetVert.Y) * scale);
+    }
+
+    lpD3DDev->DrawIndexedPrimitive(D3DPRIMITIVETYPE::D3DPT_TRIANGLELIST,
+        D3DFVF_TEX1 | D3DFVF_SPECULAR | D3DFVF_DIFFUSE | D3DFVF_RESERVED1 | D3DFVF_XYZ,
+        (LPVOID)orthoVerts,
+        this->AdjunctCount,
+        (LPWORD)this->Indices,
+        this->TriCount,
+        0);
 }
 
 void gfxPacket::DrawList(gfxPacketList const * list)

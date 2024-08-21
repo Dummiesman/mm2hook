@@ -222,6 +222,7 @@ namespace MM2
         luaBind<AudManagerBase>(L);
         luaBind<AudManager>(L);
         luaBind<AudSoundBase>(L);
+        luaBind<AudStream>(L);
         luaBind<AudSpeech>(L);
         luaBind<Aud3DObject>(L);
         luaBind<AudCreatureContainer>(L);

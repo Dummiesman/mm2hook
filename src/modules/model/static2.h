@@ -35,6 +35,7 @@ namespace MM2
         AGE_API void DrawNoAlpha(modShader *shaders) const;
         AGE_API void DrawEnvMapped(modShader *shaders, gfxTexture *envMap, float intensity) const;
         AGE_API void DrawOrthoMapped(modShader* shader, gfxTexture* tex, float scale, uint texFlagMask) const;
+        AGE_API void DrawOrthoMapped(modShader* shader, gfxTexture* tex, float scale, Vector3 offset, uint texFlagMask) const;
         AGE_API void DrawWithTexGenAndTexMatrix(void) const;
 
         int GetPacketCount() const;

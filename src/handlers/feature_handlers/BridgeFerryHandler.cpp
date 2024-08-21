@@ -50,11 +50,13 @@ void BridgeFerryHandler::DrawBridge(int lod)
     reinterpret_cast<dgBangerInstance*>(this)->dgBangerInstance::Draw(lod);
 
     // cloud shadow
+    Matrix34 dummy;
     auto bridge = reinterpret_cast<gizBridge*>(this);
+    auto position = bridge->GetMatrix(&dummy).GetRow(3);
     auto geometry = bridge->GetGeom(lod, 0);
     if (geometry && (geometry->Flags & (vglCloudMapEnable.get() * 2)) != 0)
     {
-        geometry->DrawOrthoMapped(bridge->GetShader(bridge->GetVariant()), vglCloudMapTexture, 0.0078125f, vglCloudMapEnable);
+        geometry->DrawOrthoMapped(bridge->GetShader(bridge->GetVariant()), vglCloudMapTexture, 0.0078125f, position, vglCloudMapEnable);
     }
 }
 

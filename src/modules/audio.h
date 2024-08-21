@@ -13,6 +13,7 @@
 #include "audio\aud3dambientobject_wrapper.h"
 #include "audio\audimpactdata.h"
 #include "audio\audimpact.h"
+#include "audio\stream.h"
 #include "audio\streamingmusic.h"
 
 #include "directmusic\dmusicobject.h"

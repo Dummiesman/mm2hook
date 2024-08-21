@@ -172,7 +172,37 @@ AGE_API void modStatic::DrawEnvMapped(modShader* shaders, gfxTexture* envMap, fl
 
 AGE_API void modStatic::DrawOrthoMapped(modShader *shader, gfxTexture *tex, float scale, uint texFlagMask) const
 { 
-	return hook::Thunk<0x4A4B30>::Call<void>(this, shader, tex, scale, texFlagMask);
+	this->DrawOrthoMapped(shader, tex, scale, Vector3::ORIGIN, texFlagMask);
+}
+
+AGE_API void MM2::modStatic::DrawOrthoMapped(modShader* shader, gfxTexture* tex, float scale, Vector3 offset, uint texFlagMask) const
+{
+	auto restoreAlpha = gfxRenderState::SetAlphaEnabled(true);
+	auto restoreTexture = gfxRenderState::SetTexture(0, tex);
+	auto restoreAlphaRef = gfxRenderState::SetAlphaRef(0);
+	gfxRenderState::FlushMasked();
+
+	for (int i = 0; i < this->PacketCount; i++)
+	{
+		auto texture = shader[this->ShaderIndices[i]].GetTexture();
+		if (texture)
+		{
+			auto texEnv = texture->GetTexEnv();
+			if ((texEnv & texFlagMask) != 0 && (texEnv & 0x20000) == 0)
+			{
+				gfxPacket* packet = this->ppPackets[i];
+				do
+				{
+					packet->OrthoMap(scale, offset);
+					packet = packet->GetNext();
+				} 
+				while (packet);
+			}
+		}
+	}
+
+	gfxRenderState::SetAlphaEnabled(restoreAlpha);
+	gfxRenderState::SetAlphaRef(restoreAlphaRef);
 }
 
 AGE_API void modStatic::DrawWithTexGenAndTexMatrix(void) const	    
