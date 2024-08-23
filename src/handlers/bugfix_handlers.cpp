@@ -65,6 +65,7 @@ static ConfigValue<bool> cfgFlyingCopFix("FlyingCopFix", true);
 
 void aiPoliceOfficerHandler::Install() {
     aiPoliceForce::s_MaxCops = cfgMaximumCopsLimit.Get();
+    aiPoliceForce::s_MaxCops = (aiPoliceForce::s_MaxCops == 0) ? 99999 : aiPoliceForce::s_MaxCops;
 
     InstallCallback("aiPoliceOfficer::Update", "Use reimplemented Update function.",
         &aiPoliceOfficer::Update, {
