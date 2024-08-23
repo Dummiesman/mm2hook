@@ -3,6 +3,8 @@
 
 using namespace MM2;
 
+int aiPoliceForce::s_MaxCops = 3;
+
 int aiPoliceForce::GetNumChasers(vehCar* perp) const
 {
     for (int i = 0; i < NUM_TARGETS; i++)
@@ -133,8 +135,8 @@ BOOL aiPoliceForce::RegisterPerp(vehCar* cop, vehCar* perp)
         NumPerps++;
     }
 
-    // failed to find or no availbale cop/perp slots
-    if (perpIndex < 0 || NumChasers[perpIndex] >= NUM_COPS)
+    // failed to find/ no available cop/perp slots / reached soft limit for cops
+    if (perpIndex < 0 || NumChasers[perpIndex] >= NUM_COPS || NumChasers[perpIndex] >= s_MaxCops)
     {
         return FALSE;
     }
