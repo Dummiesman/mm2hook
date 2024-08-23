@@ -11,6 +11,8 @@ namespace MM2
 
     // Class definitions
     class aiPoliceForce {
+    public:
+        static int s_MaxCops;
     private:
         static const int NUM_COPS = 16; // Default 3
         static const int NUM_TARGETS = 16; // Default 3

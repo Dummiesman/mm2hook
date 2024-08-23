@@ -45,7 +45,7 @@ namespace MM2
         this->GetMechBreakableMgr()->SetVariant(variant);
         this->InitSirenLights(this->GetCar()->GetCarDamage()->GetName());
         this->InitHeadlights(this->GetCar()->GetCarDamage()->GetName());
-        this->Optimize(variant);
+        //this->Optimize(variant); (still crashy)
 
         // setup damage
         if (texelDamage) 

@@ -40,8 +40,6 @@
 
 class aiPoliceOfficerHandler {
 public:
-    BOOL IsPerpDrivingMadly(MM2::vehCar *perpCar);
-    BOOL IsOppDrivingMadly(MM2::vehCar *perpCar);
     static void Install();
 };
 
@@ -69,11 +67,6 @@ public:
 
     static void PreUpdate(float seconds);
 
-    static void Install();
-};
-
-class vehPoliceCarAudioBugfixHandler {
-public:
     static void Install();
 };
 

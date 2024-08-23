@@ -18,17 +18,18 @@ namespace MM2
         aiTrafficLightInstance** TrafficLights;
         aiIntersection* Intersection;
         __int16 IntersectionID;
-        __int16 CurrentLight;
+        __int16 CurrentLightIdx;
         __int16 LightCount;
         __int16 Type;
-        __int16 word_2C;
-        float ChangeTimer;
+        __int16 State;
+        float CycleTime;
         float Timer;
     public:
-        int GetLightCount() const 
-        {
-            return this->LightCount;
-        }
+        void SetCycleTime(float time)  { this->CycleTime = time; }
+        float GetCycleTime() const     { return this->CycleTime; }
+        float GetTimeInCycle() const   { return this->Timer; }
+        int GetCurrentLightIdx() const { return this->CurrentLightIdx; }
+        int GetLightCount() const      { return this->LightCount; }
 
         aiTrafficLightInstance* GetLight(int num) 
         {
@@ -40,6 +41,9 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<aiTrafficLightSet, asNode>("aiTrafficLightSet")
                 .addPropertyReadOnly("NumLights", &GetLightCount)
+                .addPropertyReadOnly("CurrentLightIdx", &GetCurrentLightIdx)
+                .addProperty("CycleTime", &GetCycleTime, &SetCycleTime)
+                .addPropertyReadOnly("TimeInCycle", &GetTimeInCycle)
                 .addFunction("GetLight", &GetLight)
                 .endClass();
         }

@@ -445,6 +445,15 @@ AGE_API bool aiPoliceOfficer::WrongWay(vehCar* perpCar)
 	if (static_cast<aiMapComponentType>(outType) == aiMapComponentType::Road)
 	{
 		auto path = AIMAP->Path(outId);
+
+		// if on an alleyway, don't make a determination
+		// e.g. so you can drive around the houses in SF, and other two way alleyways
+		if (path->GetFlags() & aiPath::FLAG_ALLEYWAY)
+		{
+			return false;
+		}
+
+		// find out where we are on the road
 		int vIndex = path->RoadVertice(carMatrix.GetRow(3), 1);
 
 		Vector3 zOri = path->GetForwardDirection(vIndex);
@@ -460,7 +469,7 @@ AGE_API bool aiPoliceOfficer::WrongWay(vehCar* perpCar)
 			if (side == reverseSide) ddot *= -1.0f;
 		}
 
-		return (ddot > 0 || (ddot <= 0 && vddot > 0.0f && carSim->GetSpeedMPH() >= 10.0f)) ? TRUE : FALSE; // Going backwards, or reversing >10mph
+		return (ddot > 0 || (ddot <= 0 && vddot > 0.0f && carSim->GetSpeedMPH() >= 10.0f)); // Going backwards, or reversing >10mph
 	}
 
 	return false;
@@ -552,11 +561,11 @@ void AGE_API aiPoliceOfficer::PerpEscapes(bool playExplosion)        { hook::Thu
 
 bool MM2::aiPoliceOfficer::IsPerpBreakingTheLaw(vehCar* perpCar)
 {
-	if (aiMap::GetInstance()->GetPoliceForce()->GetNumChasers(perpCar))
+	if (aiMap::GetInstance()->GetPoliceForce()->GetNumChasers(perpCar) > 0)
 	{
 		return true;
 	}
-	return !this->IsPerpACop(perpCar) && (this->OffRoad(perpCar) || this->Speeding(perpCar));
+	return !this->IsPerpACop(perpCar) && (this->OffRoad(perpCar) || this->Speeding(perpCar) || this->WrongWay(perpCar));
 }
 
 void aiPoliceOfficer::BindLua(LuaState L) {

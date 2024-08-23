@@ -43,6 +43,7 @@ namespace MM2
         void DrawId() const;
         void DrawPaths() const;
 
+        aiTrafficLightSet* GetTrafficLightSet() const;
         int GetPathCount() const;
         aiPath* GetPath(int id) const;
         int GetId() const;

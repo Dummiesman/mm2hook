@@ -26,7 +26,7 @@ namespace MM2
         /*
             AudStream
         */
-        AGE_API void PlayOnce(const char* filename) { hook::Thunk<0x50E3F0>::Call<void>(this, filename); }
+        AGE_API bool PlayOnce(const char* filename) { return hook::Thunk<0x50E3F0>::Call<bool>(this, filename); }
         AGE_API void SetVolume(float volume) { hook::Thunk<0x50E3D0>::Call<void>(this, volume); }
 
         static void BindLua(LuaState L) {

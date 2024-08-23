@@ -118,15 +118,8 @@ void cityLevelHandler::SetObjectDetail(int lod) {
         { 250.0f, 175.0f,  90.0f, 30.0f }, // Low       (Default: Medium)
         { 300.0f, 200.0f, 100.0f, 40.0f }, // Medium    (Default: High)
         { 300.0f, 200.0f, 130.0f, 70.0f }, // High      (Default: Very High)
-        { 5000.0f, 200.0f, 150.0f, 100.0f }, // Very high (NEW)
+        { 500.0f, 300.0f, 150.0f, 100.0f }, // Very high (NEW)
     };
-
-    if (lod == 3) {
-        HookConfig::GetProperty("UltraLOD_NoDrawThreshold", lodLevels[lod][0]);
-        HookConfig::GetProperty("UltraLOD_VeryLowThreshold", lodLevels[lod][1]);
-        HookConfig::GetProperty("UltraLOD_LowThreshold", lodLevels[lod][2]);
-        HookConfig::GetProperty("UltraLOD_MediumThreshold", lodLevels[lod][3]);
-    }
 
     // Using temporary variables so we don't need to constantly access pointers
 
@@ -154,7 +147,8 @@ void cityLevelHandler::SetObjectDetail(int lod) {
     sdl_MedThresh = sdlMedThresh;
 
     // By default the game doesn't set this based on the detail level
-    float pedDrawThreshold = powf(HookConfig::GetProperty("PedestrianLod", 35.5f), 2) * (lod + 1);
+    float pedLodBase = 35.5f;
+    float pedDrawThreshold = powf(pedLodBase, 2) * (lod + 1);
     ped_LodThreshold = pedDrawThreshold;
 
     // Also not set by default
