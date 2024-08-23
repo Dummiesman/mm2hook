@@ -147,7 +147,8 @@ void cityLevelHandler::SetObjectDetail(int lod) {
     sdl_MedThresh = sdlMedThresh;
 
     // By default the game doesn't set this based on the detail level
-    float pedDrawThreshold = powf(HookConfig::GetProperty("PedestrianLod", 35.5f), 2) * (lod + 1);
+    float pedLodBase = 35.5f;
+    float pedDrawThreshold = powf(pedLodBase, 2) * (lod + 1);
     ped_LodThreshold = pedDrawThreshold;
 
     // Also not set by default
