@@ -61,7 +61,12 @@ namespace MM2
         }
     }
 
-    int aiIntersection::GetPathCount() const 
+    aiTrafficLightSet* aiIntersection::GetTrafficLightSet() const
+    {
+        return trafficLights;
+    }
+
+    int aiIntersection::GetPathCount() const
     {
         return pathCount;
     }
@@ -97,6 +102,7 @@ namespace MM2
             .addPropertyReadOnly("NumPaths", &GetPathCount)
             .addPropertyReadOnly("NumSinks", &NumSinks)
             .addPropertyReadOnly("NumSources", &NumSources)
+            .addPropertyReadOnly("TrafficLightSet", &GetTrafficLightSet)
             .addFunction("IsSubwayStart", &luaIsSubwayStart)
             .addFunction("IsSubwayEnd", &luaIsSubwayEnd)
             .addFunction("DrawId", &DrawId)
