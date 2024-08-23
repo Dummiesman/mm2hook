@@ -88,6 +88,11 @@ AGE_API void modStatic::DrawShadowed(modShader* shaders, float intensity) const
 		if (!s_CheapShadows && (this->Flags & 2) != 0 && shaders != nullptr)
 		{
 			auto shader = shaders[this->ShaderIndices[i]];
+			auto texture = shader.GetTexture();
+			if (texture && (texture->GetTexEnv() & 0x20000) == 0)
+			{
+				texture = nullptr; // Texture has no alpha, so we don't even need to use it
+			}
 			gfxRenderState::SetTexture(0, shader.GetTexture());
 			gfxRenderState::FlushMasked();
 		}
