@@ -10,6 +10,7 @@ public:
     void DrawShadow();
     void ModStaticDraw(MM2::modShader* a1);
     void AddGeomHook(const char* pkgName, const char* name, int flags);
+    void SetVariant(int a1);
 
     void VehicleSpline_DrawId();
     void Ambient_DrawId();

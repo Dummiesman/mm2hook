@@ -23,6 +23,13 @@ namespace MM2
     AGE_API Vector3 const& aiVehicleInstance::GetPosition()              { return hook::Thunk<0x553030>::Call<Vector3 const&>(this); };
     AGE_API Matrix34 const& aiVehicleInstance::GetMatrix(Matrix34* a1)   { return hook::Thunk<0x553020>::Call<Matrix34 const&>(this, a1); };
     AGE_API void aiVehicleInstance::SetMatrix(Matrix34 const & a1)       { hook::Thunk<0x553010>::Call<void>(this, a1); }
+    
+    AGE_API void aiVehicleInstance::SetVariant(int variant)
+    {
+        _variant.set(this, static_cast<short>(variant));
+        this->GetGenBreakableMgr()->SetVariant(variant);
+    }
+
     AGE_API dgPhysEntity* aiVehicleInstance::GetEntity()                 { return hook::Thunk<0x52F50>::Call<dgPhysEntity*>(this); };
     AGE_API dgPhysEntity* aiVehicleInstance::AttachEntity()              { return hook::Thunk<0x552FBD>::Call<dgPhysEntity*>(this); };
     AGE_API void aiVehicleInstance::Detach()                             { hook::Thunk<0x552F80>::Call<void>(this); }
@@ -36,6 +43,11 @@ namespace MM2
     AGE_API phBound* aiVehicleInstance::GetBound(int a1)                 { return hook::Thunk<0x552F40>::Call<phBound*>(this, a1); };
         
     //members
+    vehBreakableMgr* aiVehicleInstance::GetGenBreakableMgr()
+    {
+        return _breakableMgr.get(this);
+    }
+
     aiVehicleData* aiVehicleInstance::GetData()                           { return hook::Thunk<0x553F80>::Call<aiVehicleData*>(this); }
     AGE_API void aiVehicleInstance::DrawPart(modStatic* a1, const Matrix34* a2, modShader* a3, int a4)
                                                                           { hook::Thunk<0x552870>::Call<void>(this, a1, a2, a3, a4); }
@@ -44,6 +56,8 @@ namespace MM2
     void aiVehicleInstance::BindLua(LuaState L) {
         LuaBinding(L).beginExtendClass<aiVehicleInstance, lvlInstance>("aiVehicleInstance")
             //members
+            .addPropertyReadOnly("Breakables", &GetGenBreakableMgr)
+            .addProperty("Variant", &GetVariant, &SetVariant)
             .addFunction("GetData", &GetData)
             .endClass();
     }
