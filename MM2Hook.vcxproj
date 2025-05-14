@@ -880,6 +880,7 @@
     <ClCompile Include="src\modules\vehicle.cpp" />
     <ClCompile Include="src\modules\vehicle\aero.cpp" />
     <ClCompile Include="src\modules\vehicle\aisubwayaudio.cpp" />
+    <ClCompile Include="src\modules\vehicle\breakable.cpp" />
     <ClCompile Include="src\modules\vehicle\car.cpp" />
     <ClCompile Include="src\modules\vehicle\cardamage.cpp" />
     <ClCompile Include="src\modules\vehicle\carmodel.cpp" />
