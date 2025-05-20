@@ -7,59 +7,24 @@ static ConfigValue<bool> cfgMm1StyleRefl("MM1StyleReflections", false);
 /*
     modShaderHandler
 */
-
-float oldFogStart, oldFogEnd;
-gfxMaterial modShaderHandler::sm_StaticMaterials[modShaderHandler::MaxStaticMaterials];
-int modShaderHandler::sm_StaticMaterialCount = 0;
-
-void modShaderHandler::BeginEnvMap(gfxTexture* a1, const Matrix34* a2)
+void modShaderHandler::BeginEnvMap(gfxTexture* a1, const Matrix34& a2)
 {
-    // Disable fog so it's not blended with reflections
-    oldFogStart = gfxRenderState::SetFogStart(9999.f);
-    oldFogEnd = gfxRenderState::SetFogEnd(10000.f);
-
-    hook::StaticThunk<0x4A41B0>::Call<void>(a1, a2); //call original
+    modShader::BeginEnvMap(a1, a2);
 }
 
 MM2::gfxMaterial* modShaderHandler::AddStaticMaterial(MM2::gfxMaterial const& reference)
 {
-    // find our material in the list
-    for (int i = 0; i < sm_StaticMaterialCount; i++)
-    {
-        auto& compareTo = sm_StaticMaterials[i];
-        if (compareTo.Ambient == reference.Ambient &&
-            compareTo.Diffuse == reference.Diffuse &&
-            compareTo.Specular == reference.Specular &&
-            compareTo.Emissive == reference.Emissive &&
-            compareTo.Shininess == reference.Shininess)
-        {
-            return &sm_StaticMaterials[i];
-        }
-    }
-
-    // if it's not found, add a new one
-    if (sm_StaticMaterialCount >= modShaderHandler::MaxStaticMaterials)
-    {
-        Quitf("Out of static materials!");
-    }
-
-    sm_StaticMaterials[sm_StaticMaterialCount] = reference;
-    sm_StaticMaterialCount++;
-    return &sm_StaticMaterials[sm_StaticMaterialCount - 1];
+    return modShader::AddStaticMaterial(reference);
 }
 
 void modShaderHandler::KillAll()
 {
-    sm_StaticMaterialCount = 0;
+    modShader::KillAll();
 }
 
 void modShaderHandler::EndEnvMap()
 {
-    // Restore last fog settings
-    gfxRenderState::SetFogStart(oldFogStart);
-    gfxRenderState::SetFogEnd(oldFogEnd);
-
-    hook::StaticThunk<0x4A4420>::Call<void>(); //call original
+    modShader::EndEnvMap();
 }
 
 void modShaderHandler::Install()

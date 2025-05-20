@@ -2800,6 +2800,9 @@
     <ClCompile Include="src\modules\vehicle\breakable.cpp">
       <Filter>Source Files\modules\vehicle</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\model\shader.cpp">
+      <Filter>Source Files\modules\model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\AGE.h">
