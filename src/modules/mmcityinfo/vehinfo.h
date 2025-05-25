@@ -70,6 +70,31 @@ namespace MM2
             isLocked = (lock) ? TRUE : FALSE;
         }
 
+        bool IsValid() const
+        {
+            return isValid;
+        }
+
+        int GetHorsepower() const
+        {
+            return horsepower;
+        }
+
+        int GetMass() const
+        {
+            return mass;
+        }
+
+        int GetDurability() const
+        {
+            return durability;
+        }
+        
+        int GetTopSpeed() const
+        {
+            return topSpeed;
+        }
+
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<mmVehInfo>("mmVehInfo")

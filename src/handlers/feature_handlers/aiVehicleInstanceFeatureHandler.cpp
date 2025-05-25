@@ -211,6 +211,12 @@ void aiVehicleInstanceFeatureHandler::AddGeomHook(const char* pkgName, const cha
     hook::Thunk<0x463BA0>::Call<int>(this, pkgName, "tslight1", flags);
 }
 
+void aiVehicleInstanceFeatureHandler::SetVariant(int a1)
+{
+    auto model = reinterpret_cast<aiVehicleInstance*>(this);
+    model->aiVehicleInstance::SetVariant(a1);
+}
+
 void aiVehicleInstanceFeatureHandler::VehicleSpline_DrawId()
 {
     reinterpret_cast<aiVehicleSpline*>(this)->aiVehicleSpline::DrawId();
@@ -262,9 +268,16 @@ void aiVehicleInstanceFeatureHandler::Install() {
             0x5B58E8
         }
     );
+
     InstallVTableHook("aiVehicleSpline::DrawId",
         &VehicleSpline_DrawId, {
             0x5B5B68
+        }
+    );
+
+    InstallVTableHook("aiVehicleInstance::SetVariant",
+        &SetVariant, {
+            0x5B5920,
         }
     );
 

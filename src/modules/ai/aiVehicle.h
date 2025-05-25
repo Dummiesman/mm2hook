@@ -1,6 +1,7 @@
 #pragma once
 #include <mm2_common.h>
 #include <modules\level\inst.h>
+#include <modules\vehicle\breakable.h>
 #include "aiRailSet.h"
 
 namespace MM2
@@ -37,6 +38,7 @@ namespace MM2
     protected:
         static hook::Field<0x14, aiVehicleSpline*> _spline;
         static hook::Field<0x1E, short> _variant;
+        static hook::Field<0x20, vehBreakableMgr*> _breakableMgr;
     public:
         aiVehicleInstance(void)             DONOTCALL;
 
@@ -48,6 +50,7 @@ namespace MM2
         AGE_API Vector3 const& GetPosition() override;
         AGE_API Matrix34 const& GetMatrix(Matrix34* a1) override;
         AGE_API void SetMatrix(Matrix34 const& a1) override;
+        AGE_API void SetVariant(int variant) override;
         AGE_API dgPhysEntity* GetEntity() override;
         AGE_API dgPhysEntity* AttachEntity() override;
         AGE_API void Detach() override;
@@ -61,6 +64,7 @@ namespace MM2
         AGE_API phBound* GetBound(int a1) override;
         
         //members
+        vehBreakableMgr* GetGenBreakableMgr();
         aiVehicleData* GetData();
         AGE_API void DrawPart(modStatic* a1, const Matrix34* a2, modShader* a3, int a4);
 

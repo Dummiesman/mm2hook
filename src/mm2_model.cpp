@@ -8,9 +8,3 @@ modModel * modGetModel(LPCSTR filename, uint a2, bool a3, bool a4) {
 void modConvertModel(LPCSTR filename, LPCSTR newFilename, bool a3) {
     return hook::StaticThunk<0x597BD0>::Call<void>(filename, newFilename, a3);
 }
-
-/*
-    modShader
-*/
-declfield(modShader::sm_Materials)(0x66191C);
-declfield(modShader::sm_StaticMaterialCount)(0x661920);

@@ -2799,6 +2799,11 @@
     </ClCompile>
     <ClCompile Include="src\modules\effects\damage3d.cpp">
       <Filter>Source Files\modules\effects</Filter>
+    <ClCompile Include="src\modules\vehicle\breakable.cpp">
+      <Filter>Source Files\modules\vehicle</Filter>
+    </ClCompile>
+    <ClCompile Include="src\modules\model\shader.cpp">
+      <Filter>Source Files\modules\model</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

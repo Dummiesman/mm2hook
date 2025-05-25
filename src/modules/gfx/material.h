@@ -1,4 +1,5 @@
 #pragma once
+#include <modules/vector/vector4.h>
 
 namespace MM2
 {
@@ -22,13 +23,30 @@ namespace MM2
 
         ColorARGB Color; // 32-bit diffuse color
 
-        gfxMaterial() {
+        gfxMaterial() 
+        {
             Reset();
         }
 
-        AGE_API void Reset(void) {
-            hook::Thunk<0x4B1BB0>::Call<void>(this);
+        AGE_API void Reset() 
+        {
+            Diffuse = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            Ambient = Vector4(1.0f, 1.0f, 1.0f, 1.0f);
+            Specular = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+            Emissive = Vector4(0.0f, 0.0f, 0.0f, 0.0f);
+            Shininess = 0.0f;
+            Color = 0xFFFFFFFF;
         };
+
+        void Copy(gfxMaterial const& copyFrom)
+        {
+            Diffuse = copyFrom.Diffuse;
+            Ambient = copyFrom.Ambient;
+            Specular = copyFrom.Specular;
+            Emissive = copyFrom.Emissive;
+            Shininess = copyFrom.Shininess;
+            Color = copyFrom.Color;
+        }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginClass<gfxMaterial>("gfxMaterial")
@@ -38,6 +56,7 @@ namespace MM2
                 .addVariable("Specular", &gfxMaterial::Specular)
                 .addVariable("Emissive", &gfxMaterial::Emissive)
                 .addVariable("Shininess", &gfxMaterial::Shininess)
+                .addFunction("Copy", &Copy)
                 .addFunction("Reset", &Reset)
                 .endClass();
         }

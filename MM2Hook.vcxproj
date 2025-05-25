@@ -860,6 +860,7 @@
     <ClCompile Include="src\modules\model\getpivot.cpp" />
     <ClCompile Include="src\modules\model\getstatic.cpp" />
     <ClCompile Include="src\modules\model\model2.cpp" />
+    <ClCompile Include="src\modules\model\shader.cpp" />
     <ClCompile Include="src\modules\model\static2.cpp" />
     <ClCompile Include="src\modules\node.cpp" />
     <ClCompile Include="src\modules\node\dof.cpp" />
@@ -881,6 +882,7 @@
     <ClCompile Include="src\modules\vehicle.cpp" />
     <ClCompile Include="src\modules\vehicle\aero.cpp" />
     <ClCompile Include="src\modules\vehicle\aisubwayaudio.cpp" />
+    <ClCompile Include="src\modules\vehicle\breakable.cpp" />
     <ClCompile Include="src\modules\vehicle\car.cpp" />
     <ClCompile Include="src\modules\vehicle\cardamage.cpp" />
     <ClCompile Include="src\modules\vehicle\carmodel.cpp" />
