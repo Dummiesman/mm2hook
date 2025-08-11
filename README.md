@@ -21,7 +21,7 @@ Also included are complimentary bug-fixes for random crashes, as well as a fix f
      - Thumbnail text shows the full name (mods included!)
  
 ## Installation
-1) Grab the latest version [here](https://ci.appveyor.com/project/Fireboyd78/mm2hook/build/artifacts).
+1) Grab the latest version [here](https://github.com/Dummiesman/mm2hook/releases/latest).
 2) **Optional:** Download the latest version of Discord Rich Presence [here](https://github.com/discordapp/discord-rpc/releases/latest), and grab `discord-rpc.dll` from the `win32-dynamic\bin` folder.
 3) Place all files in your Midtown Madness 2 installation directory and enjoy!
 
