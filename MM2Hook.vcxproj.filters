@@ -1868,6 +1868,12 @@
     <ClInclude Include="src\modules\audio\stream.h">
       <Filter>Source Files\modules\audio</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\vehSuspensionHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\handlers\bugfix_handlers\vehBreakableMgrBugfixHandler.h">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2802,6 +2808,12 @@
     </ClCompile>
     <ClCompile Include="src\modules\model\shader.cpp">
       <Filter>Source Files\modules\model</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\vehSuspensionHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\bugfix_handlers\vehBreakableMgrBugfixHandler.cpp">
+      <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

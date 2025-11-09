@@ -25,10 +25,12 @@ static init_handler g_bugfix_handlers[] = {
     CreateHandler<mmInterfaceHandler>("mmInterface"),
     CreateHandler<mmPopupHandler>("mmPopupHandler"),
 
+    CreateHandler<vehBreakableMgrBugfixHandler>("vehBreakableMgr"),
     CreateHandler<vehCarAudioHandler>("vehCarAudio"),
     CreateHandler<vehCarAudioContainerBugfixHandler>("vehCarAudioContainer bugfixes"),
     CreateHandler<vehCarDamageHandler>("vehCarDamage"),
     CreateHandler<vehTrailerHandler>("vehTrailer"),
+    CreateHandler<vehSuspensionBugfixHandler>("vehSuspension"),
     CreateHandler<vehSplashHandler>("vehSplash"),
     CreateHandler<vehSemiCarAudioBugfixHandler>("vehSemiCarAudio"),
     CreateHandler<mmViewMgrBugfixHandler>("mmViewMgr"),

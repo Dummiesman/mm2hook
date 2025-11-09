@@ -699,11 +699,13 @@
     <ClCompile Include="src\handlers\bugfix_handlers\modShaderHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\mpConsistencyHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\NetSelectMenuHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\vehBreakableMgrBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehCarAudioContainerBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\CityListHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehCarAudioHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehSemiCarAudioBugfixHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehSplashHandler.cpp" />
+    <ClCompile Include="src\handlers\bugfix_handlers\vehSuspensionHandler.cpp" />
     <ClCompile Include="src\handlers\bugfix_handlers\vehTrailerHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\aiPoliceOfficerFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\aiVehicleInstanceFeatureHandler.cpp" />
