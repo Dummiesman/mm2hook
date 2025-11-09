@@ -809,6 +809,23 @@ static ImVec4 ImGuiStyle_GetColor(ImGuiStyle& style, int index) {
         return ImVec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
+// ImDrawList helpers
+static void ImDrawList_AddText(ImDrawList& list, const ImVec2& pos, ImU32 color, const char* text)
+{
+    list.AddText(pos, color, text);
+}
+
+static void ImDrawList_AddImage(ImDrawList& list, MM2::gfxTexture* texture, const ImVec2& p_min, const ImVec2& p_max, const ImVec2& uv_min, const ImVec2& uv_max, ImU32 color)
+{
+    list.AddImage((void*)texture, p_min, p_max, uv_min, uv_max, color);
+}
+
+static void ImDrawList_AddImageQuad(ImDrawList& list, MM2::gfxTexture* texture, const ImVec2& p1, const ImVec2& p2, const ImVec2& p3, const ImVec2& p4,
+                                                                                const ImVec2& uv1, const ImVec2& uv2, const ImVec2& uv3, const ImVec2& uv4, ImU32 color)
+{
+    list.AddImageQuad((void*)texture, p1, p2, p3, p4, uv1, uv2, uv3, uv4, color);
+}
+
 // ImGuizmoStyle helpers
 static void ImGuizmoStyle_SetColor(ImGuizmo::Style& style, int index, ImVec4 color) {
     if (index < ImGuizmo::COLOR::COUNT)
@@ -1056,8 +1073,9 @@ static void ImguiBindLua(LuaState L) {
         .addFunction("AddRect", &ImDrawList::AddRect, LUA_ARGS(const ImVec2&, const ImVec2&, ImU32, _def<float, 0>, _def<int, 0>, _def<float, 1>))
         .addFunction("AddRectFilled", &ImDrawList::AddRectFilled, LUA_ARGS(const ImVec2&, const ImVec2&, ImU32, _def<float, 0>, _def<int, 0>))
         .addFunction("AddRectFilledMultiColor", &ImDrawList::AddRectFilledMultiColor, LUA_ARGS(const ImVec2&, const ImVec2&, ImU32, ImU32, ImU32, ImU32))
-        //.addFunction("AddImage", &ImDrawList::AddImage)
-        //.addFunction("AddImageQuad", &ImDrawList::AddImageQuad)
+        .addMetaFunction("AddText", &ImDrawList_AddText)
+        .addMetaFunction("AddImage", &ImDrawList_AddImage)
+        .addMetaFunction("AddImageQuad", &ImDrawList_AddImageQuad)
         .endClass();
 
     LuaBinding(L).beginModule("ImGuizmo")
