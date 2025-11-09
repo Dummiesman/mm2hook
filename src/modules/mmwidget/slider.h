@@ -34,16 +34,37 @@ namespace MM2
 
         float GetValue() const
         {
-            return *_pValue.get(this);
+            return hook::Thunk<0x4ECBA0>::Call<float>(this);
         }
 
         void SetValue(float value)
         {
-            *_pValue.get(this) = value;
+            hook::Thunk<0x4ECBB0>::Call<float>(this, value);
+        }
+
+        bool IsReadWrite() const
+        {
+            return hook::Thunk<0x4ECB90>::Call<BOOL>(this) == TRUE;
+        }
+
+        void SetReadWrite(bool rw)
+        {
+            hook::Thunk<0x4ECB50>::Call<void>(this, rw ? TRUE : FALSE);
+        }
+
+        bool IsReadOnly() const
+        {
+            return !IsReadWrite();
+        }
+
+        void SetReadOnly(bool readOnly)
+        {
+            SetReadWrite(!readOnly);
         }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<UISlider, uiWidget>("UISlider")
+                .addProperty("ReadOnly", &IsReadOnly, &SetReadOnly)
                 .addProperty("Value", &GetValue, &SetValue)
                 .endClass();
         }

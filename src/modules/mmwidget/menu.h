@@ -47,6 +47,13 @@ namespace MM2
         float dword80;
         uint32_t dword84;
         const char *Background;
+    public:
+        static float WIDGET_HEIGHT;
+        static float WIDGET_WIDTH;
+        static float UI_LEFT_MARGIN2;
+        static float UI_LEFT_MARGIN;
+        static float UI_TOP_MARGIN;
+        static float UI_BOTTOM_MARGIN;
     private:
         // lua helpers
         UIButton* AddButtonLua(int id, LPCSTR text, float x, float y, float w, float h, int fontNum, int type, LuaRef callback, bool unscaled)
@@ -282,7 +289,7 @@ namespace MM2
             for (int i = 0; i < this->GetWidgetCount(); i++)
             {
                 auto widget = ppWidgets[i];
-                if (widget->WidgetID == id)
+                if (widget->m_WidgetID == id)
                 {
                     return widget;
                 }

@@ -15,7 +15,7 @@ namespace MM2
     private:
         bool getEnabledLua()
         {
-            return this->Enabled == TRUE;
+            return this->m_Enabled == TRUE;
         }
 
         void setEnabledLua(bool enabled)
@@ -27,19 +27,19 @@ namespace MM2
         }
     public:
         UIMenu *pParent;
-        Vector2 MinPos;
-        Vector2 MaxPos;
-        Vector2 LastMousePos;
-        uint32_t Selected;
-        uint32_t LastMouseAction;
+        Vector2 m_MinPos;
+        Vector2 m_MaxPos;
+        Vector2 m_LastMousePos;
+        uint32_t m_Selected;
+        uint32_t m_LastMouseAction;
         uint32_t dword3C;
-        uint32_t WidgetID;
-        BOOL ReadOnly;
-        const char *Name;
+        uint32_t m_WidgetID;
+        BOOL m_ReadOnly;
+        const char *m_Name;
         uint32_t dword4C;
-        Vector2 Position;
-        Vector2 Size;
-        BOOL Enabled;
+        Vector2 m_Position;
+        Vector2 m_Size;
+        BOOL m_Enabled;
         uint32_t dword64;
         mmToolTip *pTooltip;
     public:
@@ -59,13 +59,25 @@ namespace MM2
 
         const char* GetName() const
         {
-            return Name;
+            return m_Name;
         }
+
+        Vector2 GetMin() const { return m_MinPos; }
+        Vector2 GetMax() const { return m_MaxPos; }
+        Vector2 GetPosition() const { return m_Position; }
+        Vector2 GetSize() const { return m_Size; }
+        uint32_t GetID() const { return m_WidgetID; }
 
         static void BindLua(LuaState L) {            
             LuaBinding(L).beginClass<uiWidget>("uiWidget")
                 .addProperty("Enabled", &getEnabledLua, &setEnabledLua)
+                .addPropertyReadOnly("ID", &GetID)
                 .addPropertyReadOnly("Name", &GetName)
+                .addPropertyReadOnly("Min", &GetMin)
+                .addPropertyReadOnly("Max", &GetMax)
+                .addPropertyReadOnly("Position", &GetPosition)
+                .addPropertyReadOnly("Size", &GetSize)
+                .addFunction("SetPosition", &SetPosition)
                 .addFunction("Enable", &Enable)
                 .addFunction("Disable", &Disable)
                 .addFunction("TurnOn", &TurnOn)
