@@ -1008,15 +1008,15 @@ namespace MM2
             //suspension
             for (int i = 0; i < 4; i++)
             {
-                DrawPart(lod, SHOCK0_GEOM_ID + i, &this->carSim->ShockSuspensions[i].getSuspensionMatrix(), shaders, vehCarModel::PartReflections);
+                DrawPart(lod, SHOCK0_GEOM_ID + i, &this->carSim->ShockSuspensions[i].GetSuspensionMatrix(), shaders, vehCarModel::PartReflections);
             }
             for (int i = 0; i < 4; i++)
             {
-                DrawPart(lod, ARM0_GEOM_ID + i, &this->carSim->ArmSuspensions[i].getSuspensionMatrix(), shaders, vehCarModel::PartReflections);
+                DrawPart(lod, ARM0_GEOM_ID + i, &this->carSim->ArmSuspensions[i].GetSuspensionMatrix(), shaders, vehCarModel::PartReflections);
             }
             for (int i = 0; i < 2; i++)
             {
-                DrawPart(lod, SHAFT2_GEOM_ID + i, &this->carSim->ShaftSuspensions[i].getSuspensionMatrix(), shaders, vehCarModel::PartReflections);
+                DrawPart(lod, SHAFT2_GEOM_ID + i, &this->carSim->ShaftSuspensions[i].GetSuspensionMatrix(), shaders, vehCarModel::PartReflections);
             }
 
             DrawPart(lod, AXLE0_GEOM_ID, &this->carSim->AxleFront.GetAxleMatrix(), shaders, vehCarModel::PartReflections);
