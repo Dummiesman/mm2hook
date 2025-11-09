@@ -1,5 +1,6 @@
 #pragma once
-#include <modules\node.h>
+#include <modules\node\linear.h>
+#include <modules\model\static2.h>
 #include "gauge.h"
 
 namespace MM2
@@ -56,15 +57,15 @@ namespace MM2
         float MaxRPM;
         int MinSpeed;
         int dword_5dc;
-        int DamageNeedleModStatic;
-        int DashModStatic;
-        int DashExtraModStatic;
-        int GearIndicatorModStatic;
-        int RoofModStatic;
-        int SpeedNeedleModStatic;
-        int TachNeedleModStatic;
-        int WheelModStatic;
-        int ShaderSet;
+        modStatic* DamageNeedleModStatic;
+        modStatic* DashModStatic;
+        modStatic* DashExtraModStatic;
+        modStatic* GearIndicatorModStatic;
+        modStatic* RoofModStatic;
+        modStatic* SpeedNeedleModStatic;
+        modStatic* TachNeedleModStatic;
+        modStatic* WheelModStatic;
+        modShader** ShaderSet;
         bool m_IsLoaded;
         byte byte_605;
         byte byte_606;
@@ -101,7 +102,39 @@ namespace MM2
             return this->m_IsLoaded;
         }
 
-        mmPlayer * GetPlayer(void) const {
+        modStatic* GetDamageNeedleModel() const {
+            return this->DamageNeedleModStatic;
+        }
+
+        modStatic* GetDashModel() const {
+            return this->DashModStatic;
+        }
+
+        modStatic* GetDashExtraModel() const {
+            return this->DashExtraModStatic;
+        }
+
+        modStatic* GetGearIndicatorModel() const {
+            return this->GearIndicatorModStatic;
+        }
+
+        modStatic* GetRoofModel() const {
+            return this->RoofModStatic;
+        }
+
+        modStatic* GetSpeedNeedleModel() const {
+            return this->SpeedNeedleModStatic;
+        }
+
+        modStatic* GetTachNeedleModel() const {
+            return this->TachNeedleModStatic;
+        }
+
+        modStatic* GetWheelModel() const {
+            return this->WheelModStatic;
+        }
+
+        mmPlayer * GetPlayer() const {
             return this->m_PlayerPtr;
         };
 
@@ -138,6 +171,14 @@ namespace MM2
                 .addPropertyReadOnly("RPMGauge", &GetRPMGauge)
                 .addPropertyReadOnly("DamageGauge", &GetDamageGauge)
                 .addPropertyReadOnly("SpeedGauge", &GetSpeedGauge)
+                .addPropertyReadOnly("DamageNeedleModel", &GetDamageNeedleModel)
+                .addPropertyReadOnly("DashModel", &GetDashModel)
+                .addPropertyReadOnly("DashExtraModel", &GetDashExtraModel)
+                .addPropertyReadOnly("GearIndicatorModel", &GetGearIndicatorModel)
+                .addPropertyReadOnly("RoofModel", &GetRoofModel)
+                .addPropertyReadOnly("SpeedNeedleModel", &GetSpeedNeedleModel)
+                .addPropertyReadOnly("TachNeedleModel", &GetTachNeedleModel)
+                .addPropertyReadOnly("WheelModel", &GetWheelModel)
                 .addVariable("DashPos", &mmDashView::DashPos)
                 .addVariable("RoofPos", &mmDashView::RoofPos)
                 .addVariable("WheelPos", &mmDashView::WheelPos)
