@@ -10,5 +10,6 @@ class mmInterfaceFeatureHandler {
 public:
     void ShowMain(int a2);
     void Destruct();
+    int ShowcaseMenuStateHook(int menuId);
     static void Install();
 };
