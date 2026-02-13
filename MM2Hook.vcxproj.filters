@@ -2812,6 +2812,9 @@
     <ClCompile Include="src\modules\model\shader.cpp">
       <Filter>Source Files\modules\model</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\level\fixed.cpp">
+      <Filter>Source Files\modules\level</Filter>
+    </ClCompile>
     <ClCompile Include="src\handlers\bugfix_handlers\vehSuspensionHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClCompile>

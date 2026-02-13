@@ -842,6 +842,7 @@
     <ClCompile Include="src\modules\gizmo\bridge.cpp" />
     <ClCompile Include="src\modules\input.cpp" />
     <ClCompile Include="src\modules\level.cpp" />
+    <ClCompile Include="src\modules\level\fixed.cpp" />
     <ClCompile Include="src\modules\level\inst.cpp" />
     <ClCompile Include="src\modules\level\landmark.cpp" />
     <ClCompile Include="src\modules\level\level.cpp" />
