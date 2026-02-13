@@ -1,7 +1,7 @@
 
- **MM2Hook : Project NuHook**  
+ **MM2Hook : Project NuHook - Gold Edition**  
  ![enter image description here](https://i.imgur.com/F9JrZvz.png)  
-A cleaned up fork of mm2hook, with a larger focus on the Lua modding API and capabilities.
+A cleaned up fork of mm2hook, with a larger focus on the Lua modding API and capabilities. The "Gold Edition" relates to the fact that this version is focused primarily on stability, keeping the core game intact, and offloading any extraneous features to the Lua system.
 ***
 [![Build status](https://ci.appveyor.com/api/projects/status/96k957iuc4l9susg?svg=true)](https://ci.appveyor.com/project/Dummiesman/mm2hook)
 
