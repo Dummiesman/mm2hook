@@ -56,7 +56,7 @@ namespace MM2
         }
 
         if (GetPivot(diffMatrix, basename, "trailer_twhl5")) {
-            GetCarSim()->TrailerBackBackLeftWheelPosDiff = diffMatrix.GetRow(3) - GetWheel(3)->GetCenter();
+            GetCarSim()->TrailerBackBackRightWheelPosDiff = diffMatrix.GetRow(3) - GetWheel(3)->GetCenter();
         }
     }
 
