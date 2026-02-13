@@ -831,6 +831,7 @@
     <ClCompile Include="src\modules\effects\birth.cpp" />
     <ClCompile Include="src\modules\effects\damage.cpp" />
     <ClCompile Include="src\modules\effects\ptx.cpp" />
+    <ClCompile Include="src\modules\effects\texeldamage.cpp" />
     <ClCompile Include="src\modules\effects\waterspout.cpp" />
     <ClCompile Include="src\modules\gfx.cpp" />
     <ClCompile Include="src\modules\gfx\packet.cpp" />

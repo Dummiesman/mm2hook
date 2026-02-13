@@ -2803,6 +2803,9 @@
     <ClCompile Include="src\modules\node\dof.cpp">
       <Filter>Source Files\modules\node</Filter>
     </ClCompile>
+    <ClCompile Include="src\modules\effects\texeldamage.cpp">
+      <Filter>Source Files\modules\effects</Filter>
+    </ClCompile>
     <ClCompile Include="src\modules\vehicle\breakable.cpp">
       <Filter>Source Files\modules\vehicle</Filter>
     </ClCompile>
