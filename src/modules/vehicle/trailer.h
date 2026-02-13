@@ -19,9 +19,11 @@ namespace MM2
     private:
         byte _buffer[0xF6C];
     protected:
+        static hook::Field<0xCC, dgTrailerJoint> _joint;
         static hook::Field<0x1E4, vehCarSim *> _sim;
         static hook::Field<0x1E8, vehTrailerInstance> _instance;
-        static hook::Field<0xCC, dgTrailerJoint> _joint;
+        static hook::Field<0x3E0, Vector3> _carHitchOffset;
+        static hook::Field<0x3EC, Vector3> _trailerHitchOffset;
         static hook::Field<0x528, vehWheel> _twhl0;
         static hook::Field<0x794, vehWheel> _twhl1;
         static hook::Field<0xA00, vehWheel> _twhl2;
@@ -31,6 +33,8 @@ namespace MM2
         dgTrailerJoint* GetJoint() const; 
         vehWheel* GetWheel(int num) const;
         vehTrailerInstance* GetInstance() const;
+        Vector3 GetCarHitchOffset() const;
+        Vector3 GetTrailerHitchOffset() const;
 
         AGE_API void Init(const char* basename, const Vector3* a2, vehCarSim* a3, int a4);
 
