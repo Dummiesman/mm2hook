@@ -7,6 +7,9 @@
 
 using namespace MM2;
 
+/*
+  aiPoliceOfficer
+*/
 bool aiPoliceOfficer::s_EnableRubberBanding = true;
 
 aiPoliceOfficer::aiPoliceOfficer(void) : m_VehiclePhysics()
@@ -571,9 +574,10 @@ bool MM2::aiPoliceOfficer::IsPerpBreakingTheLaw(vehCar* perpCar)
 void aiPoliceOfficer::BindLua(LuaState L) {
 	LuaBinding(L).beginClass<aiPoliceOfficer>("aiPoliceOfficer")
 		.addFactory([]() {
-			auto object = new aiPoliceOfficer();
-			//MM2Lua::MarkForCleanupOnShutdown(object);
-			return object;
+			auto officer = new aiPoliceOfficer();
+			auto ref = new aiPoliceOfficerRef(officer);
+			MM2Lua::MarkForCleanupOnShutdown(ref);
+			return officer;
 		})
 		.addPropertyReadOnly("FollowedCar", &GetFollowedCar)
 		.addPropertyReadOnly("PoliceState", &GetPoliceState)
@@ -604,4 +608,17 @@ void aiPoliceOfficer::BindLua(LuaState L) {
 		.addFunction("DrawId", &DrawId)
 
 		.endClass();
+}
+
+/*
+  aiPoliceOfficerRef
+*/
+MM2::aiPoliceOfficerRef::aiPoliceOfficerRef(aiPoliceOfficer* officer)
+{
+	m_OfficerRef = officer;
+}
+
+MM2::aiPoliceOfficerRef::~aiPoliceOfficerRef()
+{
+	delete m_OfficerRef;
 }
