@@ -177,7 +177,7 @@ int datStack::ExceptionFilterWithMsgBox(EXCEPTION_POINTERS* eptrs) {
 
     //finally combine everything and show the error
     sprintf_s(totalBuf, "%s\nException %x at EIP=%s\n%s", stackBuf, eptrs->ExceptionRecord->ExceptionCode, addressBuf, tracebackBuf);
-    MessageBoxA(0, totalBuf, "Guru Meditation", MB_OK | MB_ICONSTOP);
+    MessageBoxA(NULL, totalBuf, "Guru Meditation", MB_OK | MB_ICONSTOP);
     return 1;
 }
 
