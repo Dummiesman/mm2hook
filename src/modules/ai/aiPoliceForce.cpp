@@ -88,29 +88,37 @@ BOOL aiPoliceForce::UnRegisterCop(vehCar* cop, vehCar* perp)
         return FALSE; // Could not find one or the other
     }
 
+    // shift cop cars down within this perp's slot
     NumChasers[perpIndex]--;
+    for (int i = copIndex; i < NumChasers[perpIndex]; i++)
+    {
+        CopCars[perpIndex][i] = CopCars[perpIndex][i + 1];
+    }
+    CopCars[perpIndex][NumChasers[perpIndex]] = nullptr; // clear vacated cop slot
+
+    // shift perp slots down to fill the gap if they're no longer being chased
     if (NumChasers[perpIndex] == 0)
     {
-        // shift everything down from next perp
         NumPerps--;
-        for (int i = perpIndex; i < NumPerps - 1; i++)
+        for (int i = perpIndex; i < NumPerps; i++)
         {
             NumChasers[i] = NumChasers[i + 1];
             PerpCars[i] = PerpCars[i + 1];
-            for (int j = 0; j < NumChasers[i + 1]; j++)
+            for (int j = 0; j < NumChasers[i]; j++)
             {
                 CopCars[i][j] = CopCars[i + 1][j];
             }
         }
-    }
-    else
-    {
-        // shift cop cars down
-        for (int i = copIndex; i < NumChasers[perpIndex] - 1; i++)
+
+        // clear the vacated perp slot
+        PerpCars[NumPerps] = nullptr;
+        NumChasers[NumPerps] = 0;
+        for (int j = 0; j < NUM_COPS; j++)
         {
-            CopCars[perpIndex][i] = CopCars[perpIndex][i + 1];
+            CopCars[NumPerps][j] = nullptr;
         }
     }
+
     return TRUE;
 }
 
