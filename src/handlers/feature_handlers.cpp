@@ -40,6 +40,7 @@ static init_handler g_feature_handlers[] = {
     CreateHandler<mmExternalViewHandler>("mmExternalView"),
     CreateHandler<mmDirSndHandler>("mmDirSnd"),
     CreateHandler<mmPlayerHandler>("mmPlayer"),
+    CreateHandler<mmRewardListHandler>("mmRewardList"),
     CreateHandler<mmGameHandler>("mmGame"),
     CreateHandler<mmGameMusicDataHandler>("mmGameMusicData"),
     CreateHandler<mmGameMultiHandler>("mmGameMulti"),

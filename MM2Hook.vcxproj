@@ -225,6 +225,7 @@
     <ClInclude Include="src\handlers\feature_handlers\mmIconsHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmInterfaceFeatureHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmPlayerHandler.h" />
+    <ClInclude Include="src\handlers\feature_handlers\mmRewardListHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmSingleRaceHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\mmSingleRoamHandler.h" />
     <ClInclude Include="src\handlers\feature_handlers\modStaticHandler.h" />
@@ -746,6 +747,7 @@
     <ClCompile Include="src\handlers\feature_handlers\mmIconsHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmInterfaceFeatureHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmPlayerHandler.cpp" />
+    <ClCompile Include="src\handlers\feature_handlers\mmRewardListHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmSingleRaceHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\mmSingleRoamHandler.cpp" />
     <ClCompile Include="src\handlers\feature_handlers\modStaticHandler.cpp" />

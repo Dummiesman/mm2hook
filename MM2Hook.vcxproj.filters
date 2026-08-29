@@ -1874,6 +1874,9 @@
     <ClInclude Include="src\handlers\bugfix_handlers\vehBreakableMgrBugfixHandler.h">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
     </ClInclude>
+    <ClInclude Include="src\handlers\feature_handlers\mmRewardListHandler.h">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\lua\lapi.c">
@@ -2820,6 +2823,9 @@
     </ClCompile>
     <ClCompile Include="src\handlers\bugfix_handlers\vehBreakableMgrBugfixHandler.cpp">
       <Filter>Source Files\handlers\bugfix_handlers</Filter>
+    </ClCompile>
+    <ClCompile Include="src\handlers\feature_handlers\mmRewardListHandler.cpp">
+      <Filter>Source Files\handlers\feature_handlers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

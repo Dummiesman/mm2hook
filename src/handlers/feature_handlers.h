@@ -47,6 +47,7 @@
 #include "feature_handlers/mmIconsHandler.h"
 #include "feature_handlers/mmInterfaceFeatureHandler.h"
 #include "feature_handlers/mmPlayerHandler.h"
+#include "feature_handlers/mmRewardListHandler.h"
 #include "feature_handlers/mmSingleRaceHandler.h"
 #include "feature_handlers/mmSingleRoamHandler.h"
 #include "feature_handlers/modStaticHandler.h"
