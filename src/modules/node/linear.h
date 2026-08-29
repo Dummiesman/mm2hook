@@ -41,9 +41,14 @@ namespace MM2
         */
         static Matrix34* GetCurrentMatrix()                 { return CurrentMatrix.get(); }
 
+        Matrix34 GetMatrix() const                          { return this->matrix; }
+        void SetMatrix(Matrix34 const& mtx)                 { this->matrix = mtx; }
+
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<asLinearCS, asNode>("asLinearCS")
+                .addFunction("GetMatrix", &GetMatrix)
+                .addFunction("SetMatrix", &SetMatrix)
                 .endClass();
         }
     };

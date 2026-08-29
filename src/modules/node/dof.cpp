@@ -98,6 +98,9 @@ void asDofCS::SetMin(float value) { m_Min = value; }
 float asDofCS::GetMax() const { return m_Max; }
 void asDofCS::SetMax(float value) { m_Max = value; }
 
+float MM2::asDofCS::GetDelta() const { return m_Delta; }
+void MM2::asDofCS::SetDelta(float value) { m_Delta = value; }
+
 float asDofCS::GetDelay() const { return m_Delay; }
 void asDofCS::SetDelay(float value) { m_Delay = value; }
 
@@ -116,18 +119,23 @@ void asDofCS::SetSinAmp(float value) { m_SinAmp = value; }
 float asDofCS::GetSinFreq() const { return m_SinFreq; }
 void asDofCS::SetSinFreq(float value) { m_SinFreq = value; }
 
+bool MM2::asDofCS::GetClampValue() const { return m_ClampValue == TRUE; }
+void MM2::asDofCS::SetClampValue(bool clamp) { m_ClampValue = (clamp) ? TRUE : FALSE; }
+
 void asDofCS::BindLua(LuaState L) {
     LuaBinding(L).beginExtendClass<asDofCS, asLinearCS>("asDofCs")
         .addProperty("Mode", &GetMode, &SetMode)
         .addProperty("Type", &GetType, &SetType)
         .addProperty("Min", &GetMin, &SetMin)
         .addProperty("Max", &GetMax, &SetMax)
+        .addProperty("Delta", &GetDelta, &SetDelta)
         .addProperty("SinAmp", &GetSinAmp, &SetSinAmp)
         .addProperty("SinFreq", &GetSinFreq, &SetSinFreq)
         .addProperty("Delay", &GetDelay, &SetDelay)
         .addProperty("Axis", &GetAxis, &SetAxis)
         .addProperty("Origin", &GetOrigin, &SetOrigin)
         .addProperty("Offset", &GetOffset, &SetOffset)
+        .addProperty("ClampValue", &GetClampValue, &SetClampValue)
         .addFunction("SetTime", &SetTime)
         .endClass();
 }

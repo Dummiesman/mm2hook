@@ -46,7 +46,7 @@ namespace MM2
         float m_SinTime;
         float m_DelayTimeRemaining;
         float m_Delay;
-        int m_ClampValue;
+        BOOL m_ClampValue;
         DofMode m_ModeAfterGoal;
     public:
         AGE_API asDofCS();
@@ -73,6 +73,8 @@ namespace MM2
         void SetMin(float value);
         float GetMax() const;
         void SetMax(float value);
+        float GetDelta() const;
+        void SetDelta(float value);
         float GetDelay() const;
         void SetDelay(float value);
         Vector3 GetAxis() const;
@@ -85,6 +87,8 @@ namespace MM2
         void SetSinAmp(float value);
         float GetSinFreq() const;
         void SetSinFreq(float value);
+        bool GetClampValue() const;
+        void SetClampValue(bool clamp);
 
         //lua
         static void BindLua(LuaState L);
