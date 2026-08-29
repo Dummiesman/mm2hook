@@ -53,6 +53,9 @@ namespace MM2
     class asCamera : public asNode {
     private:
         byte _buffer[0x158];
+    private:
+        static hook::Field<0x24, Vector2> _viewportPosition;
+        static hook::Field<0x2C, Vector2> _viewportSize;
     public:
         AGE_API asCamera(void) {
             scoped_vtable x(this);
@@ -70,9 +73,14 @@ namespace MM2
                                                             { hook::Thunk<0x4A2DD0>::Call<void>(this, left, top, width, height, 1); } // last arg appears unused
         AGE_API void Update() override                      { hook::Thunk<0x4A24A0>::Call<void>(this); }
 
+        Vector2 GetViewportPosition() const { return _viewportPosition.get(this); }
+        Vector2 GetViewportSize() const { return _viewportSize.get(this); }
+
         //lua
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<asCamera, asNode>("asCamera")
+                .addPropertyReadOnly("ViewportPosition", &GetViewportPosition)
+                .addPropertyReadOnly("ViewportSize", &GetViewportSize)
                 .addFunction("SetView", &SetView)
                 .addFunction("SetViewport", &SetViewport)
                 .endClass();
