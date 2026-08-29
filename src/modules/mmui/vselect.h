@@ -1,6 +1,7 @@
 #pragma once
 #include <modules\mmwidget\menu.h>
 #include <modules\audio\sound.h>
+#include <modules\mmcityinfo\vehlist.h>
 
 namespace MM2
 {
@@ -15,6 +16,7 @@ namespace MM2
     private:
         char _buffer[0xE4];
     protected:
+        hook::Field<0xCC, asDofCS*> cameras;
         hook::Field<0x154, AudSoundBase*> selectionSounds;
     private:
         bool currentVehicleIsLockedLua() 
@@ -50,12 +52,20 @@ namespace MM2
             return selectionSounds.get(this);
         }
 
+        asDofCS* GetCamera(int index) const
+        {
+            if (index < 0 || index >= VehicleListPtr->GetNumVehicles())
+                return nullptr;
+            return &cameras.get(this)[index];
+        }
+
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<VehicleSelectBase, UIMenu>("VehicleSelectBase")
                 .addPropertyReadOnly("CurrentVehicleIsLocked", &currentVehicleIsLockedLua)
                 .addPropertyReadOnly("SelectionAudio", &GetSelectionAudio)
                 .addFunction("AllSetCar", &AllSetCar)
                 .addFunction("SetLastUnlockedVehicle", &SetLastUnlockedVehicle)
+                .addFunction("GetCamera", &GetCamera)
                 .endClass();
         }
     };
