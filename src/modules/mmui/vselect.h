@@ -16,8 +16,9 @@ namespace MM2
     private:
         char _buffer[0xE4];
     protected:
-        hook::Field<0xCC, asDofCS*> cameras;
-        hook::Field<0x154, AudSoundBase*> selectionSounds;
+        static hook::Field<0x8C, int> _currentPick;
+        static hook::Field<0xCC, asDofCS*> _cameras;
+        static hook::Field<0x154, AudSoundBase*> _selectionSounds;
     private:
         bool currentVehicleIsLockedLua() 
         {
@@ -49,19 +50,25 @@ namespace MM2
         // Get the selection audio for vehicles. Each vehicle occupies a sound handle.
         AudSoundBase* GetSelectionAudio() const
         {
-            return selectionSounds.get(this);
+            return _selectionSounds.get(this);
         }
 
         asDofCS* GetCamera(int index) const
         {
             if (index < 0 || index >= VehicleListPtr->GetNumVehicles())
                 return nullptr;
-            return &cameras.get(this)[index];
+            return &_cameras.get(this)[index];
+        }
+
+        int GetCurrentPick() const
+        {
+            return _currentPick.get(this);
         }
 
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<VehicleSelectBase, UIMenu>("VehicleSelectBase")
                 .addPropertyReadOnly("CurrentVehicleIsLocked", &currentVehicleIsLockedLua)
+                .addPropertyReadOnly("CurrentPick", &GetCurrentPick)
                 .addPropertyReadOnly("SelectionAudio", &GetSelectionAudio)
                 .addFunction("AllSetCar", &AllSetCar)
                 .addFunction("SetLastUnlockedVehicle", &SetLastUnlockedVehicle)
