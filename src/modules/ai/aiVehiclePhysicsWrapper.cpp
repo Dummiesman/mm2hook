@@ -27,6 +27,11 @@ int aiVehiclePhysicsWrapper::GetLapCount() const
     return vehiclePhysics.GetLapCount();
 }
 
+bool MM2::aiVehiclePhysicsWrapper::IsDamagedOut() const
+{
+    return vehiclePhysics.IsDamagedOut();
+}
+
 void aiVehiclePhysicsWrapper::Init(int id, const char* basename, bool canRepair, int audioType)
 {
     vehiclePhysics.Init(id, basename, canRepair ? 1 : 0, audioType);
@@ -112,6 +117,7 @@ void aiVehiclePhysicsWrapper::BindLua(LuaState L)
         .addPropertyReadOnly("CurrentLap", &GetCurrentLap)
         .addPropertyReadOnly("NumLaps", &GetLapCount)
         .addPropertyReadOnly("State", &GetState)
+        .addPropertyReadOnly("IsDamagedOut", &IsDamagedOut)
         .addFunction("Init", &Init)
         .addFunction("Reset", &Reset)
         .addFunction("RegisterRoute", &RegisterRoute)

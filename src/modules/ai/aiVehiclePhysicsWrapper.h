@@ -16,12 +16,13 @@ namespace MM2
         short intersectionsBuf[128];
     public:
         ANGEL_ALLOCATOR
-        
+
         vehCar* GetCar() const;
         short GetState() const;
         void SetState(aiVehiclePhysicsState state);
         int GetCurrentLap() const;
         int GetLapCount() const;
+        bool IsDamagedOut() const;
 
         void Init(int id, const char* basename, bool circuitMode, int audioType);
         void Reset();
