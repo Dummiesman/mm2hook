@@ -75,6 +75,7 @@ namespace MM2
 
         void CancelPursuit();
         bool ChaseVehicle(vehCar* chaseMe);
+
         int GetId() const;
         const aiVehiclePhysics* GetVehiclePhysics() const;
         int GetApprehendState() const;
@@ -88,6 +89,7 @@ namespace MM2
         void DrawId() const;
         int GetPoliceState() const;
         void SetPoliceState(aiPoliceState state);
+        bool IsDamagedOut() const;
 
         void Init(int id);
         void Init(int id, const char* basename, int flags);

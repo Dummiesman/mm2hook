@@ -195,6 +195,11 @@ void aiPoliceOfficer::SetPoliceState(aiPoliceState state)
 	m_PoliceState = state;
 }
 
+bool MM2::aiPoliceOfficer::IsDamagedOut() const
+{
+	return m_VehiclePhysics.IsDamagedOut();
+}
+
 void MM2::aiPoliceOfficer::Init(int id)
 {
 	auto raceData = aiMap::GetInstance()->GetRaceData();
@@ -587,6 +592,7 @@ void aiPoliceOfficer::BindLua(LuaState L) {
 		.addPropertyReadOnly("NumLaps", &GetLapCount)
 		.addPropertyReadOnly("InPursuit", &InPersuit)
 		.addPropertyReadOnly("InPersuit", &InPersuit)
+		.addPropertyReadOnly("IsDamagedOut", &IsDamagedOut)
 
 		.addVariable("ChaseRange", &aiPoliceOfficer::ChaseRange)
 		.addVariable("ChasePlayers", &aiPoliceOfficer::ChasePlayers)
