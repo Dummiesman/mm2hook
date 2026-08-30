@@ -154,7 +154,7 @@ namespace MM2
         virtual AGE_API const Vector3& GetVelocity();
         virtual AGE_API void Detach();
         
-        virtual AGE_API void Draw(int) PURE;
+        virtual AGE_API void Draw(int lod) PURE;
         virtual AGE_API void DrawShadow();
         virtual AGE_API void DrawShadowMap();
         virtual AGE_API void DrawGlow();
