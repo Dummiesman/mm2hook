@@ -30,7 +30,7 @@ namespace MM2
 
     class dgBangerInstance : public lvlInstance {
     private:
-        short DataPack; // Contains type and variant
+        ushort DataPack; // Contains type and variant
     public:
         /*
             dgBangerInstance
@@ -79,6 +79,7 @@ namespace MM2
         static void BindLua(LuaState L) {
             LuaBinding(L).beginExtendClass<dgBangerInstance, lvlInstance>("dgBangerInstance")
                 //functions
+                .addProperty("Variant", &GetVariant, &SetVariant)
                 .addFunction("GetData", &GetData)
                 .addProperty("BangerType", &GetBangerType, &SetBangerType)
                 .endClass();
